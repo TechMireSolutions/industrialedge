@@ -1,4 +1,5 @@
 import express from 'express';
+import path from 'path';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
 import { config } from './config/index.js';
@@ -30,6 +31,22 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser(config.cookie.secret));
 
 app.use('/api/uploads', express.static(config.upload.dir));
+
+app.get('/api/image-proxy', (req, res) => {
+  const filePath = req.query.path as string;
+  if (!filePath || filePath.includes('..')) {
+    return res.status(403).json({ success: false, message: 'Forbidden' });
+  }
+  
+  const uploadDir = path.join(process.cwd(), config.upload.dir || 'uploads');
+  const fullPath = path.join(uploadDir, filePath);
+  
+  res.sendFile(fullPath, (err) => {
+    if (err) {
+      res.status(404).json({ success: false, message: 'Image not found' });
+    }
+  });
+});
 
 app.get('/api/health', (req, res) => {
   res.json({ success: true, message: 'API is healthy', timestamp: new Date().toISOString() });
