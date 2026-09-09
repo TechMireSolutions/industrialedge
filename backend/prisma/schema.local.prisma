@@ -1,0 +1,710 @@
+generator client {
+  provider      = "prisma-client-js"
+  binaryTargets = ["native", "windows"]
+  previewFeatures = ["driverAdapters"]
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           String   @id @default(cuid())
+  name         String
+  email        String   @unique
+  passwordHash String
+  phone        String?
+  role         String   @default("CUSTOMER")
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  cart      Cart?
+  wishlist  WishlistItem[]
+  orders    Order[]
+  reviews   Review[]
+  addresses Address[]
+
+  @@map("users")
+}
+
+model Category {
+  id          String     @id @default(cuid())
+  name        String
+  slug        String     @unique
+  description String?
+  image       String?
+  active      Boolean    @default(true)
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+  products    Product[]
+  menuItems   MenuItem[]
+
+  @@map("categories")
+}
+
+model Tag {
+  id        String    @id @default(cuid())
+  name      String
+  slug      String    @unique
+  products  Product[]
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+
+  @@map("tags")
+}
+
+model Collection {
+  id          String   @id @default(cuid())
+  name        String
+  slug        String   @unique
+  description String?
+  image       String?
+  active      Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  products CollectionProduct[]
+  menuItems MenuItem[]
+
+  @@map("collections")
+}
+
+model CollectionProduct {
+  id           String     @id @default(cuid())
+  collectionId String
+  collection   Collection @relation(fields: [collectionId], references: [id], onDelete: Cascade)
+  productId    String
+  product      Product    @relation(fields: [productId], references: [id], onDelete: Cascade)
+  displayOrder Int        @default(0)
+  createdAt    DateTime   @default(now())
+
+  @@unique([collectionId, productId])
+  @@map("collection_products")
+}
+
+model Product {
+  id               String   @id @default(cuid())
+  name             String
+  slug             String   @unique
+  description String?
+  shortDescription String?
+  categoryId       String
+  category         Category @relation(fields: [categoryId], references: [id])
+  price            Decimal
+  oldPrice         Decimal?
+  shippingPrice    Decimal  @default(0)
+  sku              String   @unique
+  stock            Int      @default(0)
+  badge            String?
+  images           String   @default("[]")
+  rating           Decimal  @default(0)
+  reviewCount      Int      @default(0)
+  isFeatured       Boolean  @default(false)
+  isNew            Boolean  @default(false)
+  isTopSelling     Boolean  @default(false)
+  isBestseller     Boolean  @default(false)
+  active           Boolean  @default(true)
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+
+  cartItems     CartItem[]
+  wishlistItems WishlistItem[]
+  orderItems    OrderItem[]
+  reviews       Review[]
+  collections   CollectionProduct[]
+  tags          Tag[]
+  menuItems     MenuItem[]
+
+  @@index([categoryId])
+  @@index([isFeatured])
+  @@index([isNew])
+  @@index([isTopSelling])
+  @@index([isBestseller])
+  @@index([active])
+  @@map("products")
+}
+
+model Cart {
+  id        String   @id @default(cuid())
+  userId    String?  @unique
+  sessionId String?  @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user  User?      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  items CartItem[]
+
+  @@map("carts")
+}
+
+model CartItem {
+  id        String   @id @default(cuid())
+  cartId    String
+  cart      Cart     @relation(fields: [cartId], references: [id], onDelete: Cascade)
+  productId String
+  product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  quantity  Int      @default(1)
+  unitPrice Decimal
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([cartId, productId])
+  @@map("cart_items")
+}
+
+model WishlistItem {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  productId String
+  product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+
+  @@unique([userId, productId])
+  @@map("wishlist_items")
+}
+
+model Order {
+  id              String    @id @default(cuid())
+  orderNumber     String    @unique
+  userId          String?
+  user            User?     @relation(fields: [userId], references: [id], onDelete: SetNull)
+  status          String    @default("PENDING")
+  paymentStatus   String    @default("PENDING")
+  paymentMethod   String?
+  subtotal        Decimal
+  shipping        Decimal
+  discount        Decimal   @default(0)
+  total           Decimal
+  billingAddress  String
+  shippingAddress String
+  notes           String?
+  paidAt          DateTime?
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  items         OrderItem[]
+  statusHistory OrderStatusHistory[]
+
+  @@map("orders")
+}
+
+model OrderItem {
+  id          String  @id @default(cuid())
+  orderId     String
+  order       Order   @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  productId   String
+  product     Product @relation(fields: [productId], references: [id], onDelete: Restrict)
+  productName String
+  sku         String
+  quantity    Int
+  price       Decimal
+  total       Decimal
+
+  @@map("order_items")
+}
+
+model Coupon {
+  id              String    @id @default(cuid())
+  code            String    @unique
+  type            String
+  value           Decimal
+  minimumOrder    Decimal?
+  maximumDiscount Decimal?
+  expiry          DateTime?
+  active          Boolean   @default(true)
+  usageLimit      Int?
+  usageCount      Int       @default(0)
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  @@map("coupons")
+}
+
+model Review {
+  id        String   @id @default(cuid())
+  productId String
+  product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  rating    Int
+  title     String
+  comment   String
+  approved  Boolean  @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([productId, userId])
+  @@map("reviews")
+}
+
+model Address {
+  id         String   @id @default(cuid())
+  userId     String
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  type       String   @default("shipping")
+  firstName  String
+  lastName   String
+  company    String?
+  address    String
+  city       String
+  country    String
+  postalCode String
+  phone      String
+  isDefault  Boolean  @default(false)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@map("addresses")
+}
+
+model HeroSlide {
+  id String @id @default(cuid())
+
+  imageId String?
+  image   MediaAsset? @relation("HeroImage", fields: [imageId], references: [id], onDelete: SetNull)
+
+  backgroundImageId String?
+  backgroundImage   MediaAsset? @relation("HeroBgImage", fields: [backgroundImageId], references: [id], onDelete: SetNull)
+
+  imageAlt            String?
+  titleLine1          String?
+  titleLine2          String?
+  titleLine3          String?
+  eyebrowText         String?
+  showEyebrow         Boolean   @default(true)
+  description String?
+  primaryButtonText   String?
+  primaryButtonUrl    String?
+  showPrimaryCTA      Boolean   @default(true)
+  secondaryButtonText String?
+  secondaryButtonUrl  String?
+  showSecondaryCTA    Boolean   @default(true)
+  active              Boolean   @default(true)
+  ordering            Int       @default(0)
+  createdAt           DateTime  @default(now())
+  updatedAt           DateTime  @updatedAt
+  deletedAt           DateTime?
+
+  @@map("hero_slides")
+}
+
+model Banner {
+  id          String   @id @default(cuid())
+  title       String
+  description String?
+  image       String?
+  discount    Int?
+  ctaText     String?
+  ctaUrl      String?
+  active      Boolean  @default(true)
+  ordering    Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("banners")
+}
+
+model Offer {
+  id          String    @id @default(cuid())
+  title       String
+  description String?
+  image       String?
+  discount    Int
+  ctaText     String?
+  ctaUrl      String?
+  active      Boolean   @default(true)
+  ordering    Int       @default(0)
+  startDate   DateTime?
+  endDate     DateTime?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  @@map("offers")
+}
+
+model Service {
+  id          String   @id @default(cuid())
+  title       String
+  description String?
+  icon        String
+  active      Boolean  @default(true)
+  ordering    Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("services")
+}
+
+model FooterContent {
+  id        String    @id @default(cuid())
+  section   String    @unique
+  title     String
+  content String 
+  active    Boolean   @default(true)
+  ordering  Int       @default(0)
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+
+  @@map("footer_contents")
+}
+
+model ContactSubmission {
+  id        String   @id @default(cuid())
+  name      String
+  email     String
+  phone     String?
+  project   String?
+  subject   String
+  message   String
+  createdAt DateTime @default(now())
+
+  @@map("contact_submissions")
+}
+
+model PageContent {
+  id        String     @id @default(cuid())
+  slug      String     @unique
+  title     String
+  content String 
+  active    Boolean    @default(true)
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+  menuItems MenuItem[]
+
+  @@map("page_contents")
+}
+
+model OrderStatusHistory {
+  id        String   @id @default(cuid())
+  orderId   String
+  order     Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  status    String
+  notes     String?
+  createdAt DateTime @default(now())
+
+  @@map("order_status_history")
+}
+
+model Notification {
+  id        String   @id @default(cuid())
+  title     String
+  message   String
+  type      String   @default("INFO")
+  read      Boolean  @default(false)
+  link      String?
+  createdAt DateTime @default(now())
+
+  @@map("notifications")
+}
+
+model MediaAsset {
+  id            String    @id @default(cuid())
+  filename      String
+  originalName  String?
+  mimeType      String
+  extension     String?
+  width         Int?
+  height        Int?
+  size          Int
+  hash          String?   @unique
+  altText       String?
+  caption       String?
+  storagePath   String
+  thumbnailPath String?
+  webpPath      String?
+  folderId      String?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  deletedAt     DateTime?
+
+  generalSettingsLogos GeneralSettings[]  @relation("GeneralLogo")
+  partnerLogos         Partner[]          @relation("PartnerLogo")
+  partnerDarkLogos     Partner[]          @relation("PartnerDarkLogo")
+  heroSlideImages      HeroSlide[]        @relation("HeroImage")
+  heroSlideBgImages    HeroSlide[]        @relation("HeroBgImage")
+  brandingMainLogo     BrandingSettings[] @relation("MainLogo")
+  brandingDarkLogo     BrandingSettings[] @relation("DarkLogo")
+  brandingNavbarLogo   BrandingSettings[] @relation("NavbarLogo")
+  brandingFooterLogo   BrandingSettings[] @relation("FooterLogo")
+  brandingLoginLogo    BrandingSettings[] @relation("LoginLogo")
+  brandingFavicon      BrandingSettings[] @relation("Favicon")
+
+  @@map("media_assets")
+}
+
+model Partner {
+  id           String  @id @default(cuid())
+  name         String
+  slug         String  @unique
+  description String?
+  websiteUrl   String?
+  displayOrder Int     @default(0)
+  category     String?
+  country      String?
+  featured     Boolean @default(false)
+  active       Boolean @default(true)
+  tooltip      String?
+  altText      String?
+  openInNewTab Boolean @default(true)
+
+  logoId     String?
+  logo       MediaAsset? @relation("PartnerLogo", fields: [logoId], references: [id], onDelete: SetNull)
+  darkLogoId String?
+  darkLogo   MediaAsset? @relation("PartnerDarkLogo", fields: [darkLogoId], references: [id], onDelete: SetNull)
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+
+  @@map("partners")
+}
+
+model SettingsMetadata {
+  id            String   @id @default(cuid())
+  schemaVersion Int      @default(1)
+  lastMigration DateTime @default(now())
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  @@map("settings_metadata")
+}
+
+model GeneralSettings {
+  id              String   @id @default("default")
+  siteName        String   @default("Industrial Edge")
+  tagline         String?
+  siteDescription String?
+  websiteUrl      String?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  logoId String?
+  logo   MediaAsset? @relation("GeneralLogo", fields: [logoId], references: [id], onDelete: SetNull)
+
+  @@map("general_settings")
+}
+
+model BrandingSettings {
+  id String @id @default("default")
+
+  mainLogoId   String?
+  mainLogo     MediaAsset? @relation("MainLogo", fields: [mainLogoId], references: [id], onDelete: SetNull)
+  darkLogoId   String?
+  darkLogo     MediaAsset? @relation("DarkLogo", fields: [darkLogoId], references: [id], onDelete: SetNull)
+  navbarLogoId String?
+  navbarLogo   MediaAsset? @relation("NavbarLogo", fields: [navbarLogoId], references: [id], onDelete: SetNull)
+  footerLogoId String?
+  footerLogo   MediaAsset? @relation("FooterLogo", fields: [footerLogoId], references: [id], onDelete: SetNull)
+  loginLogoId  String?
+  loginLogo    MediaAsset? @relation("LoginLogo", fields: [loginLogoId], references: [id], onDelete: SetNull)
+  faviconId    String?
+  favicon      MediaAsset? @relation("Favicon", fields: [faviconId], references: [id], onDelete: SetNull)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("branding_settings")
+}
+
+model ThemeSettings {
+  id              String @id @default("default")
+  primaryColor    String @default("#237B39")
+  secondaryColor  String @default("#181246")
+  accentColor     String @default("#4736bf")
+  successColor    String @default("#198754")
+  dangerColor     String @default("#dc3545")
+  warningColor    String @default("#ffc107")
+  infoColor       String @default("#0dcaf0")
+  backgroundColor String @default("#ffffff")
+  cardColor       String @default("#ffffff")
+  textColor       String @default("#212529")
+  borderRadius    String @default("0.375rem")
+  shadowStyle     String @default("0 0.5rem 1rem rgba(0, 0, 0, 0.15)")
+  fontFamily      String @default("Inter, sans-serif")
+  headingFont     String @default("Outfit, sans-serif")
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("theme_settings")
+}
+
+model SeoSettings {
+  id                  String  @id @default("default")
+  metaTitle           String?
+  metaDescription     String?
+  keywords            String?
+  canonicalUrl        String?
+  robotsTxt           String?
+  ogTitle             String?
+  ogDescription       String?
+  ogImageId           String?
+  twitterCard         String?
+  schemaOrg           String?
+  googleAnalytics     String?
+  googleTagManager    String?
+  metaPixel           String?
+  bingWebmaster       String?
+  googleSearchConsole String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("seo_settings")
+}
+
+model ContactSettings {
+  id           String  @id @default("default")
+  emails String? 
+  phones String? 
+  addresses String? 
+  workingHours String? 
+  socialLinks String? 
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("contact_settings")
+}
+
+model SystemSettings {
+  id                       String  @id @default("default")
+  maintenanceMode          Boolean @default(false)
+  allowRegistration        Boolean @default(true)
+  requireEmailVerification Boolean @default(false)
+  enableAuditLogging       Boolean @default(true)
+  defaultLanguage          String  @default("en")
+  defaultCurrency          String  @default("USD")
+  timeZone                 String  @default("UTC")
+  uploadSizeLimit          Int     @default(5)
+  sessionTimeout           Int     @default(120)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("system_settings")
+}
+
+model FeatureFlags {
+  id                 String  @id @default("default")
+  enableWishlist     Boolean @default(true)
+  enableCompare      Boolean @default(false)
+  enableReviews      Boolean @default(true)
+  enableCoupons      Boolean @default(true)
+  enableNewsletter   Boolean @default(true)
+  enablePartners     Boolean @default(true)
+  enableBlog         Boolean @default(false)
+  enableTestimonials Boolean @default(true)
+  enableSmokeEffect  Boolean @default(false)
+  enableAnimations   Boolean @default(true)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("feature_flags")
+}
+
+model Menu {
+  id          String     @id @default(cuid())
+  name        String
+  slug        String     @unique
+  description String?
+  items       MenuItem[]
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+  deletedAt   DateTime?
+
+  @@map("menus")
+}
+
+model MenuItem {
+  id     String @id @default(cuid())
+  menuId String
+  menu   Menu   @relation(fields: [menuId], references: [id], onDelete: Cascade)
+  label  String
+
+  // Base configuration
+  type            String  @default("link") // 'link', 'dropdown', 'mega_menu', 'button', 'system_action'
+  destinationType String? // 'page', 'category', 'collection', 'product', 'custom', 'external'
+  systemAction    String? // 'search', 'wishlist', 'account', 'cart'
+  source          String? // 'manual', 'dynamic_categories', 'dynamic_collections'
+
+  // Custom destinations
+  url    String?
+  target String  @default("_self")
+
+  // Relations for specific destinations
+  categoryId   String?
+  category     Category?    @relation(fields: [categoryId], references: [id], onDelete: SetNull)
+  collectionId String?
+  collection   Collection?  @relation(fields: [collectionId], references: [id], onDelete: SetNull)
+  productId    String?
+  product      Product?     @relation(fields: [productId], references: [id], onDelete: SetNull)
+  pageId       String?
+  page         PageContent? @relation(fields: [pageId], references: [id], onDelete: SetNull)
+
+  // Appearance
+  icon         String?
+  iconPosition String? @default("left")
+  badgeText    String?
+  badgeVariant String?
+  variant      String? // For buttons: 'primary', 'secondary', 'danger', etc.
+
+  // Visibility and ordering
+  order          Int     @default(0)
+  visible        Boolean @default(true)
+  desktopVisible Boolean @default(true)
+  mobileVisible  Boolean @default(true)
+
+  // Hierarchy
+  parentId String?
+  parent   MenuItem?  @relation("MenuHierarchy", fields: [parentId], references: [id], onDelete: SetNull)
+  children MenuItem[] @relation("MenuHierarchy")
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+
+  @@map("menu_items")
+}
+
+model HomepageSection {
+  id           String    @id @default(cuid())
+  sectionName  String
+  displayOrder Int       @default(0)
+  enabled      Boolean   @default(true)
+  settings     String? // JSON
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+  deletedAt    DateTime?
+
+  @@map("homepage_sections")
+}
+
+model SettingsVersion {
+  id         String   @id @default(cuid())
+  settingsId String   @default("global")
+  version    Int      @default(1)
+  snapshot   String // JSON string of all settings
+  adminId    String?
+  createdAt  DateTime @default(now())
+
+  @@map("settings_versions")
+}
+
+model AuditLog {
+  id        String   @id @default(cuid())
+  adminId   String?
+  action    String
+  entity    String
+  before    String?
+  after     String?
+  ip        String?
+  browser   String?
+  createdAt DateTime @default(now())
+
+  @@map("audit_logs")
+}

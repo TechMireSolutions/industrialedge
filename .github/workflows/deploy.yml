@@ -1,0 +1,49 @@
+name: Deploy Industrial Edge
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Deploy directly via SSH
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.SERVER_HOST }}
+          username: ${{ secrets.SERVER_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: ${{ secrets.SERVER_PORT }}
+          script: |
+            set -e
+
+            # Load Node, NPM and PM2 paths
+            export NVM_DIR="$HOME/.nvm"
+            [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+            export PATH=$PATH:/usr/local/bin:/usr/bin:~/.npm-global/bin
+
+            echo "🚀 1. Pulling latest code..."
+            cd /www/wwwroot/industrialedgev2.techmiresolutions.com
+            git reset --hard HEAD
+            git pull origin main
+
+            echo "📦 2. Building Backend..."
+            cd backend
+            npm install
+            npx prisma generate
+            npm run build
+            pm2 restart industrial-backend-v2
+
+            echo "🎨 3. Building Frontend..."
+            cd ../frontend
+            echo "VITE_API_URL=/api" > .env
+            npm install
+            npm run build
+
+            echo "🌐 4. Reloading Nginx..."
+            nginx -s reload
+
+            echo "✅ Deployment completed successfully!"

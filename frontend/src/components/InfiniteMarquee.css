@@ -1,0 +1,72 @@
+.infinite-marquee-container {
+  overflow: hidden;
+  white-space: nowrap;
+  position: relative;
+  width: 100%;
+  background: #f8f9fa;
+  padding: 2rem 0;
+  border-top: 1px solid #eaeaea;
+  border-bottom: 1px solid #eaeaea;
+}
+
+.infinite-marquee {
+  display: inline-block;
+  white-space: nowrap;
+  animation: marquee-scroll linear infinite;
+}
+
+.marquee-item {
+  display: inline-block;
+  margin: 0 2rem;
+}
+
+.marquee-item img {
+  height: 50px;
+  width: auto;
+  object-fit: contain;
+  transition: transform 0.3s ease;
+}
+
+.marquee-item:hover img {
+  transform: scale(1.05);
+}
+
+@keyframes marquee-scroll {
+  0% { transform: translateX(0%); }
+  100% { transform: translateX(-50%); }
+}
+
+/* Responsive adjustments for Infinite Marquee */
+@media (max-width: 991.98px) {
+  .marquee-item img {
+    height: 45px;
+  }
+  
+  .marquee-item {
+    margin: 0 1.5rem;
+  }
+}
+
+@media (max-width: 767.98px) {
+  .marquee-item img {
+    height: 40px;
+  }
+  
+  .marquee-item {
+    margin: 0 1rem;
+  }
+  
+  .infinite-marquee-container {
+    padding: 1.5rem 0;
+  }
+}
+
+@media (max-width: 575.98px) {
+  .marquee-item img {
+    height: 35px;
+  }
+  
+  .marquee-item {
+    margin: 0 0.75rem;
+  }
+}

@@ -1,0 +1,30 @@
+# Root .gitignore
+
+# Dependencies
+node_modules/
+
+# Build outputs
+dist/
+dist-ssr/
+build/
+
+# Secrets & Environment
+.env
+.env.*
+!.env.example
+*.pem
+
+# OS & Temp
+.DS_Store
+.vite/
+.vs/
+*.local
+*.log
+npm-debug.log*
+
+# Prisma (Keep schema and migrations, ignore local sqlite if any)
+*.db
+*.db-journal
+
+# Keep backend images
+!backend/uploads/images/
