@@ -1,3 +1,4 @@
+import { getImageUrl } from '../utils/getImageUrl';
 import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { cmsApi } from '../services'
@@ -202,3 +203,4 @@ export default function Footer() {
     </>
   )
 }
+

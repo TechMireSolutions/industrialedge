@@ -1,3 +1,4 @@
+import { getImageUrl } from '../../utils/getImageUrl';
 import { useState, useEffect } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import AdminFormLayout from '../../components/admin/AdminFormLayout'
@@ -247,3 +248,4 @@ export default function AdminCollectionForm() {
     </AdminFormLayout>
   )
 }
+

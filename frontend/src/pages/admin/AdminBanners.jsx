@@ -1,3 +1,4 @@
+import { getImageUrl } from '../../utils/getImageUrl';
 import { useConfirm } from '../../components/admin/ConfirmProvider.jsx'
 import toast from 'react-hot-toast'
 import { useState, useEffect } from 'react'
@@ -95,3 +96,4 @@ export default function AdminBanners() {
     </div>
   )
 }
+

@@ -1,3 +1,4 @@
+import { getImageUrl } from '../utils/getImageUrl';
 import { useSettings } from '../context/SettingsContext';
 
 export default function MaintenanceMode() {
@@ -26,3 +27,4 @@ export default function MaintenanceMode() {
     </div>
   );
 }
+

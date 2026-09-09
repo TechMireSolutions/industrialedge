@@ -1,3 +1,4 @@
+import { getImageUrl } from '../../utils/getImageUrl';
 import { useState, useEffect } from 'react'
 import { Link, useParams, useNavigate } from 'react-router-dom'
 import PageHeader from '../../components/PageHeader.jsx'
@@ -208,3 +209,4 @@ export default function OrderDetail() {
     </>
   )
 }
+

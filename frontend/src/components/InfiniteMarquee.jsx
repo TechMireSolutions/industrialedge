@@ -1,3 +1,4 @@
+import { getImageUrl } from '../utils/getImageUrl';
 import React from 'react';
 import './InfiniteMarquee.css';
 
@@ -28,3 +29,4 @@ export default function InfiniteMarquee({ items, speed = 30 }) {
     </div>
   );
 }
+

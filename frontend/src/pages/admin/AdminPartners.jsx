@@ -1,3 +1,4 @@
+import { getImageUrl } from '../../utils/getImageUrl';
 import React, { useState, useEffect } from 'react';
 import { toast } from 'react-hot-toast';
 import { adminApi } from '../../services';
@@ -257,3 +258,4 @@ export default function AdminPartners() {
     </div>
   );
 }
+

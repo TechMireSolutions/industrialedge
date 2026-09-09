@@ -1,3 +1,4 @@
+import { getImageUrl } from '../utils/getImageUrl';
 import { Link } from 'react-router-dom'
 import { useCart } from '../context/CartContext'
 import { useSettings } from '../context/SettingsContext'
@@ -142,3 +143,4 @@ export default function ProductCard({ product, delay = '0.1s', layout = 'grid', 
     </div>
   )
 }
+

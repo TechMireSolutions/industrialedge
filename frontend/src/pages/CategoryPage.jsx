@@ -1,3 +1,4 @@
+import { getImageUrl } from '../utils/getImageUrl';
 import { useState, useEffect } from 'react'
 import { useParams, Link } from 'react-router-dom'
 import PageHeader from '../components/PageHeader.jsx'
@@ -96,3 +97,4 @@ export default function CategoryPage() {
     </>
   )
 }
+

@@ -1,3 +1,4 @@
+import { getImageUrl } from '../../utils/getImageUrl';
 import { useState, useEffect } from 'react'
 import { Outlet, NavLink, useNavigate } from 'react-router-dom'
 import { useAuth } from '../../context/AuthContext'
@@ -234,3 +235,4 @@ export default function AdminLayout() {
     </>
   )
 }
+

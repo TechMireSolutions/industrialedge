@@ -1,3 +1,4 @@
+import { getImageUrl } from '../../utils/getImageUrl';
 import React, { useState, useRef } from 'react';
 import toast from 'react-hot-toast';
 import { adminApi } from '../../services';

@@ -1,3 +1,4 @@
+import { getImageUrl } from '../../utils/getImageUrl';
 import { useState, useEffect, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 import toast from 'react-hot-toast'
@@ -377,4 +378,5 @@ export default function AdminProducts() {
     </div>
   )
 }
+
 

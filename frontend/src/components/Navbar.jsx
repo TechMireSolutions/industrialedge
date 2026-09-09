@@ -1,3 +1,4 @@
+import { getImageUrl } from '../utils/getImageUrl';
 import { useState, useEffect, useMemo } from 'react'
 import { Link, NavLink, useNavigate, useLocation } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
@@ -309,3 +310,4 @@ export default function Navbar() {
     </>
   )
 }
+
