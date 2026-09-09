@@ -388,13 +388,34 @@ footer,
 
 /* --- STOREFRONT FLOATING NAVBAR --- */
 .floating-navbar {
-  background-color: rgba(255, 255, 255, 0.85) !important;
+  background-color: var(--primary-color) !important;
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   border-radius: 50rem;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05), 0 1px 3px rgba(0, 0, 0, 0.02);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15), 0 1px 3px rgba(0, 0, 0, 0.1);
   border: 1px solid rgba(255, 255, 255, 0.5);
   transition: all 0.3s ease;
+}
+
+.floating-navbar .nav-link,
+.floating-navbar .navbar-brand span,
+.floating-navbar .btn-light i,
+.floating-navbar .navbar-toggler span {
+  color: #ffffff !important;
+}
+
+.floating-navbar .nav-link:hover,
+.floating-navbar .nav-link.active {
+  color: var(--accent-color) !important;
+}
+
+.floating-navbar .btn-light {
+  background-color: rgba(255, 255, 255, 0.15) !important;
+  color: #ffffff !important;
+}
+
+.floating-navbar .btn-light:hover {
+  background-color: rgba(255, 255, 255, 0.25) !important;
 }
 
 .custom-nav-link {

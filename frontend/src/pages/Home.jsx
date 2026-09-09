@@ -89,7 +89,7 @@ export default function Home() {
           bestsellerResponse
         ] = await Promise.all([
           cmsApi.getHeroSlides(),
-          cmsApi.getPartners ? cmsApi.getPartners() : axios.get(`${import.meta.env.VITE_API_URL || 'http://localhost:3000/api'}/partners`),
+          cmsApi.getPartners ? cmsApi.getPartners() : axios.get('/partners'),
           cmsApi.getServices(),
           cmsApi.getOffers(),
           cmsApi.getBanners(),
@@ -311,7 +311,34 @@ export default function Home() {
                 </div>
               </div>
             ))
-          ) : null}
+          ) : (
+            <div className="item w-100 position-relative hero-slide-item">
+              <div className="position-absolute top-0 start-0 w-100 h-100" style={{ background: 'linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%)', zIndex: 0 }} />
+              <div className="position-absolute top-0 start-0 w-100 h-100" style={{ background: 'radial-gradient(circle at center, transparent 30%, rgba(5,4,13,0.85) 100%)', zIndex: 1 }}></div>
+              <div className="position-relative mx-auto" style={{ width: '100%', maxWidth: 'calc(100vw - 8vh)', zIndex: 2 }}>
+                <div className="text-center z-3">
+                  <div className="hero-text-content mx-auto">
+                    <span className="badge rounded-pill px-3 py-2 mb-4 d-inline-block shadow-sm bg-primary" style={{ border: '1px solid rgba(255,255,255,0.1)', letterSpacing: '2px', textTransform: 'uppercase' }}>
+                      Welcome
+                    </span>
+                    <h1 className="display-3 fw-bold mb-4 lh-sm text-shadow-sm" style={{ letterSpacing: '-1px' }}>
+                      <span className="hero-title-line hero-title-white d-block text-truncate">Welcome to</span>
+                      <span className="hero-title-line hero-title-purple d-block text-truncate">Industrial Edge</span>
+                    </h1>
+                    <p className="fs-5 text-light opacity-75 mb-5 mx-auto" style={{ maxWidth: '600px' }}>
+                      Explore our premium collection of industrial products and services. Set up your hero slides in the Admin Panel to customize this section.
+                    </p>
+                    <div className="d-flex flex-wrap gap-3 justify-content-center">
+                      <Link to="/shop" className="btn hero-primary-button rounded-pill px-5 py-3 fw-bold d-inline-flex align-items-center">
+                        <span>Shop Now</span>
+                        <i className="fas fa-arrow-right ms-2"></i>
+                      </Link>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
         </div>
       </div>
 
