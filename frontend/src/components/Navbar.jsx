@@ -10,6 +10,7 @@ export default function Navbar() {
   const [query, setQuery] = useState('')
   const [menuItems, setMenuItems] = useState([])
   const [loading, setLoading] = useState(true)
+  const [navbarTheme, setNavbarTheme] = useState('dark')
   const navigate = useNavigate()
   const location = useLocation()
   const { user, logout } = useAuth()
@@ -44,6 +45,28 @@ export default function Navbar() {
 
   useEffect(() => {
     closeMenu()
+    
+    const handleScroll = () => {
+      const sections = document.querySelectorAll('[data-theme]');
+      let currentTheme = 'dark'; // default: dark navbar bg on light pages
+
+      sections.forEach(section => {
+        const rect = section.getBoundingClientRect();
+        // Check if the section overlaps the top area where the navbar is floating (approx 0-100px)
+        if (rect.top <= 100 && rect.bottom >= 50) {
+          // If underlying section is 'dark', navbar becomes 'light'. Otherwise 'dark'.
+          currentTheme = section.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+        }
+      });
+      
+      setNavbarTheme(currentTheme);
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    // Timeout to allow DOM rendering before initial check
+    setTimeout(handleScroll, 100);
+
+    return () => window.removeEventListener('scroll', handleScroll);
   }, [location.pathname, location.search])
 
   const submitSearch = (e) => {

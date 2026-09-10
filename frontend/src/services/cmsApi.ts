@@ -110,6 +110,9 @@ export interface Coupon {
 
 export const cmsApi = {
   getHeroSlides: (activeOnly = true) => api.get<HeroSlide[]>(`/hero-slides?active=${activeOnly}`),
+  
+  getHomepageSections: (activeOnly = true) => api.get<{ success: boolean; data: any[] }>(`/homepage-sections?active=${activeOnly}`),
+
 
   getBanners: (activeOnly = true) => api.get<Banner[]>(`/banners?active=${activeOnly}`),
 

@@ -14,6 +14,8 @@ export default function AdminHomepageBuilder() {
     { type: 'Categories', label: 'Featured Categories' },
     { type: 'Products', label: 'Product Grid' },
     { type: 'Banners', label: 'Promotional Banners' },
+    { type: 'Services', label: 'Trust / Services' },
+    { type: 'CTA', label: 'Call to Action' },
     { type: 'Testimonials', label: 'Testimonials' }
   ];
 
