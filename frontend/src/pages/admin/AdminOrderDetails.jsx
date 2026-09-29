@@ -2,10 +2,12 @@ import { useState, useEffect } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import AdminFormLayout from '../../components/admin/AdminFormLayout'
 import { adminApi } from '../../services'
+import { useOrderCurrency } from '../../hooks/useCurrency'
 
 export default function AdminOrderDetails() {
   const navigate = useNavigate()
   const { id } = useParams()
+  const { formatPrice } = useOrderCurrency(order)
 
   const [activeTab, setActiveTab] = useState('summary')
   const [loading, setLoading] = useState(true)
@@ -136,22 +138,22 @@ export default function AdminOrderDetails() {
                     <div className="card-body">
                       <div className="d-flex justify-content-between mb-2">
                         <span>Subtotal:</span>
-                        <span>${Number(order.subtotal).toFixed(2)}</span>
+                        <span>{formatPrice(order.subtotal)}</span>
                       </div>
                       {order.discount > 0 && (
                         <div className="d-flex justify-content-between mb-2 text-success">
                           <span>Discount:</span>
-                          <span>-${Number(order.discount).toFixed(2)}</span>
+                          <span>-{formatPrice(order.discount)}</span>
                         </div>
                       )}
                       <div className="d-flex justify-content-between mb-2">
                         <span>Shipping:</span>
-                        <span>${Number(order.shipping).toFixed(2)}</span>
+                        <span>{formatPrice(order.shipping)}</span>
                       </div>
                       <hr className="my-2" />
                       <div className="d-flex justify-content-between fw-bold fs-5">
                         <span>Total:</span>
-                        <span>${Number(order.total).toFixed(2)}</span>
+                        <span>{formatPrice(order.total)}</span>
                       </div>
                     </div>
                   </div>
@@ -180,9 +182,9 @@ export default function AdminOrderDetails() {
                       <div className="fw-bold">{item.productName}</div>
                       {item.sku && <small className="text-muted">SKU: {item.sku}</small>}
                     </td>
-                    <td>${Number(item.price).toFixed(2)}</td>
+                    <td>{formatPrice(item.price)}</td>
                     <td>{item.quantity}</td>
-                    <td className="fw-bold">${Number(item.total).toFixed(2)}</td>
+                    <td className="fw-bold">{formatPrice(item.total)}</td>
                   </tr>
                 ))}
               </tbody>

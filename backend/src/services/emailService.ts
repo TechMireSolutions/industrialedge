@@ -1,6 +1,8 @@
 import nodemailer from 'nodemailer';
 import { config } from '../config/index.js';
 import { PrismaClient } from '@prisma/client';
+import { formatCurrencyAmount } from '../config/currency.js';
+import { currencyService } from './currencyService.js';
 
 const prisma = new PrismaClient();
 
@@ -12,6 +14,21 @@ interface EmailOptions {
 
 class EmailService {
   private transporter: nodemailer.Transporter | null = null;
+
+  /**
+   * Resolve the currency an email should be rendered in.
+   *
+   * Prefers the currency snapshotted on the order at purchase time so a
+   * transactional email never contradicts the invoice the customer received.
+   * Falls back to the live storefront currency for legacy orders that have no
+   * snapshot.
+   */
+  private async resolveOrderCurrency(order: any) {
+    return currencyService.getOrderCurrency({
+      currencyCode: order?.currencyCode ?? order?.currency?.currencyCode ?? null,
+      currencySymbol: order?.currencySymbol ?? order?.currency?.currencySymbol ?? null,
+    });
+  }
 
   private async getTransporter() {
     if (this.transporter) return this.transporter;
@@ -67,6 +84,9 @@ class EmailService {
     const generalSettings = await prisma.generalSettings.findFirst();
     const siteName = generalSettings?.siteName || 'Store';
 
+    const currency = await this.resolveOrderCurrency(order);
+    const money = (value: any) => formatCurrencyAmount(value, currency);
+
     const itemsHtml = order.items.map((item: any) => `
       <tr>
         <td style="padding: 10px; border-bottom: 1px solid #eee;">
@@ -74,7 +94,7 @@ class EmailService {
           <small>Qty: ${item.quantity}</small>
         </td>
         <td style="padding: 10px; border-bottom: 1px solid #eee; text-align: right;">
-          $${(Number(item.price) * item.quantity).toFixed(2)}
+          ${money(Number(item.price) * item.quantity)}
         </td>
       </tr>
     `).join('');
@@ -108,21 +128,21 @@ class EmailService {
           <div style="background: #f8f9fa; padding: 20px; border-radius: 8px; margin: 20px 0;">
             <div style="display: flex; justify-content: space-between; padding: 8px 0;">
               <span>Subtotal:</span>
-              <span>$${Number(order.subtotal).toFixed(2)}</span>
+              <span>${money(order.subtotal)}</span>
             </div>
             <div style="display: flex; justify-content: space-between; padding: 8px 0;">
               <span>Shipping:</span>
-              <span>${Number(order.shipping) === 0 ? 'Free' : '$' + Number(order.shipping).toFixed(2)}</span>
+              <span>${Number(order.shipping) === 0 ? 'Free' : money(order.shipping)}</span>
             </div>
             ${order.discount > 0 ? `
             <div style="display: flex; justify-content: space-between; padding: 8px 0; color: #28A745;">
               <span>Discount:</span>
-              <span>-$${Number(order.discount).toFixed(2)}</span>
+              <span>-${money(order.discount)}</span>
             </div>` : ''}
             <hr style="border: none; border-top: 1px solid #eee; margin: 15px 0;">
             <div style="display: flex; justify-content: space-between; padding: 8px 0; font-size: 18px; font-weight: bold; color: #0E1B2C;">
               <span>Total:</span>
-              <span>$${Number(order.total).toFixed(2)}</span>
+              <span>${money(order.total)}</span>
             </div>
           </div>
 
@@ -156,6 +176,9 @@ class EmailService {
   async sendOrderStatusEmail(order: any, newStatus: string) {
     const generalSettings = await prisma.generalSettings.findFirst();
     const siteName = generalSettings?.siteName || 'Store';
+
+    const currency = await this.resolveOrderCurrency(order);
+    const money = (value: any) => formatCurrencyAmount(value, currency);
 
     const statusColors: Record<string, string> = {
       PROCESSING: '#3b82f6',
@@ -192,7 +215,7 @@ class EmailService {
 
           <p>Order Date: ${new Date(order.createdAt).toLocaleString()}</p>
           <p>Payment Method: Cash on Delivery</p>
-          <p>Total Amount: $${Number(order.total).toFixed(2)}</p>
+          <p>Total Amount: ${money(order.total)}</p>
 
           <div style="margin-top: 30px; padding: 20px; background: #f8f9fa; border-radius: 8px;">
             <h3 style="margin-top: 0;">Delivery Address</h3>
@@ -227,12 +250,15 @@ class EmailService {
     const siteName = generalSettings?.siteName || 'Store';
     const adminEmail = process.env.ADMIN_EMAIL || 'admin@example.com';
 
+    const currency = await this.resolveOrderCurrency(order);
+    const money = (value: any) => formatCurrencyAmount(value, currency);
+
     const itemsHtml = order.items.map((item: any) => `
       <tr>
         <td style="padding: 12px; border-bottom: 1px solid #eee;">${item.productName || item.product?.name}</td>
         <td style="padding: 12px; border-bottom: 1px solid #eee; text-align: center;">${item.quantity}</td>
-        <td style="padding: 12px; border-bottom: 1px solid #eee; text-align: right;">$${Number(item.price).toFixed(2)}</td>
-        <td style="padding: 12px; border-bottom: 1px solid #eee; text-align: right;">$${(Number(item.price) * item.quantity).toFixed(2)}</td>
+        <td style="padding: 12px; border-bottom: 1px solid #eee; text-align: right;">${money(item.price)}</td>
+        <td style="padding: 12px; border-bottom: 1px solid #eee; text-align: right;">${money(Number(item.price) * item.quantity)}</td>
       </tr>
     `).join('');
 
@@ -281,21 +307,21 @@ class EmailService {
           <div style="background: #f8f9fa; padding: 20px; border-radius: 8px; margin: 20px 0;">
             <div style="display: flex; justify-content: space-between; padding: 8px 0;">
               <span>Subtotal:</span>
-              <span>$${Number(order.subtotal).toFixed(2)}</span>
+              <span>${money(order.subtotal)}</span>
             </div>
             <div style="display: flex; justify-content: space-between; padding: 8px 0;">
               <span>Shipping:</span>
-              <span>${Number(order.shipping) === 0 ? 'Free' : '$' + Number(order.shipping).toFixed(2)}</span>
+              <span>${Number(order.shipping) === 0 ? 'Free' : money(order.shipping)}</span>
             </div>
             ${order.discount > 0 ? `
             <div style="display: flex; justify-content: space-between; padding: 8px 0; color: #28A745;">
               <span>Discount:</span>
-              <span>-$${Number(order.discount).toFixed(2)}</span>
+              <span>-${money(order.discount)}</span>
             </div>` : ''}
             <hr style="border: none; border-top: 1px solid #eee; margin: 15px 0;">
             <div style="display: flex; justify-content: space-between; padding: 8px 0; font-size: 18px; font-weight: bold; color: #0E1B2C;">
               <span>Total:</span>
-              <span>$${Number(order.total).toFixed(2)}</span>
+              <span>${money(order.total)}</span>
             </div>
           </div>
 

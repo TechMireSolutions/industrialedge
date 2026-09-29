@@ -1,6 +1,7 @@
 /// <reference types="node" />
 import { PrismaClient, Prisma } from '@prisma/client';
 import bcrypt from 'bcryptjs';
+import { FALLBACK_CURRENCY } from '../src/config/currency.js';
 
 const prisma = new PrismaClient();
 
@@ -620,7 +621,10 @@ async function main() {
       requireEmailVerification: false,
       enableAuditLogging: true,
       defaultLanguage: 'en',
-      defaultCurrency: 'USD',
+      // Storefront currency comes from the canonical catalog (PKR / Rs).
+      defaultCurrency: FALLBACK_CURRENCY.currencyCode,
+      currencySymbol: FALLBACK_CURRENCY.currencySymbol,
+      currencyName: FALLBACK_CURRENCY.currencyName,
       timeZone: 'UTC',
       uploadSizeLimit: 5,
       sessionTimeout: 120,

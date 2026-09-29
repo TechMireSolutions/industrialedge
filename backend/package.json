@@ -8,6 +8,7 @@
     "dev": "node -e \"require('fs').copyFileSync('prisma/schema.local.prisma', 'prisma/schema.prisma')\" && dotenv -e .env.local -- tsx watch src/server.ts",
     "db:push:local": "dotenv -e .env.local -- prisma db push --schema=prisma/schema.local.prisma",
     "db:push:production": "prisma db push --schema=prisma/schema.prisma",
+    "db:ensure-currency": "dotenv -e .env.local -- prisma db push --schema=prisma/schema.local.prisma && dotenv -e .env.local -- tsx scripts/ensureCurrencySettings.ts",
     "build": "prisma generate && npx tsc",
     "start": "node dist/server.js",
     "prisma:generate": "prisma generate --schema=prisma/schema.local.prisma",

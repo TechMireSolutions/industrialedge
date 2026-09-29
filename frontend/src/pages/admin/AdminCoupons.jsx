@@ -4,10 +4,12 @@ import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import useWow from '../../hooks/useWow.js'
 import { adminApi } from '../../services'
+import { useCurrency } from '../../hooks/useCurrency'
 
 export default function AdminCoupons() {
   const confirm = useConfirm()
   const navigate = useNavigate()
+  const { formatPrice } = useCurrency()
   const [coupons, setCoupons] = useState([])
   const [loading, setLoading] = useState(true)
   const [pagination, setPagination] = useState({ page: 1, limit: 10, total: 0, totalPages: 0 })
@@ -83,9 +85,9 @@ export default function AdminCoupons() {
                   <tr key={coupon.id}>
                     <td><code>{coupon.code}</code></td>
                     <td>{coupon.type === 'PERCENTAGE' ? '%' : '$'}</td>
-                    <td>{coupon.type === 'PERCENTAGE' ? `${coupon.value}%` : `$${Number(coupon.value).toFixed(2)}`}</td>
-                    <td>{coupon.minimumOrder ? `$${Number(coupon.minimumOrder).toFixed(2)}` : '-'}</td>
-                    <td>{coupon.maximumDiscount ? `$${Number(coupon.maximumDiscount).toFixed(2)}` : '-'}</td>
+                    <td>{coupon.type === 'PERCENTAGE' ? `${coupon.value}%` : formatPrice(coupon.value)}</td>
+                    <td>{coupon.minimumOrder ? formatPrice(coupon.minimumOrder) : '-'}</td>
+                    <td>{coupon.maximumDiscount ? formatPrice(coupon.maximumDiscount) : '-'}</td>
                     <td>{coupon.usageCount}/{coupon.usageLimit || '∞'}</td>
                     <td>{coupon.expiry ? new Date(coupon.expiry).toLocaleDateString() : 'Never'}</td>
                     <td><span className={`badge bg-${coupon.active ? 'success' : 'secondary'}`}>{coupon.active ? 'Active' : 'Inactive'}</span></td>

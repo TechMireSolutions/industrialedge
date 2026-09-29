@@ -7,11 +7,13 @@ import useWow from '../hooks/useWow.js'
 import { useAuth } from '../context/AuthContext'
 import { useCart } from '../context/CartContext'
 import { orderApi } from '../services'
+import { useCurrency } from '../hooks/useCurrency'
 
 export default function Checkout() {
   const { user } = useAuth()
   const { cart, fetchCart } = useCart()
   const navigate = useNavigate()
+  const { formatPrice } = useCurrency()
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
   const [submitting, setSubmitting] = useState(false)
@@ -339,28 +341,28 @@ export default function Checkout() {
                                 <span>{item.product.name}</span>
                               </div>
                             </th>
-                            <td className="py-3">${Number(item.unitPrice).toFixed(2)}</td>
+                            <td className="py-3">{formatPrice(item.unitPrice)}</td>
                             <td className="py-3">{item.quantity}</td>
-                            <td className="py-3 fw-bold">${Number(item.total).toFixed(2)}</td>
+                            <td className="py-3 fw-bold">{formatPrice(item.total)}</td>
                           </tr>
                         ))}
                         <tr>
                           <th scope="row" colSpan="3" className="text-end py-3">Subtotal</th>
-                          <td className="py-3 fw-bold">${subtotal.toFixed(2)}</td>
+                          <td className="py-3 fw-bold">{formatPrice(subtotal)}</td>
                         </tr>
                         {couponDiscount > 0 && (
                           <tr className="text-success">
                             <th scope="row" colSpan="3" className="text-end py-3">Discount ({couponCode})</th>
-                            <td className="py-3 fw-bold">-${couponDiscount.toFixed(2)}</td>
+                            <td className="py-3 fw-bold">-{formatPrice(couponDiscount)}</td>
                           </tr>
                         )}
                         <tr>
                           <th scope="row" colSpan="3" className="text-end py-3">Shipping</th>
-                          <td className="py-3 fw-bold">{shipping === 0 ? 'Free' : `$${shipping.toFixed(2)}`}</td>
+                          <td className="py-3 fw-bold">{shipping === 0 ? 'Free' : formatPrice(shipping)}</td>
                         </tr>
                         <tr className="border-top border-bottom">
                           <th scope="row" colSpan="3" className="text-end py-3 fw-bold">Total</th>
-                          <td className="py-3 fw-bold fs-5">${total.toFixed(2)}</td>
+                          <td className="py-3 fw-bold fs-5">{formatPrice(total)}</td>
                         </tr>
                       </tbody>
                     </table>

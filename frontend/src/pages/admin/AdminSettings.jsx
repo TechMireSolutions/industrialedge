@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { toast } from 'react-hot-toast';
 import { api } from '../../services/api';
 import AdminFormLayout from '../../components/admin/AdminFormLayout';
 import AdminImageUpload from '../../components/admin/AdminImageUpload';
 import { useSettings } from '../../context/SettingsContext';
+import { DEFAULT_CURRENCY, resolveCurrency, formatCurrency as formatCurrencyAmount } from '../../utils/currency';
 
 const TABS = [
   { id: 'general', label: 'General' },
@@ -12,6 +13,7 @@ const TABS = [
   { id: 'seo', label: 'SEO & Meta' },
   { id: 'contact', label: 'Contact & Social' },
   { id: 'features', label: 'Feature Flags' },
+  { id: 'currency', label: 'Storefront Currency' },
   { id: 'system', label: 'System Configuration' },
 ];
 
@@ -63,7 +65,7 @@ const sanitizePayload = (obj) => {
 };
 
 export default function AdminSettings() {
-  const { updateSettings } = useSettings();
+  const { updateSettings, currencies } = useSettings();
   const [activeTab, setActiveTab] = useState('general');
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
@@ -78,6 +80,19 @@ export default function AdminSettings() {
     featureFlags: {},
     system: {}
   });
+
+  // Currency catalog comes from the backend (see GET /api/settings/currency) so
+  // adding a currency server-side needs no change here.
+  const currencyOptions = useMemo(() => {
+    const list = Array.isArray(currencies) && currencies.length > 0
+      ? currencies
+      : [DEFAULT_CURRENCY];
+
+    return list.map((currency) => ({
+      ...resolveCurrency(currency),
+      raw: currency,
+    }));
+  }, [currencies]);
 
   useEffect(() => {
     fetchAdminSettings();
@@ -206,8 +221,23 @@ export default function AdminSettings() {
 
       system: {
         ...rawCleaned.system,
-        defaultCurrency:
-          rawCleaned.system?.defaultCurrency?.trim() || 'USD',
+
+        // Storefront currency triple. `defaultCurrency` is the ISO code; the
+        // symbol and name are resolved from the selected catalog entry so the
+        // persisted triple can never be internally inconsistent.
+        ...(() => {
+          const selected = resolveCurrency({
+            currencyCode: rawCleaned.system?.defaultCurrency,
+            currencySymbol: rawCleaned.system?.currencySymbol,
+            currencyName: rawCleaned.system?.currencyName,
+          });
+
+          return {
+            defaultCurrency: selected.currencyCode,
+            currencySymbol: selected.currencySymbol,
+            currencyName: selected.currencyName,
+          };
+        })(),
 
         timeZone:
           rawCleaned.system?.timeZone?.trim() || 'UTC',
@@ -265,6 +295,95 @@ export default function AdminSettings() {
         [field]: value
       }
     }));
+  };
+
+  /**
+   * Selecting a currency writes the code plus the symbol and name taken from
+   * the catalog entry, keeping the persisted triple consistent.
+   */
+  const handleCurrencyChange = (code) => {
+    const selected = resolveCurrency({ currencyCode: code });
+
+    setFormData(prev => ({
+      ...prev,
+      system: {
+        ...(prev.system || {}),
+        defaultCurrency: selected.currencyCode,
+        currencySymbol: selected.currencySymbol,
+        currencyName: selected.currencyName,
+      }
+    }));
+  };
+
+  const renderCurrencyTab = (system) => {
+    const selected = resolveCurrency({
+      currencyCode: system?.defaultCurrency,
+      currencySymbol: system?.currencySymbol,
+      currencyName: system?.currencyName,
+    });
+
+    const isUnconfigured = !system?.defaultCurrency;
+
+    return (
+      <div className="row g-4">
+        <div className="col-12">
+          <p className="text-muted mb-0">
+            The storefront currency applies to <strong>every</strong> price across the
+            entire application &mdash; products, cart, checkout, wishlist, offers,
+            orders and all admin screens. Amounts are re-presented, never
+            converted: no exchange rate is applied.
+          </p>
+        </div>
+
+        <div className="col-md-6">
+          <label className="form-label" htmlFor="storefrontCurrency">Storefront Currency</label>
+          <select
+            id="storefrontCurrency"
+            name="storefrontCurrency"
+            className="form-select"
+            value={selected.currencyCode}
+            onChange={e => handleCurrencyChange(e.target.value)}
+          >
+            {currencyOptions.map(currency => (
+              <option key={currency.currencyCode} value={currency.currencyCode}>
+                {currency.currencyCode} &mdash; {currency.currencyName} &mdash; {currency.currencySymbol}
+              </option>
+            ))}
+          </select>
+        </div>
+
+        <div className="col-md-6">
+          <label className="form-label">Currently Selected</label>
+          <div className="form-control d-flex align-items-center justify-content-between bg-light" style={{ cursor: 'default' }}>
+            <span>
+              <strong>{selected.currencyName}</strong>
+              <span className="text-muted ms-2">({selected.currencyCode})</span>
+            </span>
+            <span className="badge bg-primary">{selected.currencySymbol}</span>
+          </div>
+        </div>
+
+        <div className="col-12">
+          <div className="alert alert-light border d-flex align-items-center gap-3 mb-0">
+            <span className="text-muted small text-nowrap">Preview</span>
+            {/* Rendered with the real formatter so the sample is exactly what the
+                storefront will output, including spacing and decimals. */}
+            <span className="fw-bold">{formatCurrencyAmount(1499, selected)}</span>
+            <span className="fw-bold">{formatCurrencyAmount(25000, selected)}</span>
+            <span className="fw-bold">{formatCurrencyAmount(125999.5, selected)}</span>
+          </div>
+        </div>
+
+        {isUnconfigured && (
+          <div className="col-12">
+            <div className="alert alert-warning mb-0">
+              No currency has been stored yet, so the storefront is using the
+              production default (PKR &mdash; Rs). Saving this tab persists your choice.
+            </div>
+          </div>
+        )}
+      </div>
+    );
   };
 
   const renderTabContent = () => {
@@ -486,6 +605,8 @@ export default function AdminSettings() {
             ))}
           </div>
         );
+      case 'currency':
+        return renderCurrencyTab(system);
       case 'system':
         return (
           <div className="row g-4">
@@ -503,17 +624,19 @@ export default function AdminSettings() {
                 <option value="false">Disabled</option>
               </select>
             </div>
-            <div className="col-md-4">
-              <label className="form-label">Default Currency</label>
-              <input type="text" className="form-control" value={system.defaultCurrency || 'USD'} onChange={e => handleChange('system', 'defaultCurrency', e.target.value)} />
-            </div>
-            <div className="col-md-4">
+            <div className="col-md-6">
               <label className="form-label">Time Zone</label>
               <input type="text" className="form-control" value={system.timeZone || 'UTC'} onChange={e => handleChange('system', 'timeZone', e.target.value)} />
             </div>
-            <div className="col-md-4">
+            <div className="col-md-6">
               <label className="form-label">Max Upload Size (MB)</label>
               <input type="number" className="form-control" value={system.uploadSizeLimit ?? 5} onChange={e => handleChange('system', 'uploadSizeLimit', e.target.value === '' ? '' : parseInt(e.target.value, 10))} />
+            </div>
+            <div className="col-12">
+              <div className="alert alert-light border mb-0">
+                Storefront currency is managed in the
+                <strong> Storefront Currency</strong> tab.
+              </div>
             </div>
           </div>
         );

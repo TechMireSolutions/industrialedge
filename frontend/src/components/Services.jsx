@@ -1,8 +1,15 @@
 import { useState, useEffect, useRef, useCallback } from 'react'
 import { cmsApi } from '../services'
+import { useCurrency } from '../hooks/useCurrency'
 import './Services.css'
 
-const DEFAULT_SERVICES = [
+/**
+ * The free-shipping threshold is a marketing constant, not a stored price, so it
+ * is rendered through the shared formatter instead of a hardcoded "$99".
+ */
+const FREE_SHIPPING_THRESHOLD = 99
+
+const buildDefaultServices = (formatPrice) => [
   {
     id: 'service-1',
     title: 'Free Return',
@@ -13,7 +20,7 @@ const DEFAULT_SERVICES = [
   {
     id: 'service-2',
     title: 'Free Shipping',
-    description: 'Free express shipping on all orders over $99 nationwide.',
+    description: `Free express shipping on all orders over ${formatPrice(FREE_SHIPPING_THRESHOLD)} nationwide.`,
     icon: 'fab fa-telegram-plane',
     featureTag: 'FAST LOGISTICS'
   },
@@ -48,6 +55,7 @@ const DEFAULT_SERVICES = [
 ]
 
 export default function Services({ services: initialServices }) {
+  const { formatPrice } = useCurrency()
   const [services, setServices] = useState(initialServices || [])
   const [activeIndex, setActiveIndex] = useState(0)
   const [isHovered, setIsHovered] = useState(false)
@@ -55,6 +63,8 @@ export default function Services({ services: initialServices }) {
   const touchStartYRef = useRef(0)
   const touchStartXRef = useRef(0)
   const stageRef = useRef(null)
+
+  const defaultServices = buildDefaultServices(formatPrice)
 
   useEffect(() => {
     if (initialServices && initialServices.length > 0) {
@@ -68,18 +78,18 @@ export default function Services({ services: initialServices }) {
         if (response.data && response.data.length > 0) {
           setServices(response.data)
         } else {
-          setServices(DEFAULT_SERVICES)
+          setServices(defaultServices)
         }
       } catch (error) {
         console.error('Failed to fetch services, using default fallback:', error)
-        setServices(DEFAULT_SERVICES)
+        setServices(defaultServices)
       }
     }
     fetchServices()
-  }, [initialServices])
+  }, [initialServices, defaultServices])
 
-  const totalCards = services.length > 0 ? services.length : DEFAULT_SERVICES.length
-  const activeList = services.length > 0 ? services : DEFAULT_SERVICES
+  const totalCards = services.length > 0 ? services.length : defaultServices.length
+  const activeList = services.length > 0 ? services : defaultServices
 
   const handleNext = useCallback(() => {
     setActiveIndex((prev) => (prev + 1) % totalCards)

@@ -1,6 +1,7 @@
 import jwt from 'jsonwebtoken';
 import { config } from '../config/index.js';
 import { prisma } from '../config/database.js';
+import { formatCurrencyAmount } from '../config/currency.js';
 import bcrypt from 'bcryptjs';
 
 export const generateTokens = (user: { id: string; email: string; role: string }) => {
@@ -112,10 +113,14 @@ export const paginate = <T>(
   };
 };
 
-export const formatCurrency = (amount: number | string, currency = 'USD'): string => {
-  const num = typeof amount === 'string' ? parseFloat(amount) : amount;
-  return new Intl.NumberFormat('en-US', { style: 'currency', currency }).format(num);
-};
+/**
+ * Backward-compatible thin wrapper around the canonical currency formatter.
+ * New code should use `currencyService.formatAmount` (or
+ * `formatCurrencyAmount` from config/currency) so the persisted storefront
+ * currency is honoured instead of this hard-coded 'USD' default.
+ */
+export const formatCurrency = (amount: number | string, currency?: any): string =>
+  formatCurrencyAmount(amount, typeof currency === 'string' ? { currencyCode: currency } : currency);
 
 export const buildProductWhereClause = (query: {
   search?: string;

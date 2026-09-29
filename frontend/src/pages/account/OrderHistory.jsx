@@ -4,6 +4,16 @@ import PageHeader from '../../components/PageHeader.jsx'
 import useWow from '../../hooks/useWow.js'
 import { useAuth } from '../../context/AuthContext'
 import { orderApi } from '../../services'
+import { useOrderCurrency } from '../../hooks/useCurrency'
+
+/**
+ * Each row gets its own hook instance so an order placed in one currency keeps
+ * showing that currency after the storefront setting changes.
+ */
+function OrderTotal({ order }) {
+  const { formatPrice } = useOrderCurrency(order)
+  return <>{formatPrice(order.total)}</>
+}
 
 export default function OrderHistory() {
   const { user } = useAuth()
@@ -92,7 +102,7 @@ export default function OrderHistory() {
                         <td><strong>{order.orderNumber}</strong></td>
                         <td>{new Date(order.createdAt).toLocaleDateString()}</td>
                         <td>{order.items?.length || 0} items</td>
-                        <td className="fw-bold">${Number(order.total).toFixed(2)}</td>
+                        <td className="fw-bold"><OrderTotal order={order} /></td>
                         <td><span className={`badge ${getStatusBadge(order.status)}`}>{order.status}</span></td>
                         <td><span className={`badge ${getPaymentStatusBadge(order.paymentStatus)}`}>{order.paymentStatus}</span></td>
                         <td>

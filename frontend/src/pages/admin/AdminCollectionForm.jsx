@@ -4,11 +4,13 @@ import { useNavigate, useParams } from 'react-router-dom'
 import AdminFormLayout from '../../components/admin/AdminFormLayout'
 import AdminImageUpload from '../../components/admin/AdminImageUpload'
 import { adminApi, collectionApi, productApi } from '../../services'
+import { useCurrency } from '../../hooks/useCurrency'
 
 export default function AdminCollectionForm() {
   const navigate = useNavigate()
   const { id } = useParams()
   const isEditing = Boolean(id)
+  const { formatPrice } = useCurrency()
 
   const [activeTab, setActiveTab] = useState('general')
   const [loading, setLoading] = useState(isEditing)
@@ -205,7 +207,7 @@ export default function AdminCollectionForm() {
                           )}
                           <div>
                             <div className="fw-bold">{product.name}</div>
-                            <div className="text-muted small">SKU: {product.sku} | Price: ${product.price}</div>
+                            <div className="text-muted small">SKU: {product.sku} | Price: {formatPrice(product.price)}</div>
                           </div>
                         </div>
                       </label>

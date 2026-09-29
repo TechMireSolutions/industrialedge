@@ -9,9 +9,11 @@ import ProductCard from '../components/ProductCard.jsx'
 
 import useWow from '../hooks/useWow.js'
 import { productApi, categoryApi, cmsApi } from '../services'
+import { useCurrency } from '../hooks/useCurrency'
 
 export default function Shop() {
   const [view, setView] = useState('grid')
+  const { formatPrice } = useCurrency()
   const [searchParams, setSearchParams] = useSearchParams()
   const navigate = useNavigate()
   const q = searchParams.get('q') || ''
@@ -179,8 +181,8 @@ export default function Shop() {
                     {filters.collection && <span className="badge bg-primary ms-2">Collection: {filters.collection}</span>}
                     {filters.tag && <span className="badge bg-primary ms-2">Tag: {filters.tag}</span>}
                     {filters.sale && <span className="badge bg-primary ms-2">On Sale</span>}
-                    {filters.minPrice && <span className="badge bg-primary ms-2">Min: ${filters.minPrice}</span>}
-                    {filters.maxPrice && <span className="badge bg-primary ms-2">Max: ${filters.maxPrice}</span>}
+                    {filters.minPrice && <span className="badge bg-primary ms-2">Min: {formatPrice(filters.minPrice)}</span>}
+                    {filters.maxPrice && <span className="badge bg-primary ms-2">Max: {formatPrice(filters.maxPrice)}</span>}
                   </p>
                   <button className="btn btn-sm btn-outline-primary" onClick={clearFilters}>Clear all</button>
                 </div>

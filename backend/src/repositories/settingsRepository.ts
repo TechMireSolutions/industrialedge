@@ -1,4 +1,5 @@
 import prisma from '../config/database.js';
+import { toCurrencySettings } from '../config/currency.js';
 
 let cachedPublicSettings: any = null;
 let cachedAdminSettings: any = null;
@@ -19,6 +20,7 @@ export const settingsRepository = {
       seo,
       contact,
       featureFlags,
+      system,
     ] = await Promise.all([
       prisma.generalSettings.findUnique({
         where: { id: 'default' },
@@ -52,6 +54,17 @@ export const settingsRepository = {
       prisma.featureFlags.findUnique({
         where: { id: 'default' },
       }),
+
+      // Only the storefront currency is exposed publicly — the rest of the
+      // system settings (maintenance mode, etc.) stays admin-only.
+      prisma.systemSettings.findUnique({
+        where: { id: 'default' },
+        select: {
+          defaultCurrency: true,
+          currencySymbol: true,
+          currencyName: true,
+        },
+      }),
     ]);
 
     cachedPublicSettings = {
@@ -61,6 +74,9 @@ export const settingsRepository = {
       seo,
       contact,
       featureFlags,
+      // Normalised, never null: an older database without currency rows still
+      // yields a complete, valid PKR configuration.
+      currency: toCurrencySettings(system),
     };
 
     return cachedPublicSettings;
@@ -97,7 +113,18 @@ export const settingsRepository = {
       prisma.featureFlags.findUnique({ where: { id: 'default' } }),
     ]);
 
-    cachedAdminSettings = { general, branding, theme, seo, contact, system, featureFlags };
+    cachedAdminSettings = {
+      general,
+      branding,
+      theme,
+      seo,
+      contact,
+      system,
+      featureFlags,
+      // Resolved currency so the admin form and the admin price displays read
+      // exactly the same values the storefront will use.
+      currency: toCurrencySettings(system),
+    };
     return cachedAdminSettings;
   },
 

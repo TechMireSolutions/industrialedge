@@ -9,6 +9,9 @@ const router = Router();
 // Public route for frontend
 router.get('/public', optionalAuth, settingsController.getPublicSettings);
 
+// Public currency catalog (drives the admin Storefront Currency dropdown)
+router.get('/currency', optionalAuth, settingsController.getCurrencies);
+
 // Admin routes
 router.use('/admin', authenticate, authorize('ADMIN'));
 router.get('/admin', settingsController.getAdminSettings);

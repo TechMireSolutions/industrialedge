@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
+import { useCurrency } from '../hooks/useCurrency'
 
 export default function ShopSidebar({
   withPrice = true,
@@ -17,6 +18,7 @@ export default function ShopSidebar({
 }) {
   const [term, setTerm] = useState(query)
   const [price, setPrice] = useState(0)
+  const { formatPrice } = useCurrency()
   const navigate = useNavigate()
 
   useEffect(() => {
@@ -160,9 +162,9 @@ export default function ShopSidebar({
               onChange={handlePriceChange} 
             />
             <div className="d-flex justify-content-between text-muted small mt-1 fw-medium">
-              <span>$0</span>
-              <span className="text-primary fw-bold">${price.toFixed(0)}</span>
-              <span>$10,000</span>
+              <span>{formatPrice(0)}</span>
+              <span className="text-primary fw-bold">{formatPrice(price)}</span>
+              <span>{formatPrice(10000)}</span>
             </div>
           </div>
         </div>

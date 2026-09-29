@@ -4,9 +4,11 @@ import { useNavigate } from 'react-router-dom'
 import toast from 'react-hot-toast'
 import useWow from '../../hooks/useWow.js'
 import { adminApi, productApi, categoryApi } from '../../services'
+import { useCurrency } from '../../hooks/useCurrency'
 
 export default function AdminProducts() {
   const navigate = useNavigate()
+  const { formatPrice } = useCurrency()
   const [products, setProducts] = useState([])
   const [categories, setCategories] = useState([])
   const [loading, setLoading] = useState(true)
@@ -189,7 +191,7 @@ export default function AdminProducts() {
                     <td><img src={getImageUrl(product.images?.[0] || '')} alt={product.name} style={{ width: 50, height: 50, objectFit: 'cover' }} className="rounded" /></td>
                     <td>{product.name}</td>
                     <td>{product.category?.name}</td>
-                    <td>${Number(product.price).toFixed(2)}</td>
+                    <td>{formatPrice(product.price)}</td>
                     <td><span className={product.stock > 10 ? 'text-success' : product.stock > 0 ? 'text-warning' : 'text-danger'}>{product.stock}</span></td>
                     <td><span className={`badge bg-${product.active ? 'success' : 'secondary'}`}>{product.active ? 'Active' : 'Inactive'}</span></td>
                     <td>

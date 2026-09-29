@@ -9,6 +9,7 @@ import { productApi } from '../services'
 import { useAuth } from '../context/AuthContext'
 import { useCart } from '../context/CartContext'
 import { useWishlist } from '../hooks/useWishlist'
+import { useCurrency } from '../hooks/useCurrency'
 
 export default function ProductDetail() {
   const { slug } = useParams()
@@ -16,6 +17,7 @@ export default function ProductDetail() {
   const { user } = useAuth()
   const { addToCart } = useCart()
   const { addToWishlist, removeFromWishlist, checkWishlist: checkWishlistApi } = useWishlist()
+  const { formatPrice } = useCurrency()
   const [product, setProduct] = useState(null)
   const [relatedProducts, setRelatedProducts] = useState([])
   const [loading, setLoading] = useState(true)
@@ -220,9 +222,9 @@ export default function ProductDetail() {
               <h1 className="display-5 fw-bold text-primary mb-3 lh-sm">{product.name}</h1>
               
               <div className="d-flex align-items-center gap-3 mb-4 border-bottom pb-4">
-                <h2 className="fw-bold mb-0 text-dark">${Number(product.price).toFixed(2)}</h2>
+                <h2 className="fw-bold mb-0 text-dark">{formatPrice(product.price)}</h2>
                 {product.oldPrice && product.oldPrice > product.price && (
-                  <del className="fs-4 text-muted">${Number(product.oldPrice).toFixed(2)}</del>
+                  <del className="fs-4 text-muted">{formatPrice(product.oldPrice)}</del>
                 )}
                 {discount > 0 && (
                   <span className="badge bg-danger fs-6 px-3 py-2 rounded-pill">Save {discount}%</span>

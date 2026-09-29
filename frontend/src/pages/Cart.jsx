@@ -5,10 +5,12 @@ import PageHeader from '../components/PageHeader.jsx'
 import useWow from '../hooks/useWow.js'
 import { useCart } from '../context/CartContext'
 import { orderApi } from '../services'
+import { useCurrency } from '../hooks/useCurrency'
 
 export default function Cart() {
   const { cart, loading, updateCartItem, removeFromCart, clearCart } = useCart()
   const navigate = useNavigate()
+  const { formatPrice } = useCurrency()
   const [couponCode, setCouponCode] = useState('')
   const [couponDiscount, setCouponDiscount] = useState(0)
   const [applyingCoupon, setApplyingCoupon] = useState(false)
@@ -115,11 +117,11 @@ export default function Cart() {
                         <td className="align-middle">
                           {item.product.oldPrice && item.product.oldPrice > item.product.price ? (
                             <>
-                              <del className="text-muted d-block">${Number(item.product.oldPrice).toFixed(2)}</del>
-                              <span className="text-primary fw-bold">${Number(item.product.price).toFixed(2)}</span>
+                              <del className="text-muted d-block">{formatPrice(item.product.oldPrice)}</del>
+                              <span className="text-primary fw-bold">{formatPrice(item.product.price)}</span>
                             </>
                           ) : (
-                            <span className="fw-bold">${Number(item.product.price).toFixed(2)}</span>
+                            <span className="fw-bold">{formatPrice(item.product.price)}</span>
                           )}
                         </td>
                         <td className="align-middle">
@@ -129,7 +131,7 @@ export default function Cart() {
                             <button className="btn btn-sm btn-plus rounded-circle bg-light border" onClick={() => handleUpdateQuantity(item.productId, item.quantity + 1)} disabled={item.quantity >= item.product.stock}><i className="fa fa-plus"></i></button>
                           </div>
                         </td>
-                        <td className="align-middle fw-bold">${Number(item.total).toFixed(2)}</td>
+                        <td className="align-middle fw-bold">{formatPrice(item.total)}</td>
                         <td className="align-middle">
                           <button className="btn btn-md rounded-circle bg-light border text-danger" onClick={() => handleRemove(item.productId)}><i className="fa fa-times"></i></button>
                         </td>
@@ -150,7 +152,7 @@ export default function Cart() {
                       </button>
                     </div>
                     {couponError && <div className="text-danger small">{couponError}</div>}
-                    {couponDiscount > 0 && <div className="text-success small mt-2">Coupon applied! You saved ${couponDiscount.toFixed(2)}</div>}
+                    {couponDiscount > 0 && <div className="text-success small mt-2">Coupon applied! You saved {formatPrice(couponDiscount)}</div>}
                   </div>
                 </div>
 
@@ -159,22 +161,22 @@ export default function Cart() {
                     <h4 className="mb-4">Cart Totals</h4>
                     <div className="d-flex justify-content-between mb-3">
                       <span>Subtotal ({cart.itemCount} items)</span>
-                      <span>${subtotal.toFixed(2)}</span>
+                      <span>{formatPrice(subtotal)}</span>
                     </div>
                     {couponDiscount > 0 && (
                       <div className="d-flex justify-content-between mb-3 text-success">
                         <span>Discount</span>
-                        <span>-${couponDiscount.toFixed(2)}</span>
+                        <span>-{formatPrice(couponDiscount)}</span>
                       </div>
                     )}
                     <div className="d-flex justify-content-between mb-3">
                       <span>Shipping</span>
-                      <span>{shipping === 0 ? 'Free' : `$${shipping.toFixed(2)}`}</span>
+                      <span>{shipping === 0 ? 'Free' : formatPrice(shipping)}</span>
                     </div>
                     <hr />
                     <div className="d-flex justify-content-between fw-bold fs-5 mb-4">
                       <span>Total</span>
-                      <span>${total.toFixed(2)}</span>
+                      <span>{formatPrice(total)}</span>
                     </div>
                     <button className="btn btn-primary rounded-pill w-100 py-3 text-uppercase" onClick={handleProceedToCheckout} disabled={cart.items.length === 0}>
                       Proceed to Checkout

@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { isSupportedCurrencyCode } from '../config/currency.js';
 
 export const registerSchema = z.object({
   name: z.string().min(2, 'Name must be at least 2 characters').max(100),
@@ -294,7 +295,27 @@ export const systemSettingsSchema = z.object({
   requireEmailVerification: z.boolean().optional(),
   enableAuditLogging: z.boolean().optional(),
   defaultLanguage: z.string().optional(),
-  defaultCurrency: z.string().optional(),
+  defaultCurrency: z
+    .string()
+    .trim()
+    .toUpperCase()
+    .refine(
+      (code) => isSupportedCurrencyCode(code),
+      { message: 'Unsupported currency. Add it to the currency catalog first.' }
+    )
+    .optional(),
+  currencySymbol: z
+    .string()
+    .trim()
+    .min(1, 'Currency symbol is required')
+    .max(8, 'Currency symbol is too long')
+    .optional(),
+  currencyName: z
+    .string()
+    .trim()
+    .min(2, 'Currency name is required')
+    .max(64, 'Currency name is too long')
+    .optional(),
   timeZone: z.string().optional(),
   uploadSizeLimit: z.number().int().positive().optional(),
   sessionTimeout: z.number().int().positive().optional(),

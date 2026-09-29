@@ -4,6 +4,7 @@ import { Link, useParams, useNavigate } from 'react-router-dom'
 import PageHeader from '../../components/PageHeader.jsx'
 import useWow from '../../hooks/useWow.js'
 import { orderApi } from '../../services'
+import { useOrderCurrency } from '../../hooks/useCurrency'
 
 export default function OrderDetail() {
   const { id } = useParams()
@@ -11,6 +12,7 @@ export default function OrderDetail() {
   const [order, setOrder] = useState(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
+  const { formatPrice } = useOrderCurrency(order)
   useWow()
 
   useEffect(() => {
@@ -125,9 +127,9 @@ export default function OrderDetail() {
                               <Link to={`/product/${item.product?.slug}`}>{item.productName}</Link>
                             </div>
                           </td>
-                          <td>${Number(item.price).toFixed(2)}</td>
+                          <td>{formatPrice(item.price)}</td>
                           <td>{item.quantity}</td>
-                          <td className="fw-bold">${Number(item.total).toFixed(2)}</td>
+                          <td className="fw-bold">{formatPrice(item.total)}</td>
                         </tr>
                       ))}
                     </tbody>
@@ -166,22 +168,22 @@ export default function OrderDetail() {
                 <h4 className="mb-3">Order Totals</h4>
                 <div className="d-flex justify-content-between mb-2">
                   <span>Subtotal ({order.items?.length || 0} items)</span>
-                  <span>${Number(order.subtotal).toFixed(2)}</span>
+                  <span>{formatPrice(order.subtotal)}</span>
                 </div>
                 {order.discount > 0 && (
                   <div className="d-flex justify-content-between mb-2 text-success">
                     <span>Discount</span>
-                    <span>-${Number(order.discount).toFixed(2)}</span>
+                    <span>-{formatPrice(order.discount)}</span>
                   </div>
                 )}
                 <div className="d-flex justify-content-between mb-2">
                   <span>Shipping</span>
-                  <span>${Number(order.shipping).toFixed(2)}</span>
+                  <span>{formatPrice(order.shipping)}</span>
                 </div>
                 <hr />
                 <div className="d-flex justify-content-between fw-bold fs-5">
                   <span>Total</span>
-                  <span>${Number(order.total).toFixed(2)}</span>
+                  <span>{formatPrice(order.total)}</span>
                 </div>
                 <Link to="/account/orders" className="btn btn-outline-primary w-100 mt-3 mb-4">
                   <i className="fas fa-arrow-left me-2"></i> Back to Orders

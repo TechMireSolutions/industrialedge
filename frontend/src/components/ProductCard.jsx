@@ -2,10 +2,12 @@ import { getImageUrl } from '../utils/getImageUrl';
 import { Link } from 'react-router-dom'
 import { useCart } from '../context/CartContext'
 import { useSettings } from '../context/SettingsContext'
+import { useCurrency } from '../hooks/useCurrency'
 
 export default function ProductCard({ product, delay = '0.1s', layout = 'grid', colClass = 'col-md-6 col-lg-4 col-xl-3' }) {
   const { addToCart } = useCart()
   const { settings } = useSettings()
+  const { formatPrice } = useCurrency()
   const showWishlist = settings?.featureFlags?.enableWishlist ?? true
   const showReviews = settings?.featureFlags?.enableReviews ?? true
   const showCompare = settings?.featureFlags?.enableCompare ?? true
@@ -53,9 +55,9 @@ export default function ProductCard({ product, delay = '0.1s', layout = 'grid', 
                 <Link to={`/shop?category=${product.category?.slug}`} className="d-block mb-2 text-muted small text-decoration-none">{product.category?.name || 'Uncategorized'}</Link>
                 <Link to={`/product/${product.slug}`} className="d-block h5 text-decoration-none text-dark fw-bold text-truncate" title={product.name}>{product.name}</Link>
                 <div className="d-flex align-items-center gap-2 mt-2">
-                  <span className="text-primary fw-bold fs-5">${Number(product.price).toFixed(2)}</span>
+                  <span className="text-primary fw-bold fs-5">{formatPrice(product.price)}</span>
                   {product.oldPrice && product.oldPrice > product.price && (
-                    <del className="fs-6 text-muted">${Number(product.oldPrice).toFixed(2)}</del>
+                    <del className="fs-6 text-muted">{formatPrice(product.oldPrice)}</del>
                   )}
                 </div>
               </div>
@@ -133,9 +135,9 @@ export default function ProductCard({ product, delay = '0.1s', layout = 'grid', 
           </Link>
           
           <div className="mt-auto d-flex align-items-center gap-2">
-            <span className="fs-5 fw-bold text-primary">${Number(product.price).toFixed(2)}</span>
+            <span className="fs-5 fw-bold text-primary">{formatPrice(product.price)}</span>
             {product.oldPrice && product.oldPrice > product.price && (
-              <del className="small text-muted">${Number(product.oldPrice).toFixed(2)}</del>
+              <del className="small text-muted">{formatPrice(product.oldPrice)}</del>
             )}
           </div>
         </div>

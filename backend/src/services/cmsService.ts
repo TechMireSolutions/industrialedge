@@ -1,5 +1,7 @@
 import { prisma } from '../config/database.js';
 import { AppError } from '../middleware/errorHandler.js';
+import { formatCurrencyAmount } from '../config/currency.js';
+import { currencyService } from './currencyService.js';
 
 export const cmsService = {
   mapHeroSlide(slide: any) {
@@ -403,7 +405,8 @@ export const couponService = {
     if (coupon.expiry && new Date(coupon.expiry) < new Date()) throw new AppError(400, 'Coupon has expired');
     if (coupon.usageLimit && coupon.usageCount >= coupon.usageLimit) throw new AppError(400, 'Coupon usage limit reached');
     if (coupon.minimumOrder && subtotal < Number(coupon.minimumOrder)) {
-      throw new AppError(400, `Minimum order of $${Number(coupon.minimumOrder)} required`);
+      const currency = await currencyService.getCurrencySettings();
+      throw new AppError(400, `Minimum order of ${formatCurrencyAmount(coupon.minimumOrder, currency)} required`);
     }
     return coupon;
   },

@@ -1,6 +1,13 @@
 import { useState, useEffect, useRef } from 'react'
 import useWow from '../../hooks/useWow.js'
 import { adminApi } from '../../services'
+import { useCurrency, useOrderCurrency } from '../../hooks/useCurrency'
+
+/** Each order keeps the currency it was placed in. */
+function OrderTotal({ order }) {
+  const { formatPrice } = useOrderCurrency(order)
+  return <>{formatPrice(order.totalAmount ?? order.total)}</>
+}
 
 export default function AdminDashboard() {
   const [stats, setStats] = useState(null)
@@ -9,6 +16,7 @@ export default function AdminDashboard() {
   const [loading, setLoading] = useState(true)
   const [pendingOrderCount, setPendingOrderCount] = useState(0)
   const [lastOrderCount, setLastOrderCount] = useState(0)
+  const { formatPrice } = useCurrency()
   const [showNotification, setShowNotification] = useState(false)
   const [lastNotificationOrder, setLastNotificationOrder] = useState(null)
   const audioRef = useRef(null)
@@ -207,7 +215,7 @@ export default function AdminDashboard() {
             <div className="admin-card-body d-flex justify-content-between align-items-start">
               <div>
                 <p className="text-muted small fw-bold text-uppercase mb-2">Total Revenue</p>
-                <h3 className="fw-bold mb-3 text-dark">Rs {stats?.totalRevenue ?? 0}</h3>
+                <h3 className="fw-bold mb-3 text-dark">{formatPrice(stats?.totalRevenue ?? 0)}</h3>
                 <span className="badge bg-success-subtle text-success rounded-pill px-2 py-1 me-2"><i className="fas fa-arrow-up me-1"></i>+15%</span>
                 <span className="text-muted" style={{ fontSize: '0.75rem' }}>vs last period</span>
               </div>
@@ -267,7 +275,7 @@ export default function AdminDashboard() {
                               {order.status}
                             </span>
                           </td>
-                          <td className="px-4 py-3 text-end fw-bold text-dark">Rs {order.totalAmount || order.total}</td>
+                          <td className="px-4 py-3 text-end fw-bold text-dark"><OrderTotal order={order} /></td>
                         </tr>
                       ))
                     ) : (

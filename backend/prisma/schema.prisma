@@ -173,6 +173,10 @@ model Order {
   status          String    @default("PENDING")
   paymentStatus   String    @default("PENDING")
   paymentMethod   String?
+  /// Currency snapshot taken at purchase time so historical financial records
+  /// are never re-interpreted when the storefront currency setting changes.
+  currencyCode    String?
+  currencySymbol  String?
   subtotal        Decimal
   shipping        Decimal
   discount        Decimal   @default(0)
@@ -577,7 +581,13 @@ model SystemSettings {
   requireEmailVerification Boolean @default(false)
   enableAuditLogging       Boolean @default(true)
   defaultLanguage          String  @default("en")
-  defaultCurrency          String  @default("USD")
+  /// ISO 4217 storefront currency code, e.g. "PKR".
+  defaultCurrency          String  @default("PKR")
+  /// Display symbol, e.g. "Rs". Nullable so a legacy row (created before the
+  /// currency feature existed) stays distinguishable from an admin-chosen one.
+  currencySymbol           String?
+  /// Human readable name, e.g. "Pakistani Rupee".
+  currencyName             String?
   timeZone                 String  @default("UTC")
   uploadSizeLimit          Int     @default(5)
   sessionTimeout           Int     @default(120)

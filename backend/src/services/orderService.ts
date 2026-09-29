@@ -1,7 +1,9 @@
 import { prisma } from '../config/database.js';
 import { AppError } from '../middleware/errorHandler.js';
 import { cartService } from './cartService.js';
-import { generateOrderNumber, formatCurrency } from '../utils/helpers.js';
+import { generateOrderNumber } from '../utils/helpers.js';
+import { formatCurrencyAmount, toCurrencySettings } from '../config/currency.js';
+import { currencyService } from './currencyService.js';
 import { Decimal } from '@prisma/client/runtime/library.js';
 import { emailService } from './emailService.js';
 import { couponService } from './cmsService.js';
@@ -20,6 +22,11 @@ export const orderService = {
     if (!cartSummary || cartSummary.items.length === 0) {
       throw new AppError(400, 'Cart is empty');
     }
+
+    // Resolve the storefront currency once, up front. It is snapshotted onto
+    // the order so this financial record keeps its original currency forever,
+    // even after the admin switches the storefront currency later.
+    const currency = await currencyService.getCurrencySettings();
 
     const stockCheck = await cartService.checkStock(
       cartSummary.items.map(item => ({ productId: item.productId, quantity: item.quantity }))
@@ -49,7 +56,7 @@ export const orderService = {
       }
 
       if (coupon.minimumOrder && cartSummary.subtotal < Number(coupon.minimumOrder)) {
-        throw new AppError(400, `Minimum order of ${formatCurrency(Number(coupon.minimumOrder))} required`);
+        throw new AppError(400, `Minimum order of ${formatCurrencyAmount(coupon.minimumOrder, currency)} required`);
       }
 
       if (coupon.type === 'PERCENTAGE') {
@@ -77,6 +84,9 @@ export const orderService = {
           status: 'PENDING',
           paymentStatus: 'PENDING',
           paymentMethod: 'CASH_ON_DELIVERY',
+          // Currency snapshot at purchase time.
+          currencyCode: currency.currencyCode,
+          currencySymbol: currency.currencySymbol,
           subtotal,
           shipping,
           discount,
@@ -288,8 +298,19 @@ export const orderService = {
   },
 
   formatOrder(order: any) {
+    // Orders placed before the currency feature existed carry no snapshot.
+    // In that case `currency` is intentionally omitted so the client falls back
+    // to the live storefront currency — the historical record is never rewritten.
+    const currency = order?.currencyCode
+      ? toCurrencySettings({
+          currencyCode: order.currencyCode,
+          currencySymbol: order.currencySymbol,
+        })
+      : undefined;
+
     return {
       ...order,
+      ...(currency ? { currency } : {}),
       subtotal: Number(order.subtotal),
       shipping: Number(order.shipping),
       discount: Number(order.discount),

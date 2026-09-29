@@ -5,9 +5,11 @@ import PageHeader from '../components/PageHeader.jsx'
 import useWow from '../hooks/useWow.js'
 import { cartApi } from '../services'
 import { useCart } from '../context/CartContext'
+import { useCurrency } from '../hooks/useCurrency'
 
 export default function Wishlist() {
   const { wishlist, wishlistCount, loading: cartLoading, addToCart, removeFromWishlist, moveToCart } = useCart()
+  const { formatPrice } = useCurrency()
   const [localLoading, setLocalLoading] = useState(false)
   useWow()
 
@@ -87,11 +89,11 @@ export default function Wishlist() {
                           <td>
                             {item.product.oldPrice && item.product.oldPrice > item.product.price ? (
                               <>
-                                <del className="text-muted me-2">${Number(item.product.oldPrice).toFixed(2)}</del>
-                                <span className="text-primary fw-bold">${Number(item.product.price).toFixed(2)}</span>
+                                <del className="text-muted me-2">{formatPrice(item.product.oldPrice)}</del>
+                                <span className="text-primary fw-bold">{formatPrice(item.product.price)}</span>
                               </>
                             ) : (
-                              <span className="fw-bold">${Number(item.product.price).toFixed(2)}</span>
+                              <span className="fw-bold">{formatPrice(item.product.price)}</span>
                             )}
                           </td>
                           <td>

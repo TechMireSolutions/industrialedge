@@ -3,6 +3,13 @@ import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import useWow from '../../hooks/useWow.js'
 import { adminApi, orderApi } from '../../services'
+import { useOrderCurrency } from '../../hooks/useCurrency'
+
+/** Each order keeps the currency it was placed in. */
+function OrderTotal({ order }) {
+  const { formatPrice } = useOrderCurrency(order)
+  return <>{formatPrice(order.total)}</>
+}
 
 export default function AdminOrders() {
   const navigate = useNavigate()
@@ -149,7 +156,7 @@ export default function AdminOrders() {
                       </select>
                     </td>
                     <td><span className={`badge bg-${getPaymentColor(order.paymentStatus)}`}>{order.paymentStatus}</span></td>
-                    <td className="fw-bold">{Number(order.total).toFixed(2)}</td>
+                    <td className="fw-bold"><OrderTotal order={order} /></td>
                     <td>
                       <button className="btn btn-sm btn-outline-primary" onClick={() => navigate(`/admin/orders/${order.id}`)} title="View Details">
                         <i className="fas fa-eye"></i>
