@@ -1,7 +1,8 @@
 "use client";
 
 import { useState } from "react";
-
+import Image from "next/image";
+import Link from "next/link";
 import { useStore } from "@/lib/store";
 import type { Product } from "@/lib/products";
 import { Heart, Plus } from "lucide-react";
@@ -19,7 +20,7 @@ const COLOR_SWATCHES = [
 
 export default function ProductCard({ product, showDrawerOnHover = true }: ProductCardProps) {
   const { isWishlisted, toggleWishlist, addToCart } = useStore();
-  const [selectedColor, setSelectedColor] = useState<string>("");
+  const [selectedColor, setSelectedColor] = useState<string>("#b19c83");
 
   const liked = isWishlisted(product.id);
   const heartClasses = [
@@ -44,11 +45,13 @@ export default function ProductCard({ product, showDrawerOnHover = true }: Produ
   ].join(" ");
 
   const handleHeartClick = (e: React.MouseEvent) => {
+    e.preventDefault();
     e.stopPropagation();
     toggleWishlist(product.id);
   };
 
   const handleAddToCart = (e: React.MouseEvent) => {
+    e.preventDefault();
     e.stopPropagation();
     addToCart(product);
   };
@@ -73,6 +76,7 @@ export default function ProductCard({ product, showDrawerOnHover = true }: Produ
 
       {/* Wishlist heart */}
       <button
+        type="button"
         className={heartClasses}
         onClick={handleHeartClick}
         aria-label={liked ? "Remove from wishlist" : "Add to wishlist"}
@@ -81,14 +85,17 @@ export default function ProductCard({ product, showDrawerOnHover = true }: Produ
       </button>
 
       {/* Thumbnail stage */}
-      <div className="h-[140px] flex items-center justify-center px-4 mx-auto mt-3">
-        <img
-          src={product.image}
-          alt={product.name}
-          className="w-[115px] h-[115px] object-contain"
-          loading="lazy"
-        />
-      </div>
+      <Link href={`/product/${product.id}`} className="block">
+        <div className="h-[140px] flex items-center justify-center px-4 mx-auto mt-3">
+          <Image
+            src={product.image}
+            alt={product.name}
+            width={115}
+            height={115}
+            className="w-[115px] h-[115px] object-contain group-hover:scale-105 transition-transform"
+          />
+        </div>
+      </Link>
 
       {/* Price & Title */}
       <div className="px-3">
@@ -100,9 +107,11 @@ export default function ProductCard({ product, showDrawerOnHover = true }: Produ
             </span>
           )}
         </div>
-        <h3 className="mt-1 text-sm font-normal text-black hover:text-[#0e8ce4] transition-colors truncate px-1">
-          {product.name}
-        </h3>
+        <Link href={`/product/${product.id}`} className="block">
+          <h3 className="mt-1 text-sm font-normal text-black hover:text-[#0e8ce4] transition-colors truncate px-1 text-left">
+            {product.name}
+          </h3>
+        </Link>
       </div>
 
       {/* Hover-reveal action drawer */}
@@ -115,14 +124,19 @@ export default function ProductCard({ product, showDrawerOnHover = true }: Produ
             <div className="flex items-center justify-center gap-3 mb-3">
               {COLOR_SWATCHES.map((swatch) => (
                 <button
+                  type="button"
                   key={swatch.value}
-                  onClick={() => setSelectedColor(swatch.value)}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    setSelectedColor(swatch.value);
+                  }}
+                  style={{ backgroundColor: swatch.value }}
                   className={[
                     "w-3.5 h-3.5 rounded-full cursor-pointer ring-offset-2 transition-all",
                     selectedColor === swatch.value
                       ? "ring-2 ring-[#0e8ce4]"
                       : "ring-transparent hover:ring-2 ring-[#0e8ce4]/40",
-                    "bg-[".concat(swatch.value, "]"),
                   ].join(" ")}
                   aria-label={swatch.label}
                 />
@@ -131,6 +145,7 @@ export default function ProductCard({ product, showDrawerOnHover = true }: Produ
 
             {/* Add to Cart CTA */}
             <button
+              type="button"
               onClick={handleAddToCart}
               className="mt-3 w-full h-[44px] bg-[#0e8ce4] hover:bg-[#0e8ce4]/80 text-white text-base font-normal rounded-b-[5px] transition-colors cursor-pointer flex items-center justify-center gap-2"
               aria-label={`Add ${product.name} to cart`}

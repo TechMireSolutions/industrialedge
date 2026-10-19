@@ -29,14 +29,15 @@ export default function TabbedProductGrid({ colSpan = 8 }: TabbedProductGridProp
   const tabProducts = getProductsForTab(activeTab);
 
   return (
-    <section className={`lg:col-span-${colSpan}`}>
+    <section className={colSpan === 8 ? "lg:col-span-8" : "lg:col-span-12"}>
       {/* Tab bar */}
-      <div className="flex border-b border-[#e5e5e5] mb-6">
+      <div className="flex gap-8 border-b border-[#e5e5e5] mb-6 text-lg font-medium">
         {TABS.map((tab) => (
           <button
+            type="button"
             key={tab}
             onClick={() => setActiveTab(tab)}
-            className={`pb-3 border-b-2 ${
+            className={`pb-3 border-b-2 cursor-pointer ${
               activeTab === tab
                 ? "text-black border-[#0e8ce4] font-medium"
                 : "text-black/50 border-transparent hover:text-[#0e8ce4] hover:border-[#0e8ce4]/20"

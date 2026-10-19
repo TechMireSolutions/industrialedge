@@ -188,63 +188,83 @@ export default function Header() {
       <div className="h-[100px] lg:h-[130px] bg-white">
         <div className="container h-full flex items-center justify-between lg:px-0">
           {/* Logo */}
-          <NavLink href="/">
-            <span className="text-[36px] font-medium text-[#0e8ce4] tracking-tight">OneTech</span>
-          </NavLink>
+          <Link href="/" className="text-[36px] font-medium text-[#0e8ce4] tracking-tight hover:opacity-95 transition-opacity">
+            OneTech
+          </Link>
 
           {/* Search */}
           <div className="hidden lg:flex items-center">
-            <div className="relative flex w-[470px]">
+            <form
+              onSubmit={(e) => {
+                e.preventDefault();
+              }}
+              className="relative flex items-center w-[500px] h-[50px] border border-[#e5e5e5] rounded-[5px] overflow-hidden focus-within:border-[#0e8ce4] transition-colors"
+            >
               <input
                 type="text"
                 placeholder="Search for products..."
-                className="w-full h-[50px] border border-[#e5e5e5] rounded-[5px] px-4 pr-[90px] text-sm focus:outline-none focus:border-[#0e8ce4] overflow-visible"
+                className="flex-1 h-full px-4 text-sm focus:outline-none"
               />
-              <select
-                className="absolute right-0 top-0 bottom-0 w-[120px] border-none bg-transparent text-xs text-black/50 cursor-pointer appearance-none pr-4"
+              <div className="relative h-full flex items-center border-l border-[#e5e5e5] px-3 bg-white">
+                <select className="border-none bg-transparent text-xs text-black/60 cursor-pointer appearance-none pr-5 focus:outline-none">
+                  <option>All Categories</option>
+                  {CATEGORIES.map((c) => (
+                    <option key={c}>{c}</option>
+                  ))}
+                </select>
+                <ChevronDown size={12} className="absolute right-2 top-1/2 -translate-y-1/2 text-black/40 pointer-events-none" />
+              </div>
+              <button
+                type="submit"
+                className="w-[50px] h-full bg-[#0e8ce4] hover:bg-[#0e8ce4]/80 text-white flex items-center justify-center transition-colors cursor-pointer"
+                aria-label="Search"
               >
-                <option>All Categories</option>
-                {CATEGORIES.map((c) => (
-                  <option key={c}>{c}</option>
-                ))}
-              </select>
-              <button className="w-[50px] h-full bg-[#0e8ce4] text-white flex items-center justify-center rounded-r-[5px]">
                 <Search size={18} strokeWidth={2} />
               </button>
-            </div>
+            </form>
           </div>
 
           {/* Widgets */}
           <div className="flex items-center gap-6 lg:gap-8">
             {/* Wishlist */}
-            <div className="relative group hidden lg:flex flex-col items-center gap-1 cursor-pointer">
-              <button
-                className="relative p-2 text-[#cccccc] hover:text-[#0e8ce4] transition-colors"
+            <Link
+              href="/shop"
+              className="relative group hidden lg:flex flex-col items-center gap-1 cursor-pointer"
+            >
+              <div
+                className="relative p-2 text-[#cccccc] group-hover:text-[#0e8ce4] transition-colors"
                 aria-label="Wishlist"
               >
                 <Heart size={20} strokeWidth={2} />
-                <span className="absolute -top-1 -right-1 w-[10px] h-[10px] bg-[#df3b3b] rounded-full text-[10px] text-white flex items-center justify-center">
+                <span className="absolute -top-1 -right-1 w-[16px] h-[16px] bg-[#df3b3b] rounded-full text-[10px] text-white flex items-center justify-center font-medium">
                   {wishlistCount > 99 ? "99+" : wishlistCount}
                 </span>
-              </button>
-              <span className="text-[10px] text-[#828282] font-medium">Wishlist</span>
+              </div>
+              <span className="text-[10px] text-[#828282] font-medium group-hover:text-[#0e8ce4] transition-colors">
+                Wishlist
+              </span>
               <span className="text-[10px] text-[#828282]">{wishlistCount}</span>
-            </div>
+            </Link>
 
             {/* Cart */}
-            <div className="relative group flex flex-col items-center gap-1 cursor-pointer">
-              <button
-                className="relative p-2 text-[#cccccc] hover:text-[#0e8ce4] transition-colors"
+            <Link
+              href="/cart"
+              className="relative group flex flex-col items-center gap-1 cursor-pointer"
+            >
+              <div
+                className="relative p-2 text-[#cccccc] group-hover:text-[#0e8ce4] transition-colors"
                 aria-label="Cart"
               >
                 <ShoppingBag size={20} strokeWidth={2} />
-                <span className="absolute -top-1 -right-1 w-[24px] h-[24px] bg-[#0e8ce4] text-white rounded-full text-[10px] font-medium flex items-center justify-center">
+                <span className="absolute -top-1 -right-1 w-[24px] h-[24px] bg-[#0e8ce4] text-white rounded-full text-[10px] font-medium flex items-center justify-center shadow-sm">
                   {cartCount}
                 </span>
-              </button>
-              <span className="text-[10px] text-[#828282] font-medium">Cart</span>
-              <span className="text-[10px] text-[#828282]">{formatMoney(cartTotal)}</span>
-            </div>
+              </div>
+              <span className="text-[10px] text-[#828282] font-medium group-hover:text-[#0e8ce4] transition-colors">
+                Cart
+              </span>
+              <span className="text-[10px] text-[#828282] font-medium">{formatMoney(cartTotal)}</span>
+            </Link>
           </div>
         </div>
       </div>
@@ -255,6 +275,9 @@ export default function Header() {
           {/* Category spine button */}
           <div
             className="w-[270px] h-full bg-[#0e8ce4] text-white px-6 flex items-center gap-4 uppercase font-medium tracking-wider cursor-pointer relative group"
+            onClick={() => setCategoriesOpen((prev) => !prev)}
+            onMouseEnter={() => setCategoriesOpen(true)}
+            onMouseLeave={() => setCategoriesOpen(false)}
           >
             <div className="flex flex-col gap-1">
               <span className="block h-[2px] w-6 bg-white"></span>
@@ -273,24 +296,27 @@ export default function Header() {
                 {CATEGORIES.map((cat) => (
                   <div
                     key={cat}
-                    className="relative px-4 py-3 text-sm text-black hover:bg-[#f2f4f8] cursor-pointer border-b border-[#e5e5e5]/50"
+                    className="relative group/hardware px-4 py-3 text-sm text-black hover:bg-[#f2f4f8] hover:text-[#0e8ce4] cursor-pointer border-b border-[#e5e5e5]/50 flex items-center justify-between"
                   >
-                    {cat}
+                    <Link href="/shop" className="flex-1 block">
+                      {cat}
+                    </Link>
                     {cat === "Hardware" && (
-                      <div className="absolute right-0 top-0 h-full w-[270px] bg-white border border-[#e5e5e5] shadow-[0_10px_25px_rgba(0,0,0,0.1)] opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-opacity z-50 ml-[-1px]">
+                      <div className="absolute left-full top-0 w-[240px] bg-white border border-[#e5e5e5] shadow-[0_10px_25px_rgba(0,0,0,0.1)] opacity-0 invisible group-hover/hardware:opacity-100 group-hover/hardware:visible transition-opacity z-50">
                         <div className="py-2">
                           {HARDWARE_SUB.map((sub) => (
-                            <div
+                            <Link
                               key={sub}
-                              className="px-4 py-3 text-sm text-black hover:bg-[#f2f4f8] border-b border-[#e5e5e5]/50"
+                              href="/shop"
+                              className="block px-4 py-3 text-sm text-black hover:bg-[#f2f4f8] hover:text-[#0e8ce4] border-b border-[#e5e5e5]/50"
                             >
                               {sub}
-                            </div>
+                            </Link>
                           ))}
                         </div>
                       </div>
                     )}
-                    <ChevronRight size={14} className="absolute right-4 top-1/2 -translate-y-1/2 text-[#828282]" />
+                    <ChevronRight size={14} className="text-[#828282]" />
                   </div>
                 ))}
               </div>

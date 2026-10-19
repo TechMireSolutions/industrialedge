@@ -1,5 +1,3 @@
-import Link from "next/link";
-
 export default function ContactPage() {
   return (
     <div className="min-h-[calc(100vh-276px)]">
@@ -7,7 +5,7 @@ export default function ContactPage() {
         <div className="container">
           <h1 className="text-[28px] font-normal text-[#212529] mb-2">Contact Us</h1>
           <p className="text-sm text-black/50 mb-10">
-            Have a question? We'd love to hear from you.
+            Have a question? We&apos;d love to hear from you.
           </p>
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">

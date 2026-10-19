@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 
 const POSTS = [
   {
@@ -48,11 +49,13 @@ export default function BlogPage() {
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
             {POSTS.map((post) => (
               <article key={post.id} className="flex flex-col border border-[#e5e5e5] rounded-[5px] overflow-hidden hover:shadow-[0_10px_25px_rgba(0,0,0,0.1)] transition-shadow">
-                <div className="h-48 bg-[#f2f4f8]">
-                  <img
+                <div className="h-48 bg-[#f2f4f8] relative overflow-hidden">
+                  <Image
                     src={post.image}
                     alt={post.title}
-                    className="w-full h-full object-cover"
+                    width={400}
+                    height={250}
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform"
                   />
                 </div>
                 <div className="p-5 flex flex-col flex-1">

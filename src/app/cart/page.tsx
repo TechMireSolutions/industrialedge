@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useStore } from "@/lib/store";
 import Link from "next/link";
 import { ShoppingBag, Trash2 } from "lucide-react";
@@ -22,7 +23,7 @@ export default function CartPage() {
                 <ShoppingBag size={24} strokeWidth={2} />
               </div>
               <h2 className="text-lg font-medium text-black mb-2">Your cart is empty</h2>
-              <p className="text-black/50 mb-6">Looks like you haven't added anything yet.</p>
+              <p className="text-black/50 mb-6">Looks like you haven&apos;t added anything yet.</p>
               <Link href="/shop">
                 <button className="bg-[#0e8ce4] text-white px-8 py-3 rounded-[5px] font-medium hover:bg-[#0e8ce4]/80 transition-colors">
                   Start Shopping
@@ -32,8 +33,8 @@ export default function CartPage() {
           ) : (
             <>
               <div className="border border-[#e5e5e5] rounded-[5px] overflow-hidden mb-10">
-                <div className="bg-[#f2f4f8] px-6 py-4 border-b border-[#e5e5e5]">
-                  <div className="grid grid-cols-12 gap-4">
+                <div className="bg-[#f2f4f8] px-6 py-4 border-b border-[#e5e5e5] hidden sm:block">
+                  <div className="grid grid-cols-12 gap-4 items-center">
                     <div className="col-span-4 font-medium text-sm text-black">Product</div>
                     <div className="col-span-2 font-medium text-sm text-black text-right">Price</div>
                     <div className="col-span-2 font-medium text-sm text-black text-center">Qty</div>
@@ -43,22 +44,30 @@ export default function CartPage() {
                 </div>
                 <div className="divide-y divide-[#e5e5e5]">
                   {cart.map((item) => (
-                    <div key={item.id} className="px-6 py-4 flex items-center gap-4">
-                      <div className="w-16 h-16 bg-[#f2f4f8] rounded-[5px] flex-shrink-0 flex items-center justify-center">
-                        <img
-                          src={item.image}
-                          alt={item.name}
-                          className="w-full h-full object-contain"
-                        />
+                    <div key={item.id} className="px-6 py-4 grid grid-cols-1 sm:grid-cols-12 gap-4 items-center">
+                      <div className="sm:col-span-4 flex items-center gap-4">
+                        <div className="w-16 h-16 bg-[#f2f4f8] rounded-[5px] flex-shrink-0 flex items-center justify-center p-1 relative overflow-hidden">
+                          <Image
+                            src={item.image}
+                            alt={item.name}
+                            width={64}
+                            height={64}
+                            className="w-full h-full object-contain"
+                          />
+                        </div>
+                        <div className="min-w-0">
+                          <h3 className="text-sm font-medium text-black truncate">{item.name}</h3>
+                          <p className="text-xs text-black/50">{item.category}</p>
+                        </div>
                       </div>
-                      <div className="flex-1">
-                        <h3 className="text-sm font-medium text-black">{item.name}</h3>
-                        <p className="text-xs text-black/50">{item.category}</p>
+                      <div className="sm:col-span-2 sm:text-right text-sm font-medium text-black">
+                        ${item.price.toFixed(2)}
                       </div>
-                      <div className="hidden lg:flex lg:col-span-2 items-center justify-center">
+                      <div className="sm:col-span-2 flex items-center sm:justify-center">
                         <button
                           onClick={() => updateCartQty(item.id, Math.max(1, item.qty - 1))}
-                          className="w-8 h-8 border border-[#e5e5e5] flex items-center justify-center text-xs"
+                          className="w-8 h-8 border border-[#e5e5e5] flex items-center justify-center text-xs hover:border-[#0e8ce4] transition-colors"
+                          aria-label="Decrease quantity"
                         >
                           −
                         </button>
@@ -67,15 +76,16 @@ export default function CartPage() {
                         </span>
                         <button
                           onClick={() => updateCartQty(item.id, item.qty + 1)}
-                          className="w-8 h-8 border border-[#e5e5e5] flex items-center justify-center text-xs"
+                          className="w-8 h-8 border border-[#e5e5e5] flex items-center justify-center text-xs hover:border-[#0e8ce4] transition-colors"
+                          aria-label="Increase quantity"
                         >
                           +
                         </button>
                       </div>
-                      <div className="lg:col-span-2 text-right text-sm font-medium text-black">
+                      <div className="sm:col-span-2 sm:text-right text-sm font-medium text-black">
                         ${(item.price * item.qty).toFixed(2)}
                       </div>
-                      <div className="lg:col-span-2 text-right">
+                      <div className="sm:col-span-2 sm:text-right">
                         <button
                           onClick={() => removeFromCart(item.id)}
                           className="text-xs text-[#df3b3b] hover:underline"

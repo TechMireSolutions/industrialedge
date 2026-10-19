@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import { useStore } from "@/lib/store";
 import { Heart } from "lucide-react";
 
@@ -73,30 +74,36 @@ export default function TrendsRecentlyViewed() {
                 key={item.id}
                 className="relative group flex flex-col items-center gap-2"
               >
-                <div className="relative w-[100px] h-[100px] bg-[#f2f4f8] rounded-[5px] overflow-hidden border border-[#e5e5e5]">
-                  <Image
-                    src={item.image}
-                    alt={item.name}
-                    className="w-full h-full object-contain"
-                    width={100}
-                    height={100}
-                  />
-                  {item.status !== "none" && (
-                    <div className={`absolute top-2 left-2 w-[28px] h-[28px] rounded-full flex items-center justify-center text-xs font-medium text-white ${badgeClass}`}>
-                      {item.status === "discount" ? "-25%" : "new"}
-                    </div>
-                  )}
-                </div>
-                <span className="text-xs font-medium text-black text-center w-[90px] truncate">
-                  {item.name}
-                </span>
+                <Link href="/shop" className="block">
+                  <div className="relative w-[100px] h-[100px] bg-[#f2f4f8] rounded-[5px] overflow-hidden border border-[#e5e5e5]">
+                    <Image
+                      src={item.image}
+                      alt={item.name}
+                      className="w-full h-full object-contain group-hover:scale-105 transition-transform"
+                      width={100}
+                      height={100}
+                    />
+                    {item.status !== "none" && (
+                      <div className={`absolute top-2 left-2 w-[28px] h-[28px] rounded-full flex items-center justify-center text-xs font-medium text-white ${badgeClass}`}>
+                        {item.status === "discount" ? "-25%" : "new"}
+                      </div>
+                    )}
+                  </div>
+                </Link>
+                <Link href="/shop">
+                  <span className="text-xs font-medium text-black text-center w-[90px] truncate block hover:text-[#0e8ce4] transition-colors">
+                    {item.name}
+                  </span>
+                </Link>
                 <span className="text-xs text-[#df3b3b] font-medium">${item.price}</span>
                 <button
+                  type="button"
                   onClick={(e) => {
                     e.stopPropagation();
                     toggleWishlist(item.id);
                   }}
                   className={heartClass}
+                  aria-label={liked ? "Remove from wishlist" : "Add to wishlist"}
                 >
                   <Heart size={12} strokeWidth={2} fill={liked ? "#df3b3b" : "none"} />
                 </button>

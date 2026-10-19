@@ -1,9 +1,5 @@
-"use client";
-
-import { useEffect, useState } from "react";
-
 import Link from "next/link";
-import { Mail, Phone, MapPin, Clock, Camera, Share2, X, Music } from "lucide-react";
+import { Mail, MapPin, Clock, Camera, Share2, X, Music } from "lucide-react";
 
 const FIND_IT_FAST = [
   { label: "Shop", href: "/shop" },
@@ -31,11 +27,7 @@ const SOCIALS = [
 const PAYMENTS = ["Visa", "Mastercard", "PayPal", "American Express", "Discover"];
 
 export default function Footer() {
-  const [year, setYear] = useState<number>(2026);
-
-  useEffect(() => {
-    setYear(new Date().getFullYear());
-  }, []);
+  const year = 2026;
 
   return (
     <footer className="bg-[#f2f4f8] border-t border-[#e5e5e5]">

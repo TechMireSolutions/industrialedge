@@ -26,7 +26,7 @@ export default function PopularCategories() {
         </div>
 
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
-          {CATEGORIES.map((cat, i) => (
+          {CATEGORIES.map((cat) => (
             <Link
               key={cat.label}
               href="/shop"
