@@ -37,7 +37,7 @@ const INITIAL_CART: CartItem[] = [
     price: 8.5,
     qty: 10,
     image:
-      "https://images.unsplash.com/photo-1587829741301-dc798b82a339?w=400&h=400&fit=crop&q=80",
+      "https://images.unsplash.com/photo-1618384887929-16ec33fab9ef?w=400&h=400&fit=crop&q=80",
   },
 ];
 

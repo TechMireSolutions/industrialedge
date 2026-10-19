@@ -32,21 +32,21 @@ const TRENDS = [
     name: "Camera EOS",
     price: 899,
     status: "new" as const,
-    image: "https://images.unsplash.com/photo-1516035069371-29a1b2440326?w=200&h=200&fit=crop&q=80",
+    image: "https://images.unsplash.com/photo-1502920917128-1aa500764cbd?w=200&h=200&fit=crop&q=80",
   },
   {
     id: "t5",
     name: "Gaming Console",
     price: 499,
     status: "discount" as const,
-    image: "https://images.unsplash.com/photo-1606181954474-675108d74477?w=200&h=200&fit=crop&q=80",
+    image: "https://images.unsplash.com/photo-1607604276583-eef5d076aa5f?w=200&h=200&fit=crop&q=80",
   },
   {
     id: "t6",
     name: "Earbuds Mini",
     price: 129,
     status: "none" as const,
-    image: "https://images.unsplash.com/photo-1590658268037-6bf12165a889?w=200&h=200&fit=crop&q=80",
+    image: "https://images.unsplash.com/photo-1572536147248-ac59a8abfa4b?w=200&h=200&fit=crop&q=80",
   },
 ];
 

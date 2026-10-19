@@ -51,7 +51,7 @@ const BEST_SELLERS_DATA: Record<string, BestSellerItem[]> = {
     },
     {
       id: "bs4",
-      image: "https://images.unsplash.com/photo-1606181954474-675108d74477?w=300&h=200&fit=crop&q=80",
+      image: "https://images.unsplash.com/photo-1607604276583-eef5d076aa5f?w=300&h=200&fit=crop&q=80",
       category: "Gaming",
       title: "Gaming Console X",
       price: 499,
@@ -72,7 +72,7 @@ const BEST_SELLERS_DATA: Record<string, BestSellerItem[]> = {
     },
     {
       id: "bs6",
-      image: "https://images.unsplash.com/photo-1593358286211-6456f959b68f?w=300&h=200&fit=crop&q=80",
+      image: "https://images.unsplash.com/photo-1593784991095-a205069470b6?w=300&h=200&fit=crop&q=80",
       category: "TV & Audio",
       title: '4K OLED TV 65"',
       price: 1299,
@@ -82,7 +82,7 @@ const BEST_SELLERS_DATA: Record<string, BestSellerItem[]> = {
     },
     {
       id: "bs7",
-      image: "https://images.unsplash.com/photo-1590658268037-6bf12165a889?w=300&h=200&fit=crop&q=80",
+      image: "https://images.unsplash.com/photo-1572536147248-ac59a8abfa4b?w=300&h=200&fit=crop&q=80",
       category: "Audio",
       title: "Wireless Earbuds Pro",
       price: 129,
@@ -91,7 +91,7 @@ const BEST_SELLERS_DATA: Record<string, BestSellerItem[]> = {
     },
     {
       id: "bs8",
-      image: "https://images.unsplash.com/photo-1556742049-0cfed4f7a07d?w=300&h=200&fit=crop&q=80",
+      image: "https://images.unsplash.com/photo-1543512214-318c7553f230?w=300&h=200&fit=crop&q=80",
       category: "Gadgets",
       title: "Smart Home Audio Hub",
       price: 79,
@@ -112,7 +112,7 @@ const BEST_SELLERS_DATA: Record<string, BestSellerItem[]> = {
     },
     {
       id: "bs10",
-      image: "https://images.unsplash.com/photo-1527443224154-c4a3942dacac?w=300&h=200&fit=crop&q=80",
+      image: "https://images.unsplash.com/photo-1547082299-de196ea013d6?w=300&h=200&fit=crop&q=80",
       category: "Monitors",
       title: "Ultrawide Monitor 34",
       price: 549,
@@ -122,7 +122,7 @@ const BEST_SELLERS_DATA: Record<string, BestSellerItem[]> = {
     },
     {
       id: "bs11",
-      image: "https://images.unsplash.com/photo-1587829741301-dc798b82a339?w=300&h=200&fit=crop&q=80",
+      image: "https://images.unsplash.com/photo-1618384887929-16ec33fab9ef?w=300&h=200&fit=crop&q=80",
       category: "Accessories",
       title: "Mechanical Keyboard",
       price: 145,

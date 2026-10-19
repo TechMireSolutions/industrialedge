@@ -62,7 +62,7 @@ export const products: Product[] = [
     price: 499,
     status: "none",
     image:
-      "https://images.unsplash.com/photo-1606181954474-675108d74477?w=400&h=400&fit=crop&q=80",
+      "https://images.unsplash.com/photo-1607604276583-eef5d076aa5f?w=400&h=400&fit=crop&q=80",
     category: "Video Games & Consoles",
     rating: 4.8,
   },
@@ -73,7 +73,7 @@ export const products: Product[] = [
     originalPrice: 1499,
     status: "discount",
     image:
-      "https://images.unsplash.com/photo-1593358286211-6456f959b68f?w=400&h=400&fit=crop&q=80",
+      "https://images.unsplash.com/photo-1593784991095-a205069470b6?w=400&h=400&fit=crop&q=80",
     category: "TV & Audio",
     rating: 4.6,
   },
@@ -83,7 +83,7 @@ export const products: Product[] = [
     price: 899,
     status: "new",
     image:
-      "https://images.unsplash.com/photo-1516035069371-29a1b2440326?w=400&h=400&fit=crop&q=80",
+      "https://images.unsplash.com/photo-1502920917128-1aa500764cbd?w=400&h=400&fit=crop&q=80",
     category: "Cameras & Photos",
     rating: 4.7,
   },
@@ -93,7 +93,7 @@ export const products: Product[] = [
     price: 145,
     status: "none",
     image:
-      "https://images.unsplash.com/photo-1587829741301-dc798b82a339?w=400&h=400&fit=crop&q=80",
+      "https://images.unsplash.com/photo-1618384887929-16ec33fab9ef?w=400&h=400&fit=crop&q=80",
     category: "Accessories",
     rating: 4.4,
   },
@@ -104,7 +104,7 @@ export const products: Product[] = [
     originalPrice: 99,
     status: "discount",
     image:
-      "https://images.unsplash.com/photo-1556742049-0cfed4f7a07d?w=400&h=400&fit=crop&q=80",
+      "https://images.unsplash.com/photo-1543512214-318c7553f230?w=400&h=400&fit=crop&q=80",
     category: "Gadgets",
     rating: 4.2,
   },
@@ -114,7 +114,7 @@ export const products: Product[] = [
     price: 129,
     status: "new",
     image:
-      "https://images.unsplash.com/photo-1590658268037-6bf12165a889?w=400&h=400&fit=crop&q=80",
+      "https://images.unsplash.com/photo-1572536147248-ac59a8abfa4b?w=400&h=400&fit=crop&q=80",
     category: "Audio & Video",
     rating: 4.5,
   },
@@ -125,7 +125,7 @@ export const products: Product[] = [
     originalPrice: 649,
     status: "discount",
     image:
-      "https://images.unsplash.com/photo-1527443224154-c4a3942dacac?w=400&h=400&fit=crop&q=80",
+      "https://images.unsplash.com/photo-1547082299-de196ea013d6?w=400&h=400&fit=crop&q=80",
     category: "Computers & Laptops",
     rating: 4.6,
   },
@@ -135,7 +135,7 @@ export const products: Product[] = [
     price: 749,
     status: "none",
     image:
-      "https://images.unsplash.com/photo-1509854131170-25c663971a4a?w=400&h=400&fit=crop&q=80",
+      "https://images.unsplash.com/photo-1508614589041-895b88991e3e?w=400&h=400&fit=crop&q=80",
     category: "Gadgets",
     rating: 4.4,
   },

@@ -24,7 +24,7 @@ const POSTS = [
     excerpt:
       "Turn your apartment into a connected home with these practical smart home devices that actually deliver value.",
     date: "Oct 5, 2026",
-    image: "https://images.unsplash.com/photo-1556742049-0cfed4f7a07d?w=400&h=250&fit=crop&q=80",
+    image: "https://images.unsplash.com/photo-1558002038-1055907df827?w=400&h=250&fit=crop&q=80",
   },
   {
     id: "4",
@@ -32,7 +32,7 @@ const POSTS = [
     excerpt:
       "We compare the latest gaming consoles across performance, library, and price to help you choose.",
     date: "Sep 28, 2026",
-    image: "https://images.unsplash.com/photo-1606181954474-675108d74477?w=400&h=250&fit=crop&q=80",
+    image: "https://images.unsplash.com/photo-1607604276583-eef5d076aa5f?w=400&h=250&fit=crop&q=80",
   },
 ];
 
