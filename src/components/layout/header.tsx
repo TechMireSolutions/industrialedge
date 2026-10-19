@@ -17,6 +17,7 @@ import {
   ChevronDown,
   ChevronRight,
   Search,
+  Check,
 } from "lucide-react";
 
 const LANGUAGES = [
@@ -88,9 +89,22 @@ function Dropdown({ children, trigger }: { children: React.ReactNode; trigger: R
   );
 }
 
-function DropdownItem({ label }: { label: string }) {
+function DropdownItem({ label, href }: { label: string; href?: string }) {
+  if (href) {
+    return (
+      <Link
+        href={href}
+        className="block w-full text-left px-4 py-2 text-sm text-black/70 hover:bg-[#eff6fa] hover:text-[#0e8ce4] transition-colors"
+      >
+        {label}
+      </Link>
+    );
+  }
   return (
-    <button className="w-full text-left px-4 py-2 text-sm text-black/50 hover:bg-[#0e8ce4] hover:text-white transition-colors">
+    <button
+      type="button"
+      className="w-full text-left px-4 py-2 text-sm text-black/70 hover:bg-[#eff6fa] hover:text-[#0e8ce4] transition-colors cursor-pointer"
+    >
       {label}
     </button>
   );
@@ -137,6 +151,36 @@ export default function Header() {
   const [pagesOpen, setPagesOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const [searchCategory, setSearchCategory] = useState("All Categories");
+  const [categoryDropdownOpen, setCategoryDropdownOpen] = useState(false);
+  const categoryDropdownRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handleOutsideClick = (e: MouseEvent) => {
+      setSuperDealsOpen(false);
+      setFeaturedBrandsOpen(false);
+      setPagesOpen(false);
+      if (
+        categoryDropdownRef.current &&
+        !categoryDropdownRef.current.contains(e.target as Node)
+      ) {
+        setCategoryDropdownOpen(false);
+      }
+    };
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        setCategoryDropdownOpen(false);
+        setSuperDealsOpen(false);
+        setFeaturedBrandsOpen(false);
+        setPagesOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleOutsideClick);
+    document.addEventListener("keydown", handleKeyDown);
+    return () => {
+      document.removeEventListener("mousedown", handleOutsideClick);
+      document.removeEventListener("keydown", handleKeyDown);
+    };
+  }, []);
 
   const formatMoney = (n: number) => (n % 1 === 0 ? `$${n}` : `$${n.toFixed(2)}`);
 
@@ -228,21 +272,73 @@ export default function Header() {
                 placeholder="Search for products..."
                 className="flex-1 h-full px-5 text-sm text-[#212529] placeholder:text-[#999999] bg-transparent focus:outline-none"
               />
-              <div className="relative h-[26px] flex items-center border-l border-[#e5e5e5] px-4 bg-transparent">
-                <select
-                  value={searchCategory}
-                  onChange={(e) => setSearchCategory(e.target.value)}
-                  className="border-none bg-transparent text-xs text-[#555555] cursor-pointer appearance-none pr-5 focus:outline-none"
+              <div
+                ref={categoryDropdownRef}
+                className="relative h-full flex items-center border-l border-[#e5e5e5] px-4 select-none"
+              >
+                <button
+                  type="button"
+                  onClick={() => setCategoryDropdownOpen((prev) => !prev)}
+                  className="flex items-center gap-2 text-xs text-[#555555] hover:text-[#0e8ce4] transition-colors cursor-pointer focus:outline-none whitespace-nowrap"
+                  aria-expanded={categoryDropdownOpen}
+                  aria-label="Filter by category"
                 >
-                  <option>All Categories</option>
-                  {CATEGORIES.map((c) => (
-                    <option key={c}>{c}</option>
-                  ))}
-                </select>
-                <ChevronDown
-                  size={12}
-                  className="absolute right-2 top-1/2 -translate-y-1/2 text-[#888888] pointer-events-none"
-                />
+                  <span className="max-w-[130px] truncate">{searchCategory}</span>
+                  <ChevronDown
+                    size={12}
+                    className={`text-[#888888] shrink-0 transition-transform duration-200 ${
+                      categoryDropdownOpen ? "rotate-180 text-[#0e8ce4]" : ""
+                    }`}
+                  />
+                </button>
+
+                {categoryDropdownOpen && (
+                  <div className="absolute right-0 top-[calc(100%+6px)] w-[230px] bg-white border border-[#e5e5e5] shadow-[0_12px_32px_rgba(0,0,0,0.12)] rounded-[6px] py-1.5 z-50 max-h-[340px] overflow-y-auto">
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setSearchCategory("All Categories");
+                        setCategoryDropdownOpen(false);
+                      }}
+                      className={`w-full text-left px-4 py-2.5 text-xs transition-colors flex items-center justify-between cursor-pointer ${
+                        searchCategory === "All Categories"
+                          ? "bg-[#eff6fa] text-[#0e8ce4] font-medium"
+                          : "text-[#333333] hover:bg-[#f5f8fa] hover:text-[#0e8ce4]"
+                      }`}
+                    >
+                      <span>All Categories</span>
+                      {searchCategory === "All Categories" && (
+                        <Check size={13} className="text-[#0e8ce4] shrink-0" />
+                      )}
+                    </button>
+
+                    <div className="my-1 border-t border-[#f0f0f0]" />
+
+                    {CATEGORIES.map((cat) => {
+                      const isSelected = searchCategory === cat;
+                      return (
+                        <button
+                          key={cat}
+                          type="button"
+                          onClick={() => {
+                            setSearchCategory(cat);
+                            setCategoryDropdownOpen(false);
+                          }}
+                          className={`w-full text-left px-4 py-2.5 text-xs transition-colors flex items-center justify-between cursor-pointer ${
+                            isSelected
+                              ? "bg-[#eff6fa] text-[#0e8ce4] font-medium"
+                              : "text-[#333333] hover:bg-[#f5f8fa] hover:text-[#0e8ce4]"
+                          }`}
+                        >
+                          <span className="truncate">{cat}</span>
+                          {isSelected && (
+                            <Check size={13} className="text-[#0e8ce4] shrink-0 ml-2" />
+                          )}
+                        </button>
+                      );
+                    })}
+                  </div>
+                )}
               </div>
               <button
                 type="submit"
@@ -361,7 +457,7 @@ export default function Header() {
           </div>
 
           {/* Right horizontal nav links */}
-          <div className="hidden lg:flex items-center gap-1">
+          <div className="hidden lg:flex items-center gap-1 h-full">
             {NAV_LINKS.map((link) => (
               <NavLink key={link.href} href={link.href}>
                 {link.label}
@@ -369,75 +465,120 @@ export default function Header() {
             ))}
 
             {/* Super Deals dropdown */}
-            <div className="relative group">
+            <div
+              className="relative group h-full flex items-center"
+              onMouseEnter={() => setSuperDealsOpen(true)}
+              onMouseLeave={() => setSuperDealsOpen(false)}
+            >
               <button
+                type="button"
                 onClick={(e) => {
                   e.stopPropagation();
-                  setSuperDealsOpen(!superDealsOpen);
+                  setSuperDealsOpen((prev) => !prev);
                 }}
-                className="px-4 py-3 text-sm font-medium text-black hover:text-[#0e8ce4] transition-colors"
+                className="flex items-center gap-1.5 px-4 py-3 text-sm font-medium text-black group-hover:text-[#0e8ce4] transition-colors cursor-pointer"
               >
-                Super Deals <ChevronDown size={14} className="ml-1" />
+                <span>Super Deals</span>
+                <ChevronDown
+                  size={14}
+                  className={`shrink-0 text-black/60 group-hover:text-[#0e8ce4] transition-transform duration-200 ${
+                    superDealsOpen ? "rotate-180" : "group-hover:rotate-180"
+                  }`}
+                />
               </button>
-              {superDealsOpen && (
-                <div className="absolute left-0 top-full mt-1 w-[200px] bg-white border border-[#e5e5e5] shadow-[0_10px_25px_rgba(0,0,0,0.1)] rounded-[5px] py-2 z-50">
-                  {["All Deals", "Today Only", "Clearance"].map((d) => (
-                    <DropdownItem key={d} label={d} />
-                  ))}
-                </div>
-              )}
+              <div
+                className={`absolute left-0 top-full w-[210px] bg-white border border-[#e5e5e5] shadow-[0_12px_28px_rgba(0,0,0,0.12)] rounded-[6px] py-2 z-50 transition-all duration-200 ${
+                  superDealsOpen
+                    ? "opacity-100 visible translate-y-0"
+                    : "opacity-0 invisible -translate-y-1 pointer-events-none group-hover:opacity-100 group-hover:visible group-hover:translate-y-0 group-hover:pointer-events-auto"
+                }`}
+              >
+                {["All Deals", "Today Only", "Clearance"].map((d) => (
+                  <DropdownItem key={d} label={d} href="/shop" />
+                ))}
+              </div>
             </div>
 
             {/* Featured Brands dropdown */}
-            <div className="relative group">
+            <div
+              className="relative group h-full flex items-center"
+              onMouseEnter={() => setFeaturedBrandsOpen(true)}
+              onMouseLeave={() => setFeaturedBrandsOpen(false)}
+            >
               <button
+                type="button"
                 onClick={(e) => {
                   e.stopPropagation();
-                  setFeaturedBrandsOpen(!featuredBrandsOpen);
+                  setFeaturedBrandsOpen((prev) => !prev);
                 }}
-                className="px-4 py-3 text-sm font-medium text-black hover:text-[#0e8ce4] transition-colors"
+                className="flex items-center gap-1.5 px-4 py-3 text-sm font-medium text-black group-hover:text-[#0e8ce4] transition-colors cursor-pointer"
               >
-                Featured Brands <ChevronDown size={14} className="ml-1" />
+                <span>Featured Brands</span>
+                <ChevronDown
+                  size={14}
+                  className={`shrink-0 text-black/60 group-hover:text-[#0e8ce4] transition-transform duration-200 ${
+                    featuredBrandsOpen ? "rotate-180" : "group-hover:rotate-180"
+                  }`}
+                />
               </button>
-              {featuredBrandsOpen && (
-                <div className="absolute left-0 top-full mt-1 w-[200px] bg-white border border-[#e5e5e5] shadow-[0_10px_25px_rgba(0,0,0,0.1)] rounded-[5px] py-2 z-50">
-                  {["Apple", "Samsung", "Sony", "Dell", "HP"].map((b) => (
-                    <DropdownItem key={b} label={b} />
-                  ))}
-                </div>
-              )}
+              <div
+                className={`absolute left-0 top-full w-[210px] bg-white border border-[#e5e5e5] shadow-[0_12px_28px_rgba(0,0,0,0.12)] rounded-[6px] py-2 z-50 transition-all duration-200 ${
+                  featuredBrandsOpen
+                    ? "opacity-100 visible translate-y-0"
+                    : "opacity-0 invisible -translate-y-1 pointer-events-none group-hover:opacity-100 group-hover:visible group-hover:translate-y-0 group-hover:pointer-events-auto"
+                }`}
+              >
+                {["Apple", "Samsung", "Sony", "Dell", "HP"].map((b) => (
+                  <DropdownItem key={b} label={b} href="/shop" />
+                ))}
+              </div>
             </div>
 
             {/* Pages dropdown */}
-            <div className="relative group">
+            <div
+              className="relative group h-full flex items-center"
+              onMouseEnter={() => setPagesOpen(true)}
+              onMouseLeave={() => setPagesOpen(false)}
+            >
               <button
+                type="button"
                 onClick={(e) => {
                   e.stopPropagation();
-                  setPagesOpen(!pagesOpen);
+                  setPagesOpen((prev) => !prev);
                 }}
-                className="px-4 py-3 text-sm font-medium text-black hover:text-[#0e8ce4] transition-colors"
+                className="flex items-center gap-1.5 px-4 py-3 text-sm font-medium text-black group-hover:text-[#0e8ce4] transition-colors cursor-pointer"
               >
-                Pages <ChevronDown size={14} className="ml-1" />
+                <span>Pages</span>
+                <ChevronDown
+                  size={14}
+                  className={`shrink-0 text-black/60 group-hover:text-[#0e8ce4] transition-transform duration-200 ${
+                    pagesOpen ? "rotate-180" : "group-hover:rotate-180"
+                  }`}
+                />
               </button>
-              {pagesOpen && (
-                <div className="absolute left-0 top-full mt-1 w-[200px] bg-white border border-[#e5e5e5] shadow-[0_10px_25px_rgba(0,0,0,0.1)] rounded-[5px] py-2 z-50">
-                  <NavLink key="shop" href="/shop">
-                    Shop
-                  </NavLink>
-                  <NavLink key="product" href="/product/sample">
-                    Product
-                  </NavLink>
-                  <NavLink key="blog" href="/blog">
-                    Blog
-                  </NavLink>
-                  <NavLink key="cart" href="/cart">
-                    Cart
-                  </NavLink>
-                  <NavLink key="contact" href="/contact">
-                    Contact
-                  </NavLink>
-                </div>
-              )}
+              <div
+                className={`absolute left-0 top-full w-[210px] bg-white border border-[#e5e5e5] shadow-[0_12px_28px_rgba(0,0,0,0.12)] rounded-[6px] py-2 z-50 transition-all duration-200 ${
+                  pagesOpen
+                    ? "opacity-100 visible translate-y-0"
+                    : "opacity-0 invisible -translate-y-1 pointer-events-none group-hover:opacity-100 group-hover:visible group-hover:translate-y-0 group-hover:pointer-events-auto"
+                }`}
+              >
+                <NavLink key="shop" href="/shop">
+                  Shop
+                </NavLink>
+                <NavLink key="product" href="/product/sample">
+                  Product
+                </NavLink>
+                <NavLink key="blog" href="/blog">
+                  Blog
+                </NavLink>
+                <NavLink key="cart" href="/cart">
+                  Cart
+                </NavLink>
+                <NavLink key="contact" href="/contact">
+                  Contact
+                </NavLink>
+              </div>
             </div>
           </div>
         </div>
