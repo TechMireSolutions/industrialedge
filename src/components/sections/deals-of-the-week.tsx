@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Image from "next/image";
 import CountdownTimer from "@/components/sections/countdown-timer";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 
 const DEALS = [
   {
@@ -15,7 +16,7 @@ const DEALS = [
     sold: 28,
     progress: "22%",
     image:
-      "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=310&h=310&fit=crop&q=80",
+      "https://images.unsplash.com/photo-1546435770-a3e426bf472b?w=400&h=400&fit=crop&q=80",
   },
   {
     id: "d2",
@@ -27,7 +28,7 @@ const DEALS = [
     sold: 45,
     progress: "35%",
     image:
-      "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=310&h=310&fit=crop&q=80",
+      "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=400&h=400&fit=crop&q=80",
   },
   {
     id: "d3",
@@ -39,7 +40,7 @@ const DEALS = [
     sold: 36,
     progress: "15%",
     image:
-      "https://images.unsplash.com/photo-1610945415295-d9bbf067e59c?w=310&h=310&fit=crop&q=80",
+      "https://images.unsplash.com/photo-1610945415295-d9bbf067e59c?w=400&h=400&fit=crop&q=80",
   },
 ];
 
@@ -57,90 +58,76 @@ export default function DealsOfTheWeek() {
   };
 
   return (
-    <section className="lg:col-span-4 bg-white rounded-[5px] p-8 shadow-[0_10px_25px_rgba(0,0,0,0.1)] relative">
-      <div className="flex items-center justify-between mb-6">
-        <h2 className="text-lg font-medium text-black">Deals of the Week</h2>
-        <div className="flex gap-2">
+    <section className="lg:col-span-4 bg-white rounded-[6px] p-6 lg:p-7 shadow-[0_12px_30px_rgba(0,0,0,0.06)] border border-[#e5e5e5]/80 flex flex-col justify-between">
+      {/* Top Header */}
+      <div className="flex items-center justify-between mb-2">
+        <h2 className="text-lg font-bold text-[#212529] tracking-tight">Deals of the Week</h2>
+        <div className="flex items-center gap-1 text-[#828282]">
           <button
             type="button"
             onClick={handlePrev}
-            className="w-8 h-8 rounded-full border border-[#e5e5e5] flex items-center justify-center text-[#828282] hover:text-[#0e8ce4] hover:border-[#0e8ce4] transition-colors cursor-pointer"
+            className="p-1 hover:text-[#0e8ce4] transition-colors cursor-pointer"
             aria-label="Previous deal"
           >
-            <svg
-              width="10"
-              height="10"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              viewBox="0 0 24 24"
-              className="shrink-0"
-            >
-              <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
-            </svg>
+            <ChevronLeft size={16} />
           </button>
           <button
             type="button"
             onClick={handleNext}
-            className="w-8 h-8 rounded-full border border-[#e5e5e5] flex items-center justify-center text-[#828282] hover:text-[#0e8ce4] hover:border-[#0e8ce4] transition-colors cursor-pointer"
+            className="p-1 hover:text-[#0e8ce4] transition-colors cursor-pointer"
             aria-label="Next deal"
           >
-            <svg
-              width="10"
-              height="10"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              viewBox="0 0 24 24"
-              className="shrink-0"
-            >
-              <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
-            </svg>
+            <ChevronRight size={16} />
           </button>
         </div>
       </div>
 
       {/* Centered product image */}
-      <div className="flex justify-center mb-6 h-[310px] items-center">
+      <div className="flex justify-center items-center my-3 h-[270px]">
         <Image
           src={currentDeal.image}
           alt={currentDeal.title}
-          width={310}
-          height={310}
-          className="w-[310px] h-[310px] object-contain transition-all duration-300"
+          width={280}
+          height={280}
+          className="max-h-[260px] max-w-[260px] object-contain transition-all duration-300"
           priority
         />
       </div>
 
-      {/* Split metadata row 1 */}
-      <div className="flex justify-between text-sm text-black/50 mb-1">
-        <span>{currentDeal.category}</span>
-        <span>${currentDeal.originalPrice}</span>
-      </div>
-
-      {/* Split metadata row 2 */}
-      <div className="flex justify-between mb-6">
-        <span className="text-2xl font-medium text-black">{currentDeal.title}</span>
-        <span className="text-2xl font-medium text-[#df3b3b]">${currentDeal.price}</span>
-      </div>
-
-      {/* Scarcity progress bar */}
-      <div className="mb-6">
-        <div className="flex justify-between text-xs mb-2">
-          <span>
-            Available: <span className="text-[#0e8ce4] font-medium">{currentDeal.available}</span>
-          </span>
-          <span>
-            Already sold: <span className="text-[#0e8ce4] font-medium">{currentDeal.sold}</span>
-          </span>
+      <div>
+        {/* Split metadata row 1 */}
+        <div className="flex justify-between items-baseline text-xs text-[#828282]">
+          <span>{currentDeal.category}</span>
+          <span className="line-through">${currentDeal.originalPrice}</span>
         </div>
-        <div className="w-full h-[6px] bg-[#e8e8e8] rounded-full overflow-hidden">
-          <div className="h-full bg-[#0e8ce4] rounded-full transition-all duration-300" style={{ width: currentDeal.progress }} />
-        </div>
-      </div>
 
-      {/* Countdown timer */}
-      <CountdownTimer targetDate={targetDate} />
+        {/* Split metadata row 2 */}
+        <div className="flex justify-between items-baseline mb-4">
+          <span className="text-xl font-bold text-[#212529]">{currentDeal.title}</span>
+          <span className="text-xl font-bold text-[#df3b3b]">${currentDeal.price}</span>
+        </div>
+
+        {/* Scarcity progress bar */}
+        <div className="mb-5">
+          <div className="flex justify-between text-xs text-[#828282] mb-1.5 font-normal">
+            <span>
+              Available: <span className="text-[#212529] font-medium">{currentDeal.available}</span>
+            </span>
+            <span>
+              Already sold: <span className="text-[#212529] font-medium">{currentDeal.sold}</span>
+            </span>
+          </div>
+          <div className="w-full h-1.5 bg-[#e8e8e8] rounded-full overflow-hidden">
+            <div
+              className="h-full bg-[#0e8ce4] rounded-full transition-all duration-300"
+              style={{ width: currentDeal.progress }}
+            />
+          </div>
+        </div>
+
+        {/* Countdown timer */}
+        <CountdownTimer targetDate={targetDate} />
+      </div>
     </section>
   );
 }
