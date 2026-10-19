@@ -6,7 +6,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import {
   Mail,
-  Phone,
+  Smartphone,
   Globe,
   DollarSign,
   User,
@@ -70,16 +70,17 @@ function Dropdown({ children, trigger }: { children: React.ReactNode; trigger: R
   return (
     <div className="relative" ref={ref}>
       <button
+        type="button"
         onClick={(e) => {
           e.stopPropagation();
           setOpen((prev) => !prev);
         }}
-        className="flex items-center gap-1 text-xs text-black/50 hover:text-[#0e8ce4] transition-colors"
+        className="flex items-center gap-1 text-xs text-[#212529] hover:text-[#0e8ce4] transition-colors cursor-pointer"
       >
         {trigger}
       </button>
       {open && (
-        <div className="absolute left-0 top-full mt-1 w-[160px] bg-white border border-[#e5e5e5] shadow-[0_10px_25px_rgba(0,0,0,0.1)] rounded-[5px] py-2 z-50">
+        <div className="absolute right-0 sm:left-0 top-full mt-2 w-[160px] bg-white border border-[#e5e5e5] shadow-[0_10px_25px_rgba(0,0,0,0.1)] rounded-[5px] py-2 z-50">
           {children}
         </div>
       )}
@@ -137,7 +138,7 @@ export default function Header() {
   const [searchTerm, setSearchTerm] = useState("");
   const [searchCategory, setSearchCategory] = useState("All Categories");
 
-  const formatMoney = (n: number) => `$${n.toFixed(2)}`;
+  const formatMoney = (n: number) => (n % 1 === 0 ? `$${n}` : `$${n.toFixed(2)}`);
 
   const handleSearchSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -150,44 +151,51 @@ export default function Header() {
   return (
     <>
       {/* ============ TIER 1: TOP UTILITY BAR ============ */}
-      <div className="h-[56px] border-b border-[#e5e5e5] bg-[#fafafa] text-xs">
+      <div className="h-[52px] border-b border-[#e5e5e5] bg-white text-xs">
         <div className="container h-full flex items-center justify-between">
-          <div className="flex items-center gap-6">
-            <div className="flex items-center gap-2 text-black/50">
-              <Phone size={14} strokeWidth={1.5} />
+          {/* Left: Phone & Email */}
+          <div className="flex items-center gap-8">
+            <div className="flex items-center gap-2 text-[#212529]">
+              <Smartphone size={15} strokeWidth={1.5} className="shrink-0 text-[#212529]" />
               <span>+1 (555) 014-2360</span>
             </div>
-            <div className="flex items-center gap-2 text-black/50">
-              <Mail size={14} strokeWidth={1.5} />
+            <div className="hidden sm:flex items-center gap-2 text-[#212529]">
+              <Mail size={15} strokeWidth={1.5} className="shrink-0 text-[#212529]" />
               <span>support@onetech.example</span>
             </div>
           </div>
 
-          <div className="flex items-center gap-4">
-            <Dropdown trigger={<Globe size={14} strokeWidth={1.5} />}>
+          {/* Right: Language, Currency, Auth */}
+          <div className="flex items-center gap-8">
+            <Dropdown trigger={<span>English</span>}>
               {LANGUAGES.map((lg) => (
                 <DropdownItem key={lg.code} label={lg.label} />
               ))}
             </Dropdown>
 
-            <Dropdown trigger={<DollarSign size={14} strokeWidth={1.5} />}>
+            <Dropdown trigger={<span>$ US dollar</span>}>
               {CURRENCIES.map((c) => (
                 <DropdownItem key={c.code} label={c.label} />
               ))}
             </Dropdown>
 
-            <div className="hidden md:flex items-center gap-2 px-3 py-1 text-black/50 border-r border-[#e5e5e5]">
-              <User size={14} strokeWidth={1.5} />
-              <span>Register</span>
+            <div className="hidden md:flex items-center gap-2.5 text-[#212529]">
+              <User size={15} strokeWidth={1.5} className="shrink-0 text-[#212529]" />
+              <Link href="/shop" className="hover:text-[#0e8ce4] transition-colors">
+                Register
+              </Link>
+              <span className="text-[#d1d5db]">|</span>
+              <Link href="/shop" className="hover:text-[#0e8ce4] transition-colors">
+                Sign in
+              </Link>
             </div>
-            <div className="hidden md:flex items-center gap-2 px-3 py-1 text-black/50">
-              <User size={14} strokeWidth={1.5} />
-              <span>Sign in</span>
-            </div>
+
             <div className="md:hidden">
               <button
+                type="button"
                 onClick={() => setMobileOpen(true)}
-                className="p-2 text-black/50 hover:text-[#0e8ce4]"
+                className="p-1.5 text-black/60 hover:text-[#0e8ce4]"
+                aria-label="Open menu"
               >
                 <Menu size={18} strokeWidth={2} />
               </button>
@@ -197,89 +205,102 @@ export default function Header() {
       </div>
 
       {/* ============ TIER 2: MAIN SEARCH & CART BAR ============ */}
-      <div className="h-[100px] lg:h-[130px] bg-white">
-        <div className="container h-full flex items-center justify-between lg:px-0">
+      <div className="h-[110px] lg:h-[125px] bg-white">
+        <div className="container h-full flex items-center justify-between">
           {/* Logo */}
-          <Link href="/" className="text-[36px] font-medium text-[#0e8ce4] tracking-tight hover:opacity-95 transition-opacity">
+          <Link
+            href="/"
+            className="text-[36px] sm:text-[38px] font-bold text-[#0e8ce4] tracking-tight hover:opacity-95 transition-opacity leading-none"
+          >
             OneTech
           </Link>
 
-          {/* Search */}
+          {/* Scoped Search */}
           <div className="hidden lg:flex items-center">
             <form
               onSubmit={handleSearchSubmit}
-              className="relative flex items-center w-[500px] h-[50px] border border-[#e5e5e5] rounded-[5px] overflow-hidden focus-within:border-[#0e8ce4] transition-colors"
+              className="flex items-center w-[500px] xl:w-[540px] h-[50px] border border-[#e5e5e5] rounded-[5px] bg-white transition-colors focus-within:border-[#0e8ce4]"
             >
               <input
                 type="text"
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 placeholder="Search for products..."
-                className="flex-1 h-full px-4 text-sm focus:outline-none"
+                className="flex-1 h-full px-5 text-sm text-[#212529] placeholder:text-[#999999] bg-transparent focus:outline-none"
               />
-              <div className="relative h-full flex items-center border-l border-[#e5e5e5] px-3 bg-white">
+              <div className="relative h-[26px] flex items-center border-l border-[#e5e5e5] px-4 bg-transparent">
                 <select
                   value={searchCategory}
                   onChange={(e) => setSearchCategory(e.target.value)}
-                  className="border-none bg-transparent text-xs text-black/60 cursor-pointer appearance-none pr-5 focus:outline-none"
+                  className="border-none bg-transparent text-xs text-[#555555] cursor-pointer appearance-none pr-5 focus:outline-none"
                 >
                   <option>All Categories</option>
                   {CATEGORIES.map((c) => (
                     <option key={c}>{c}</option>
                   ))}
                 </select>
-                <ChevronDown size={12} className="absolute right-2 top-1/2 -translate-y-1/2 text-black/40 pointer-events-none" />
+                <ChevronDown
+                  size={12}
+                  className="absolute right-2 top-1/2 -translate-y-1/2 text-[#888888] pointer-events-none"
+                />
               </div>
               <button
                 type="submit"
-                className="w-[50px] h-full bg-[#0e8ce4] hover:bg-[#0e8ce4]/80 text-white flex items-center justify-center transition-colors cursor-pointer"
+                className="w-[50px] h-[50px] bg-[#0e8ce4] hover:bg-[#007bd4] text-white rounded-r-[4px] flex items-center justify-center shrink-0 transition-colors cursor-pointer"
                 aria-label="Search"
               >
-                <Search size={18} strokeWidth={2} />
+                <Search size={20} strokeWidth={2} />
               </button>
             </form>
           </div>
 
-          {/* Widgets */}
-          <div className="flex items-center gap-6 lg:gap-8">
+          {/* Widgets (Wishlist & Cart) */}
+          <div className="flex items-center gap-8 lg:gap-11">
             {/* Wishlist */}
             <Link
               href="/shop"
-              className="relative group hidden lg:flex flex-col items-center gap-1 cursor-pointer"
+              className="group flex items-center gap-3 cursor-pointer"
+              aria-label="Wishlist"
             >
-              <div
-                className="relative p-2 text-[#cccccc] group-hover:text-[#0e8ce4] transition-colors"
-                aria-label="Wishlist"
-              >
-                <Heart size={20} strokeWidth={2} />
-                <span className="absolute -top-1 -right-1 w-[16px] h-[16px] bg-[#df3b3b] rounded-full text-[10px] text-white flex items-center justify-center font-medium">
-                  {wishlistCount > 99 ? "99+" : wishlistCount}
+              <Heart
+                size={34}
+                strokeWidth={1.5}
+                className="text-black group-hover:text-[#0e8ce4] transition-colors shrink-0"
+              />
+              <div className="flex flex-col">
+                <span className="text-sm font-medium text-black group-hover:text-[#0e8ce4] transition-colors leading-tight">
+                  Wishlist
+                </span>
+                <span className="text-xs text-[#828282] leading-tight mt-1">
+                  {wishlistCount}
                 </span>
               </div>
-              <span className="text-[10px] text-[#828282] font-medium group-hover:text-[#0e8ce4] transition-colors">
-                Wishlist
-              </span>
-              <span className="text-[10px] text-[#828282]">{wishlistCount}</span>
             </Link>
 
             {/* Cart */}
             <Link
               href="/cart"
-              className="relative group flex flex-col items-center gap-1 cursor-pointer"
+              className="group flex items-center gap-3.5 cursor-pointer"
+              aria-label="Cart"
             >
-              <div
-                className="relative p-2 text-[#cccccc] group-hover:text-[#0e8ce4] transition-colors"
-                aria-label="Cart"
-              >
-                <ShoppingBag size={20} strokeWidth={2} />
-                <span className="absolute -top-1 -right-1 w-[24px] h-[24px] bg-[#0e8ce4] text-white rounded-full text-[10px] font-medium flex items-center justify-center shadow-sm">
+              <div className="relative shrink-0">
+                <ShoppingBag
+                  size={34}
+                  strokeWidth={1.5}
+                  className="text-black group-hover:text-[#0e8ce4] transition-colors"
+                />
+                <span className="absolute -bottom-1 -right-2 min-w-[19px] h-[19px] px-1 bg-[#0e8ce4] text-white rounded-full text-[11px] font-bold flex items-center justify-center shadow-sm">
                   {cartCount}
                 </span>
               </div>
-              <span className="text-[10px] text-[#828282] font-medium group-hover:text-[#0e8ce4] transition-colors">
-                Cart
-              </span>
-              <span className="text-[10px] text-[#828282] font-medium">{formatMoney(cartTotal)}</span>
+              <div className="flex flex-col">
+                <span className="text-sm font-medium text-black group-hover:text-[#0e8ce4] transition-colors leading-tight">
+                  Cart
+                </span>
+                <span className="text-xs text-[#828282] leading-tight mt-1">
+                  {formatMoney(cartTotal)}
+                </span>
+              </div>
             </Link>
           </div>
         </div>
@@ -287,7 +308,7 @@ export default function Header() {
 
       {/* ============ TIER 3: PRIMARY NAVIGATION ============ */}
       <nav className="h-[60px] bg-white shadow-[0_5px_20px_rgba(0,0,0,0.05)] border-t border-[#e5e5e5]">
-        <div className="container h-full flex items-center justify-between lg:px-0">
+        <div className="container h-full flex items-center justify-between">
           {/* Category spine button */}
           <div
             className="w-[270px] h-full bg-[#0e8ce4] text-white px-6 flex items-center gap-4 uppercase font-medium tracking-wider cursor-pointer relative group"
