@@ -1,9 +1,7 @@
-@import url("https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;700&display=swap");
-
 @import "tailwindcss";
 
 @theme {
-  --font-rubik: "Rubik", sans-serif;
+  --font-rubik: var(--font-rubik), "Rubik", sans-serif;
 
   --color-brand: #0e8ce4;
   --color-brand-hover: #3e9ce8;
@@ -29,13 +27,24 @@ html {
 body {
   background: #ffffff;
   color: #212529;
-  font-family: "Rubik", sans-serif;
+  font-family: var(--font-rubik), "Rubik", sans-serif;
 }
 
 .container {
   max-width: 1140px;
   margin: 0 auto;
   padding: 0 1rem;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  ::before,
+  ::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }
 
 /* Custom scrollbar for nicer dropdowns */

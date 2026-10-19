@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef } from "react";
 import { useStore } from "@/lib/store";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import {
   Mail,
   Phone,
@@ -126,14 +127,25 @@ function NavLinkDrawer({
 }
 
 export default function Header() {
+  const router = useRouter();
   const { wishlistCount, cartCount, cartTotal } = useStore();
   const [mobileOpen, setMobileOpen] = useState(false);
   const [categoriesOpen, setCategoriesOpen] = useState(false);
   const [superDealsOpen, setSuperDealsOpen] = useState(false);
   const [featuredBrandsOpen, setFeaturedBrandsOpen] = useState(false);
   const [pagesOpen, setPagesOpen] = useState(false);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [searchCategory, setSearchCategory] = useState("All Categories");
 
   const formatMoney = (n: number) => `$${n.toFixed(2)}`;
+
+  const handleSearchSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    const params = new URLSearchParams();
+    if (searchTerm.trim()) params.set("q", searchTerm.trim());
+    if (searchCategory !== "All Categories") params.set("cat", searchCategory);
+    router.push(`/shop?${params.toString()}`);
+  };
 
   return (
     <>
@@ -195,18 +207,22 @@ export default function Header() {
           {/* Search */}
           <div className="hidden lg:flex items-center">
             <form
-              onSubmit={(e) => {
-                e.preventDefault();
-              }}
+              onSubmit={handleSearchSubmit}
               className="relative flex items-center w-[500px] h-[50px] border border-[#e5e5e5] rounded-[5px] overflow-hidden focus-within:border-[#0e8ce4] transition-colors"
             >
               <input
                 type="text"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
                 placeholder="Search for products..."
                 className="flex-1 h-full px-4 text-sm focus:outline-none"
               />
               <div className="relative h-full flex items-center border-l border-[#e5e5e5] px-3 bg-white">
-                <select className="border-none bg-transparent text-xs text-black/60 cursor-pointer appearance-none pr-5 focus:outline-none">
+                <select
+                  value={searchCategory}
+                  onChange={(e) => setSearchCategory(e.target.value)}
+                  className="border-none bg-transparent text-xs text-black/60 cursor-pointer appearance-none pr-5 focus:outline-none"
+                >
                   <option>All Categories</option>
                   {CATEGORIES.map((c) => (
                     <option key={c}>{c}</option>
