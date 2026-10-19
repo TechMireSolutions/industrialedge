@@ -25,8 +25,8 @@ export interface CartItem {
   image: string;
 }
 
-const WISHLIST_KEY = "onetech_wishlist";
-const CART_KEY = "onetech_cart";
+const WISHLIST_KEY = "industrialedge_wishlist";
+const CART_KEY = "industrialedge_cart";
 const BASE_WISHLIST_OFFSET = 115;
 
 const INITIAL_CART: CartItem[] = [
@@ -55,9 +55,9 @@ function notify() {
 function initMemory() {
   if (typeof window === "undefined" || initialized) return;
   try {
-    const rawW = localStorage.getItem(WISHLIST_KEY);
+    const rawW = localStorage.getItem(WISHLIST_KEY) || localStorage.getItem("onetech_wishlist");
     if (rawW) memoryWishlist = JSON.parse(rawW);
-    const rawC = localStorage.getItem(CART_KEY);
+    const rawC = localStorage.getItem(CART_KEY) || localStorage.getItem("onetech_cart");
     if (rawC) memoryCart = JSON.parse(rawC);
   } catch {
     // Ignore invalid JSON in storage

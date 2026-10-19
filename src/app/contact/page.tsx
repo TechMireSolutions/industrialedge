@@ -33,7 +33,7 @@ export default function ContactPage() {
                   <CheckCircle2 size={48} className="text-[#0e8ce4] mx-auto mb-4" />
                   <h2 className="text-xl font-medium text-black mb-2">Message Sent Successfully!</h2>
                   <p className="text-sm text-black/60 mb-6">
-                    Thank you for contacting OneTech. We will respond to your inquiry within 24 hours.
+                    Thank you for contacting Industrial Edge. We will respond to your inquiry within 24 hours.
                   </p>
                   <button
                     type="button"
@@ -150,7 +150,7 @@ export default function ContactPage() {
                   </div>
                   <div>
                     <h3 className="font-medium text-black text-sm">Email Support</h3>
-                    <p className="text-sm text-black/60 mt-0.5">support@onetech.example</p>
+                    <p className="text-sm text-black/60 mt-0.5">support@industrialedge.example</p>
                   </div>
                 </div>
               </div>

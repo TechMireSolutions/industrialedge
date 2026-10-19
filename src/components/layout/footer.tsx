@@ -36,11 +36,11 @@ export default function Footer() {
           {/* Column 1: Logo + contact */}
           <div className="col-span-1 md:col-span-2">
             <div className="flex items-center gap-2 mb-4">
-              <span className="text-[30px] font-medium text-[#0e8ce4] tracking-tight">OneTech</span>
+              <span className="text-[30px] font-bold text-[#0e8ce4] tracking-tight">Industrial Edge</span>
             </div>
-            <p className="text-sm text-black/50 mb-6 max-w-[260px] leading-relaxed">
-              Your trusted destination for cutting-edge electronics, smart devices, and premium
-              gadgets delivered straight to your door.
+            <p className="text-sm text-black/50 mb-6 max-w-[280px] leading-relaxed">
+              Your trusted destination for cutting-edge electronics, industrial hardware, smart devices, and premium
+              technology solutions delivered straight to your facility.
             </p>
 
             <div className="space-y-3">
@@ -64,7 +64,7 @@ export default function Footer() {
                 <div className="flex items-center gap-2 mt-0.5">
                   <Mail size={16} strokeWidth={1.5} />
                 </div>
-                <span className="text-sm text-black/50">support@onetech.example</span>
+                <span className="text-sm text-black/50">support@industrialedge.example</span>
               </div>
             </div>
 
@@ -125,7 +125,7 @@ export default function Footer() {
         <div className="border-t border-[#e5e5e5] pt-8 pb-4">
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
             <div className="text-xs text-black/50">
-              © {year} OneTech. All rights reserved.
+              © {year} Industrial Edge. All rights reserved.
             </div>
             <div className="flex flex-wrap gap-3 md:gap-6">
               {PAYMENTS.map((p) => (

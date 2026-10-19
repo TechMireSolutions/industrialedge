@@ -13,8 +13,8 @@ const rubik = Rubik({
 });
 
 export const metadata: Metadata = {
-  title: "OneTech — Electronics Store",
-  description: "Your trusted destination for cutting-edge electronics, smart devices, and premium gadgets.",
+  title: "Industrial Edge — Industrial Electronics & Tech Store",
+  description: "Your trusted destination for cutting-edge electronics, industrial hardware, smart devices, and premium gadgets.",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

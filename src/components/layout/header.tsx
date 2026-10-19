@@ -205,7 +205,7 @@ export default function Header() {
             </div>
             <div className="hidden sm:flex items-center gap-2 text-[#212529]">
               <Mail size={15} strokeWidth={1.5} className="shrink-0 text-[#212529]" />
-              <span>support@onetech.example</span>
+              <span>support@industrialedge.example</span>
             </div>
           </div>
 
@@ -254,9 +254,9 @@ export default function Header() {
           {/* Logo */}
           <Link
             href="/"
-            className="text-[36px] sm:text-[38px] font-bold text-[#0e8ce4] tracking-tight hover:opacity-95 transition-opacity leading-none"
+            className="text-[28px] sm:text-[34px] xl:text-[36px] font-bold text-[#0e8ce4] tracking-tight hover:opacity-95 transition-opacity leading-none shrink-0"
           >
-            OneTech
+            Industrial Edge
           </Link>
 
           {/* Scoped Search */}

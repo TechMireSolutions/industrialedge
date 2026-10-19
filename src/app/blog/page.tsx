@@ -43,7 +43,7 @@ export default function BlogPage() {
         <div className="container">
           <h1 className="text-[28px] font-normal text-[#212529] mb-2">Blog</h1>
           <p className="text-sm text-black/50 mb-10">
-            Tech news, reviews, and guides from the OneTech team.
+            Tech news, reviews, and guides from the Industrial Edge team.
           </p>
 
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
