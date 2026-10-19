@@ -19,8 +19,11 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={`h-full antialiased ${rubik.variable}`}>
-      <body className={`min-h-full flex flex-col bg-[#ffffff] text-[#212529] ${rubik.className}`}>
+    <html lang="en" className={`h-full antialiased ${rubik.variable}`} suppressHydrationWarning>
+      <body
+        className={`min-h-full flex flex-col bg-[#ffffff] text-[#212529] ${rubik.className}`}
+        suppressHydrationWarning
+      >
         <StoreProvider>
           <Header />
           <main className="flex-1">{children}</main>
