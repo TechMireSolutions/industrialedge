@@ -1,0 +1,55 @@
+@import url("https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;700&display=swap");
+
+@import "tailwindcss";
+
+@theme {
+  --font-rubik: "Rubik", sans-serif;
+
+  --color-brand: #0e8ce4;
+  --color-brand-hover: #3e9ce8;
+  --color-coral: #df3b3b;
+  --color-surface-light: #eff6fa;
+  --color-surface-gray: #f2f4f8;
+  --color-text-primary: #212529;
+  --color-text-muted: rgba(0, 0, 0, 0.5);
+  --color-text-subtle: #828282;
+  --color-border: #e5e5e5;
+  --color-border-light: #e8e8e8;
+  --color-divider: #cccccc;
+
+  --shadow-card: 0 10px 25px rgba(0, 0, 0, 0.1);
+  --shadow-drawer: 0 15px 25px rgba(0, 0, 0, 0.1);
+  --shadow-pill: 0 1px 5px rgba(0, 0, 0, 0.1);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: #ffffff;
+  color: #212529;
+  font-family: "Rubik", sans-serif;
+}
+
+.container {
+  max-width: 1140px;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+/* Custom scrollbar for nicer dropdowns */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+::-webkit-scrollbar-thumb {
+  background: #c1c1c1;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #a8a8a8;
+}

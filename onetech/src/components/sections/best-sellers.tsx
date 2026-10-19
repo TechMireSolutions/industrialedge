@@ -1,0 +1,138 @@
+"use client";
+
+import { useState } from "react";
+import Image from "next/image";
+import { Star } from "lucide-react";
+
+const TABS = ["Top 20", "Audio & Video", "Laptops & Computers"];
+
+interface BestSellerItem {
+  id: string;
+  image: string;
+  category: string;
+  title: string;
+  price: number;
+  originalPrice?: number;
+  rating: number;
+}
+
+const BEST_SELLERS: BestSellerItem[] = [
+  {
+    id: "bs1",
+    image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=300&h=200&fit=crop&q=80",
+    category: "Audio",
+    title: "Studio Pro Headphones",
+    price: 225,
+    originalPrice: 300,
+    rating: 4.7,
+  },
+  {
+    id: "bs2",
+    image: "https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=300&h=200&fit=crop&q=80",
+    category: "Computers",
+    title: "MacBook Air M3",
+    price: 1099,
+    rating: 4.9,
+  },
+  {
+    id: "bs3",
+    image: "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=300&h=200&fit=crop&q=80",
+    category: "Gadgets",
+    title: "Pixel Watch 2",
+    price: 299,
+    originalPrice: 349,
+    rating: 4.3,
+  },
+  {
+    id: "bs4",
+    image: "https://images.unsplash.com/photo-1606181954474-675108d74477?w=300&h=200&fit=crop&q=80",
+    category: "Gaming",
+    title: "Gaming Console X",
+    price: 499,
+    rating: 4.8,
+  },
+];
+
+function StarRating({ rating }: { rating: number }) {
+  const full = Math.floor(rating);
+  const half = rating % 1 >= 0.5;
+  const empty = 5 - full - (half ? 1 : 0);
+  return (
+    <div className="flex items-center gap-0.5">
+      {Array.from({ length: full }).map((_, i) => (
+        <Star key={i} size={12} strokeWidth={1.5} fill="#df3b3b" className="text-[#df3b3b]" />
+      ))}
+      {half && <Star size={12} strokeWidth={1.5} fill="#df3b3b" className="text-[#df3b3b]" />}
+      {Array.from({ length: empty }).map((_, i) => (
+        <Star key={i} size={12} strokeWidth={1.5} className="text-[#e5e5e5]" />
+      ))}
+      <span className="ml-1 text-xs text-black/50">{rating.toFixed(1)}</span>
+    </div>
+  );
+}
+
+export default function BestSellers() {
+  const [activeTab, setActiveTab] = useState("Top 20");
+
+  return (
+    <section className="bg-[#eff6fa] py-14 border-y border-[#e5e5e5]">
+      <div className="container">
+        <h2 className="text-lg font-medium text-black mb-8 text-center">Best Sellers</h2>
+
+        {/* Tabs */}
+        <div className="flex justify-center gap-2 mb-8">
+          {TABS.map((t) => (
+            <button
+              key={t}
+              onClick={() => setActiveTab(t)}
+              className={`px-5 py-2 rounded-full text-sm font-medium transition-colors ${
+                activeTab === t
+                  ? "bg-[#0e8ce4] text-white shadow-[0_1px_5px_rgba(0,0,0,0.1)]"
+                  : "bg-white border border-[#e5e5e5] text-black/50 hover:text-[#0e8ce4]"
+              }`}
+            >
+              {t}
+            </button>
+          ))}
+        </div>
+
+        {/* Horizontal media cards: 2 columns */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+          {BEST_SELLERS.slice(0, 4).map((item) => (
+            <div
+              key={item.id}
+              className="bg-white border border-[#e5e5e5] rounded-[5px] overflow-hidden flex"
+            >
+              <div className="w-[150px] h-[100px] flex-shrink-0 bg-[#f2f4f8] flex items-center justify-center p-3 border-r border-[#e5e5e5]">
+                <Image
+                  src={item.image}
+                  alt={item.title}
+                  className="w-full h-full object-contain"
+                  width={150}
+                  height={100}
+                />
+              </div>
+              <div className="p-4 flex flex-col justify-center">
+                <span className="text-[10px] uppercase text-[#0e8ce4] font-medium block mb-1">
+                  {item.category}
+                </span>
+                <h3 className="text-sm font-medium text-black leading-tight mb-2">{item.title}</h3>
+                <div className="flex items-center gap-2 mb-2">
+                  <StarRating rating={item.rating} />
+                </div>
+                <div className="flex items-baseline gap-2">
+                  <span className="text-base font-medium text-[#df3b3b]">${item.price}</span>
+                  {item.originalPrice && (
+                    <span className="text-xs text-black/50 line-through ml-1">
+                      ${item.originalPrice}
+                    </span>
+                  )}
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
