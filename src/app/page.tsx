@@ -15,7 +15,7 @@ export default function Home() {
       <Hero />
       <TrustBar />
       <div className="container py-12 lg:py-16">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
           <DealsOfTheWeek />
           <TabbedProductGrid colSpan={8} />
         </div>
