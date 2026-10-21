@@ -13,7 +13,6 @@ interface HeroProduct {
   categoryLink: string;
   price: number;
   image: string;
-  badge?: string;
   description: string;
 }
 
@@ -30,7 +29,7 @@ const HERO_SIDE_PRODUCTS: HeroProduct[] = [
   },
   {
     id: "hero-fire-tv",
-    name: 'Amazon Fire TV 50" 4-Series 4K UHD smart TV',
+    name: "Amazon Fire TV 50'' 4-Series 4K UHD smart TV",
     category: "Apple products",
     categoryLink: "/category/tv-audio",
     price: 299.99,
@@ -67,7 +66,7 @@ export default function Hero() {
       description: item.description,
     };
     addToCart(storeProduct, 1);
-    showToast(`Added "${item.name.substring(0, 24)}..." to cart!`);
+    showToast(`Added to cart!`);
   };
 
   const handleToggleWishlist = (item: HeroProduct, e: React.MouseEvent) => {
@@ -85,186 +84,174 @@ export default function Hero() {
   };
 
   return (
-    <section className="relative w-full bg-[#f6f7f9] bg-[url('/images/bg1-home08.webp')] bg-cover bg-top bg-no-repeat py-8 md:py-12 lg:py-14 border-b border-gray-200/50">
+    <section className="relative w-full bg-[#f1f3f5] bg-[url('/images/hero-bg-exact.webp')] bg-cover bg-center bg-no-repeat border-b border-gray-200/40">
       {/* Toast Notification */}
       {toastMessage && (
-        <div className="fixed bottom-6 right-6 z-50 bg-[#1e2d3b] text-white px-4 py-2.5 rounded-lg shadow-xl text-sm flex items-center gap-2 animate-bounce">
+        <div className="fixed bottom-6 right-6 z-50 bg-[#1e2d3b] text-white px-4 py-2 rounded-lg shadow-xl text-xs sm:text-sm flex items-center gap-2 animate-bounce">
           <Check className="w-4 h-4 text-emerald-400" />
           <span>{toastMessage}</span>
         </div>
       )}
 
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 md:grid-cols-12 gap-8 lg:gap-6 items-center">
-          {/* Column 1 (Left): Dell G5 Gaming Laptop Image */}
-          <div className="md:col-span-5 lg:col-span-5 flex justify-center md:justify-start items-center">
-            <div className="relative group w-full max-w-[420px] lg:max-w-[460px] transition-transform duration-500 hover:scale-[1.02]">
+      {/* Main Banner Container - exact proportions from screenshot */}
+      <div className="max-w-[1024px] mx-auto min-h-[245px] px-4 sm:px-6 flex items-center py-4 sm:py-5">
+        <div className="w-full flex flex-col md:flex-row items-center justify-between gap-6 md:gap-0">
+          
+          {/* 1. Left: Dell G5 Gaming Laptop (Exact positioning & sizing) */}
+          <div className="w-full md:w-[35%] flex justify-center md:justify-start items-center">
+            <div className="relative w-[260px] sm:w-[285px] transition-transform duration-300 hover:scale-[1.02]">
               <Image
-                src="/images/dell-g5-hero.png"
+                src="/images/dell-g5-hero-exact.png"
                 alt="Dell G5 Gaming Laptop"
-                width={560}
-                height={380}
+                width={295}
+                height={210}
                 priority
-                className="w-full h-auto object-contain drop-shadow-[0_18px_24px_rgba(0,0,0,0.14)]"
+                className="w-full h-auto object-contain mix-blend-multiply"
               />
             </div>
           </div>
 
-          {/* Column 2 (Center): Pricing & Headings */}
-          <div className="md:col-span-3 lg:col-span-3 text-center md:text-left flex flex-col justify-center">
-            {/* Price label */}
-            <span className="text-[17px] sm:text-[19px] lg:text-[21px] text-[#73787d] font-normal leading-tight mb-1">
+          {/* 2. Center: Pricing & Headings (Exact Typography & Spacing) */}
+          <div className="w-full md:w-[32%] flex flex-col items-center md:items-start text-center md:text-left justify-center pl-0 md:pl-2">
+            <span className="text-[14px] sm:text-[15px] text-[#555e68] font-normal leading-tight mb-0.5">
               Price
             </span>
 
-            {/* $450 in big bold royal blue */}
-            <div className="text-[48px] sm:text-[56px] lg:text-[68px] font-bold text-[#004ec3] tracking-tight leading-none mb-3">
+            <div className="text-[46px] sm:text-[54px] font-bold text-[#2854d9] tracking-tight leading-none mb-1.5">
               $450
             </div>
 
-            {/* Tagline */}
-            <p className="text-[15px] sm:text-[17px] lg:text-[19px] text-[#333e48] font-light leading-snug mb-4 sm:mb-5">
+            <p className="text-[14px] sm:text-[15px] text-[#555e68] font-normal leading-tight mb-2.5">
               Let power flow through you
             </p>
 
-            {/* DELL G5 GAMING LAPTOP */}
-            <h1 className="text-[24px] sm:text-[28px] lg:text-[34px] font-bold text-[#1e2d3b] tracking-normal uppercase leading-[1.18]">
+            <h1 className="text-[23px] sm:text-[27px] font-bold text-[#22262a] tracking-tight uppercase leading-[1.12]">
               DELL G5
               <br />
               GAMING LAPTOP
             </h1>
           </div>
 
-          {/* Column 3 (Right): Stack of 2 Horizontal Product Cards with Hover Actions */}
-          <div className="md:col-span-4 lg:col-span-4 flex flex-col gap-4 sm:gap-5 justify-center items-center md:items-end">
+          {/* 3. Right: Stack of 2 Compact Product Cards (Exact 227px x 82px) */}
+          <div className="w-full md:w-[33%] flex flex-col gap-[20px] sm:gap-[22px] items-center md:items-end justify-center">
             {HERO_SIDE_PRODUCTS.map((product) => {
               const liked = isWishlisted(product.id);
 
               return (
                 <div
                   key={product.id}
-                  className="group relative bg-white rounded-lg p-3.5 sm:p-4 w-full max-w-[340px] shadow-[0_2px_12px_rgba(0,0,0,0.04)] border border-gray-100 hover:shadow-[0_8px_20px_rgba(0,0,0,0.08)] transition-all duration-300"
+                  className="group relative bg-white rounded-[8px] w-[227px] sm:w-[230px] h-[82px] px-3 py-2 shadow-[0_2px_10px_rgba(0,0,0,0.04)] hover:shadow-[0_4px_16px_rgba(0,0,0,0.08)] transition-all duration-200 flex items-center gap-2.5 select-none"
                 >
-                  <div className="flex items-center gap-3 sm:gap-4">
-                    {/* Left: Product Thumbnail */}
-                    <div className="relative w-[75px] h-[75px] sm:w-[85px] sm:h-[85px] flex-shrink-0 flex items-center justify-center p-1 bg-white">
-                      <Image
-                        src={product.image}
-                        alt={product.name}
-                        width={90}
-                        height={90}
-                        className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-300"
-                      />
-                    </div>
+                  {/* Left: Product Thumbnail */}
+                  <div className="relative w-[50px] h-[50px] flex-shrink-0 flex items-center justify-center">
+                    <Image
+                      src={product.image}
+                      alt={product.name}
+                      width={52}
+                      height={52}
+                      className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-200"
+                    />
+                  </div>
 
-                    {/* Right: Category, Title & Swap Area (Price vs Actions) */}
-                    <div className="flex-1 min-w-0 flex flex-col justify-between">
-                      {/* Category */}
-                      <Link
-                        href={product.categoryLink}
-                        className="text-[11px] sm:text-[12px] text-[#73787d] font-normal hover:text-[#004ec3] transition-colors leading-tight mb-1 truncate block"
-                      >
-                        {product.category}
-                      </Link>
+                  {/* Right: Category, Title & Bottom Swap Area */}
+                  <div className="flex-1 min-w-0 flex flex-col justify-between h-full py-0.5">
+                    {/* Category */}
+                    <Link
+                      href={product.categoryLink}
+                      className="text-[10px] text-[#73787d] font-normal hover:text-[#1a56db] transition-colors leading-none truncate block mb-0.5"
+                    >
+                      {product.category}
+                    </Link>
 
-                      {/* Title */}
-                      <Link
-                        href={`/product/${product.id}`}
-                        className="text-[12px] sm:text-[13px] font-medium text-[#004ec3] leading-[1.3] line-clamp-2 hover:underline mb-2 transition-colors block"
-                        title={product.name}
-                      >
-                        {product.name}
-                      </Link>
+                    {/* Title */}
+                    <Link
+                      href={`/product/${product.id}`}
+                      className="text-[11px] font-semibold text-[#1a56db] leading-[1.25] line-clamp-2 hover:underline transition-colors block mb-1"
+                      title={product.name}
+                    >
+                      {product.name}
+                    </Link>
 
-                      {/* Bottom Area: Normal Price vs 4 Rounded Action Buttons on Hover */}
-                      <div className="relative h-7 sm:h-8 flex items-center">
-                        {/* Normal State: Price */}
-                        <div className="absolute inset-0 flex items-center transition-all duration-200 ease-in-out group-hover:opacity-0 group-hover:pointer-events-none group-hover:-translate-y-1">
-                          <span className="text-[14px] sm:text-[15px] font-bold text-[#333e48]">
-                            ${product.price.toFixed(2)}
+                    {/* Bottom Swap: Price vs 4 Rounded Action Buttons */}
+                    <div className="relative h-[22px] flex items-center">
+                      {/* Normal Price */}
+                      <div className="absolute inset-0 flex items-center transition-all duration-150 ease-in-out group-hover:opacity-0 group-hover:pointer-events-none group-hover:-translate-y-1">
+                        <span className="text-[13px] font-bold text-[#22262a]">
+                          ${product.price.toFixed(2)}
+                        </span>
+                      </div>
+
+                      {/* Hover Action Buttons */}
+                      <div className="absolute inset-0 flex items-center gap-1.5 opacity-0 pointer-events-none group-hover:opacity-100 group-hover:pointer-events-auto group-hover:translate-y-0 translate-y-1 transition-all duration-150 ease-in-out">
+                        {/* Quick View Button */}
+                        <div className="relative group/btn">
+                          <button
+                            type="button"
+                            onClick={(e) => {
+                              e.preventDefault();
+                              e.stopPropagation();
+                              setQuickViewProduct(product);
+                            }}
+                            className="w-[22px] h-[22px] rounded-full bg-[#f8f9fa] border border-[#e5e7eb] flex items-center justify-center text-[#333e48] hover:bg-[#1a56db] hover:text-white hover:border-[#1a56db] transition-colors shadow-2xs cursor-pointer"
+                            aria-label="Quick View"
+                          >
+                            <Eye className="w-2.5 h-2.5 stroke-[1.8]" />
+                          </button>
+                          <span className="absolute bottom-full left-1/2 -translate-x-1/2 mb-1 px-1.5 py-0.5 text-[9px] font-medium text-white bg-[#222222] rounded whitespace-nowrap opacity-0 pointer-events-none group-hover/btn:opacity-100 transition-opacity duration-150 z-30 shadow-md">
+                            Quick View
                           </span>
                         </div>
 
-                        {/* Hover State: 4 Rounded Action Buttons */}
-                        <div className="absolute inset-0 flex items-center gap-1.5 opacity-0 pointer-events-none group-hover:opacity-100 group-hover:pointer-events-auto group-hover:translate-y-0 translate-y-1 transition-all duration-200 ease-in-out">
-                          {/* 1. Quick View Button */}
-                          <div className="relative group/btn">
-                            <button
-                              type="button"
-                              onClick={(e) => {
-                                e.preventDefault();
-                                e.stopPropagation();
-                                setQuickViewProduct(product);
-                              }}
-                              className="w-7 h-7 sm:w-7.5 sm:h-7.5 rounded-full border border-gray-200 bg-white flex items-center justify-center text-gray-700 hover:bg-[#004ec3] hover:text-white hover:border-[#004ec3] transition-colors shadow-xs cursor-pointer"
-                              aria-label="Quick View"
-                            >
-                              <Eye className="w-3.5 h-3.5 stroke-[1.8]" />
-                            </button>
-                            {/* Tooltip */}
-                            <span className="absolute bottom-full left-1/2 -translate-x-1/2 mb-1.5 px-2 py-0.5 text-[10px] font-medium text-white bg-[#222222] rounded whitespace-nowrap opacity-0 pointer-events-none group-hover/btn:opacity-100 transition-opacity duration-200 z-30 shadow-md">
-                              Quick View
-                              <span className="absolute top-full left-1/2 -translate-x-1/2 border-[3px] border-transparent border-t-[#222222]" />
-                            </span>
-                          </div>
+                        {/* Wishlist Button */}
+                        <div className="relative group/btn">
+                          <button
+                            type="button"
+                            onClick={(e) => handleToggleWishlist(product, e)}
+                            className={`w-[22px] h-[22px] rounded-full border transition-colors shadow-2xs flex items-center justify-center cursor-pointer ${
+                              liked
+                                ? "border-red-500 bg-red-50 text-red-500"
+                                : "bg-[#f8f9fa] border-[#e5e7eb] text-[#333e48] hover:bg-[#1a56db] hover:text-white hover:border-[#1a56db]"
+                            }`}
+                            aria-label="Wishlist"
+                          >
+                            <Heart
+                              className="w-2.5 h-2.5 stroke-[1.8]"
+                              fill={liked ? "currentColor" : "none"}
+                            />
+                          </button>
+                          <span className="absolute bottom-full left-1/2 -translate-x-1/2 mb-1 px-1.5 py-0.5 text-[9px] font-medium text-white bg-[#222222] rounded whitespace-nowrap opacity-0 pointer-events-none group-hover/btn:opacity-100 transition-opacity duration-150 z-30 shadow-md">
+                            Wishlist
+                          </span>
+                        </div>
 
-                          {/* 2. Wishlist Button */}
-                          <div className="relative group/btn">
-                            <button
-                              type="button"
-                              onClick={(e) => handleToggleWishlist(product, e)}
-                              className={`w-7 h-7 sm:w-7.5 sm:h-7.5 rounded-full border transition-colors shadow-xs flex items-center justify-center cursor-pointer ${
-                                liked
-                                  ? "border-red-500 bg-red-50 text-red-500"
-                                  : "border-gray-200 bg-white text-gray-700 hover:bg-[#004ec3] hover:text-white hover:border-[#004ec3]"
-                              }`}
-                              aria-label="Wishlist"
-                            >
-                              <Heart
-                                className="w-3.5 h-3.5 stroke-[1.8]"
-                                fill={liked ? "currentColor" : "none"}
-                              />
-                            </button>
-                            {/* Tooltip */}
-                            <span className="absolute bottom-full left-1/2 -translate-x-1/2 mb-1.5 px-2 py-0.5 text-[10px] font-medium text-white bg-[#222222] rounded whitespace-nowrap opacity-0 pointer-events-none group-hover/btn:opacity-100 transition-opacity duration-200 z-30 shadow-md">
-                              {liked ? "Remove Wishlist" : "Wishlist"}
-                              <span className="absolute top-full left-1/2 -translate-x-1/2 border-[3px] border-transparent border-t-[#222222]" />
-                            </span>
-                          </div>
+                        {/* Compare Button */}
+                        <div className="relative group/btn">
+                          <button
+                            type="button"
+                            onClick={(e) => handleCompare(product, e)}
+                            className="w-[22px] h-[22px] rounded-full bg-[#f8f9fa] border border-[#e5e7eb] flex items-center justify-center text-[#333e48] hover:bg-[#1a56db] hover:text-white hover:border-[#1a56db] transition-colors shadow-2xs cursor-pointer"
+                            aria-label="Compare"
+                          >
+                            <ArrowLeftRight className="w-2.5 h-2.5 stroke-[1.8]" />
+                          </button>
+                          <span className="absolute bottom-full left-1/2 -translate-x-1/2 mb-1 px-1.5 py-0.5 text-[9px] font-medium text-white bg-[#222222] rounded whitespace-nowrap opacity-0 pointer-events-none group-hover/btn:opacity-100 transition-opacity duration-150 z-30 shadow-md">
+                            Compare
+                          </span>
+                        </div>
 
-                          {/* 3. Compare Button */}
-                          <div className="relative group/btn">
-                            <button
-                              type="button"
-                              onClick={(e) => handleCompare(product, e)}
-                              className="w-7 h-7 sm:w-7.5 sm:h-7.5 rounded-full border border-gray-200 bg-white flex items-center justify-center text-gray-700 hover:bg-[#004ec3] hover:text-white hover:border-[#004ec3] transition-colors shadow-xs cursor-pointer"
-                              aria-label="Compare"
-                            >
-                              <ArrowLeftRight className="w-3.5 h-3.5 stroke-[1.8]" />
-                            </button>
-                            {/* Tooltip */}
-                            <span className="absolute bottom-full left-1/2 -translate-x-1/2 mb-1.5 px-2 py-0.5 text-[10px] font-medium text-white bg-[#222222] rounded whitespace-nowrap opacity-0 pointer-events-none group-hover/btn:opacity-100 transition-opacity duration-200 z-30 shadow-md">
-                              Compare
-                              <span className="absolute top-full left-1/2 -translate-x-1/2 border-[3px] border-transparent border-t-[#222222]" />
-                            </span>
-                          </div>
-
-                          {/* 4. Add to Cart Button */}
-                          <div className="relative group/btn">
-                            <button
-                              type="button"
-                              onClick={(e) => handleAddToCart(product, e)}
-                              className="w-7 h-7 sm:w-7.5 sm:h-7.5 rounded-full border border-gray-200 bg-white flex items-center justify-center text-gray-700 hover:bg-[#004ec3] hover:text-white hover:border-[#004ec3] transition-colors shadow-xs cursor-pointer"
-                              aria-label="Add to cart"
-                            >
-                              <ShoppingCart className="w-3.5 h-3.5 stroke-[1.8]" />
-                            </button>
-                            {/* Tooltip */}
-                            <span className="absolute bottom-full left-1/2 -translate-x-1/2 mb-1.5 px-2 py-0.5 text-[10px] font-medium text-white bg-[#222222] rounded whitespace-nowrap opacity-0 pointer-events-none group-hover/btn:opacity-100 transition-opacity duration-200 z-30 shadow-md">
-                              Add to cart
-                              <span className="absolute top-full left-1/2 -translate-x-1/2 border-[3px] border-transparent border-t-[#222222]" />
-                            </span>
-                          </div>
+                        {/* Add to Cart Button */}
+                        <div className="relative group/btn">
+                          <button
+                            type="button"
+                            onClick={(e) => handleAddToCart(product, e)}
+                            className="w-[22px] h-[22px] rounded-full bg-[#f8f9fa] border border-[#e5e7eb] flex items-center justify-center text-[#333e48] hover:bg-[#1a56db] hover:text-white hover:border-[#1a56db] transition-colors shadow-2xs cursor-pointer"
+                            aria-label="Add to cart"
+                          >
+                            <ShoppingCart className="w-2.5 h-2.5 stroke-[1.8]" />
+                          </button>
+                          <span className="absolute bottom-full left-1/2 -translate-x-1/2 mb-1 px-1.5 py-0.5 text-[9px] font-medium text-white bg-[#222222] rounded whitespace-nowrap opacity-0 pointer-events-none group-hover/btn:opacity-100 transition-opacity duration-150 z-30 shadow-md">
+                            Add to cart
+                          </span>
                         </div>
                       </div>
                     </div>
@@ -273,73 +260,74 @@ export default function Hero() {
               );
             })}
           </div>
+
         </div>
       </div>
 
       {/* Quick View Modal */}
       {quickViewProduct && (
         <div
-          className="fixed inset-0 z-50 bg-black/60 flex items-center justify-center p-4 backdrop-blur-xs animate-in fade-in duration-200"
+          className="fixed inset-0 z-50 bg-black/50 flex items-center justify-center p-4 backdrop-blur-xs animate-in fade-in duration-150"
           onClick={() => setQuickViewProduct(null)}
         >
           <div
-            className="bg-white rounded-xl max-w-lg w-full p-6 relative shadow-2xl animate-in zoom-in-95 duration-200"
+            className="bg-white rounded-lg max-w-md w-full p-5 relative shadow-xl animate-in zoom-in-95 duration-150"
             onClick={(e) => e.stopPropagation()}
           >
             <button
               type="button"
               onClick={() => setQuickViewProduct(null)}
-              className="absolute top-4 right-4 p-1 rounded-full text-gray-400 hover:text-gray-700 hover:bg-gray-100 transition-colors"
+              className="absolute top-3 right-3 p-1 rounded-full text-gray-400 hover:text-gray-700 hover:bg-gray-100 transition-colors"
               aria-label="Close modal"
             >
-              <X className="w-5 h-5" />
+              <X className="w-4 h-4" />
             </button>
 
-            <div className="flex flex-col sm:flex-row gap-6 items-center">
-              <div className="w-[180px] h-[180px] flex-shrink-0 flex items-center justify-center p-2 bg-gray-50 rounded-lg">
+            <div className="flex flex-col sm:flex-row gap-4 items-center">
+              <div className="w-[120px] h-[120px] flex-shrink-0 flex items-center justify-center p-2 bg-gray-50 rounded-md">
                 <Image
                   src={quickViewProduct.image}
                   alt={quickViewProduct.name}
-                  width={160}
-                  height={160}
+                  width={110}
+                  height={110}
                   className="w-full h-full object-contain"
                 />
               </div>
 
-              <div className="flex-1">
-                <span className="text-xs uppercase tracking-wider text-[#73787d] font-semibold">
+              <div className="flex-1 min-w-0">
+                <span className="text-[10px] uppercase tracking-wider text-[#73787d] font-semibold">
                   {quickViewProduct.category}
                 </span>
-                <h3 className="text-base font-bold text-[#1e2d3b] mt-1 leading-snug">
+                <h3 className="text-[14px] font-bold text-[#22262a] mt-1 leading-snug">
                   {quickViewProduct.name}
                 </h3>
-                <p className="text-xs text-gray-500 mt-2 line-clamp-3">
+                <p className="text-[11px] text-gray-500 mt-1.5 line-clamp-2">
                   {quickViewProduct.description}
                 </p>
-                <div className="text-xl font-bold text-[#004ec3] mt-3">
+                <div className="text-[16px] font-bold text-[#2854d9] mt-2">
                   ${quickViewProduct.price.toFixed(2)}
                 </div>
 
-                <div className="flex items-center gap-3 mt-4">
+                <div className="flex items-center gap-2 mt-3">
                   <button
                     type="button"
                     onClick={() => {
                       handleAddToCart(quickViewProduct);
                       setQuickViewProduct(null);
                     }}
-                    className="flex-1 bg-[#004ec3] hover:bg-[#003da0] text-white py-2 px-4 rounded-md text-sm font-semibold flex items-center justify-center gap-2 transition-colors cursor-pointer"
+                    className="flex-1 bg-[#1a56db] hover:bg-[#1442a8] text-white py-1.5 px-3 rounded text-xs font-semibold flex items-center justify-center gap-1.5 transition-colors cursor-pointer"
                   >
-                    <ShoppingCart className="w-4 h-4" />
+                    <ShoppingCart className="w-3.5 h-3.5" />
                     Add to Cart
                   </button>
                   <button
                     type="button"
                     onClick={(e) => handleToggleWishlist(quickViewProduct, e)}
-                    className="p-2 border border-gray-200 rounded-md text-gray-700 hover:text-red-500 hover:border-red-400 transition-colors cursor-pointer"
+                    className="p-1.5 border border-gray-200 rounded text-gray-700 hover:text-red-500 hover:border-red-300 transition-colors cursor-pointer"
                     aria-label="Wishlist"
                   >
                     <Heart
-                      className="w-4 h-4"
+                      className="w-3.5 h-3.5"
                       fill={isWishlisted(quickViewProduct.id) ? "red" : "none"}
                     />
                   </button>
