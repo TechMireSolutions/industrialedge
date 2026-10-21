@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { Eye, Heart, ArrowLeftRight, ShoppingCart, ChevronLeft, ChevronRight, X, Check } from "lucide-react";
@@ -16,111 +16,179 @@ interface TrendingItem {
   description?: string;
 }
 
-const TRENDING_12_PRODUCTS: TrendingItem[] = [
-  // Row 1
+interface ColumnPair {
+  top: TrendingItem;
+  bottom: TrendingItem;
+}
+
+const TRENDING_COLUMNS: ColumnPair[] = [
+  // Column 1
   {
-    id: "tr-1",
-    name: "Apple iPhone 11 Pro Max, US Version, 64GB, Gold (Copy)",
-    category: "Apple products",
-    price: 475.0,
-    image: "/images/o_4901-540x540.webp",
-    description: "Fully unlocked and compatible with any carrier of choice. Stunning 6.5-inch Super Retina XDR OLED display.",
-  },
-  {
-    id: "tr-2",
-    name: "Apple iPhone 11 Pro Max, US Version, 64GB, Gold",
-    category: "Apple products",
-    price: 475.0,
-    image: "/images/o_4901-540x540.webp",
-    description: "Triple-camera system with 12MP Ultra Wide, Wide, and Telephoto cameras; Night mode and 4K video.",
-  },
-  {
-    id: "tr-3",
-    name: "Lenovo Tab M10 Plus (3rd Gen) – 2022 – Long Battery Life – 1...",
-    category: "Apple products",
-    price: 193.13,
-    image: "/images/o_5001-540x540.webp",
-    description: "Sleek, contemporary design with 10.61-inch 2K IPS display, dual speakers, and all-day battery life.",
-  },
-  {
-    id: "tr-4",
-    name: "SAMSUNG 34-Inch Odyssey G5 Ultra-Wide Gaming Monitor...",
-    category: "Apple products",
-    price: 99.91,
-    originalPrice: 449.99,
-    image: "/images/o_4701-540x540.webp",
-    description: "Ultra-WQHD curved gaming monitor with 1000R curvature, 165Hz refresh rate, and 1ms response time.",
-  },
-  {
-    id: "tr-5",
-    name: "SAMSUNG SM-R830NZSAXAR Galaxy Watch Active2 40mm...",
-    category: "Apple products",
-    price: 78.5,
-    image: "/images/o_4801-540x540.webp",
-    description: "Track your fitness, heart rate, and sleep with precision. Sleek lightweight aluminum design.",
-  },
-  {
-    id: "tr-6",
-    name: 'Samsung Galaxy Tab S4 (10.5") Wi-Fi Model SM-T830...',
-    category: "Apple products",
-    price: 74.91,
-    originalPrice: 844.53,
-    image: "/images/o_4601-540x540.webp",
-    description: "Transform your tablet into a PC with Samsung DeX and included S Pen for maximum productivity.",
+    top: {
+      id: "tr-1",
+      name: "Apple iPhone 11 Pro Max, US Version, 64GB, Gold (Copy)",
+      category: "Apple products",
+      price: 475.0,
+      image: "/images/o_4901-540x540.webp",
+      description: "Fully unlocked and compatible with any carrier of choice. Stunning 6.5-inch Super Retina XDR OLED display.",
+    },
+    bottom: {
+      id: "tr-7",
+      name: "Canon Mirrorless Camera [EOS M6 Mark II] for Vlogging + EF...",
+      category: "Apple products",
+      price: 898.0,
+      originalPrice: 1598.0,
+      image: "/images/o_3801-540x540.webp",
+      description: "High image quality with 32.5 Megapixel CMOS (APS-C) sensor, high-speed continuous shooting up to 14 fps.",
+    },
   },
 
-  // Row 2
+  // Column 2
   {
-    id: "tr-7",
-    name: "Canon Mirrorless Camera [EOS M6 Mark II] for Vlogging + EF...",
-    category: "Apple products",
-    price: 898.0,
-    originalPrice: 1598.0,
-    image: "/images/o_3801-540x540.webp",
-    description: "High image quality with 32.5 Megapixel CMOS (APS-C) sensor, high-speed continuous shooting up to 14 fps.",
+    top: {
+      id: "tr-2",
+      name: "Apple iPhone 11 Pro Max, US Version, 64GB, Gold",
+      category: "Apple products",
+      price: 475.0,
+      image: "/images/o_4901-540x540.webp",
+      description: "Triple-camera system with 12MP Ultra Wide, Wide, and Telephoto cameras; Night mode and 4K video.",
+    },
+    bottom: {
+      id: "tr-8",
+      name: "Canon EOS M50 Mark II Mirrorless Camera with 15-...",
+      category: "Apple products",
+      price: 519.0,
+      originalPrice: 839.95,
+      image: "/images/o_3901-540x540.webp",
+      description: "Crisp 24.1 Megapixel APS-C CMOS sensor with eye-detection AF and vertical 4K video capability.",
+    },
   },
+
+  // Column 3
   {
-    id: "tr-8",
-    name: "Canon EOS M50 Mark II Mirrorless Camera with 15-...",
-    category: "Apple products",
-    price: 519.0,
-    originalPrice: 839.95,
-    image: "/images/o_3901-540x540.webp",
-    description: "Crisp 24.1 Megapixel APS-C CMOS sensor with eye-detection AF and vertical 4K video capability.",
+    top: {
+      id: "tr-3",
+      name: "Lenovo Tab M10 Plus (3rd Gen) – 2022 – Long Battery Life – 1...",
+      category: "Apple products",
+      price: 193.13,
+      image: "/images/o_5001-540x540.webp",
+      description: "Sleek, contemporary design with 10.61-inch 2K IPS display, dual speakers, and all-day battery life.",
+    },
+    bottom: {
+      id: "tr-9",
+      name: "ASUS ZenBook Flip 13 Ultra Slim Convertible Laptop, 13.3...",
+      category: "Apple products",
+      price: 1082.72,
+      image: "/images/o_4001-540x540.webp",
+      description: "13.3-inch OLED FHD Touch Display with 360 ErgoLift hinge, Intel Core i5 processor, and 512GB SSD.",
+    },
   },
+
+  // Column 4
   {
-    id: "tr-9",
-    name: "ASUS ZenBook Flip 13 Ultra Slim Convertible Laptop, 13.3...",
-    category: "Apple products",
-    price: 1082.72,
-    image: "/images/o_4001-540x540.webp",
-    description: "13.3-inch OLED FHD Touch Display with 360 ErgoLift hinge, Intel Core i5 processor, and 512GB SSD.",
+    top: {
+      id: "tr-4",
+      name: "SAMSUNG 34-Inch Odyssey G5 Ultra-Wide Gaming Monitor...",
+      category: "Apple products",
+      price: 99.91,
+      originalPrice: 449.99,
+      image: "/images/o_4701-540x540.webp",
+      description: "Ultra-WQHD curved gaming monitor with 1000R curvature, 165Hz refresh rate, and 1ms response time.",
+    },
+    bottom: {
+      id: "tr-10",
+      name: 'Acer Aspire 5 A515-56-347N Slim Laptop – 15.6" Full HD IP...',
+      category: "Acer",
+      price: 529.75,
+      image: "/images/o_3603-540x540.webp",
+      description: "Powerful 11th Gen Intel Core processor, 15.6-inch Full HD IPS display with narrow bezels.",
+    },
   },
+
+  // Column 5
   {
-    id: "tr-10",
-    name: 'Acer Aspire 5 A515-56-347N Slim Laptop – 15.6" Full HD IP...',
-    category: "Acer",
-    price: 529.75,
-    image: "/images/o_3603-540x540.webp",
-    description: "Powerful 11th Gen Intel Core processor, 15.6-inch Full HD IPS display with narrow bezels.",
+    top: {
+      id: "tr-5",
+      name: "SAMSUNG SM-R830NZSAXAR Galaxy Watch Active2 40mm...",
+      category: "Apple products",
+      price: 78.5,
+      image: "/images/o_4801-540x540.webp",
+      description: "Track your fitness, heart rate, and sleep with precision. Sleek lightweight aluminum design.",
+    },
+    bottom: {
+      id: "tr-11",
+      name: "PlayStation 5 DualSense Wireless Controller – Black",
+      category: "Apple products",
+      price: 30.0,
+      originalPrice: 69.99,
+      image: "/images/o_3201-540x540.webp",
+      description: "Haptic feedback, dynamic adaptive triggers, and built-in microphone integrated into an iconic design.",
+    },
   },
+
+  // Column 6
   {
-    id: "tr-11",
-    name: "PlayStation 5 DualSense Wireless Controller – Black",
-    category: "Apple products",
-    price: 30.0,
-    originalPrice: 69.99,
-    image: "/images/o_3201-540x540.webp",
-    description: "Haptic feedback, dynamic adaptive triggers, and built-in microphone integrated into an iconic design.",
+    top: {
+      id: "tr-6",
+      name: 'Samsung Galaxy Tab S4 (10.5") Wi-Fi Model SM-T830...',
+      category: "Apple products",
+      price: 74.91,
+      originalPrice: 844.53,
+      image: "/images/o_4601-540x540.webp",
+      description: "Transform your tablet into a PC with Samsung DeX and included S Pen for maximum productivity.",
+    },
+    bottom: {
+      id: "tr-12",
+      name: "SKG Smart Watch Make/Answer Call for Men...",
+      category: "Apple products",
+      price: 29.19,
+      originalPrice: 99.91,
+      image: "/images/o_2901-540x540.webp",
+      description: "Bluetooth calling smartwatch with fitness tracker, heart rate monitor, sleep tracking, and IP68 waterproof.",
+    },
   },
+
+  // Column 7
   {
-    id: "tr-12",
-    name: "SKG Smart Watch Make/Answer Call for Men...",
-    category: "Apple products",
-    price: 29.19,
-    originalPrice: 99.91,
-    image: "/images/o_2901-540x540.webp",
-    description: "Bluetooth calling smartwatch with fitness tracker, heart rate monitor, sleep tracking, and IP68 waterproof.",
+    top: {
+      id: "tr-13",
+      name: "Echo Dot (3rd Gen, 2018 release) – Smart speaker with Alexa",
+      category: "Apple products",
+      price: 24.99,
+      originalPrice: 49.99,
+      image: "/images/o_4501-540x540.webp",
+      description: "Voice control your music and smart home devices. Rich, clear sound with compact design.",
+    },
+    bottom: {
+      id: "tr-15",
+      name: "Jonsbo TR03-G BLACK computer case Cube Hardware/Electronic",
+      category: "Apple products",
+      price: 199.99,
+      image: "/images/o_4102-540x540.webp",
+      description: "Premium triangular tempered glass PC chassis with advanced thermal layout.",
+    },
+  },
+
+  // Column 8
+  {
+    top: {
+      id: "tr-14",
+      name: 'VIZIO 55-Inch V-Series 4K UHD LED HDR Smart TV Apple AirPlay',
+      category: "Apple products",
+      price: 348.0,
+      originalPrice: 428.0,
+      image: "/images/o_4301-540x540.webp",
+      description: "Epic 4K picture quality, Dolby Vision HDR, and built-in streaming apps.",
+    },
+    bottom: {
+      id: "tr-16",
+      name: "SkyTech Shadow 3.0 Gaming Computer PC Desktop – Ryzen 5",
+      category: "Apple products",
+      price: 799.0,
+      originalPrice: 949.0,
+      image: "/images/o_3701-540x540.webp",
+      description: "AMD Ryzen 5 3600 6-Core, GTX 1660 Super 6G, 1TB SSD, 16GB DDR4 RAM gaming beast.",
+    },
   },
 ];
 
@@ -128,6 +196,59 @@ export default function TrendingProducts() {
   const { isWishlisted, toggleWishlist, addToCart } = useStore();
   const [quickViewProduct, setQuickViewProduct] = useState<TrendingItem | null>(null);
   const [toastMessage, setToastMessage] = useState<string | null>(null);
+
+  // Slider state
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [visibleColumns, setVisibleColumns] = useState(6);
+  const [touchStartX, setTouchStartX] = useState<number | null>(null);
+
+  useEffect(() => {
+    const handleResize = () => {
+      const width = window.innerWidth;
+      if (width < 640) {
+        setVisibleColumns(2);
+      } else if (width < 768) {
+        setVisibleColumns(3);
+      } else if (width < 1024) {
+        setVisibleColumns(4);
+      } else {
+        setVisibleColumns(6);
+      }
+    };
+
+    handleResize();
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  const maxIndex = Math.max(0, TRENDING_COLUMNS.length - visibleColumns);
+
+  useEffect(() => {
+    setCurrentIndex((prev) => Math.min(prev, maxIndex));
+  }, [maxIndex]);
+
+  const handlePrev = () => {
+    setCurrentIndex((prev) => (prev > 0 ? prev - 1 : maxIndex));
+  };
+
+  const handleNext = () => {
+    setCurrentIndex((prev) => (prev < maxIndex ? prev + 1 : 0));
+  };
+
+  const handleTouchStart = (e: React.TouchEvent) => {
+    setTouchStartX(e.touches[0].clientX);
+  };
+
+  const handleTouchEnd = (e: React.TouchEvent) => {
+    if (touchStartX === null) return;
+    const diff = e.changedTouches[0].clientX - touchStartX;
+    if (diff > 50) {
+      handlePrev();
+    } else if (diff < -50) {
+      handleNext();
+    }
+    setTouchStartX(null);
+  };
 
   const showToast = (msg: string) => {
     setToastMessage(msg);
@@ -168,8 +289,119 @@ export default function TrendingProducts() {
     showToast(`Added to compare list!`);
   };
 
+  // Helper to render an individual product card
+  const renderProductCard = (product: TrendingItem) => {
+    const liked = isWishlisted(product.id);
+
+    return (
+      <div
+        key={product.id}
+        className="group relative flex flex-col justify-between bg-white transition-all duration-200 select-none"
+      >
+        {/* 1. Image Stage with Hover Overlay: Top-Right Icons + Bottom Red Button */}
+        <div className="relative w-full h-[175px] sm:h-[185px] flex items-center justify-center p-2 mb-2 bg-white overflow-hidden">
+          {/* Product Image */}
+          <Image
+            src={product.image}
+            alt={product.name}
+            width={175}
+            height={175}
+            className="max-h-[160px] w-auto object-contain transition-transform duration-300 group-hover:scale-105"
+          />
+
+          {/* Top-Right Vertical Stack of 3 Round Action Buttons on Hover */}
+          <div className="absolute top-2 right-2 flex flex-col gap-1.5 opacity-0 translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-200 z-20">
+            {/* Quick View Button */}
+            <button
+              type="button"
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                setQuickViewProduct(product);
+              }}
+              className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-white shadow-md border border-gray-100 flex items-center justify-center text-gray-700 hover:text-[#004ec3] transition-colors cursor-pointer"
+              title="Quick View"
+              aria-label="Quick View"
+            >
+              <Eye className="w-3.5 h-3.5 stroke-[1.8]" />
+            </button>
+
+            {/* Wishlist Button */}
+            <button
+              type="button"
+              onClick={(e) => handleToggleWishlist(product, e)}
+              className={`w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-white shadow-md border border-gray-100 flex items-center justify-center transition-colors cursor-pointer ${
+                liked ? "text-red-500" : "text-gray-700 hover:text-[#004ec3]"
+              }`}
+              title="Wishlist"
+              aria-label="Wishlist"
+            >
+              <Heart
+                className="w-3.5 h-3.5 stroke-[1.8]"
+                fill={liked ? "currentColor" : "none"}
+              />
+            </button>
+
+            {/* Compare Button */}
+            <button
+              type="button"
+              onClick={(e) => handleCompare(product, e)}
+              className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-white shadow-md border border-gray-100 flex items-center justify-center text-gray-700 hover:text-[#004ec3] transition-colors cursor-pointer"
+              title="Compare"
+              aria-label="Compare"
+            >
+              <ArrowLeftRight className="w-3.5 h-3.5 stroke-[1.8]" />
+            </button>
+          </div>
+
+          {/* Bottom Full-Width Red "Add to cart" Button on Hover */}
+          <div className="absolute bottom-1 inset-x-2 opacity-0 translate-y-3 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-200 z-20">
+            <button
+              type="button"
+              onClick={(e) => handleAddToCart(product, e)}
+              className="w-full bg-[#ff3d3d] hover:bg-[#e62e2e] text-white text-[12px] font-semibold py-2 rounded-[4px] shadow-sm transition-colors flex items-center justify-center cursor-pointer"
+            >
+              Add to cart
+            </button>
+          </div>
+        </div>
+
+        {/* 2. Text Details: Category, Title, Price */}
+        <div className="flex flex-col flex-1 justify-between">
+          <div>
+            {/* Category */}
+            <span className="text-[11px] text-[#73787d] font-normal leading-tight mb-1 block truncate">
+              {product.category}
+            </span>
+
+            {/* Product Title */}
+            <Link
+              href={`/product/${product.id}`}
+              className="text-[12px] sm:text-[13px] font-medium text-[#004ec3] leading-[1.3] line-clamp-2 hover:underline mb-1.5 transition-colors block"
+              title={product.name}
+            >
+              {product.name}
+            </Link>
+          </div>
+
+          {/* Price Row: Current Price + Strikethrough Old Price */}
+          <div className="flex items-baseline gap-1.5 mt-1">
+            <span className="text-[14px] sm:text-[15px] font-bold text-[#22262a]">
+              ${product.price.toFixed(2)}
+            </span>
+            {product.originalPrice && (
+              <span className="text-[11px] sm:text-[12px] text-[#888888] line-through font-normal">
+                ${product.originalPrice.toFixed(2)}
+              </span>
+            )}
+          </div>
+        </div>
+      </div>
+    );
+  };
+
   return (
-    <section className="w-full bg-white py-10 sm:py-12 lg:py-14 select-none">
+    <section className="w-full bg-white py-10 sm:py-12 lg:py-14 select-none overflow-hidden">
       {/* Toast Notification */}
       {toastMessage && (
         <div className="fixed bottom-6 right-6 z-50 bg-[#1e2d3b] text-white px-4 py-2 rounded-lg shadow-xl text-xs sm:text-sm flex items-center gap-2 animate-bounce">
@@ -180,140 +412,61 @@ export default function TrendingProducts() {
 
       <div className="max-w-[1440px] mx-auto px-6 lg:px-12">
         {/* Section Header: Title on left, Carousel controls on right */}
-        <div className="flex items-center justify-between border-b border-gray-200/80 pb-3 mb-8">
+        <div className="flex items-center justify-between pb-3 mb-6">
           <h2 className="text-xl sm:text-2xl font-bold text-[#1e2d3b] tracking-tight">
             Trending Products
           </h2>
 
+          {/* Interactive Slider Navigation Arrows */}
           <div className="flex items-center gap-2">
             <button
               type="button"
-              className="w-7 h-7 flex items-center justify-center text-gray-500 hover:text-[#1e2d3b] transition-colors cursor-pointer"
-              aria-label="Previous"
+              onClick={handlePrev}
+              className="p-1.5 text-gray-400 hover:text-[#1e2d3b] transition-colors cursor-pointer select-none active:scale-90"
+              aria-label="Previous Products"
             >
               <ChevronLeft className="w-4 h-4 stroke-[2]" />
             </button>
             <button
               type="button"
-              className="w-7 h-7 flex items-center justify-center text-gray-500 hover:text-[#1e2d3b] transition-colors cursor-pointer"
-              aria-label="Next"
+              onClick={handleNext}
+              className="p-1.5 text-gray-400 hover:text-[#1e2d3b] transition-colors cursor-pointer select-none active:scale-90"
+              aria-label="Next Products"
             >
               <ChevronRight className="w-4 h-4 stroke-[2]" />
             </button>
           </div>
         </div>
 
-        {/* 6-Column Product Grid (2 rows of 6 products = 12 total) */}
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-x-5 lg:gap-x-6 gap-y-10">
-          {TRENDING_12_PRODUCTS.map((product) => {
-            const liked = isWishlisted(product.id);
-
-            return (
+        {/* Carousel Slider Viewport & Sliding Track */}
+        <div
+          className="relative w-full overflow-hidden"
+          onTouchStart={handleTouchStart}
+          onTouchEnd={handleTouchEnd}
+        >
+          <div
+            className="flex transition-transform duration-500 ease-in-out"
+            style={{
+              width: `${(TRENDING_COLUMNS.length / visibleColumns) * 100}%`,
+              transform: `translateX(-${currentIndex * (100 / TRENDING_COLUMNS.length)}%)`,
+            }}
+          >
+            {TRENDING_COLUMNS.map((column, colIdx) => (
               <div
-                key={product.id}
-                className="group relative flex flex-col justify-between bg-white transition-all duration-200"
+                key={colIdx}
+                className="shrink-0 px-2.5 sm:px-3 flex flex-col gap-9"
+                style={{
+                  width: `${100 / TRENDING_COLUMNS.length}%`,
+                }}
               >
-                {/* 1. Image Stage with Hover Overlay: Top-Right Icons + Bottom Red Button */}
-                <div className="relative w-full h-[180px] sm:h-[190px] flex items-center justify-center p-2 mb-3 bg-white overflow-hidden">
-                  {/* Product Image */}
-                  <Image
-                    src={product.image}
-                    alt={product.name}
-                    width={180}
-                    height={180}
-                    className="max-h-[165px] w-auto object-contain transition-transform duration-300 group-hover:scale-105"
-                  />
+                {/* Top Row Product */}
+                {renderProductCard(column.top)}
 
-                  {/* Top-Right Vertical Stack of 3 Round Action Buttons on Hover */}
-                  <div className="absolute top-2 right-2 flex flex-col gap-1.5 opacity-0 translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-200 z-20">
-                    {/* Quick View Button */}
-                    <button
-                      type="button"
-                      onClick={(e) => {
-                        e.preventDefault();
-                        e.stopPropagation();
-                        setQuickViewProduct(product);
-                      }}
-                      className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-white shadow-md border border-gray-100 flex items-center justify-center text-gray-700 hover:text-[#004ec3] transition-colors cursor-pointer"
-                      title="Quick View"
-                      aria-label="Quick View"
-                    >
-                      <Eye className="w-3.5 h-3.5 stroke-[1.8]" />
-                    </button>
-
-                    {/* Wishlist Button */}
-                    <button
-                      type="button"
-                      onClick={(e) => handleToggleWishlist(product, e)}
-                      className={`w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-white shadow-md border border-gray-100 flex items-center justify-center transition-colors cursor-pointer ${
-                        liked ? "text-red-500" : "text-gray-700 hover:text-[#004ec3]"
-                      }`}
-                      title="Wishlist"
-                      aria-label="Wishlist"
-                    >
-                      <Heart
-                        className="w-3.5 h-3.5 stroke-[1.8]"
-                        fill={liked ? "currentColor" : "none"}
-                      />
-                    </button>
-
-                    {/* Compare Button */}
-                    <button
-                      type="button"
-                      onClick={(e) => handleCompare(product, e)}
-                      className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-white shadow-md border border-gray-100 flex items-center justify-center text-gray-700 hover:text-[#004ec3] transition-colors cursor-pointer"
-                      title="Compare"
-                      aria-label="Compare"
-                    >
-                      <ArrowLeftRight className="w-3.5 h-3.5 stroke-[1.8]" />
-                    </button>
-                  </div>
-
-                  {/* Bottom Full-Width Red "Add to cart" Button on Hover */}
-                  <div className="absolute bottom-1 inset-x-2 opacity-0 translate-y-3 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-200 z-20">
-                    <button
-                      type="button"
-                      onClick={(e) => handleAddToCart(product, e)}
-                      className="w-full bg-[#ff3d3d] hover:bg-[#e62e2e] text-white text-[12px] font-semibold py-2 rounded-[4px] shadow-sm transition-colors flex items-center justify-center cursor-pointer"
-                    >
-                      Add to cart
-                    </button>
-                  </div>
-                </div>
-
-                {/* 2. Text Details: Category, Title, Price */}
-                <div className="flex flex-col flex-1 justify-between">
-                  <div>
-                    {/* Category */}
-                    <span className="text-[11px] text-[#73787d] font-normal leading-tight mb-1 block truncate">
-                      {product.category}
-                    </span>
-
-                    {/* Product Title */}
-                    <Link
-                      href={`/product/${product.id}`}
-                      className="text-[12px] sm:text-[13px] font-medium text-[#004ec3] leading-[1.3] line-clamp-2 hover:underline mb-1.5 transition-colors block"
-                      title={product.name}
-                    >
-                      {product.name}
-                    </Link>
-                  </div>
-
-                  {/* Price Row: Current Price + Strikethrough Old Price */}
-                  <div className="flex items-baseline gap-1.5 mt-1">
-                    <span className="text-[14px] sm:text-[15px] font-bold text-[#22262a]">
-                      ${product.price.toFixed(2)}
-                    </span>
-                    {product.originalPrice && (
-                      <span className="text-[11px] sm:text-[12px] text-[#888888] line-through font-normal">
-                        ${product.originalPrice.toFixed(2)}
-                      </span>
-                    )}
-                  </div>
-                </div>
+                {/* Bottom Row Product */}
+                {renderProductCard(column.bottom)}
               </div>
-            );
-          })}
+            ))}
+          </div>
         </div>
       </div>
 
