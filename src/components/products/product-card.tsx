@@ -117,43 +117,40 @@ export default function ProductCard({ product, showDrawerOnHover = true }: Produ
       {/* Hover-reveal action drawer */}
       {showDrawerOnHover ? (
         <div
-          className="absolute left-0 top-full w-full bg-white pt-3 shadow-[0_15px_25px_rgba(0,0,0,0.1)] rounded-b-[5px] opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-20"
+          className="absolute left-0 top-full w-full bg-white shadow-[0_15px_25px_rgba(0,0,0,0.12)] rounded-b-[4px] opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-30 pt-3 pb-0"
         >
-          <div className="px-4 pb-4">
-            {/* Color swatches */}
-            <div className="flex items-center justify-center gap-3 mb-3">
-              {COLOR_SWATCHES.map((swatch) => (
-                <button
-                  type="button"
-                  key={swatch.value}
-                  onClick={(e) => {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    setSelectedColor(swatch.value);
-                  }}
-                  style={{ backgroundColor: swatch.value }}
-                  className={[
-                    "w-3.5 h-3.5 rounded-full cursor-pointer ring-offset-2 transition-all",
-                    selectedColor === swatch.value
-                      ? "ring-2 ring-[#0e8ce4]"
-                      : "ring-transparent hover:ring-2 ring-[#0e8ce4]/40",
-                  ].join(" ")}
-                  aria-label={swatch.label}
-                />
-              ))}
-            </div>
-
-            {/* Add to Cart CTA */}
-            <button
-              type="button"
-              onClick={handleAddToCart}
-              className="mt-3 w-full h-[44px] bg-[#0e8ce4] hover:bg-[#0e8ce4]/80 text-white text-base font-normal rounded-b-[5px] transition-colors cursor-pointer flex items-center justify-center gap-2"
-              aria-label={`Add ${product.name} to cart`}
-            >
-              <Plus size={18} strokeWidth={2} />
-              <span>Add to Cart</span>
-            </button>
+          {/* Color swatches */}
+          <div className="flex items-center justify-center gap-2 mb-3">
+            {COLOR_SWATCHES.map((swatch) => (
+              <button
+                type="button"
+                key={swatch.value}
+                onClick={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  setSelectedColor(swatch.value);
+                }}
+                style={{ backgroundColor: swatch.value }}
+                className={[
+                  "w-3 h-3 rounded-full cursor-pointer ring-offset-1 transition-all",
+                  selectedColor === swatch.value
+                    ? "ring-2 ring-[#2b6cb0]"
+                    : "ring-transparent hover:ring-1 hover:ring-gray-400",
+                ].join(" ")}
+                aria-label={swatch.label}
+              />
+            ))}
           </div>
+
+          {/* Add to Cart CTA */}
+          <button
+            type="button"
+            onClick={handleAddToCart}
+            className="w-full h-[40px] bg-[#2b6cb0] hover:bg-[#205493] text-white text-sm font-medium rounded-b-[4px] flex items-center justify-center transition-colors cursor-pointer"
+            aria-label={`Add ${product.name} to cart`}
+          >
+            Add to Cart
+          </button>
         </div>
       ) : null}
     </article>
