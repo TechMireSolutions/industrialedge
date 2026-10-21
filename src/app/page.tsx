@@ -3,6 +3,7 @@ import PartnerLogos from "@/components/sections/partner-logos";
 import TrendingProducts from "@/components/sections/trending-products";
 import GameConsoleBanner from "@/components/sections/game-console-banner";
 import BestSellers from "@/components/sections/best-sellers";
+import FeatureTabs from "@/components/sections/feature-tabs";
 import DualPromoBanners from "@/components/sections/dual-promo-banners";
 import SmartHomeAppliances from "@/components/sections/smart-home-appliances";
 import RecentlyViewed from "@/components/sections/recently-viewed";
@@ -23,10 +24,13 @@ export default function Home() {
       {/* 4. Full-Width Promo Banner: GameConsole Destiny Special Edition */}
       <GameConsoleBanner />
 
-      {/* 5. Best Sellers (1/3 Featured Laptop Banner + 2/3 6-Product Grid) */}
+      {/* 5. Best Sellers (1/3 Featured Laptop Banner + 2/3 3-Product Slider) */}
       <BestSellers />
 
-      {/* 6. Dual Camera Promo Banner: Shop & SAVE BIG */}
+      {/* 6. Feature / Toprate / On sale Tabs (5-Column Product Grid) */}
+      <FeatureTabs />
+
+      {/* 7. Dual Camera Promo Banner: Shop & SAVE BIG */}
       <DualPromoBanners />
 
       {/* 7. Smart Home Appliances (2-Row Compact Horizontal Product Cards) */}
