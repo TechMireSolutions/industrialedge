@@ -343,13 +343,13 @@ export default function BestSellers() {
             </div>
 
             {/* Laptop Cutout Image positioned exactly at bottom-right */}
-            <div className="absolute right-0 bottom-0 w-[230px] sm:w-[255px] h-[155px] sm:h-[170px] pointer-events-none flex items-end justify-end">
+            <div className="absolute right-0 bottom-0 w-[235px] sm:w-[255px] pointer-events-none flex items-end justify-end">
               <Image
-                src="/images/img-prd18.webp"
+                src="/images/dell-g5-banner-tight.png"
                 alt="Dell G5 Gaming Laptop"
-                width={360}
-                height={220}
-                className="w-full h-full object-contain object-right-bottom transition-transform duration-500 group-hover:scale-105"
+                width={260}
+                height={176}
+                className="w-full h-auto object-contain transition-transform duration-500 group-hover:scale-105"
               />
             </div>
           </Link>
