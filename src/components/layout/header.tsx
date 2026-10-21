@@ -7,15 +7,29 @@ import { useRouter } from "next/navigation";
 import { useStore } from "@/lib/store";
 import {
   ChevronDown,
+  ChevronRight,
   Search,
   X,
   Menu,
   Headphones,
   Globe,
+  User,
+  ShoppingCart,
   Check,
+  Speaker,
+  Laptop,
+  Gamepad2,
+  Smartphone,
+  Camera,
+  Watch,
+  Cpu,
+  Armchair,
+  Server,
+  Tv,
 } from "lucide-react";
 
-const CATEGORY_COLUMNS = [
+// Categories in the 3-column modal (Image 2)
+const SEARCH_CATEGORY_COLUMNS = [
   // Column 1
   [
     "All categories",
@@ -41,6 +55,78 @@ const CATEGORY_COLUMNS = [
   ],
 ];
 
+// All Categories Vertical Menu items (Image 3 & 4)
+const ALL_DEPARTMENTS = [
+  {
+    name: "Audio Equipments",
+    icon: Speaker,
+    hasSub: false,
+    href: "/shop?cat=Audio+Equipments",
+  },
+  {
+    name: "Laptop & Tablet",
+    icon: Laptop,
+    hasSub: true,
+    subItems: ["Acer", "Amazon", "Apple", "ASUS", "HP"],
+    href: "/shop?cat=Laptop+%26+Tablet",
+  },
+  {
+    name: "Gaming Accessories",
+    icon: Gamepad2,
+    hasSub: false,
+    href: "/shop?cat=Gaming+Accessories",
+  },
+  {
+    name: "Headphone",
+    icon: Headphones,
+    hasSub: true,
+    subItems: ["Earbuds", "On Ear", "Over Ear"],
+    href: "/shop?cat=Headphone",
+  },
+  {
+    name: "Smartphone",
+    icon: Smartphone,
+    hasSub: false,
+    href: "/shop?cat=Smartphone",
+  },
+  {
+    name: "Camera & Video",
+    icon: Camera,
+    hasSub: false,
+    href: "/shop?cat=Camera+%26+Video",
+  },
+  {
+    name: "Smartwatch",
+    icon: Watch,
+    hasSub: false,
+    href: "/shop?cat=Smartwatch",
+  },
+  {
+    name: "Storage & Digital Devices",
+    icon: Cpu,
+    hasSub: false,
+    href: "/shop?cat=Storage+%26+Digital+Devices",
+  },
+  {
+    name: "Game & Room Furniture",
+    icon: Armchair,
+    hasSub: false,
+    href: "/shop?cat=Game+%26+Room+Furniture",
+  },
+  {
+    name: "Server & Workstation",
+    icon: Server,
+    hasSub: false,
+    href: "/shop?cat=Server+%26+Workstation",
+  },
+  {
+    name: "TV & Computer Screen",
+    icon: Tv,
+    hasSub: false,
+    href: "/shop?cat=TV+%26+Computer+Screen",
+  },
+];
+
 const LANGUAGES = [
   { code: "en", label: "English" },
   { code: "fr", label: "French" },
@@ -50,27 +136,32 @@ const LANGUAGES = [
 
 export default function Header() {
   const router = useRouter();
-  const { wishlist, cart } = useStore();
+  const { cart } = useStore();
 
-  // Search & Categories State
+  // Search & Categories Modal State (Image 2)
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("All categories");
   const [categoryModalOpen, setCategoryModalOpen] = useState(false);
   const categoryModalRef = useRef<HTMLDivElement>(null);
   const searchInputRef = useRef<HTMLInputElement>(null);
 
-  // Dropdown states
+  // "All Categories" Dropdown Menu State (Image 3 & 4)
+  const [allCategoriesOpen, setAllCategoriesOpen] = useState(false);
+  const [activeSubMenu, setActiveSubMenu] = useState<string | null>(null);
+  const allCategoriesRef = useRef<HTMLDivElement>(null);
+
+  // Language Dropdown
   const [languageOpen, setLanguageOpen] = useState(false);
   const [selectedLanguage, setSelectedLanguage] = useState("English");
   const languageRef = useRef<HTMLDivElement>(null);
 
-  // Nav dropdown states
+  // Nav Dropdowns
   const [homeDropdownOpen, setHomeDropdownOpen] = useState(false);
   const [blogDropdownOpen, setBlogDropdownOpen] = useState(false);
   const [shopDropdownOpen, setShopDropdownOpen] = useState(false);
   const [pageDropdownOpen, setPageDropdownOpen] = useState(false);
 
-  // Mobile drawer
+  // Mobile Drawer
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [mobileCategoryOpen, setMobileCategoryOpen] = useState(false);
 
@@ -84,6 +175,13 @@ export default function Header() {
       ) {
         setCategoryModalOpen(false);
       }
+      if (
+        allCategoriesRef.current &&
+        !allCategoriesRef.current.contains(target)
+      ) {
+        setAllCategoriesOpen(false);
+        setActiveSubMenu(null);
+      }
       if (languageRef.current && !languageRef.current.contains(target)) {
         setLanguageOpen(false);
       }
@@ -92,6 +190,8 @@ export default function Header() {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Escape") {
         setCategoryModalOpen(false);
+        setAllCategoriesOpen(false);
+        setActiveSubMenu(null);
         setLanguageOpen(false);
         setHomeDropdownOpen(false);
         setBlogDropdownOpen(false);
@@ -126,114 +226,14 @@ export default function Header() {
     }
   };
 
-  // Compare count (static 0 for initial view matching screenshot)
-  const compareCount = 0;
-  // Wishlist count reflects actual items in wishlist
-  const wishlistCount = wishlist.length;
-  // Cart count reflects items in cart
   const cartCount = cart.reduce((sum, item) => sum + item.qty, 0);
 
   return (
     <header className="w-full bg-white select-none">
       {/* ========================================================= */}
-      {/* 1. TOP UTILITY BAR                                        */}
+      {/* 1. MAIN HEADER BAR (Logo, Search Pill, Actions)           */}
       {/* ========================================================= */}
-      <div className="h-[42px] border-b border-[#eeeeee] bg-white text-[13px] text-[#73787d]">
-        <div className="max-w-[1440px] mx-auto px-6 lg:px-12 h-full flex items-center justify-between">
-          {/* Left: Call us for free */}
-          <div className="flex items-center gap-2">
-            <Headphones size={14} strokeWidth={1.6} className="text-[#73787d]" />
-            <span>Call us for free:</span>
-            <a
-              href="tel:+18001234567"
-              className="text-[#ff3d3d] font-semibold hover:underline transition-colors"
-            >
-              +1 (800) 123 4567
-            </a>
-          </div>
-
-          {/* Right: Language & Sign In */}
-          <div className="flex items-center gap-7">
-            {/* Language Selector */}
-            <div className="relative" ref={languageRef}>
-              <button
-                type="button"
-                onClick={() => setLanguageOpen((prev) => !prev)}
-                className="flex items-center gap-1.5 text-[#73787d] hover:text-[#ff3d3d] transition-colors cursor-pointer text-[13px]"
-                aria-expanded={languageOpen}
-              >
-                <Globe size={14} strokeWidth={1.6} className="text-[#73787d]" />
-                <span>Language:</span>
-                <span className="font-semibold text-[#333e48] ml-0.5">
-                  {selectedLanguage}
-                </span>
-                <ChevronDown
-                  size={12}
-                  className={`text-[#73787d] transition-transform duration-200 ${
-                    languageOpen ? "rotate-180" : ""
-                  }`}
-                />
-              </button>
-
-              {languageOpen && (
-                <div className="absolute right-0 top-[calc(100%+8px)] w-[140px] bg-white border border-[#e5e5e5] rounded-md shadow-[0_8px_20px_rgba(0,0,0,0.1)] py-1.5 z-50">
-                  {LANGUAGES.map((lang) => (
-                    <button
-                      key={lang.code}
-                      type="button"
-                      onClick={() => {
-                        setSelectedLanguage(lang.label);
-                        setLanguageOpen(false);
-                      }}
-                      className={`w-full text-left px-3.5 py-1.5 text-xs flex items-center justify-between cursor-pointer transition-colors ${
-                        selectedLanguage === lang.label
-                          ? "text-[#ff3d3d] font-semibold bg-[#fff5f5]"
-                          : "text-[#333e48] hover:bg-[#f8f9fa] hover:text-[#ff3d3d]"
-                      }`}
-                    >
-                      <span>{lang.label}</span>
-                      {selectedLanguage === lang.label && (
-                        <Check size={12} className="text-[#ff3d3d]" />
-                      )}
-                    </button>
-                  ))}
-                </div>
-              )}
-            </div>
-
-            {/* Sign In */}
-            <Link
-              href="/shop"
-              className="flex items-center gap-1.5 text-[#333e48] hover:text-[#ff3d3d] transition-colors text-[13px]"
-            >
-              {/* User SVG matching Onsus icon */}
-              <svg
-                width="16"
-                height="16"
-                viewBox="0 0 24 25"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-                className="text-current"
-              >
-                <path
-                  d="M11.9998 12.5283C6.20222 12.5283 1.48535 17.2452 1.48535 23.0428C1.48535 23.2952 1.69017 23.5 1.94252 23.5C2.19487 23.5 2.39968 23.2952 2.39968 23.0428C2.39968 17.749 6.70606 13.4426 11.9999 13.4426C17.2937 13.4426 21.6001 17.749 21.6001 23.0428C21.6001 23.2952 21.8049 23.5 22.0572 23.5C22.3096 23.5 22.5144 23.2952 22.5144 23.0428C22.5144 17.2443 17.7975 12.5283 11.9998 12.5283Z"
-                  fill="currentColor"
-                />
-                <path
-                  d="M12.0003 1.5C9.22815 1.5 6.97168 3.75557 6.97168 6.52866C6.97168 9.30174 9.2282 11.5573 12.0003 11.5573C14.7725 11.5573 17.029 9.30174 17.029 6.52866C17.029 3.75557 14.7725 1.5 12.0003 1.5ZM12.0003 10.643C9.73195 10.643 7.88597 8.79705 7.88597 6.52866C7.88597 4.26027 9.73195 2.41429 12.0003 2.41429C14.2687 2.41429 16.1147 4.26027 16.1147 6.52866C16.1147 8.79705 14.2687 10.643 12.0003 10.643Z"
-                  fill="currentColor"
-                />
-              </svg>
-              <span>Sign In</span>
-            </Link>
-          </div>
-        </div>
-      </div>
-
-      {/* ========================================================= */}
-      {/* 2. MAIN MIDDLE HEADER BAR                                 */}
-      {/* ========================================================= */}
-      <div className="py-5 bg-white">
+      <div className="py-5 bg-white border-b border-[#f4f4f4]">
         <div className="max-w-[1440px] mx-auto px-6 lg:px-12 flex items-center justify-between gap-6">
           {/* Logo */}
           <Link href="/" className="shrink-0 flex items-center">
@@ -247,8 +247,8 @@ export default function Header() {
             />
           </Link>
 
-          {/* Search Bar with "All categories" & Pill Border */}
-          <div className="flex-1 max-w-[620px] relative hidden md:block">
+          {/* Center: Scoped Search Bar with Pill Border */}
+          <div className="flex-1 max-w-[640px] relative hidden md:block">
             <form
               onSubmit={handleSearchSubmit}
               className="h-[46px] w-full rounded-full border border-[#ff3d3d] bg-white flex items-center pl-5 pr-1.5 transition-shadow focus-within:shadow-[0_0_0_2px_rgba(255,61,61,0.15)]"
@@ -295,7 +295,7 @@ export default function Header() {
             </form>
 
             {/* ========================================================= */}
-            {/* SELECT CATEGORIES MODAL / MEGA-DROPDOWN (Image 2)        */}
+            {/* SELECT CATEGORIES MODAL (Image 2)                        */}
             {/* ========================================================= */}
             {categoryModalOpen && (
               <div
@@ -319,7 +319,7 @@ export default function Header() {
 
                 {/* 3 Columns Grid of Categories */}
                 <div className="grid grid-cols-3 gap-x-6 gap-y-1">
-                  {CATEGORY_COLUMNS.map((column, colIdx) => (
+                  {SEARCH_CATEGORY_COLUMNS.map((column, colIdx) => (
                     <div key={colIdx} className="flex flex-col space-y-1">
                       {column.map((category) => {
                         const isSelected = selectedCategory === category;
@@ -345,40 +345,52 @@ export default function Header() {
             )}
           </div>
 
-          {/* Right: Support Contact (Headset + Phone + Email) */}
-          <div className="flex items-center gap-3 shrink-0">
-            {/* Support Headset Icon */}
-            <div className="text-[#333e48]">
-              <Headphones size={28} strokeWidth={1.5} className="text-[#333e48]" />
-            </div>
+          {/* Right: Sign In, Support, Your cart (Image 1 & 2) */}
+          <div className="flex items-center gap-7 sm:gap-8 shrink-0">
+            {/* 1. Sign In */}
+            <Link
+              href="/shop"
+              className="flex flex-col items-center justify-center group cursor-pointer text-[#333e48] hover:text-[#ff3d3d] transition-colors"
+            >
+              <User size={22} strokeWidth={1.5} className="group-hover:text-[#ff3d3d] transition-colors" />
+              <span className="text-[12px] font-normal text-[#333e48] group-hover:text-[#ff3d3d] transition-colors mt-1">
+                Sign In
+              </span>
+            </Link>
 
-            {/* Stacked Contact Info */}
-            <div className="flex flex-col text-xs leading-snug">
-              <div className="text-[#73787d]">
-                <span>Call us now: </span>
-                <a
-                  href="tel:+18001234567"
-                  className="text-[#ff3d3d] font-semibold hover:underline"
-                >
-                  +1(800) 123 4567
-                </a>
-              </div>
-              <div className="text-[#73787d] mt-0.5">
-                <span>Email: </span>
-                <a
-                  href="mailto:oesus@support.com"
-                  className="text-[#004ec3] hover:underline"
-                >
-                  oesus@support.com
-                </a>
-              </div>
-            </div>
+            {/* 2. Support */}
+            <Link
+              href="/contact"
+              className="flex flex-col items-center justify-center group cursor-pointer text-[#333e48] hover:text-[#ff3d3d] transition-colors"
+            >
+              <Headphones size={22} strokeWidth={1.5} className="group-hover:text-[#ff3d3d] transition-colors" />
+              <span className="text-[12px] font-normal text-[#333e48] group-hover:text-[#ff3d3d] transition-colors mt-1">
+                Support
+              </span>
+            </Link>
 
-            {/* Mobile Hamburger Button */}
+            {/* 3. Your cart */}
+            <Link
+              href="/cart"
+              className="flex flex-col items-center justify-center group cursor-pointer text-[#333e48] hover:text-[#ff3d3d] transition-colors"
+            >
+              <div className="relative">
+                <ShoppingCart size={22} strokeWidth={1.5} className="group-hover:text-[#ff3d3d] transition-colors" />
+                {/* Circular Red Badge */}
+                <span className="absolute -top-1.5 -right-2.5 min-w-[17px] h-[17px] px-1 bg-[#ff3d3d] text-white rounded-full text-[10px] font-bold flex items-center justify-center leading-none">
+                  {cartCount}
+                </span>
+              </div>
+              <span className="text-[12px] font-normal text-[#333e48] group-hover:text-[#ff3d3d] transition-colors mt-1">
+                Your cart:
+              </span>
+            </Link>
+
+            {/* Mobile Hamburger Button (<md) */}
             <button
               type="button"
               onClick={() => setMobileMenuOpen(true)}
-              className="md:hidden ml-2 p-2 text-[#333e48] hover:text-[#ff3d3d] cursor-pointer"
+              className="md:hidden p-1 text-[#333e48] hover:text-[#ff3d3d] cursor-pointer"
               aria-label="Toggle menu"
             >
               <Menu size={24} />
@@ -411,286 +423,322 @@ export default function Header() {
       </div>
 
       {/* ========================================================= */}
-      {/* 3. BOTTOM NAVIGATION BAR (Light Gray Strip)               */}
+      {/* 2. BOTTOM NAVIGATION BAR (White Bar with All Categories)  */}
       {/* ========================================================= */}
-      <nav className="h-[50px] bg-[#f4f5f7] border-y border-[#e5e7eb]">
+      <nav className="h-[48px] bg-white border-b border-[#eeeeee]">
         <div className="max-w-[1440px] mx-auto px-6 lg:px-12 h-full flex items-center justify-between">
-          {/* Left Navigation Links: Home +, Blog +, Shop +, Page + */}
-          <div className="flex items-center gap-8 h-full">
-            {/* Home + (Highlighted in RED as in Image 1) */}
+          {/* Left: All Categories + Divider + Nav Links */}
+          <div className="flex items-center h-full">
+            {/* "All Categories" Dropdown Trigger & Flyout (Image 3 & 4) */}
             <div
               className="relative h-full flex items-center"
-              onMouseEnter={() => setHomeDropdownOpen(true)}
-              onMouseLeave={() => setHomeDropdownOpen(false)}
-            >
-              <Link
-                href="/"
-                className="flex items-center gap-1 text-[14px] font-medium text-[#ff3d3d] hover:text-[#ff3d3d] transition-colors py-3"
-              >
-                <span>Home</span>
-                <span className="text-[13px] font-normal leading-none">+</span>
-              </Link>
-
-              {/* Home Submenu Dropdown */}
-              {homeDropdownOpen && (
-                <div className="absolute left-0 top-full w-[170px] bg-white border border-[#e5e5e5] shadow-[0_10px_25px_rgba(0,0,0,0.1)] rounded-md py-2 z-50 animate-in fade-in slide-in-from-top-1 duration-150">
-                  {[
-                    "Home 01",
-                    "Home 02",
-                    "Home 03",
-                    "Home 04",
-                    "Home 05",
-                    "Home 06",
-                    "Home 07",
-                    "Home 08",
-                  ].map((item, idx) => (
-                    <Link
-                      key={item}
-                      href="/"
-                      className={`block px-4 py-2 text-[13px] transition-colors ${
-                        idx === 0
-                          ? "text-[#ff3d3d] font-medium"
-                          : "text-[#333e48] hover:text-[#ff3d3d] hover:bg-[#f8f9fa]"
-                      }`}
-                    >
-                      {item}
-                    </Link>
-                  ))}
-                </div>
-              )}
-            </div>
-
-            {/* Blog + */}
-            <div
-              className="relative h-full flex items-center"
-              onMouseEnter={() => setBlogDropdownOpen(true)}
-              onMouseLeave={() => setBlogDropdownOpen(false)}
-            >
-              <Link
-                href="/blog"
-                className="flex items-center gap-1 text-[14px] font-medium text-[#333e48] hover:text-[#ff3d3d] transition-colors py-3"
-              >
-                <span>Blog</span>
-                <span className="text-[13px] font-normal leading-none">+</span>
-              </Link>
-
-              {blogDropdownOpen && (
-                <div className="absolute left-0 top-full w-[160px] bg-white border border-[#e5e5e5] shadow-[0_10px_25px_rgba(0,0,0,0.1)] rounded-md py-2 z-50 animate-in fade-in slide-in-from-top-1 duration-150">
-                  {["Blog List", "Blog Grid", "Blog Single"].map((item) => (
-                    <Link
-                      key={item}
-                      href="/blog"
-                      className="block px-4 py-2 text-[13px] text-[#333e48] hover:text-[#ff3d3d] hover:bg-[#f8f9fa] transition-colors"
-                    >
-                      {item}
-                    </Link>
-                  ))}
-                </div>
-              )}
-            </div>
-
-            {/* Shop + */}
-            <div
-              className="relative h-full flex items-center"
-              onMouseEnter={() => setShopDropdownOpen(true)}
-              onMouseLeave={() => setShopDropdownOpen(false)}
-            >
-              <Link
-                href="/shop"
-                className="flex items-center gap-1 text-[14px] font-medium text-[#333e48] hover:text-[#ff3d3d] transition-colors py-3"
-              >
-                <span>Shop</span>
-                <span className="text-[13px] font-normal leading-none">+</span>
-              </Link>
-
-              {shopDropdownOpen && (
-                <div className="absolute left-0 top-full w-[190px] bg-white border border-[#e5e5e5] shadow-[0_10px_25px_rgba(0,0,0,0.1)] rounded-md py-2 z-50 animate-in fade-in slide-in-from-top-1 duration-150">
-                  {[
-                    { label: "Shop Grid Style", href: "/shop" },
-                    { label: "Shop List Style", href: "/shop" },
-                    { label: "Product Variable", href: "/product/sample" },
-                    { label: "Product Countdown", href: "/product/sample" },
-                    { label: "Cart", href: "/cart" },
-                    { label: "Wishlist", href: "/shop" },
-                    { label: "Order Tracking", href: "/contact" },
-                  ].map((item) => (
-                    <Link
-                      key={item.label}
-                      href={item.href}
-                      className="block px-4 py-2 text-[13px] text-[#333e48] hover:text-[#ff3d3d] hover:bg-[#f8f9fa] transition-colors"
-                    >
-                      {item.label}
-                    </Link>
-                  ))}
-                </div>
-              )}
-            </div>
-
-            {/* Page + */}
-            <div
-              className="relative h-full flex items-center"
-              onMouseEnter={() => setPageDropdownOpen(true)}
-              onMouseLeave={() => setPageDropdownOpen(false)}
+              ref={allCategoriesRef}
+              onMouseEnter={() => setAllCategoriesOpen(true)}
+              onMouseLeave={() => {
+                setAllCategoriesOpen(false);
+                setActiveSubMenu(null);
+              }}
             >
               <button
                 type="button"
-                className="flex items-center gap-1 text-[14px] font-medium text-[#333e48] hover:text-[#ff3d3d] transition-colors py-3 cursor-pointer"
+                onClick={() => setAllCategoriesOpen((prev) => !prev)}
+                className="flex items-center gap-2.5 text-[15px] font-semibold text-[#1e293b] hover:text-[#ff3d3d] transition-colors py-3 cursor-pointer select-none focus:outline-none"
+                aria-expanded={allCategoriesOpen}
               >
-                <span>Page</span>
-                <span className="text-[13px] font-normal leading-none">+</span>
+                {/* 9-dot grid icon (3x3 dots matching Image 1, 2, 3) */}
+                <svg
+                  width="18"
+                  height="18"
+                  viewBox="0 0 18 18"
+                  fill="none"
+                  className="shrink-0 text-[#1e293b] group-hover:text-[#ff3d3d]"
+                >
+                  <rect x="1" y="1" width="3" height="3" rx="0.5" fill="currentColor" />
+                  <rect x="7.5" y="1" width="3" height="3" rx="0.5" fill="currentColor" />
+                  <rect x="14" y="1" width="3" height="3" rx="0.5" fill="currentColor" />
+                  <rect x="1" y="7.5" width="3" height="3" rx="0.5" fill="currentColor" />
+                  <rect x="7.5" y="7.5" width="3" height="3" rx="0.5" fill="currentColor" />
+                  <rect x="14" y="7.5" width="3" height="3" rx="0.5" fill="currentColor" />
+                  <rect x="1" y="14" width="3" height="3" rx="0.5" fill="currentColor" />
+                  <rect x="7.5" y="14" width="3" height="3" rx="0.5" fill="currentColor" />
+                  <rect x="14" y="14" width="3" height="3" rx="0.5" fill="currentColor" />
+                </svg>
+                <span>All Categories</span>
               </button>
 
-              {pageDropdownOpen && (
-                <div className="absolute left-0 top-full w-[160px] bg-white border border-[#e5e5e5] shadow-[0_10px_25px_rgba(0,0,0,0.1)] rounded-md py-2 z-50 animate-in fade-in slide-in-from-top-1 duration-150">
-                  {[
-                    { label: "FAQs", href: "/contact" },
-                    { label: "Contact Us", href: "/contact" },
-                    { label: "About Us", href: "/blog" },
-                  ].map((item) => (
-                    <Link
-                      key={item.label}
-                      href={item.href}
-                      className="block px-4 py-2 text-[13px] text-[#333e48] hover:text-[#ff3d3d] hover:bg-[#f8f9fa] transition-colors"
-                    >
-                      {item.label}
-                    </Link>
-                  ))}
+              {/* ========================================================= */}
+              {/* ALL CATEGORIES FLYOUT MENU (Image 3 & 4)                  */}
+              {/* ========================================================= */}
+              {allCategoriesOpen && (
+                <div className="absolute left-0 top-full w-[275px] bg-white border border-[#e5e5e5] shadow-[0_12px_32px_rgba(0,0,0,0.1)] rounded-b-md z-40 py-1 animate-in fade-in slide-in-from-top-1 duration-150">
+                  {ALL_DEPARTMENTS.map((dept) => {
+                    const IconComponent = dept.icon;
+                    const isSubActive = activeSubMenu === dept.name;
+
+                    return (
+                      <div
+                        key={dept.name}
+                        className="relative group/item"
+                        onMouseEnter={() => {
+                          if (dept.hasSub) {
+                            setActiveSubMenu(dept.name);
+                          } else {
+                            setActiveSubMenu(null);
+                          }
+                        }}
+                      >
+                        <Link
+                          href={dept.href}
+                          className={`flex items-center justify-between px-5 py-2.5 text-[13.5px] border-b border-[#f5f5f5] last:border-b-0 transition-colors ${
+                            isSubActive
+                              ? "text-[#ff3d3d] bg-white"
+                              : "text-[#333e48] hover:text-[#ff3d3d] hover:bg-[#fafafa]"
+                          }`}
+                        >
+                          <div className="flex items-center gap-3">
+                            <IconComponent
+                              size={18}
+                              strokeWidth={1.5}
+                              className={`shrink-0 transition-colors ${
+                                isSubActive ? "text-[#ff3d3d]" : "text-[#555555]"
+                              }`}
+                            />
+                            <span className="truncate">{dept.name}</span>
+                          </div>
+
+                          {dept.hasSub && (
+                            <ChevronRight
+                              size={14}
+                              className={`shrink-0 transition-colors ${
+                                isSubActive ? "text-[#ff3d3d]" : "text-[#888888]"
+                              }`}
+                            />
+                          )}
+                        </Link>
+
+                        {/* Nested Submenu (Image 4) */}
+                        {dept.hasSub && isSubActive && dept.subItems && (
+                          <div
+                            className="absolute left-full top-0 w-[210px] bg-white border border-[#e5e5e5] shadow-[0_12px_32px_rgba(0,0,0,0.12)] rounded-md py-3 px-2 z-50 animate-in fade-in slide-in-from-left-1 duration-150"
+                            onMouseLeave={() => setActiveSubMenu(null)}
+                          >
+                            {dept.subItems.map((sub) => (
+                              <Link
+                                key={sub}
+                                href={`/shop?cat=${encodeURIComponent(dept.name)}&sub=${encodeURIComponent(sub)}`}
+                                className="block px-4 py-2 text-[13.5px] text-[#333e48] hover:text-[#ff3d3d] hover:bg-[#f8f9fa] rounded transition-colors"
+                              >
+                                {sub}
+                              </Link>
+                            ))}
+                          </div>
+                        )}
+                      </div>
+                    );
+                  })}
                 </div>
               )}
             </div>
+
+            {/* Vertical Separator Line | */}
+            <div className="h-5 w-[1px] bg-[#e2e8f0] mx-5" />
+
+            {/* Navigation Links: Home +, Blog +, Shop +, Page + */}
+            <div className="flex items-center gap-7 h-full">
+              {/* Home + (in red #ff3d3d) */}
+              <div
+                className="relative h-full flex items-center"
+                onMouseEnter={() => setHomeDropdownOpen(true)}
+                onMouseLeave={() => setHomeDropdownOpen(false)}
+              >
+                <Link
+                  href="/"
+                  className="flex items-center gap-1 text-[14px] font-medium text-[#ff3d3d] hover:text-[#ff3d3d] transition-colors py-3"
+                >
+                  <span>Home</span>
+                  <span className="text-[13px] font-normal leading-none">+</span>
+                </Link>
+
+                {homeDropdownOpen && (
+                  <div className="absolute left-0 top-full w-[170px] bg-white border border-[#e5e5e5] shadow-[0_10px_25px_rgba(0,0,0,0.1)] rounded-md py-2 z-50 animate-in fade-in slide-in-from-top-1 duration-150">
+                    {[
+                      "Home 01",
+                      "Home 02",
+                      "Home 03",
+                      "Home 04",
+                      "Home 05",
+                      "Home 06",
+                      "Home 07",
+                      "Home 08",
+                    ].map((item, idx) => (
+                      <Link
+                        key={item}
+                        href="/"
+                        className={`block px-4 py-2 text-[13px] transition-colors ${
+                          idx === 0
+                            ? "text-[#ff3d3d] font-medium"
+                            : "text-[#333e48] hover:text-[#ff3d3d] hover:bg-[#f8f9fa]"
+                        }`}
+                      >
+                        {item}
+                      </Link>
+                    ))}
+                  </div>
+                )}
+              </div>
+
+              {/* Blog + */}
+              <div
+                className="relative h-full flex items-center"
+                onMouseEnter={() => setBlogDropdownOpen(true)}
+                onMouseLeave={() => setBlogDropdownOpen(false)}
+              >
+                <Link
+                  href="/blog"
+                  className="flex items-center gap-1 text-[14px] font-medium text-[#333e48] hover:text-[#ff3d3d] transition-colors py-3"
+                >
+                  <span>Blog</span>
+                  <span className="text-[13px] font-normal leading-none">+</span>
+                </Link>
+
+                {blogDropdownOpen && (
+                  <div className="absolute left-0 top-full w-[160px] bg-white border border-[#e5e5e5] shadow-[0_10px_25px_rgba(0,0,0,0.1)] rounded-md py-2 z-50 animate-in fade-in slide-in-from-top-1 duration-150">
+                    {["Blog List", "Blog Grid", "Blog Single"].map((item) => (
+                      <Link
+                        key={item}
+                        href="/blog"
+                        className="block px-4 py-2 text-[13px] text-[#333e48] hover:text-[#ff3d3d] hover:bg-[#f8f9fa] transition-colors"
+                      >
+                        {item}
+                      </Link>
+                    ))}
+                  </div>
+                )}
+              </div>
+
+              {/* Shop + */}
+              <div
+                className="relative h-full flex items-center"
+                onMouseEnter={() => setShopDropdownOpen(true)}
+                onMouseLeave={() => setShopDropdownOpen(false)}
+              >
+                <Link
+                  href="/shop"
+                  className="flex items-center gap-1 text-[14px] font-medium text-[#333e48] hover:text-[#ff3d3d] transition-colors py-3"
+                >
+                  <span>Shop</span>
+                  <span className="text-[13px] font-normal leading-none">+</span>
+                </Link>
+
+                {shopDropdownOpen && (
+                  <div className="absolute left-0 top-full w-[190px] bg-white border border-[#e5e5e5] shadow-[0_10px_25px_rgba(0,0,0,0.1)] rounded-md py-2 z-50 animate-in fade-in slide-in-from-top-1 duration-150">
+                    {[
+                      { label: "Shop Grid Style", href: "/shop" },
+                      { label: "Shop List Style", href: "/shop" },
+                      { label: "Product Variable", href: "/product/sample" },
+                      { label: "Product Countdown", href: "/product/sample" },
+                      { label: "Cart", href: "/cart" },
+                      { label: "Wishlist", href: "/shop" },
+                      { label: "Order Tracking", href: "/contact" },
+                    ].map((item) => (
+                      <Link
+                        key={item.label}
+                        href={item.href}
+                        className="block px-4 py-2 text-[13px] text-[#333e48] hover:text-[#ff3d3d] hover:bg-[#f8f9fa] transition-colors"
+                      >
+                        {item.label}
+                      </Link>
+                    ))}
+                  </div>
+                )}
+              </div>
+
+              {/* Page + */}
+              <div
+                className="relative h-full flex items-center"
+                onMouseEnter={() => setPageDropdownOpen(true)}
+                onMouseLeave={() => setPageDropdownOpen(false)}
+              >
+                <button
+                  type="button"
+                  className="flex items-center gap-1 text-[14px] font-medium text-[#333e48] hover:text-[#ff3d3d] transition-colors py-3 cursor-pointer"
+                >
+                  <span>Page</span>
+                  <span className="text-[13px] font-normal leading-none">+</span>
+                </button>
+
+                {pageDropdownOpen && (
+                  <div className="absolute left-0 top-full w-[160px] bg-white border border-[#e5e5e5] shadow-[0_10px_25px_rgba(0,0,0,0.1)] rounded-md py-2 z-50 animate-in fade-in slide-in-from-top-1 duration-150">
+                    {[
+                      { label: "FAQs", href: "/contact" },
+                      { label: "Contact Us", href: "/contact" },
+                      { label: "About Us", href: "/blog" },
+                    ].map((item) => (
+                      <Link
+                        key={item.label}
+                        href={item.href}
+                        className="block px-4 py-2 text-[13px] text-[#333e48] hover:text-[#ff3d3d] hover:bg-[#f8f9fa] transition-colors"
+                      >
+                        {item.label}
+                      </Link>
+                    ))}
+                  </div>
+                )}
+              </div>
+            </div>
           </div>
 
-          {/* Right Action Icons: Compare (0), Wishlist (0), Cart (0) */}
-          <div className="flex items-center gap-6">
-            {/* Compare Action */}
-            <Link
-              href="/shop"
-              className="relative p-1 text-[#333e48] hover:text-[#ff3d3d] transition-colors cursor-pointer group"
-              aria-label="Compare"
+          {/* Right: Language Selector with Globe icon (Image 1 & 2) */}
+          <div className="relative" ref={languageRef}>
+            <button
+              type="button"
+              onClick={() => setLanguageOpen((prev) => !prev)}
+              className="flex items-center gap-1.5 text-[#73787d] hover:text-[#ff3d3d] transition-colors cursor-pointer text-[13px]"
+              aria-expanded={languageOpen}
             >
-              {/* Exact Onsus Compare SVG */}
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="22"
-                height="22"
-                viewBox="0 0 26 26"
-                fill="none"
-                className="text-[#333e48] group-hover:text-[#ff3d3d] transition-colors"
-              >
-                <path
-                  d="M7.85714 10.4286L4.42857 13.8572L1 10.4286"
-                  stroke="currentColor"
-                  strokeWidth="1.5"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-                <path
-                  d="M18.1429 15.625L21.5714 12.1964L25 15.625"
-                  stroke="currentColor"
-                  strokeWidth="1.5"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-                <path
-                  d="M7 20.7142C7 19.2941 5.84874 18.1428 4.42858 18.1428C3.00841 18.1428 1.85715 19.2941 1.85715 20.7142C1.85715 22.1344 3.00841 23.2856 4.42858 23.2856C5.84874 23.2856 7 22.1344 7 20.7142Z"
-                  stroke="currentColor"
-                  strokeWidth="1.5"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-                <path
-                  d="M24.1429 5.28575C24.1429 3.86559 22.9916 2.71432 21.5714 2.71432C20.1513 2.71432 19 3.86559 19 5.28575C19 6.70591 20.1513 7.85718 21.5714 7.85718C22.9916 7.85718 24.1429 6.70591 24.1429 5.28575Z"
-                  stroke="currentColor"
-                  strokeWidth="1.5"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-                <path
-                  d="M4.42856 13L4.42856 8.5C4.42856 7.64752 4.76721 6.82995 5.37 6.22716C5.9728 5.62436 6.79036 5.28571 7.64284 5.28571L19 5.28571"
-                  stroke="currentColor"
-                  strokeWidth="1.5"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-                <path
-                  d="M21.5714 13.0535L21.5714 17.5535C21.5714 18.406 21.2328 19.2236 20.63 19.8264C20.0272 20.4292 19.2096 20.7678 18.3571 20.7678L7 20.7678"
-                  stroke="currentColor"
-                  strokeWidth="1.5"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </svg>
-              {/* Circular Red Badge */}
-              <span className="absolute -top-1.5 -right-2 min-w-[17px] h-[17px] px-1 bg-[#ff3d3d] text-white rounded-full text-[10px] font-bold flex items-center justify-center leading-none">
-                {compareCount}
+              <Globe size={14} strokeWidth={1.6} className="text-[#73787d]" />
+              <span>Language:</span>
+              <span className="font-semibold text-[#333e48] ml-0.5">
+                {selectedLanguage}
               </span>
-            </Link>
+              <ChevronDown
+                size={12}
+                className={`text-[#73787d] transition-transform duration-200 ${
+                  languageOpen ? "rotate-180" : ""
+                }`}
+              />
+            </button>
 
-            {/* Wishlist Action */}
-            <Link
-              href="/shop"
-              className="relative p-1 text-[#333e48] hover:text-[#ff3d3d] transition-colors cursor-pointer group"
-              aria-label="Wishlist"
-            >
-              {/* Exact Onsus Wishlist Heart SVG */}
-              <svg
-                width="22"
-                height="22"
-                viewBox="0 0 26 27"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-                className="text-[#333e48] group-hover:text-[#ff3d3d] transition-colors"
-              >
-                <path
-                  d="M18.1949 2.73732C16.1929 2.72573 14.2896 3.67827 13 5.33729C11.7184 3.66693 9.80988 2.71168 7.80503 2.73732C4.0467 2.73732 1 6.03791 1 10.1094C1 17.0867 12.2405 23.8993 12.6962 24.1626C12.8801 24.2957 13.1199 24.2957 13.3038 24.1626C13.7595 23.8993 25 17.1854 25 10.1094C25 6.03791 21.9532 2.73732 18.1949 2.73732ZM13 22.8461C11.2379 21.7272 2.21519 15.7702 2.21519 10.1094C2.21519 6.765 4.71785 4.05371 7.80508 4.05371C9.69561 4.02682 11.4648 5.05986 12.4836 6.78534C12.6904 7.09433 13.0893 7.16318 13.3746 6.93905C13.4291 6.89621 13.477 6.84437 13.5164 6.78534C15.206 3.98618 18.6702 3.20077 21.2541 5.03107C22.8358 6.15155 23.7879 8.06199 23.7848 10.1094C23.7848 15.836 14.762 21.7601 13 22.8461Z"
-                  fill="currentColor"
-                />
-              </svg>
-              {/* Circular Red Badge */}
-              <span className="absolute -top-1.5 -right-2 min-w-[17px] h-[17px] px-1 bg-[#ff3d3d] text-white rounded-full text-[10px] font-bold flex items-center justify-center leading-none">
-                {wishlistCount}
-              </span>
-            </Link>
-
-            {/* Cart Action */}
-            <Link
-              href="/cart"
-              className="relative p-1 text-[#333e48] hover:text-[#ff3d3d] transition-colors cursor-pointer group"
-              aria-label="Cart"
-            >
-              {/* Exact Onsus Cart SVG */}
-              <svg
-                width="24"
-                height="23"
-                viewBox="0 0 28 27"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-                className="text-[#333e48] group-hover:text-[#ff3d3d] transition-colors"
-              >
-                <path
-                  d="M9.55865 19.6096C7.8483 19.6096 6.46191 20.996 6.46191 22.7064C6.46191 24.4165 7.8483 25.8029 9.55865 25.8029C11.2688 25.8029 12.6552 24.4165 12.6552 22.7064C12.6534 20.9969 11.2681 19.6114 9.55865 19.6096ZM9.55865 24.6644C8.47712 24.6644 7.60037 23.7877 7.60037 22.7064C7.60037 21.6248 8.47712 20.7481 9.55865 20.7481C10.64 20.7481 11.5167 21.6248 11.5167 22.7064C11.5167 23.7877 10.64 24.6644 9.55865 24.6644Z"
-                  fill="currentColor"
-                />
-                <path
-                  d="M26.4365 6.6144H6.33692L5.92712 4.32036C5.67452 2.90819 4.56764 1.80353 3.15502 1.55382L1.66925 1.29211C1.35951 1.23697 1.064 1.44354 1.00885 1.75305C0.95393 2.06279 1.16028 2.3583 1.47002 2.41345L2.96135 2.67516C3.90235 2.84193 4.63902 3.57859 4.80578 4.51959L6.82076 15.887C7.05868 17.2472 8.2405 18.2393 9.62132 18.238H21.5751C22.831 18.2418 23.9401 17.4197 24.3018 16.2172L26.9772 7.34861C27.0268 7.17562 26.9955 6.98929 26.8918 6.84209C26.7835 6.69956 26.6152 6.61551 26.4365 6.6144ZM23.2145 15.8813C22.9997 16.6035 22.3342 17.0975 21.5809 17.0938H9.6271C8.79794 17.096 8.08818 16.4994 7.94788 15.682L6.54193 7.74707H25.6736L23.2145 15.8813Z"
-                  fill="currentColor"
-                />
-                <path
-                  d="M21.5118 19.6096C19.8014 19.6096 18.415 20.996 18.415 22.7064C18.415 24.4165 19.8014 25.8029 21.5118 25.8029C23.2219 25.8029 24.6083 24.4165 24.6083 22.7064C24.6065 20.9969 23.2212 19.6114 21.5118 19.6096ZM21.5118 24.6644C20.4302 24.6644 19.5535 23.7877 19.5535 22.7064C19.5535 21.6248 20.4302 20.7481 21.5118 20.7481C22.5931 20.7481 23.4698 21.6248 23.4698 22.7064C23.4698 23.7877 22.5931 24.6644 21.5118 24.6644Z"
-                  fill="currentColor"
-                />
-              </svg>
-              {/* Circular Red Badge */}
-              <span className="absolute -top-1.5 -right-2 min-w-[17px] h-[17px] px-1 bg-[#ff3d3d] text-white rounded-full text-[10px] font-bold flex items-center justify-center leading-none">
-                {cartCount}
-              </span>
-            </Link>
+            {languageOpen && (
+              <div className="absolute right-0 top-[calc(100%+8px)] w-[140px] bg-white border border-[#e5e5e5] rounded-md shadow-[0_8px_20px_rgba(0,0,0,0.1)] py-1.5 z-50">
+                {LANGUAGES.map((lang) => (
+                  <button
+                    key={lang.code}
+                    type="button"
+                    onClick={() => {
+                      setSelectedLanguage(lang.label);
+                      setLanguageOpen(false);
+                    }}
+                    className={`w-full text-left px-3.5 py-1.5 text-xs flex items-center justify-between cursor-pointer transition-colors ${
+                      selectedLanguage === lang.label
+                        ? "text-[#ff3d3d] font-semibold bg-[#fff5f5]"
+                        : "text-[#333e48] hover:bg-[#f8f9fa] hover:text-[#ff3d3d]"
+                    }`}
+                  >
+                    <span>{lang.label}</span>
+                    {selectedLanguage === lang.label && (
+                      <Check size={12} className="text-[#ff3d3d]" />
+                    )}
+                  </button>
+                ))}
+              </div>
+            )}
           </div>
         </div>
       </nav>
 
       {/* ========================================================= */}
-      {/* 4. RESPONSIVE MOBILE DRAWER MENU                          */}
+      {/* 3. RESPONSIVE MOBILE DRAWER MENU                          */}
       {/* ========================================================= */}
       {mobileMenuOpen && (
         <div className="fixed inset-0 z-50 flex">
@@ -753,7 +801,7 @@ export default function Header() {
                 </Link>
               </div>
 
-              {/* Categories Section in Mobile */}
+              {/* All Categories in Mobile */}
               <div className="pt-4 border-t border-[#eeeeee]">
                 <button
                   type="button"
@@ -770,37 +818,46 @@ export default function Header() {
                 </button>
                 {mobileCategoryOpen && (
                   <div className="mt-2 space-y-1 pl-2">
-                    {CATEGORY_COLUMNS.flat().map((cat) => (
-                      <button
-                        key={cat}
-                        type="button"
-                        onClick={() => {
-                          setSelectedCategory(cat);
-                          setMobileMenuOpen(false);
-                        }}
-                        className="block w-full text-left py-1 text-xs text-[#555555] hover:text-[#ff3d3d] cursor-pointer"
+                    {ALL_DEPARTMENTS.map((dept) => (
+                      <Link
+                        key={dept.name}
+                        href={dept.href}
+                        onClick={() => setMobileMenuOpen(false)}
+                        className="block w-full text-left py-1 text-xs text-[#555555] hover:text-[#ff3d3d]"
                       >
-                        {cat}
-                      </button>
+                        {dept.name}
+                      </Link>
                     ))}
                   </div>
                 )}
               </div>
 
-              {/* Contact info in mobile */}
-              <div className="pt-4 border-t border-[#eeeeee] text-xs space-y-2 text-[#73787d]">
-                <div>
-                  <span>Call us for free: </span>
-                  <a href="tel:+18001234567" className="text-[#ff3d3d] font-semibold">
-                    +1 (800) 123 4567
-                  </a>
-                </div>
-                <div>
-                  <span>Email: </span>
-                  <a href="mailto:oesus@support.com" className="text-[#004ec3]">
-                    oesus@support.com
-                  </a>
-                </div>
+              {/* Account & Cart in Mobile */}
+              <div className="pt-4 border-t border-[#eeeeee] space-y-2 text-sm">
+                <Link
+                  href="/shop"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="flex items-center gap-2 text-[#333e48] hover:text-[#ff3d3d]"
+                >
+                  <User size={16} />
+                  <span>Sign In</span>
+                </Link>
+                <Link
+                  href="/contact"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="flex items-center gap-2 text-[#333e48] hover:text-[#ff3d3d]"
+                >
+                  <Headphones size={16} />
+                  <span>Support</span>
+                </Link>
+                <Link
+                  href="/cart"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="flex items-center gap-2 text-[#333e48] hover:text-[#ff3d3d]"
+                >
+                  <ShoppingCart size={16} />
+                  <span>Your cart ({cartCount})</span>
+                </Link>
               </div>
             </div>
           </div>
