@@ -29,17 +29,7 @@ const WISHLIST_KEY = "industrialedge_wishlist";
 const CART_KEY = "industrialedge_cart";
 const BASE_WISHLIST_OFFSET = 115;
 
-const INITIAL_CART: CartItem[] = [
-  {
-    id: "p-seed-1",
-    name: "Fast USB-C Multi Hub",
-    category: "Accessories",
-    price: 8.5,
-    qty: 10,
-    image:
-      "https://images.unsplash.com/photo-1618384887929-16ec33fab9ef?w=400&h=400&fit=crop&q=80",
-  },
-];
+const INITIAL_CART: CartItem[] = [];
 
 const SERVER_WISHLIST: string[] = [];
 let memoryWishlist: string[] = [];
@@ -194,7 +184,7 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
 
   const cartCount = cart.reduce((sum, item) => sum + item.qty, 0);
   const cartTotal = cart.reduce((sum, item) => sum + item.price * item.qty, 0);
-  const wishlistCount = BASE_WISHLIST_OFFSET + wishlist.length;
+  const wishlistCount = wishlist.length;
 
   const value: StoreState = {
     wishlist,
