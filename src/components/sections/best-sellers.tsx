@@ -175,14 +175,14 @@ export default function BestSellers() {
         className="group relative flex flex-col justify-between bg-white h-full transition-all duration-200 select-none"
       >
         {/* 1. Image Stage with Hover Overlay: Top-Right Icons + Bottom Red Button */}
-        <div className="relative w-full h-[200px] sm:h-[220px] flex items-center justify-center p-2 mb-3 bg-white overflow-hidden">
+        <div className="relative w-full h-[180px] sm:h-[190px] flex items-center justify-center p-2 mb-2 bg-white overflow-hidden">
           {/* Product Image */}
           <Image
             src={product.image}
             alt={product.name}
-            width={200}
-            height={200}
-            className="max-h-[180px] w-auto object-contain transition-transform duration-300 group-hover:scale-105"
+            width={180}
+            height={180}
+            className="max-h-[165px] w-auto object-contain transition-transform duration-300 group-hover:scale-105"
           />
 
           {/* Top-Right Vertical Stack of 3 Round Action Buttons on Hover */}
@@ -277,7 +277,7 @@ export default function BestSellers() {
   };
 
   return (
-    <section className="w-full bg-white py-10 sm:py-12 select-none overflow-hidden">
+    <section className="w-full bg-white py-8 sm:py-10 select-none overflow-hidden">
       {/* Toast Notification */}
       {toastMessage && (
         <div className="fixed bottom-6 right-6 z-50 bg-[#1e2d3b] text-white px-4 py-2 rounded-lg shadow-xl text-xs sm:text-sm flex items-center gap-2 animate-bounce">
@@ -287,8 +287,8 @@ export default function BestSellers() {
       )}
 
       <div className="max-w-[1440px] mx-auto px-6 lg:px-12">
-        {/* Section Header: Title on left, Carousel controls on right, Divider line underneath */}
-        <div className="flex items-center justify-between border-b border-gray-200/80 pb-3 mb-6">
+        {/* Section Header: Title on left, Carousel controls on right (clean white space underneath matching screenshot) */}
+        <div className="flex items-center justify-between pb-1 mb-6">
           <h2 className="text-xl sm:text-2xl font-bold text-[#1e2d3b] tracking-tight">
             Best Sellers
           </h2>
@@ -315,12 +315,12 @@ export default function BestSellers() {
         </div>
 
         {/* 2-Column Section Layout: Left Dell G5 Banner + Right Product Carousel */}
-        <div className="flex flex-col lg:flex-row gap-6 lg:gap-8 items-stretch">
+        <div className="flex flex-col lg:flex-row gap-6 lg:gap-8 items-start">
           
           {/* Left: Dell G5 Featured Promo Banner */}
           <Link
             href="/product-category/laptop-tablet"
-            className="w-full lg:w-[350px] xl:w-[380px] shrink-0 relative rounded-[6px] border border-gray-200/70 overflow-hidden bg-cover bg-center flex flex-col justify-between p-6 sm:p-7 min-h-[380px] sm:min-h-[400px] group transition-shadow duration-300 hover:shadow-md cursor-pointer"
+            className="w-full lg:w-[350px] xl:w-[370px] shrink-0 h-[285px] sm:h-[295px] relative rounded-[6px] border border-gray-200/70 overflow-hidden bg-cover bg-center p-6 sm:p-7 group transition-shadow duration-300 hover:shadow-md cursor-pointer block"
             style={{
               backgroundImage: "url('/images/bg2-home04.webp')",
               backgroundColor: "#f7f8fa",
@@ -328,27 +328,27 @@ export default function BestSellers() {
           >
             {/* Banner Typography */}
             <div className="relative z-10">
-              <span className="text-[14px] text-[#555a60] font-normal block mb-1">
+              <span className="text-[13px] text-[#73787d] font-normal block mb-1">
                 Price
               </span>
-              <span className="text-[48px] sm:text-[54px] font-bold text-[#004ec3] leading-none block mb-4 tracking-tight">
+              <span className="text-[36px] sm:text-[40px] font-bold text-[#004ec3] leading-none block mb-3.5 tracking-tight">
                 $450
               </span>
-              <span className="text-[14px] text-[#555a60] font-normal block mb-1">
+              <span className="text-[13px] text-[#555a60] font-normal block mb-1">
                 Let power flow through you
               </span>
-              <h3 className="text-[22px] sm:text-[25px] font-bold text-[#1e2d3b] leading-tight block">
+              <h3 className="text-[20px] sm:text-[22px] font-bold text-[#1e2d3b] leading-[1.2] block max-w-[190px]">
                 Dell G5 Gaming Laptop
               </h3>
             </div>
 
-            {/* Laptop Cutout Image positioned at bottom-right */}
-            <div className="absolute right-[-15px] bottom-[-10px] w-[340px] sm:w-[370px] h-[190px] sm:h-[210px] pointer-events-none">
+            {/* Laptop Cutout Image positioned exactly at bottom-right */}
+            <div className="absolute right-0 bottom-0 w-[230px] sm:w-[255px] h-[155px] sm:h-[170px] pointer-events-none flex items-end justify-end">
               <Image
                 src="/images/img-prd18.webp"
                 alt="Dell G5 Gaming Laptop"
-                width={408}
-                height={250}
+                width={360}
+                height={220}
                 className="w-full h-full object-contain object-right-bottom transition-transform duration-500 group-hover:scale-105"
               />
             </div>
@@ -361,7 +361,7 @@ export default function BestSellers() {
             onTouchEnd={handleTouchEnd}
           >
             <div
-              className="flex transition-transform duration-500 ease-in-out h-full"
+              className="flex transition-transform duration-500 ease-in-out"
               style={{
                 width: `${(BEST_SELLER_ITEMS.length / visibleColumns) * 100}%`,
                 transform: `translateX(-${currentIndex * (100 / BEST_SELLER_ITEMS.length)}%)`,
