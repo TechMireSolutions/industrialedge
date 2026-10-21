@@ -1,48 +1,48 @@
 "use client";
 
-import { Truck, RefreshCw, Wallet, ShieldCheck } from "lucide-react";
+import { Truck, RefreshCw, Headphones, CreditCard } from "lucide-react";
 
 const FEATURES = [
   {
     icon: Truck,
-    title: "Free Delivery",
-    sub: "from $50",
+    title: "Free Shipping",
+    sub: "Free shipping on orders over $99",
   },
   {
     icon: RefreshCw,
-    title: "99% Positive",
-    sub: "Feedbacks",
+    title: "Money Guarantee",
+    sub: "30 days money back guarantee",
   },
   {
-    icon: Wallet,
-    title: "365 Days",
-    sub: "for free return",
+    icon: Headphones,
+    title: "Online Support 24/7",
+    sub: "Dedicated technical & sales support",
   },
   {
-    icon: ShieldCheck,
-    title: "Payment Secure System",
-    sub: "",
+    icon: CreditCard,
+    title: "Flexible Payment",
+    sub: "Pay with multiple secure methods",
   },
 ];
 
 export default function TrustBar() {
   return (
-    <section className="py-10 border-y border-[#e5e5e5] bg-white">
-      <div className="container">
+    <section className="py-10 bg-white border-t border-gray-100 select-none">
+      <div className="max-w-[1440px] mx-auto px-6 lg:px-12">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
           {FEATURES.map((feature, i) => (
             <div
               key={i}
-              className="h-[100px] bg-white border border-[#e8e8e8] rounded-[5px] shadow-[0_1px_5px_rgba(0,0,0,0.05)] flex items-center px-8 gap-5"
+              className="flex items-center gap-4 p-4 rounded-xl hover:bg-gray-50/80 transition-colors"
             >
-              <div className="w-8 h-8 flex-shrink-0 text-[#0e8ce4]">
-                <feature.icon size={20} strokeWidth={2} />
+              <div className="w-12 h-12 rounded-full bg-[#f0f5fc] text-[#004ec3] flex items-center justify-center shrink-0">
+                <feature.icon className="w-6 h-6 stroke-[1.8]" />
               </div>
               <div className="text-left">
-                <h3 className="font-medium text-sm text-black">{feature.title}</h3>
-                {feature.sub && (
-                  <p className="text-xs text-black/50">{feature.sub}</p>
-                )}
+                <h3 className="font-semibold text-sm text-[#1e2d3b] mb-0.5">
+                  {feature.title}
+                </h3>
+                <p className="text-xs text-[#73787d]">{feature.sub}</p>
               </div>
             </div>
           ))}
