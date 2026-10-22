@@ -351,7 +351,7 @@ export default function SmartHomeAppliances() {
                 key={product.id}
                 className="group relative flex items-start gap-4 select-none"
               >
-                {/* Left: Product Image with Floating 4-Icon Action Bar on Hover */}
+                {/* Left: Product Image */}
                 <div className="relative w-[85px] sm:w-[95px] h-[85px] sm:h-[95px] shrink-0 flex items-center justify-center bg-white">
                   <Image
                     src={product.image}
@@ -360,61 +360,9 @@ export default function SmartHomeAppliances() {
                     height={95}
                     className="max-w-full max-h-full object-contain transition-transform duration-300 group-hover:scale-105"
                   />
-
-                  {/* 4 Floating Circular Action Buttons Appearing Beneath Image on Hover */}
-                  <div className="absolute -bottom-3.5 left-1/2 -translate-x-1/2 flex items-center gap-1.5 opacity-0 group-hover:opacity-100 transition-all duration-200 z-30 pointer-events-none group-hover:pointer-events-auto">
-                    {/* 1. Quick View */}
-                    <button
-                      type="button"
-                      onClick={(e) => handleQuickView(product, e)}
-                      className="w-6 h-6 rounded-full bg-white shadow-[0_2px_6px_rgba(0,0,0,0.14)] border border-gray-100 flex items-center justify-center text-gray-700 hover:text-white hover:bg-[#ff3d3d] hover:border-[#ff3d3d] transition-colors cursor-pointer"
-                      title="Quick View"
-                      aria-label="Quick View"
-                    >
-                      <Eye className="w-3 h-3 stroke-[1.8]" />
-                    </button>
-
-                    {/* 2. Wishlist */}
-                    <button
-                      type="button"
-                      onClick={(e) => handleToggleWishlist(product, e)}
-                      className={`w-6 h-6 rounded-full bg-white shadow-[0_2px_6px_rgba(0,0,0,0.14)] border border-gray-100 flex items-center justify-center transition-colors cursor-pointer ${
-                        liked ? "text-red-500" : "text-gray-700 hover:text-white hover:bg-[#ff3d3d] hover:border-[#ff3d3d]"
-                      }`}
-                      title="Wishlist"
-                      aria-label="Wishlist"
-                    >
-                      <Heart
-                        className="w-3 h-3 stroke-[1.8]"
-                        fill={liked ? "currentColor" : "none"}
-                      />
-                    </button>
-
-                    {/* 3. Compare */}
-                    <button
-                      type="button"
-                      onClick={(e) => handleCompare(product, e)}
-                      className="w-6 h-6 rounded-full bg-white shadow-[0_2px_6px_rgba(0,0,0,0.14)] border border-gray-100 flex items-center justify-center text-gray-700 hover:text-white hover:bg-[#ff3d3d] hover:border-[#ff3d3d] transition-colors cursor-pointer"
-                      title="Compare"
-                      aria-label="Compare"
-                    >
-                      <ArrowLeftRight className="w-3 h-3 stroke-[1.8]" />
-                    </button>
-
-                    {/* 4. Add to Cart */}
-                    <button
-                      type="button"
-                      onClick={(e) => handleAddToCart(product, e)}
-                      className="w-6 h-6 rounded-full bg-white shadow-[0_2px_6px_rgba(0,0,0,0.14)] border border-gray-100 flex items-center justify-center text-gray-700 hover:text-white hover:bg-[#ff3d3d] hover:border-[#ff3d3d] transition-colors cursor-pointer"
-                      title="Add to cart"
-                      aria-label="Add to cart"
-                    >
-                      <ShoppingCart className="w-3 h-3 stroke-[1.8]" />
-                    </button>
-                  </div>
                 </div>
 
-                {/* Right: Category, Title (turns Red on hover), and Price */}
+                {/* Right: Category, Title (turns Red on hover), and Price/Action Buttons Swap Row */}
                 <div className="flex-1 min-w-0 flex flex-col justify-start pt-1">
                   {/* Category */}
                   <span className="text-[12px] text-[#73787d] font-normal leading-tight mb-1 block truncate">
@@ -424,16 +372,75 @@ export default function SmartHomeAppliances() {
                   {/* Title: turns red on card hover */}
                   <Link
                     href={`/product/${product.id}`}
-                    className="text-[13px] sm:text-[14px] font-medium text-[#004ec3] group-hover:text-[#ff3d3d] leading-[1.35] line-clamp-2 mb-1.5 transition-colors duration-150 block"
+                    className="text-[13px] sm:text-[14px] font-medium text-[#004ec3] group-hover:text-[#ff3d3d] leading-[1.35] line-clamp-2 mb-2 transition-colors duration-150 block"
                     title={product.name}
                   >
                     {product.name}
                   </Link>
 
-                  {/* Price */}
-                  <span className="text-[15px] sm:text-[16px] font-bold text-[#22262a] leading-tight block">
-                    ${product.price.toFixed(2)}
-                  </span>
+                  {/* Price / Hover Buttons Swap Row */}
+                  <div className="relative h-8 flex items-center">
+                    {/* Normal State: Price */}
+                    <div className="absolute inset-0 flex items-center transition-all duration-200 group-hover:opacity-0 group-hover:pointer-events-none group-hover:-translate-y-1">
+                      <span className="text-[15px] sm:text-[16px] font-bold text-[#22262a] leading-none">
+                        ${product.price.toFixed(2)}
+                      </span>
+                    </div>
+
+                    {/* Hover State: 4 Action Buttons replacing the price */}
+                    <div className="absolute inset-0 flex items-center gap-1.5 opacity-0 pointer-events-none group-hover:opacity-100 group-hover:pointer-events-auto group-hover:translate-y-0 translate-y-1 transition-all duration-200">
+                      {/* 1. Quick View */}
+                      <button
+                        type="button"
+                        onClick={(e) => handleQuickView(product, e)}
+                        className="w-8 h-8 rounded-full bg-white shadow-[0_2px_8px_rgba(0,0,0,0.08)] border border-gray-100 flex items-center justify-center text-gray-700 hover:text-white hover:bg-[#ff3d3d] hover:border-[#ff3d3d] transition-colors cursor-pointer"
+                        title="Quick View"
+                        aria-label="Quick View"
+                      >
+                        <Eye className="w-3.5 h-3.5 stroke-[1.8]" />
+                      </button>
+
+                      {/* 2. Wishlist */}
+                      <button
+                        type="button"
+                        onClick={(e) => handleToggleWishlist(product, e)}
+                        className={`w-8 h-8 rounded-full bg-white shadow-[0_2px_8px_rgba(0,0,0,0.08)] border border-gray-100 flex items-center justify-center transition-colors cursor-pointer ${
+                          liked
+                            ? "text-red-500 border-red-200"
+                            : "text-gray-700 hover:text-white hover:bg-[#ff3d3d] hover:border-[#ff3d3d]"
+                        }`}
+                        title="Wishlist"
+                        aria-label="Wishlist"
+                      >
+                        <Heart
+                          className="w-3.5 h-3.5 stroke-[1.8]"
+                          fill={liked ? "currentColor" : "none"}
+                        />
+                      </button>
+
+                      {/* 3. Compare */}
+                      <button
+                        type="button"
+                        onClick={(e) => handleCompare(product, e)}
+                        className="w-8 h-8 rounded-full bg-white shadow-[0_2px_8px_rgba(0,0,0,0.08)] border border-gray-100 flex items-center justify-center text-gray-700 hover:text-white hover:bg-[#ff3d3d] hover:border-[#ff3d3d] transition-colors cursor-pointer"
+                        title="Compare"
+                        aria-label="Compare"
+                      >
+                        <ArrowLeftRight className="w-3.5 h-3.5 stroke-[1.8]" />
+                      </button>
+
+                      {/* 4. Add to Cart */}
+                      <button
+                        type="button"
+                        onClick={(e) => handleAddToCart(product, e)}
+                        className="w-8 h-8 rounded-full bg-white shadow-[0_2px_8px_rgba(0,0,0,0.08)] border border-gray-100 flex items-center justify-center text-gray-700 hover:text-white hover:bg-[#ff3d3d] hover:border-[#ff3d3d] transition-colors cursor-pointer"
+                        title="Add to cart"
+                        aria-label="Add to cart"
+                      >
+                        <ShoppingCart className="w-3.5 h-3.5 stroke-[1.8]" />
+                      </button>
+                    </div>
+                  </div>
                 </div>
               </div>
             );
