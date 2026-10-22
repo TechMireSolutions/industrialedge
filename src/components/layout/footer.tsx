@@ -49,15 +49,18 @@ export default function Footer() {
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-8 lg:gap-6">
           {/* Column 1: Logo & Payment */}
           <div className="flex flex-col">
-            <Link href="/" className="inline-block mb-4">
+            <Link href="/" className="inline-flex items-center gap-2.5 mb-4 group">
               <Image
-                src="/images/logo-footer.png"
-                alt="Onsus Logo"
-                width={185}
+                src="/images/logo-icon.png"
+                alt="IndustrialEdge"
+                width={36}
                 height={40}
-                className="h-auto w-[185px] object-contain"
+                className="h-[36px] w-auto object-contain transition-transform group-hover:scale-105"
                 priority
               />
+              <span className="text-[24px] font-bold tracking-tight text-[#141539]">
+                Industrial<span className="text-[#00937a]">Edge</span>
+              </span>
             </Link>
             <h4 className="text-[15px] font-semibold text-[#333e48] mt-4 mb-3">
               We accept:
@@ -149,10 +152,10 @@ export default function Footer() {
               </p>
               <p>
                 <a
-                  href="mailto:onsus@support.com"
+                  href="mailto:support@industrialedge.com"
                   className="text-[#73787d] hover:text-[#ff3d3d] transition-colors"
                 >
-                  onsus@support.com
+                  support@industrialedge.com
                 </a>
               </p>
             </div>
@@ -277,15 +280,7 @@ export default function Footer() {
 
           {/* Copyright */}
           <p className="text-[13px] text-[#73787d]">
-            Industrial Edge. &copy; {year}. All right reserved &ndash; Designed by{" "}
-            <a
-              href="https://themeforest.net/user/themesflat/portfolio"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-[#333e48] hover:text-[#ff3d3d] transition-colors font-medium"
-            >
-              Themesflat
-            </a>
+            IndustrialEdge. &copy; {year}. All rights reserved
           </p>
         </div>
       </div>

@@ -236,15 +236,18 @@ export default function Header() {
       <div className="py-5 bg-white border-b border-[#f4f4f4]">
         <div className="max-w-[1440px] mx-auto px-6 lg:px-12 flex items-center justify-between gap-6">
           {/* Logo */}
-          <Link href="/" className="shrink-0 flex items-center">
+          <Link href="/" className="shrink-0 flex items-center gap-2.5 group">
             <Image
-              src="/logo-onsus.png"
-              alt="onsus."
-              width={165}
-              height={36}
+              src="/images/logo-icon.png"
+              alt="IndustrialEdge"
+              width={38}
+              height={42}
               priority
-              className="h-[36px] w-auto object-contain hover:opacity-95 transition-opacity"
+              className="h-[36px] w-auto object-contain transition-transform group-hover:scale-105"
             />
+            <span className="text-[22px] font-bold tracking-tight text-[#141539]">
+              Industrial<span className="text-[#00937a]">Edge</span>
+            </span>
           </Link>
 
           {/* Center: Scoped Search Bar with Pill Border */}
@@ -752,13 +755,18 @@ export default function Header() {
           <div className="relative w-full max-w-[320px] bg-white h-full shadow-2xl flex flex-col z-10 overflow-y-auto">
             {/* Drawer Header */}
             <div className="p-4 border-b border-[#eeeeee] flex items-center justify-between">
-              <Image
-                src="/logo-onsus.png"
-                alt="onsus."
-                width={140}
-                height={30}
-                className="h-[30px] w-auto object-contain"
-              />
+              <Link href="/" onClick={() => setMobileMenuOpen(false)} className="flex items-center gap-2">
+                <Image
+                  src="/images/logo-icon.png"
+                  alt="IndustrialEdge"
+                  width={30}
+                  height={34}
+                  className="h-[28px] w-auto object-contain"
+                />
+                <span className="text-[18px] font-bold tracking-tight text-[#141539]">
+                  Industrial<span className="text-[#00937a]">Edge</span>
+                </span>
+              </Link>
               <button
                 type="button"
                 onClick={() => setMobileMenuOpen(false)}

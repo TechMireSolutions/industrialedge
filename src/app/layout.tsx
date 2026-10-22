@@ -13,7 +13,7 @@ const rubik = Rubik({
 });
 
 export const metadata: Metadata = {
-  title: "Industrial Edge — Industrial Electronics & Tech Store",
+  title: "IndustrialEdge — Industrial Electronics & Tech Store",
   description: "Your trusted destination for cutting-edge electronics, industrial hardware, smart devices, and premium gadgets.",
 };
 
