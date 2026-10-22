@@ -166,8 +166,9 @@ export default function Header() {
   const [canvasTab, setCanvasTab] = useState<"menu" | "categories">("menu");
   const [expandedCanvasMenu, setExpandedCanvasMenu] = useState<string | null>(null);
 
-  // Sticky Header on Scroll
+  // Sticky Header on Scroll & Hamburger Dropdown
   const [isSticky, setIsSticky] = useState(false);
+  const [stickyMenuOpen, setStickyMenuOpen] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -175,6 +176,7 @@ export default function Header() {
         setIsSticky(true);
       } else {
         setIsSticky(false);
+        setStickyMenuOpen(false);
       }
     };
     window.addEventListener("scroll", handleScroll, { passive: true });
@@ -213,6 +215,7 @@ export default function Header() {
         setBlogDropdownOpen(false);
         setShopDropdownOpen(false);
         setPageDropdownOpen(false);
+        setStickyMenuOpen(false);
       }
     };
 
@@ -247,19 +250,25 @@ export default function Header() {
   return (
     <header className="w-full bg-white select-none">
       {/* Spacer when sticky to prevent layout jump */}
-      {isSticky && <div className="h-[82px] w-full" />}
+      {isSticky && <div className="h-[134px] w-full" />}
 
       {/* ========================================================= */}
-      {/* 1. MAIN HEADER BAR (Logo, Search Pill, Actions)           */}
+      {/* STICKY HEADER WRAPPER (Bar 1 + Toggleable Bar 2)          */}
       {/* ========================================================= */}
       <div
         className={`w-full bg-white transition-all duration-200 z-50 ${
           isSticky
-            ? "fixed top-0 left-0 right-0 py-3 shadow-[0_4px_20px_rgba(0,0,0,0.08)] border-b border-[#eeeeee]"
-            : "relative py-4 md:py-5 border-b border-[#f4f4f4]"
+            ? "fixed top-0 left-0 right-0 shadow-[0_4px_20px_rgba(0,0,0,0.08)] border-b border-[#eeeeee]"
+            : "relative"
         }`}
       >
-        <div className="max-w-[1440px] mx-auto px-6 lg:px-12 flex items-center justify-between gap-6">
+        {/* 1. MAIN HEADER BAR (Logo, Search Pill, Actions) */}
+        <div
+          className={`w-full bg-white border-b border-[#f4f4f4] ${
+            isSticky ? "py-3" : "py-4 md:py-5"
+          }`}
+        >
+          <div className="max-w-[1440px] mx-auto px-6 lg:px-12 flex items-center justify-between gap-6">
           {/* Logo */}
           <Link href="/" className="shrink-0 flex items-center gap-2.5 group">
             <Image
@@ -396,11 +405,21 @@ export default function Header() {
               </span>
             </Link>
 
-            {/* 3. Hamburger Menu (Opens Drawer) */}
+            {/* 3. Hamburger Menu (Toggles Bottom Menu in Sticky Mode) */}
             <button
               type="button"
-              onClick={() => setMobileMenuOpen(true)}
-              className="text-[#333e48] hover:text-[#ff3d3d] transition-colors p-1 cursor-pointer flex items-center justify-center"
+              onClick={() => {
+                if (isSticky) {
+                  setStickyMenuOpen((prev) => !prev);
+                } else {
+                  setMobileMenuOpen(true);
+                }
+              }}
+              className={`p-1 cursor-pointer flex items-center justify-center transition-colors ${
+                isSticky && stickyMenuOpen
+                  ? "text-[#ff3d3d]"
+                  : "text-[#333e48] hover:text-[#ff3d3d]"
+              }`}
               aria-label="Toggle menu"
             >
               <Menu size={25} strokeWidth={1.75} />
@@ -433,9 +452,16 @@ export default function Header() {
       </div>
 
       {/* ========================================================= */}
-      {/* 2. BOTTOM NAVIGATION BAR (White Bar with All Categories)  */}
+      {/* 2. BOTTOM NAVIGATION BAR (Image 1: hidden when sticky, Image 2: shown when hamburger open) */}
       {/* ========================================================= */}
-      <nav className="h-[48px] bg-white border-b border-[#eeeeee]">
+      {(!isSticky || stickyMenuOpen) && (
+        <nav
+          className={`h-[48px] border-b border-[#eeeeee] transition-all duration-200 ${
+            isSticky
+              ? "bg-[#f4f5f7] shadow-[0_4px_12px_rgba(0,0,0,0.06)] animate-in fade-in slide-in-from-top-1 duration-150"
+              : "bg-white"
+          }`}
+        >
         <div className="max-w-[1440px] mx-auto px-6 lg:px-12 h-full flex items-center justify-between">
           {/* Left: All Categories + Divider + Nav Links */}
           <div className="flex items-center h-full">
@@ -724,6 +750,8 @@ export default function Header() {
           </div>
         </div>
       </nav>
+      )}
+      </div>
 
       {/* ========================================================= */}
       {/* 3. TWO-TAB OFF-CANVAS DRAWER MENU (Menu & Categories)     */}
