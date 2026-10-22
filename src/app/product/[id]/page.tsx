@@ -95,9 +95,9 @@ const RECENTLY_VIEWED: RecentItem[] = [
     price: 134.99,
     image: "/images/lenovo-tab/rv-watch.png",
     thumbnails: [
-      "/images/lenovo-tab/thumb-1.png",
-      "/images/lenovo-tab/thumb-2.png",
-      "/images/lenovo-tab/thumb-3.png",
+      "/images/lenovo-tab/w-th1.png",
+      "/images/lenovo-tab/w-th2.png",
+      "/images/lenovo-tab/w-th3.png",
     ],
     moreThumbCount: 1,
     specs: [
@@ -116,9 +116,9 @@ const RECENTLY_VIEWED: RecentItem[] = [
     price: 399.99,
     image: "/images/lenovo-tab/rv-ps4.png",
     thumbnails: [
-      "/images/lenovo-tab/thumb-1.png",
-      "/images/lenovo-tab/thumb-2.png",
-      "/images/lenovo-tab/thumb-3.png",
+      "/images/lenovo-tab/ps4-th1.png",
+      "/images/lenovo-tab/ps4-th2.png",
+      "/images/lenovo-tab/ps4-th3.png",
     ],
     moreThumbCount: 1,
     sold: 5,
@@ -145,9 +145,9 @@ const RECENTLY_VIEWED: RecentItem[] = [
     price: 529.75,
     image: "/images/lenovo-tab/rv-laptop.png",
     thumbnails: [
-      "/images/lenovo-tab/thumb-1.png",
-      "/images/lenovo-tab/thumb-2.png",
-      "/images/lenovo-tab/thumb-3.png",
+      "/images/lenovo-tab/lap-th1.png",
+      "/images/lenovo-tab/lap-th2.png",
+      "/images/lenovo-tab/lap-th3.png",
     ],
     moreThumbCount: 2,
     specs: [
@@ -172,9 +172,9 @@ const RECENTLY_VIEWED: RecentItem[] = [
     originalPrice: 839.95,
     image: "/images/lenovo-tab/rv-camera.png",
     thumbnails: [
-      "/images/lenovo-tab/thumb-1.png",
-      "/images/lenovo-tab/thumb-2.png",
-      "/images/lenovo-tab/thumb-3.png",
+      "/images/lenovo-tab/cam-th1.png",
+      "/images/lenovo-tab/cam-th2.png",
+      "/images/lenovo-tab/cam-th3.png",
     ],
     moreThumbCount: 2,
     specs: [
@@ -727,11 +727,11 @@ export default function ProductSinglePage() {
         {/* RECENTLY VIEWED PRODUCTS (Matching Image 1 & Image 2)     */}
         {/* ========================================================= */}
         <div className="mt-14 mb-16">
-          <h2 className="text-[20px] font-bold text-[#141539] mb-6">
+          <h2 className="text-[20px] font-bold text-[#141539] mb-8">
             Recently Viewed
           </h2>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 xl:gap-10">
             {RECENTLY_VIEWED.map((product) => {
               const isHovered = hoveredRecentId === product.id;
               const isLiked = isWishlisted(product.id);
@@ -741,108 +741,57 @@ export default function ProductSinglePage() {
                   key={product.id}
                   onMouseEnter={() => setHoveredRecentId(product.id)}
                   onMouseLeave={() => setHoveredRecentId(null)}
-                  className="relative bg-white rounded-lg border border-[#e8e8e8] p-5 flex flex-col justify-between transition-all duration-200 hover:shadow-[0_8px_24px_rgba(0,0,0,0.08)] group"
+                  className="flex flex-col select-none relative group"
                 >
-                  {/* Top Image Stage */}
-                  <div className="relative w-full h-[190px] flex items-center justify-center p-2 mb-3">
-                    <Image
-                      src={product.image}
-                      alt={product.name}
-                      width={170}
-                      height={150}
-                      className="object-contain max-h-[170px] group-hover:scale-105 transition-transform duration-200"
-                    />
-                  </div>
-
-                  {/* Thumbnail Swatches Bar with +1 / +2 */}
-                  <div className="flex items-center gap-1.5 mb-3">
-                    {product.thumbnails.map((t, idx) => (
-                      <div
-                        key={idx}
-                        className="w-[28px] h-[28px] border border-[#dcdcdc] rounded p-0.5 flex items-center justify-center bg-white"
-                      >
-                        <Image
-                          src={t}
-                          alt="thumbnail"
-                          width={24}
-                          height={24}
-                          className="object-contain max-h-full"
-                        />
-                      </div>
-                    ))}
-                    {product.moreThumbCount && (
-                      <div className="w-[28px] h-[28px] border border-[#dcdcdc] rounded flex items-center justify-center text-[11px] font-bold text-[#666666] bg-[#f9f9f9]">
-                        +{product.moreThumbCount}
-                      </div>
-                    )}
-                  </div>
-
-                  {/* Categories */}
-                  <div className="text-[11.5px] text-[#888888] line-clamp-1 mb-1">
-                    {product.categories.join(", ")}
-                  </div>
-
-                  {/* Product Title */}
-                  <h3 className="text-[13.5px] font-semibold text-[#0e8ce4] hover:text-[#ff3d3d] line-clamp-2 leading-snug mb-2 cursor-pointer">
-                    {product.name}
-                  </h3>
-
-                  {/* Price */}
-                  <div className="flex items-baseline gap-2 mb-2">
-                    <span className="text-[17px] font-bold text-[#141539]">
-                      ${product.price.toFixed(2)}
-                    </span>
-                    {product.originalPrice && (
-                      <span className="text-[13px] text-[#999999] line-through">
-                        ${product.originalPrice.toFixed(2)}
-                      </span>
-                    )}
-                  </div>
-
-                  {/* Stock progress bar (for PS4) */}
-                  {product.sold !== undefined && product.available !== undefined && (
-                    <div className="mt-1">
-                      <div className="w-full h-1.5 bg-[#e5e5e5] rounded-full overflow-hidden mb-1">
-                        <div
-                          className="h-full bg-[#ff3d3d]"
-                          style={{
-                            width: `${(product.sold / (product.sold + product.available)) * 100}%`,
-                          }}
-                        />
-                      </div>
-                      <div className="flex justify-between text-[11px] text-[#666666]">
-                        <span>Sold: {product.sold}</span>
-                        <span>Available: {product.available}</span>
-                      </div>
+                  {/* ========================================================= */}
+                  {/* Upper Stage: Fixed height (260px)                          */}
+                  {/* Normal: Product Image                                     */}
+                  {/* Hover (Image 2): Specs Table + Action Icons + Delivery + Add to cart */}
+                  {/* ========================================================= */}
+                  <div className="relative w-full h-[260px] mb-3">
+                    {/* Normal State: Centered Large Image */}
+                    <div
+                      className={`absolute inset-0 flex items-center justify-center p-2 transition-opacity duration-200 ${
+                        isHovered ? "opacity-0 pointer-events-none" : "opacity-100"
+                      }`}
+                    >
+                      <Image
+                        src={product.image}
+                        alt={product.name}
+                        width={210}
+                        height={190}
+                        className="object-contain max-h-[210px] w-auto transition-transform duration-200 group-hover:scale-105"
+                      />
                     </div>
-                  )}
 
-                  {/* ========================================================= */}
-                  {/* HOVER OVERLAY CARD (Exact Match to Image 2)              */}
-                  {/* ========================================================= */}
-                  {isHovered && (
-                    <div className="absolute inset-0 bg-white rounded-lg border-2 border-[#e0e0e0] p-4 flex flex-col justify-between shadow-2xl z-30 animate-in fade-in zoom-in-95 duration-150">
-                      {/* Top: Specifications Table + Quick Action Icons */}
-                      <div className="flex items-start justify-between gap-3">
-                        {/* Specs Table */}
-                        <div className="space-y-1.5 text-[12px] flex-1">
+                    {/* Hover State: Specs + 3 Circular Action Icons + Delivery + Add to Cart (Image 2) */}
+                    <div
+                      className={`absolute inset-0 bg-white flex flex-col justify-between py-1 transition-opacity duration-200 z-10 ${
+                        isHovered ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
+                      }`}
+                    >
+                      {/* Top: Specs List + Right-Aligned Action Buttons */}
+                      <div className="flex items-start justify-between gap-2">
+                        {/* Specs Key-Value Table */}
+                        <div className="space-y-1.5 text-[11.5px] flex-1 min-w-0 pr-1">
                           {product.specs.map((s) => (
-                            <div key={s.label} className="grid grid-cols-2 gap-2 leading-tight">
-                              <span className="text-[#666666] font-normal">{s.label}</span>
-                              <span className="text-[#141539] font-medium truncate">{s.value}</span>
+                            <div key={s.label} className="grid grid-cols-[82px_1fr] gap-2 leading-tight">
+                              <span className="text-[#71717a] font-normal">{s.label}</span>
+                              <span className="text-[#18181b] font-normal truncate">{s.value}</span>
                             </div>
                           ))}
                         </div>
 
-                        {/* Quick Action Icons: Eye, Heart, Compare (Image 2) */}
-                        <div className="flex flex-col gap-2 shrink-0">
+                        {/* 3 Circular Action Buttons Stacked Vertically */}
+                        <div className="flex flex-col gap-1.5 shrink-0">
                           <button
                             type="button"
                             onClick={() => showToast(`Quick view for ${product.name}`)}
-                            className="w-8 h-8 rounded-full border border-[#e5e5e5] bg-white flex items-center justify-center text-[#555555] hover:text-[#0e8ce4] hover:border-[#0e8ce4] transition-colors cursor-pointer"
+                            className="w-[30px] h-[30px] rounded-full border border-[#e4e4e7] bg-white flex items-center justify-center text-[#71717a] hover:text-[#ff3d3d] hover:border-[#ff3d3d] transition-colors cursor-pointer shadow-xs"
+                            title="Quick View"
                             aria-label="Quick View"
                           >
-                            <Eye size={15} />
+                            <Eye size={15} strokeWidth={1.75} />
                           </button>
                           <button
                             type="button"
@@ -850,35 +799,37 @@ export default function ProductSinglePage() {
                               toggleWishlist(product.id);
                               showToast(isLiked ? "Removed from wishlist" : "Added to wishlist!");
                             }}
-                            className={`w-8 h-8 rounded-full border border-[#e5e5e5] bg-white flex items-center justify-center transition-colors cursor-pointer ${
+                            className={`w-[30px] h-[30px] rounded-full border border-[#e4e4e7] bg-white flex items-center justify-center transition-colors cursor-pointer shadow-xs ${
                               isLiked
                                 ? "text-[#ff3d3d] border-[#ff3d3d]"
-                                : "text-[#555555] hover:text-[#ff3d3d] hover:border-[#ff3d3d]"
+                                : "text-[#71717a] hover:text-[#ff3d3d] hover:border-[#ff3d3d]"
                             }`}
+                            title="Wishlist"
                             aria-label="Wishlist"
                           >
-                            <Heart size={15} fill={isLiked ? "currentColor" : "none"} />
+                            <Heart size={15} strokeWidth={1.75} fill={isLiked ? "currentColor" : "none"} />
                           </button>
                           <button
                             type="button"
                             onClick={() => showToast("Added to compare list!")}
-                            className="w-8 h-8 rounded-full border border-[#e5e5e5] bg-white flex items-center justify-center text-[#555555] hover:text-[#0e8ce4] hover:border-[#0e8ce4] transition-colors cursor-pointer"
+                            className="w-[30px] h-[30px] rounded-full border border-[#e4e4e7] bg-white flex items-center justify-center text-[#71717a] hover:text-[#ff3d3d] hover:border-[#ff3d3d] transition-colors cursor-pointer shadow-xs"
+                            title="Compare"
                             aria-label="Compare"
                           >
-                            <ArrowLeftRight size={15} />
+                            <ArrowLeftRight size={15} strokeWidth={1.75} />
                           </button>
                         </div>
                       </div>
 
-                      {/* Middle: Delivery estimate */}
+                      {/* Middle: Delivery Estimate */}
                       {product.deliveryDays && (
-                        <div className="flex items-center gap-2 text-[12px] text-[#555555] my-2">
-                          <Truck size={16} className="text-[#333e48]" />
+                        <div className="flex items-center gap-2 text-[12px] text-[#3f3f46] mt-1 mb-2">
+                          <Truck size={16} strokeWidth={1.6} className="text-[#27272a]" />
                           <span>{product.deliveryDays} day delivery</span>
                         </div>
                       )}
 
-                      {/* Bottom: Add to cart button (Bright Red matching Image 2) */}
+                      {/* Bottom: Bright Red Add to Cart Button */}
                       <button
                         type="button"
                         onClick={() => {
@@ -892,10 +843,83 @@ export default function ProductSinglePage() {
                           });
                           showToast(`Added ${product.name} to cart!`);
                         }}
-                        className="w-full h-[40px] bg-[#ff3d3d] hover:bg-[#e03131] text-white font-bold text-[13.5px] rounded-md transition-colors flex items-center justify-center cursor-pointer shadow-sm active:scale-[0.99]"
+                        className="w-full h-[38px] bg-[#ff3d3d] hover:bg-[#e03131] text-white font-bold text-[13.5px] rounded-[4px] transition-colors flex items-center justify-center cursor-pointer shadow-sm active:scale-[0.99]"
                       >
                         Add to cart
                       </button>
+                    </div>
+                  </div>
+
+                  {/* ========================================================= */}
+                  {/* Lower Part: Thumbnails + Category + Title + Price + Stock */}
+                  {/* (ALWAYS VISIBLE in both normal and hover states!)          */}
+                  {/* ========================================================= */}
+                  {/* Thumbnails Row */}
+                  <div className="flex items-center gap-1.5 mb-2.5">
+                    {product.thumbnails.map((t, idx) => (
+                      <div
+                        key={idx}
+                        className={`w-[34px] h-[34px] border rounded-[2px] p-0.5 flex items-center justify-center bg-white ${
+                          idx === 0 ? "border-[#27272a]" : "border-[#e4e4e7]"
+                        }`}
+                      >
+                        <Image
+                          src={t}
+                          alt="thumbnail"
+                          width={28}
+                          height={28}
+                          className="object-contain max-h-full"
+                        />
+                      </div>
+                    ))}
+                    {product.moreThumbCount && (
+                      <div className="w-[34px] h-[34px] border border-[#e4e4e7] rounded-[2px] flex items-center justify-center text-[11px] font-bold text-[#71717a] bg-[#f4f4f5]">
+                        +{product.moreThumbCount}
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Category */}
+                  <div className="text-[11.5px] text-[#71717a] line-clamp-1 mb-1">
+                    {product.categories.join(", ")}
+                  </div>
+
+                  {/* Product Title */}
+                  <h3 className="text-[13px] font-bold text-[#0066cc] hover:text-[#ff3d3d] line-clamp-2 leading-[1.35] mb-2 cursor-pointer transition-colors">
+                    {product.name}
+                  </h3>
+
+                  {/* Price */}
+                  <div className="flex items-baseline gap-2 mb-2">
+                    <span className="text-[16px] font-bold text-[#18181b]">
+                      ${product.price.toFixed(2)}
+                    </span>
+                    {product.originalPrice && (
+                      <span className="text-[13px] text-[#a1a1aa] line-through">
+                        ${product.originalPrice.toFixed(2)}
+                      </span>
+                    )}
+                  </div>
+
+                  {/* Stock Progress Bar (e.g. for PS4) */}
+                  {product.sold !== undefined && product.available !== undefined && (
+                    <div className="mt-1">
+                      <div className="w-full h-[3px] bg-[#e4e4e7] rounded-full overflow-hidden mb-1 flex">
+                        <div
+                          className="h-full bg-[#ff3d3d]"
+                          style={{
+                            width: `${(product.sold / (product.sold + product.available)) * 100}%`,
+                          }}
+                        />
+                      </div>
+                      <div className="flex justify-between text-[11px] text-[#71717a]">
+                        <span>
+                          Sold: <strong className="font-bold text-[#18181b]">{product.sold}</strong>
+                        </span>
+                        <span>
+                          Available: <strong className="font-bold text-[#18181b]">{product.available}</strong>
+                        </span>
+                      </div>
                     </div>
                   )}
                 </div>
