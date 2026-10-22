@@ -1,9 +1,10 @@
 "use client";
 
+import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { Eye, Heart, ArrowLeftRight, ShoppingCart, Star } from "lucide-react";
-import { useStore } from "@/lib/store";
+import { Eye, Heart, ArrowLeftRight, X, Check, ShoppingCart } from "lucide-react";
+import { useStore, type Product } from "@/lib/store";
 
 interface RecentProduct {
   id: string;
@@ -11,171 +12,320 @@ interface RecentProduct {
   category: string;
   price: number;
   originalPrice?: number;
-  rating: number;
   image: string;
+  description?: string;
 }
 
 const RECENTLY_VIEWED_ITEMS: RecentProduct[] = [
   {
     id: "rv-1",
-    name: "Apple 2022 MacBook Air Laptop with M2 chip, 13.6-inch Liquid Retina Display",
-    category: "Laptops",
-    price: 1099.0,
-    originalPrice: 1199.0,
-    rating: 5,
-    image: "/images/o_0701-540x540.webp",
+    name: "SKG Smart Watch Make/Answer Call for Men...",
+    category: "Apple products",
+    price: 29.19,
+    originalPrice: 99.91,
+    image: "/images/o_2901-540x540.webp",
+    description: "Built-in Alexa, Bluetooth call support, all-day health monitoring, and IP68 waterproof design.",
   },
   {
     id: "rv-2",
-    name: "DJI Phantom 3 Professional Quadcopter 4K UHD Video Camera Drone",
-    category: "Drones",
-    price: 799.0,
-    rating: 5,
-    image: "/images/o_0201-540x540.webp",
+    name: "Xbox Wireless Core Controller – White",
+    category: "Apple products",
+    price: 51.84,
+    image: "/images/xbox-controller.png",
+    description: "Experience the modernized design of the Xbox Wireless Controller, featuring sculpted surfaces and refined geometry.",
   },
   {
     id: "rv-3",
-    name: "Apple iPhone 11 Pro Max, US Version, 64GB, Gold",
-    category: "Smartphones",
-    price: 369.0,
-    rating: 5,
-    image: "/images/o_4901-540x540.webp",
+    name: "Bose Portable Smart Speaker — Wireless Bluetooth Speaker ...",
+    category: "Apple products",
+    price: 129.0,
+    originalPrice: 399.0,
+    image: "/images/bose-speaker.png",
+    description: "All-in-one wireless home speaker, portable Bluetooth speaker, and voice-controlled speaker in one.",
   },
   {
     id: "rv-4",
-    name: "ASUS ZenBook Flip 13 Ultra Slim Convertible Laptop, OLED FHD Touch Display",
-    category: "Laptops",
-    price: 849.0,
-    originalPrice: 949.0,
-    rating: 5,
-    image: "/images/o_4601-540x540.webp",
+    name: "SkyTech Shadow 3.0 Gaming Computer PC Desktop – Ryze...",
+    category: "Apple products",
+    price: 682.9,
+    originalPrice: 944.53,
+    image: "/images/o_4102-540x540.webp",
+    description: "AMD Ryzen processor, NVIDIA GeForce graphics, high-speed NVMe SSD, and vivid RGB liquid cooling.",
   },
   {
     id: "rv-5",
-    name: "Apple AirPods Max Wireless Over-Ear Headphones – Green",
-    category: "Headphones",
-    price: 549.0,
-    rating: 5,
-    image: "/images/product-airpods-max.webp",
+    name: "AutoFull C3 Gaming Chair Office Chair Ergonomic...",
+    category: "Game & Room Furniture",
+    price: 600.0,
+    originalPrice: 628.79,
+    image: "/images/o_3101-600x600.webp",
+    description: "Ergonomic gaming chair with high-density sponge, 2D armrests, headrest and lumbar support pillows.",
   },
   {
     id: "rv-6",
-    name: "SAMSUNG 34-Inch Odyssey G5 Ultra-Wide Gaming Monitor with 1000R Curved Screen",
-    category: "Monitors",
-    price: 499.0,
-    rating: 5,
-    image: "/images/o_4701-540x540.webp",
+    name: "Beats Solo3 Wireless On-Ear Headphones, Apple W1...",
+    category: "Apple products",
+    price: 133.49,
+    image: "/images/beats-headphones.png",
+    description: "High-performance wireless Bluetooth headphones with Apple W1 chip and up to 40 hours of battery life.",
   },
 ];
 
 export default function RecentlyViewed() {
+  const [quickViewProduct, setQuickViewProduct] = useState<RecentProduct | null>(null);
+  const [toastMessage, setToastMessage] = useState<string | null>(null);
+
   const { isWishlisted, toggleWishlist, addToCart } = useStore();
 
+  const showToast = (msg: string) => {
+    setToastMessage(msg);
+    setTimeout(() => {
+      setToastMessage((c) => (c === msg ? null : c));
+    }, 2000);
+  };
+
+  const handleAddToCart = (product: RecentProduct, e?: React.MouseEvent) => {
+    if (e) {
+      e.preventDefault();
+      e.stopPropagation();
+    }
+    const storeProduct: Product = {
+      id: product.id,
+      name: product.name,
+      price: product.price,
+      status: "none",
+      image: product.image,
+      category: product.category,
+      description: product.description,
+    };
+    addToCart(storeProduct, 1);
+    showToast(`Added to cart!`);
+  };
+
+  const handleToggleWishlist = (product: RecentProduct, e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    toggleWishlist(product.id);
+    const liked = isWishlisted(product.id);
+    showToast(liked ? "Removed from wishlist" : "Added to wishlist!");
+  };
+
+  const handleCompare = (product: RecentProduct, e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    showToast(`Added to compare list!`);
+  };
+
+  const handleQuickView = (product: RecentProduct, e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setQuickViewProduct(product);
+  };
+
   return (
-    <section className="w-full bg-white py-12 lg:py-16">
+    <section className="w-full bg-white pt-10 pb-8 sm:pt-12 sm:pb-10 select-none">
+      {/* Toast Notification */}
+      {toastMessage && (
+        <div className="fixed bottom-6 right-6 z-50 bg-[#1e2d3b] text-white px-4 py-2 rounded-lg shadow-xl text-xs sm:text-sm flex items-center gap-2 animate-bounce">
+          <Check className="w-4 h-4 text-emerald-400" />
+          <span>{toastMessage}</span>
+        </div>
+      )}
+
+      {/* Quick View Modal */}
+      {quickViewProduct && (
+        <div
+          className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 animate-in fade-in duration-200"
+          onClick={() => setQuickViewProduct(null)}
+        >
+          <div
+            className="bg-white rounded-xl max-w-2xl w-full p-6 sm:p-8 relative shadow-2xl flex flex-col md:flex-row gap-6 animate-in zoom-in-95 duration-200"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <button
+              onClick={() => setQuickViewProduct(null)}
+              className="absolute top-4 right-4 p-1.5 text-gray-400 hover:text-gray-700 rounded-full hover:bg-gray-100 transition-colors"
+              aria-label="Close"
+            >
+              <X className="w-5 h-5" />
+            </button>
+
+            <div className="w-full md:w-1/2 aspect-square relative bg-white flex items-center justify-center border border-gray-100 rounded-lg p-4">
+              <Image
+                src={quickViewProduct.image}
+                alt={quickViewProduct.name}
+                width={300}
+                height={300}
+                className="w-full h-full object-contain"
+              />
+            </div>
+
+            <div className="w-full md:w-1/2 flex flex-col justify-between">
+              <div>
+                <span className="text-xs text-gray-500 uppercase tracking-wider block mb-1">
+                  {quickViewProduct.category}
+                </span>
+                <h3 className="text-lg font-bold text-gray-900 leading-snug mb-3">
+                  {quickViewProduct.name}
+                </h3>
+                <div className="flex items-baseline gap-2 mb-4">
+                  <span className="text-2xl font-bold text-[#22262a]">
+                    ${quickViewProduct.price.toFixed(2)}
+                  </span>
+                  {quickViewProduct.originalPrice && (
+                    <span className="text-sm text-gray-400 line-through">
+                      ${quickViewProduct.originalPrice.toFixed(2)}
+                    </span>
+                  )}
+                </div>
+                <p className="text-xs text-gray-600 leading-relaxed mb-6">
+                  {quickViewProduct.description ||
+                    "Premium electronic device with high reliability, responsive design, and official manufacturer warranty included."}
+                </p>
+              </div>
+
+              <div className="flex items-center gap-3">
+                <button
+                  type="button"
+                  onClick={() => {
+                    handleAddToCart(quickViewProduct);
+                    setQuickViewProduct(null);
+                  }}
+                  className="flex-1 bg-[#ff3d3d] hover:bg-[#e62e2e] text-white py-2.5 px-4 rounded text-sm font-semibold transition-colors flex items-center justify-center gap-2 cursor-pointer shadow-sm"
+                >
+                  <ShoppingCart className="w-4 h-4" />
+                  <span>Add to Cart</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={(e) => handleToggleWishlist(quickViewProduct, e)}
+                  className={`p-2.5 rounded border transition-colors cursor-pointer ${
+                    isWishlisted(quickViewProduct.id)
+                      ? "border-red-500 text-red-500 bg-red-50"
+                      : "border-gray-200 text-gray-700 hover:text-red-500 hover:border-red-300"
+                  }`}
+                  title="Wishlist"
+                >
+                  <Heart
+                    className="w-4 h-4"
+                    fill={isWishlisted(quickViewProduct.id) ? "currentColor" : "none"}
+                  />
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
       <div className="max-w-[1440px] mx-auto px-6 lg:px-12">
         {/* Section Header */}
-        <div className="border-b border-gray-200 pb-4 mb-8">
-          <h2 className="text-2xl lg:text-3xl font-bold text-[#1e2d3b] tracking-tight">
+        <div className="pb-2">
+          <h2 className="text-xl sm:text-2xl font-bold text-[#1e2d3b] tracking-tight">
             Recently Viewed
           </h2>
         </div>
 
+        {/* Thin Divider Line */}
+        <div className="w-full border-b border-gray-200 mt-1 mb-8" />
+
         {/* 6-Column Grid */}
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4 sm:gap-5">
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4 sm:gap-5 lg:gap-6">
           {RECENTLY_VIEWED_ITEMS.map((product) => {
             const liked = isWishlisted(product.id);
 
             return (
               <div
                 key={product.id}
-                className="group relative bg-white rounded-lg p-3.5 border border-gray-100 hover:shadow-[0_8px_20px_rgba(0,0,0,0.06)] transition-all duration-300 flex flex-col justify-between"
+                className="group relative flex flex-col justify-between select-none"
               >
-                {/* Product Thumbnail with Hover Action Buttons */}
-                <div className="relative w-full h-[130px] flex items-center justify-center p-2 mb-2 overflow-hidden">
+                {/* Product Image Square Container with Hover State Elements */}
+                <div className="relative w-full aspect-square bg-white border border-gray-200/90 rounded-[4px] p-3 sm:p-4 flex items-center justify-center overflow-hidden mb-3">
                   <Image
                     src={product.image}
                     alt={product.name}
-                    width={110}
-                    height={110}
-                    className="max-h-[110px] w-auto object-contain group-hover:scale-105 transition-transform duration-300"
+                    width={180}
+                    height={180}
+                    className="max-h-full max-w-full object-contain transition-transform duration-300 group-hover:scale-105"
                   />
 
-                  {/* Hover Floating Actions */}
-                  <div className="absolute inset-x-0 bottom-1 flex items-center justify-center gap-1 opacity-0 group-hover:opacity-100 transition-all duration-200 translate-y-2 group-hover:translate-y-0">
+                  {/* Top-Right 3 Floating Circular Action Buttons (Quick View, Wishlist, Compare) */}
+                  <div className="absolute top-2 right-2 flex flex-col gap-1.5 opacity-0 group-hover:opacity-100 translate-x-2 group-hover:translate-x-0 transition-all duration-200 z-20">
+                    {/* Quick View */}
                     <button
                       type="button"
-                      onClick={() =>
-                        addToCart({
-                          id: product.id,
-                          name: product.name,
-                          price: product.price,
-                          status: "none",
-                          image: product.image,
-                          category: product.category,
-                        })
-                      }
-                      className="w-7 h-7 rounded-full bg-white shadow-md border border-gray-100 flex items-center justify-center text-gray-700 hover:bg-[#004ec3] hover:text-white hover:border-[#004ec3] transition-colors cursor-pointer"
-                      title="Add to cart"
+                      onClick={(e) => handleQuickView(product, e)}
+                      className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-white shadow-md border border-gray-100 flex items-center justify-center text-gray-700 hover:text-[#004ec3] transition-colors cursor-pointer"
+                      title="Quick View"
+                      aria-label="Quick View"
                     >
-                      <ShoppingCart className="w-3 h-3" />
+                      <Eye className="w-3.5 h-3.5 stroke-[1.8]" />
                     </button>
+
+                    {/* Wishlist */}
                     <button
                       type="button"
-                      onClick={() => toggleWishlist(product.id)}
-                      className={`w-7 h-7 rounded-full bg-white shadow-md border border-gray-100 flex items-center justify-center transition-colors cursor-pointer ${
-                        liked
-                          ? "text-red-500 hover:text-red-600"
-                          : "text-gray-700 hover:bg-[#004ec3] hover:text-white hover:border-[#004ec3]"
+                      onClick={(e) => handleToggleWishlist(product, e)}
+                      className={`w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-white shadow-md border border-gray-100 flex items-center justify-center transition-colors cursor-pointer ${
+                        liked ? "text-red-500" : "text-gray-700 hover:text-[#004ec3]"
                       }`}
                       title="Wishlist"
+                      aria-label="Wishlist"
                     >
-                      <Heart className="w-3 h-3" fill={liked ? "currentColor" : "none"} />
+                      <Heart
+                        className="w-3.5 h-3.5 stroke-[1.8]"
+                        fill={liked ? "currentColor" : "none"}
+                      />
                     </button>
+
+                    {/* Compare */}
                     <button
                       type="button"
-                      className="w-7 h-7 rounded-full bg-white shadow-md border border-gray-100 flex items-center justify-center text-gray-700 hover:bg-[#004ec3] hover:text-white hover:border-[#004ec3] transition-colors cursor-pointer"
-                      title="Quick View"
+                      onClick={(e) => handleCompare(product, e)}
+                      className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-white shadow-md border border-gray-100 flex items-center justify-center text-gray-700 hover:text-[#004ec3] transition-colors cursor-pointer"
+                      title="Compare"
+                      aria-label="Compare"
                     >
-                      <Eye className="w-3 h-3" />
+                      <ArrowLeftRight className="w-3.5 h-3.5 stroke-[1.8]" />
+                    </button>
+                  </div>
+
+                  {/* Bottom Full-Width Red "Add to cart" Button on Hover */}
+                  <div className="absolute bottom-2 inset-x-2 opacity-0 group-hover:opacity-100 translate-y-2 group-hover:translate-y-0 transition-all duration-200 z-20">
+                    <button
+                      type="button"
+                      onClick={(e) => handleAddToCart(product, e)}
+                      className="w-full bg-[#ff3d3d] hover:bg-[#e62e2e] text-white text-[12px] font-semibold py-2 rounded-[4px] shadow-sm transition-colors flex items-center justify-center cursor-pointer"
+                    >
+                      Add to cart
                     </button>
                   </div>
                 </div>
 
-                {/* Content */}
-                <div>
-                  <span className="text-[10px] text-[#73787d] font-normal mb-1 block">
-                    {product.category}
-                  </span>
-                  <Link
-                    href={`/product/${product.id}`}
-                    className="text-xs font-semibold text-[#1e2d3b] hover:text-[#004ec3] leading-snug line-clamp-2 transition-colors mb-1.5 block"
-                    title={product.name}
-                  >
-                    {product.name}
-                  </Link>
+                {/* Details: Category, Title (turns Red on hover), Price */}
+                <div className="flex-1 flex flex-col justify-between">
+                  <div>
+                    {/* Category */}
+                    <span className="text-[11px] sm:text-[12px] text-[#73787d] font-normal leading-tight mb-1 block truncate">
+                      {product.category}
+                    </span>
 
-                  {/* Rating Stars */}
-                  <div className="flex items-center gap-0.5 mb-2">
-                    {[...Array(5)].map((_, i) => (
-                      <Star
-                        key={i}
-                        className={`w-2.5 h-2.5 ${
-                          i < product.rating
-                            ? "text-amber-400 fill-amber-400"
-                            : "text-gray-200 fill-gray-200"
-                        }`}
-                      />
-                    ))}
+                    {/* Title: turns red on hover */}
+                    <Link
+                      href={`/product/${product.id}`}
+                      className="text-[13px] font-medium text-[#004ec3] group-hover:text-[#ff3d3d] leading-[1.3] line-clamp-2 mb-1.5 transition-colors duration-150 block"
+                      title={product.name}
+                    >
+                      {product.name}
+                    </Link>
                   </div>
 
-                  {/* Price */}
-                  <div className="flex items-baseline gap-1.5 pt-1 border-t border-gray-100">
-                    <span className="text-xs font-bold text-[#004ec3]">
+                  {/* Price Row */}
+                  <div className="flex items-baseline gap-1.5 mt-0.5">
+                    <span className="text-[14px] sm:text-[15px] font-bold text-[#22262a]">
                       ${product.price.toFixed(2)}
                     </span>
                     {product.originalPrice && (
-                      <span className="text-[10px] text-gray-400 line-through">
+                      <span className="text-[11px] sm:text-[12px] text-gray-400 line-through">
                         ${product.originalPrice.toFixed(2)}
                       </span>
                     )}
