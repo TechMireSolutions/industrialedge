@@ -161,9 +161,10 @@ export default function Header() {
   const [shopDropdownOpen, setShopDropdownOpen] = useState(false);
   const [pageDropdownOpen, setPageDropdownOpen] = useState(false);
 
-  // Mobile Drawer
+  // Mobile Drawer & Canvas Tabs
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [mobileCategoryOpen, setMobileCategoryOpen] = useState(false);
+  const [canvasTab, setCanvasTab] = useState<"menu" | "categories">("menu");
+  const [expandedCanvasMenu, setExpandedCanvasMenu] = useState<string | null>(null);
 
   // Sticky Header on Scroll
   const [isSticky, setIsSticky] = useState(false);
@@ -725,131 +726,343 @@ export default function Header() {
       </nav>
 
       {/* ========================================================= */}
-      {/* 3. RESPONSIVE MOBILE DRAWER MENU                          */}
+      {/* 3. TWO-TAB OFF-CANVAS DRAWER MENU (Menu & Categories)     */}
       {/* ========================================================= */}
       {mobileMenuOpen && (
-        <div className="fixed inset-0 z-50 flex">
-          {/* Backdrop */}
+        <div className="fixed inset-0 z-[999999] flex">
+          {/* Dark Backdrop Overlay */}
           <div
-            className="fixed inset-0 bg-black/50 transition-opacity"
+            className="fixed inset-0 bg-black/50 backdrop-blur-xs transition-opacity animate-in fade-in duration-300"
             onClick={() => setMobileMenuOpen(false)}
           />
 
-          {/* Drawer Content */}
-          <div className="relative w-full max-w-[320px] bg-white h-full shadow-2xl flex flex-col z-10 overflow-y-auto">
-            {/* Drawer Header */}
-            <div className="p-4 border-b border-[#eeeeee] flex items-center justify-between">
-              <Link href="/" onClick={() => setMobileMenuOpen(false)} className="flex items-center gap-2">
+          {/* Inner Canvas Panel (slides from left) */}
+          <div className="relative w-full max-w-[340px] bg-white h-full shadow-2xl flex flex-col z-10 overflow-hidden animate-in slide-in-from-left duration-300">
+            {/* Top Header: Logo + Close Button */}
+            <div className="p-4 border-b border-[#f0f0f0] flex items-center justify-between bg-white">
+              <Link
+                href="/"
+                onClick={() => setMobileMenuOpen(false)}
+                className="flex items-center gap-2 group"
+              >
                 <Image
                   src="/images/logo-icon.png"
                   alt="IndustrialEdge"
                   width={30}
                   height={34}
-                  className="h-[28px] w-auto object-contain"
+                  className="h-[28px] w-auto object-contain transition-transform group-hover:scale-105"
                 />
-                <span className="text-[18px] font-bold tracking-tight text-[#141539]">
+                <span className="text-[19px] font-bold tracking-tight text-[#141539]">
                   Industrial<span className="text-[#00937a]">Edge</span>
                 </span>
               </Link>
               <button
                 type="button"
                 onClick={() => setMobileMenuOpen(false)}
-                className="p-1.5 text-[#555555] hover:text-[#ff3d3d] rounded cursor-pointer"
+                className="w-8 h-8 rounded-full bg-[#f5f5f5] hover:bg-[#ff3d3d] text-[#555] hover:text-white flex items-center justify-center transition-colors cursor-pointer"
+                aria-label="Close menu"
               >
-                <X size={20} />
+                <X size={16} strokeWidth={2.5} />
               </button>
             </div>
 
-            {/* Drawer Links */}
-            <div className="p-4 flex-1 space-y-4">
-              <div className="space-y-1">
-                <Link
-                  href="/"
-                  onClick={() => setMobileMenuOpen(false)}
-                  className="block px-3 py-2 text-sm font-medium text-[#ff3d3d] bg-[#fff5f5] rounded-md"
-                >
-                  Home
-                </Link>
-                <Link
-                  href="/blog"
-                  onClick={() => setMobileMenuOpen(false)}
-                  className="block px-3 py-2 text-sm font-medium text-[#333e48] hover:text-[#ff3d3d] hover:bg-gray-50 rounded-md"
-                >
-                  Blog
-                </Link>
-                <Link
-                  href="/shop"
-                  onClick={() => setMobileMenuOpen(false)}
-                  className="block px-3 py-2 text-sm font-medium text-[#333e48] hover:text-[#ff3d3d] hover:bg-gray-50 rounded-md"
-                >
-                  Shop
-                </Link>
-                <Link
-                  href="/contact"
-                  onClick={() => setMobileMenuOpen(false)}
-                  className="block px-3 py-2 text-sm font-medium text-[#333e48] hover:text-[#ff3d3d] hover:bg-gray-50 rounded-md"
-                >
-                  Contact
-                </Link>
-              </div>
+            {/* Tabs Navigation Header: [ Menu ] | [ Categories ] */}
+            <div className="grid grid-cols-2 border-b border-[#eeeeee] bg-[#fafafa]">
+              <button
+                type="button"
+                onClick={() => setCanvasTab("menu")}
+                className={`py-3 text-[14px] font-semibold transition-all cursor-pointer relative ${
+                  canvasTab === "menu"
+                    ? "text-[#ff3d3d] bg-white border-b-2 border-[#ff3d3d]"
+                    : "text-[#555555] hover:text-[#ff3d3d]"
+                }`}
+              >
+                Menu
+              </button>
+              <button
+                type="button"
+                onClick={() => setCanvasTab("categories")}
+                className={`py-3 text-[14px] font-semibold transition-all cursor-pointer relative ${
+                  canvasTab === "categories"
+                    ? "text-[#ff3d3d] bg-white border-b-2 border-[#ff3d3d]"
+                    : "text-[#555555] hover:text-[#ff3d3d]"
+                }`}
+              >
+                Categories
+              </button>
+            </div>
 
-              {/* All Categories in Mobile */}
-              <div className="pt-4 border-t border-[#eeeeee]">
-                <button
-                  type="button"
-                  onClick={() => setMobileCategoryOpen((prev) => !prev)}
-                  className="w-full flex items-center justify-between text-sm font-semibold text-[#222222] py-2 cursor-pointer"
-                >
-                  <span>All Categories</span>
-                  <ChevronDown
-                    size={16}
-                    className={`transition-transform ${
-                      mobileCategoryOpen ? "rotate-180 text-[#ff3d3d]" : ""
-                    }`}
-                  />
-                </button>
-                {mobileCategoryOpen && (
-                  <div className="mt-2 space-y-1 pl-2">
-                    {ALL_DEPARTMENTS.map((dept) => (
+            {/* Scrollable Content Body */}
+            <div className="flex-1 overflow-y-auto px-4 py-3 divide-y divide-[#f2f2f2]">
+              {canvasTab === "menu" ? (
+                /* TAB 1: MENU */
+                <div className="py-2 space-y-1">
+                  {/* Home Accordion */}
+                  <div>
+                    <div className="flex items-center justify-between py-2.5 px-2 hover:bg-[#f8f9fa] rounded">
                       <Link
-                        key={dept.name}
-                        href={dept.href}
+                        href="/"
                         onClick={() => setMobileMenuOpen(false)}
-                        className="block w-full text-left py-1 text-xs text-[#555555] hover:text-[#ff3d3d]"
+                        className="text-[14px] font-medium text-[#222222] hover:text-[#ff3d3d] transition-colors"
                       >
-                        {dept.name}
+                        Home
                       </Link>
-                    ))}
+                      <button
+                        type="button"
+                        onClick={() =>
+                          setExpandedCanvasMenu(
+                            expandedCanvasMenu === "home" ? null : "home"
+                          )
+                        }
+                        className="p-1 text-[#888] hover:text-[#ff3d3d]"
+                      >
+                        <ChevronDown
+                          size={15}
+                          className={`transition-transform duration-200 ${
+                            expandedCanvasMenu === "home"
+                              ? "rotate-180 text-[#ff3d3d]"
+                              : ""
+                          }`}
+                        />
+                      </button>
+                    </div>
+                    {expandedCanvasMenu === "home" && (
+                      <div className="pl-4 pb-2 space-y-1 bg-[#fafafa] rounded-b">
+                        {[
+                          "Home 01",
+                          "Home 02",
+                          "Home 03",
+                          "Home 04",
+                          "Home 05",
+                          "Home 06",
+                          "Home 07",
+                          "Home 08",
+                        ].map((h, i) => (
+                          <Link
+                            key={h}
+                            href="/"
+                            onClick={() => setMobileMenuOpen(false)}
+                            className={`block py-1.5 text-[13px] ${
+                              i === 7
+                                ? "text-[#ff3d3d] font-semibold"
+                                : "text-[#555555] hover:text-[#ff3d3d]"
+                            }`}
+                          >
+                            {h}
+                          </Link>
+                        ))}
+                      </div>
+                    )}
                   </div>
-                )}
-              </div>
 
-              {/* Account & Cart in Mobile */}
-              <div className="pt-4 border-t border-[#eeeeee] space-y-2 text-sm">
+                  {/* Blog Accordion */}
+                  <div>
+                    <div className="flex items-center justify-between py-2.5 px-2 hover:bg-[#f8f9fa] rounded">
+                      <Link
+                        href="/blog"
+                        onClick={() => setMobileMenuOpen(false)}
+                        className="text-[14px] font-medium text-[#222222] hover:text-[#ff3d3d] transition-colors"
+                      >
+                        Blog
+                      </Link>
+                      <button
+                        type="button"
+                        onClick={() =>
+                          setExpandedCanvasMenu(
+                            expandedCanvasMenu === "blog" ? null : "blog"
+                          )
+                        }
+                        className="p-1 text-[#888] hover:text-[#ff3d3d]"
+                      >
+                        <ChevronDown
+                          size={15}
+                          className={`transition-transform duration-200 ${
+                            expandedCanvasMenu === "blog"
+                              ? "rotate-180 text-[#ff3d3d]"
+                              : ""
+                          }`}
+                        />
+                      </button>
+                    </div>
+                    {expandedCanvasMenu === "blog" && (
+                      <div className="pl-4 pb-2 space-y-1 bg-[#fafafa] rounded-b">
+                        {["Blog List", "Blog Grid", "Blog Single"].map((b) => (
+                          <Link
+                            key={b}
+                            href="/blog"
+                            onClick={() => setMobileMenuOpen(false)}
+                            className="block py-1.5 text-[13px] text-[#555555] hover:text-[#ff3d3d]"
+                          >
+                            {b}
+                          </Link>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Shop Accordion */}
+                  <div>
+                    <div className="flex items-center justify-between py-2.5 px-2 hover:bg-[#f8f9fa] rounded">
+                      <Link
+                        href="/shop"
+                        onClick={() => setMobileMenuOpen(false)}
+                        className="text-[14px] font-medium text-[#222222] hover:text-[#ff3d3d] transition-colors"
+                      >
+                        Shop
+                      </Link>
+                      <button
+                        type="button"
+                        onClick={() =>
+                          setExpandedCanvasMenu(
+                            expandedCanvasMenu === "shop" ? null : "shop"
+                          )
+                        }
+                        className="p-1 text-[#888] hover:text-[#ff3d3d]"
+                      >
+                        <ChevronDown
+                          size={15}
+                          className={`transition-transform duration-200 ${
+                            expandedCanvasMenu === "shop"
+                              ? "rotate-180 text-[#ff3d3d]"
+                              : ""
+                          }`}
+                        />
+                      </button>
+                    </div>
+                    {expandedCanvasMenu === "shop" && (
+                      <div className="pl-4 pb-2 space-y-1 bg-[#fafafa] rounded-b">
+                        {[
+                          "All Products",
+                          "Computers & Laptops",
+                          "Smartphones",
+                          "Audio & Headphones",
+                          "Cameras",
+                        ].map((s) => (
+                          <Link
+                            key={s}
+                            href="/shop"
+                            onClick={() => setMobileMenuOpen(false)}
+                            className="block py-1.5 text-[13px] text-[#555555] hover:text-[#ff3d3d]"
+                          >
+                            {s}
+                          </Link>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Contact Us */}
+                  <div className="py-2.5 px-2 hover:bg-[#f8f9fa] rounded">
+                    <Link
+                      href="/contact"
+                      onClick={() => setMobileMenuOpen(false)}
+                      className="text-[14px] font-medium text-[#222222] hover:text-[#ff3d3d] transition-colors block"
+                    >
+                      Contact Us
+                    </Link>
+                  </div>
+                </div>
+              ) : (
+                /* TAB 2: CATEGORIES */
+                <div className="py-2 space-y-1">
+                  {ALL_DEPARTMENTS.map((dept) => {
+                    const IconComp = dept.icon;
+                    return (
+                      <div key={dept.name}>
+                        <div className="flex items-center justify-between py-2.5 px-2 hover:bg-[#f8f9fa] rounded">
+                          <Link
+                            href={dept.href}
+                            onClick={() => setMobileMenuOpen(false)}
+                            className="flex items-center gap-2.5 text-[14px] text-[#333e48] hover:text-[#ff3d3d] transition-colors"
+                          >
+                            <IconComp
+                              size={16}
+                              strokeWidth={1.5}
+                              className="text-[#888]"
+                            />
+                            <span>{dept.name}</span>
+                          </Link>
+                          {dept.hasSub && (
+                            <button
+                              type="button"
+                              onClick={() =>
+                                setExpandedCanvasMenu(
+                                  expandedCanvasMenu === dept.name
+                                    ? null
+                                    : dept.name
+                                )
+                              }
+                              className="p-1 text-[#888] hover:text-[#ff3d3d]"
+                            >
+                              <ChevronRight
+                                size={15}
+                                className={`transition-transform duration-200 ${
+                                  expandedCanvasMenu === dept.name
+                                    ? "rotate-90 text-[#ff3d3d]"
+                                    : ""
+                                }`}
+                              />
+                            </button>
+                          )}
+                        </div>
+                        {dept.hasSub && expandedCanvasMenu === dept.name && (
+                          <div className="pl-8 pb-2 space-y-1 bg-[#fafafa] rounded-b">
+                            {dept.subItems?.map((sub) => (
+                              <Link
+                                key={sub}
+                                href={`/shop?cat=${encodeURIComponent(sub)}`}
+                                onClick={() => setMobileMenuOpen(false)}
+                                className="block py-1 text-[13px] text-[#666666] hover:text-[#ff3d3d]"
+                              >
+                                {sub}
+                              </Link>
+                            ))}
+                          </div>
+                        )}
+                      </div>
+                    );
+                  })}
+                </div>
+              )}
+
+              {/* User Account & Cart Quick Actions */}
+              <div className="pt-4 pb-2 space-y-3">
                 <Link
                   href="/shop"
                   onClick={() => setMobileMenuOpen(false)}
-                  className="flex items-center gap-2 text-[#333e48] hover:text-[#ff3d3d]"
+                  className="flex items-center gap-2.5 text-[14px] text-[#333e48] hover:text-[#ff3d3d] transition-colors"
                 >
-                  <User size={16} />
-                  <span>Sign In</span>
-                </Link>
-                <Link
-                  href="/contact"
-                  onClick={() => setMobileMenuOpen(false)}
-                  className="flex items-center gap-2 text-[#333e48] hover:text-[#ff3d3d]"
-                >
-                  <Headphones size={16} />
-                  <span>Support</span>
+                  <User size={18} strokeWidth={1.6} />
+                  <span>My Account / Sign In</span>
                 </Link>
                 <Link
                   href="/cart"
                   onClick={() => setMobileMenuOpen(false)}
-                  className="flex items-center gap-2 text-[#333e48] hover:text-[#ff3d3d]"
+                  className="flex items-center gap-2.5 text-[14px] text-[#333e48] hover:text-[#ff3d3d] transition-colors"
                 >
-                  <ShoppingCart size={16} />
-                  <span>Your cart ({cartCount})</span>
+                  <ShoppingCart size={18} strokeWidth={1.6} />
+                  <span>Shopping Cart ({cartCount})</span>
                 </Link>
+              </div>
+
+              {/* Support & Contact Footer */}
+              <div className="pt-4 pb-2 text-[13px] text-[#73787d] space-y-1.5">
+                <div className="font-semibold text-[#222222]">Need Help?</div>
+                <div>
+                  Call us now:{" "}
+                  <a href="tel:+18001234567" className="font-semibold text-[#ff3d3d]">
+                    +1(800) 123 4567
+                  </a>
+                </div>
+                <div>
+                  Email:{" "}
+                  <a
+                    href="mailto:support@industrialedge.com"
+                    className="text-[#0e8ce4]"
+                  >
+                    support@industrialedge.com
+                  </a>
+                </div>
               </div>
             </div>
           </div>
