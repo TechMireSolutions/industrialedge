@@ -165,6 +165,21 @@ export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [mobileCategoryOpen, setMobileCategoryOpen] = useState(false);
 
+  // Sticky Header on Scroll
+  const [isSticky, setIsSticky] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > 120) {
+        setIsSticky(true);
+      } else {
+        setIsSticky(false);
+      }
+    };
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
   // Close dropdowns on outside click or ESC key
   useEffect(() => {
     const handleOutsideClick = (e: MouseEvent) => {
@@ -230,10 +245,19 @@ export default function Header() {
 
   return (
     <header className="w-full bg-white select-none">
+      {/* Spacer when sticky to prevent layout jump */}
+      {isSticky && <div className="h-[82px] w-full" />}
+
       {/* ========================================================= */}
       {/* 1. MAIN HEADER BAR (Logo, Search Pill, Actions)           */}
       {/* ========================================================= */}
-      <div className="py-5 bg-white border-b border-[#f4f4f4]">
+      <div
+        className={`w-full bg-white transition-all duration-200 z-50 ${
+          isSticky
+            ? "fixed top-0 left-0 right-0 py-3 shadow-[0_4px_20px_rgba(0,0,0,0.08)] border-b border-[#eeeeee]"
+            : "relative py-4 md:py-5 border-b border-[#f4f4f4]"
+        }`}
+      >
         <div className="max-w-[1440px] mx-auto px-6 lg:px-12 flex items-center justify-between gap-6">
           {/* Logo */}
           <Link href="/" className="shrink-0 flex items-center gap-2.5 group">
@@ -348,55 +372,37 @@ export default function Header() {
             )}
           </div>
 
-          {/* Right: Sign In, Support, Your cart (Image 1 & 2) */}
-          <div className="flex items-center gap-7 sm:gap-8 shrink-0">
-            {/* 1. Sign In */}
+          {/* Right: User, Cart, Hamburger Menu (Matching Reference) */}
+          <div className="flex items-center gap-5 sm:gap-6 shrink-0">
+            {/* 1. User */}
             <Link
               href="/shop"
-              className="flex flex-col items-center justify-center group cursor-pointer text-[#333e48] hover:text-[#ff3d3d] transition-colors"
+              className="text-[#333e48] hover:text-[#ff3d3d] transition-colors p-1 cursor-pointer flex items-center justify-center"
+              aria-label="Account"
             >
-              <User size={22} strokeWidth={1.5} className="group-hover:text-[#ff3d3d] transition-colors" />
-              <span className="text-[12px] font-normal text-[#333e48] group-hover:text-[#ff3d3d] transition-colors mt-1">
-                Sign In
-              </span>
+              <User size={23} strokeWidth={1.6} />
             </Link>
 
-            {/* 2. Support */}
-            <Link
-              href="/contact"
-              className="flex flex-col items-center justify-center group cursor-pointer text-[#333e48] hover:text-[#ff3d3d] transition-colors"
-            >
-              <Headphones size={22} strokeWidth={1.5} className="group-hover:text-[#ff3d3d] transition-colors" />
-              <span className="text-[12px] font-normal text-[#333e48] group-hover:text-[#ff3d3d] transition-colors mt-1">
-                Support
-              </span>
-            </Link>
-
-            {/* 3. Your cart */}
+            {/* 2. Cart with Red Badge */}
             <Link
               href="/cart"
-              className="flex flex-col items-center justify-center group cursor-pointer text-[#333e48] hover:text-[#ff3d3d] transition-colors"
+              className="relative text-[#333e48] hover:text-[#ff3d3d] transition-colors p-1 cursor-pointer flex items-center justify-center"
+              aria-label="Shopping Cart"
             >
-              <div className="relative">
-                <ShoppingCart size={22} strokeWidth={1.5} className="group-hover:text-[#ff3d3d] transition-colors" />
-                {/* Circular Red Badge */}
-                <span className="absolute -top-1.5 -right-2.5 min-w-[17px] h-[17px] px-1 bg-[#ff3d3d] text-white rounded-full text-[10px] font-bold flex items-center justify-center leading-none">
-                  {cartCount}
-                </span>
-              </div>
-              <span className="text-[12px] font-normal text-[#333e48] group-hover:text-[#ff3d3d] transition-colors mt-1">
-                Your cart:
+              <ShoppingCart size={23} strokeWidth={1.6} />
+              <span className="absolute -top-1.5 -right-2 min-w-[18px] h-[18px] px-1 bg-[#ff3d3d] text-white rounded-full text-[10px] font-bold flex items-center justify-center leading-none shadow-sm">
+                {cartCount}
               </span>
             </Link>
 
-            {/* Mobile Hamburger Button (<md) */}
+            {/* 3. Hamburger Menu (Opens Drawer) */}
             <button
               type="button"
               onClick={() => setMobileMenuOpen(true)}
-              className="md:hidden p-1 text-[#333e48] hover:text-[#ff3d3d] cursor-pointer"
+              className="text-[#333e48] hover:text-[#ff3d3d] transition-colors p-1 cursor-pointer flex items-center justify-center"
               aria-label="Toggle menu"
             >
-              <Menu size={24} />
+              <Menu size={25} strokeWidth={1.75} />
             </button>
           </div>
         </div>
@@ -691,51 +697,29 @@ export default function Header() {
             </div>
           </div>
 
-          {/* Right: Language Selector with Globe icon (Image 1 & 2) */}
-          <div className="relative" ref={languageRef}>
-            <button
-              type="button"
-              onClick={() => setLanguageOpen((prev) => !prev)}
-              className="flex items-center gap-1.5 text-[#73787d] hover:text-[#ff3d3d] transition-colors cursor-pointer text-[13px]"
-              aria-expanded={languageOpen}
-            >
-              <Globe size={14} strokeWidth={1.6} className="text-[#73787d]" />
-              <span>Language:</span>
-              <span className="font-semibold text-[#333e48] ml-0.5">
-                {selectedLanguage}
-              </span>
-              <ChevronDown
-                size={12}
-                className={`text-[#73787d] transition-transform duration-200 ${
-                  languageOpen ? "rotate-180" : ""
-                }`}
-              />
-            </button>
-
-            {languageOpen && (
-              <div className="absolute right-0 top-[calc(100%+8px)] w-[140px] bg-white border border-[#e5e5e5] rounded-md shadow-[0_8px_20px_rgba(0,0,0,0.1)] py-1.5 z-50">
-                {LANGUAGES.map((lang) => (
-                  <button
-                    key={lang.code}
-                    type="button"
-                    onClick={() => {
-                      setSelectedLanguage(lang.label);
-                      setLanguageOpen(false);
-                    }}
-                    className={`w-full text-left px-3.5 py-1.5 text-xs flex items-center justify-between cursor-pointer transition-colors ${
-                      selectedLanguage === lang.label
-                        ? "text-[#ff3d3d] font-semibold bg-[#fff5f5]"
-                        : "text-[#333e48] hover:bg-[#f8f9fa] hover:text-[#ff3d3d]"
-                    }`}
-                  >
-                    <span>{lang.label}</span>
-                    {selectedLanguage === lang.label && (
-                      <Check size={12} className="text-[#ff3d3d]" />
-                    )}
-                  </button>
-                ))}
+          {/* Right: Contact Support Widget (Image 2) */}
+          <div className="hidden lg:flex items-center gap-3 text-left">
+            <Headphones size={26} strokeWidth={1.5} className="text-[#333e48]" />
+            <div className="text-[12px] leading-tight">
+              <div className="text-[#73787d]">
+                Call us now:{" "}
+                <a
+                  href="tel:+18001234567"
+                  className="font-bold text-[#ff3d3d] hover:underline"
+                >
+                  +1(800) 123 4567
+                </a>
               </div>
-            )}
+              <div className="text-[#73787d] mt-0.5">
+                Email:{" "}
+                <a
+                  href="mailto:support@industrialedge.com"
+                  className="text-[#0e8ce4] hover:underline font-medium"
+                >
+                  support@industrialedge.com
+                </a>
+              </div>
+            </div>
           </div>
         </div>
       </nav>
