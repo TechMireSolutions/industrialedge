@@ -16,6 +16,8 @@ import {
   Check,
   X,
   SlidersHorizontal,
+  Truck,
+  ArrowLeftRight,
 } from "lucide-react";
 import { useStore, type Product } from "@/lib/store";
 
