@@ -129,6 +129,11 @@ const SIDEBAR_BRANDS = [
   "Xbox",
 ];
 
+export interface ProductSpec {
+  label: string;
+  value: string;
+}
+
 export interface ShopProductItem {
   id: string;
   name: string;
@@ -144,14 +149,16 @@ export interface ShopProductItem {
   rating: number;
   reviewsCount?: number;
   description: string;
+  specs: ProductSpec[];
+  deliveryDays?: string;
 }
 
 const SHOP_PRODUCTS: ShopProductItem[] = [
   // 1
   {
     id: "p-acer-aspire-5",
-    name: "Acer Aspire 5 A515-56-547N Slim Laptop – 15.6\" Full HD IPS Display – 11th Gen Intel i3",
-    shortName: "Acer Aspire 5 A515-56-547N Slim Laptop – 15...",
+    name: "Acer Aspire 5 A515-56-347N Slim Laptop – 15.6\" Full HD IPS Display – 11th Gen Intel i3",
+    shortName: "Acer Aspire 5 A515-56-347N Slim Laptop – 15.6'' Full HD IPS Display – 11t...",
     categoryLine:
       "Acer, Apple products, Computers & Accessories, Gaming Accessories, Laptop & Tablet",
     categories: [
@@ -166,13 +173,21 @@ const SHOP_PRODUCTS: ShopProductItem[] = [
     mainImage: "/images/o_3603-540x540.webp",
     thumbnails: [
       "/images/o_3603-540x540.webp",
-      "/images/lenovo-tab/lap-th1.png",
       "/images/lenovo-tab/lap-th2.png",
+      "/images/lenovo-tab/lap-th3.png",
     ],
     moreThumbnailsCount: 2,
     rating: 5,
     description:
       "Powerful 11th Gen Intel Core i3 processor, 15.6-inch Full HD IPS display with narrow bezels, ergonomic hinge, and all-day battery life.",
+    specs: [
+      { label: "Brand", value: "Acer" },
+      { label: "Model Name", value: "A515-56-347N" },
+      { label: "Screen Size", value: "15.6 Inches" },
+      { label: "Hard Disk Size", value: "128 GB" },
+      { label: "Ram Memory", value: "8GB" },
+    ],
+    deliveryDays: "5 day delivery",
   },
   // 2
   {
@@ -192,6 +207,14 @@ const SHOP_PRODUCTS: ShopProductItem[] = [
     rating: 5,
     description:
       "Effortless setup, high-quality audio, hands-free Siri access, and over 24 hours of listening time with the charging case.",
+    specs: [
+      { label: "Brand", value: "Apple" },
+      { label: "Model Name", value: "AirPods (2nd Gen)" },
+      { label: "Color", value: "White" },
+      { label: "Connectivity", value: "Bluetooth 5.0" },
+      { label: "Battery Life", value: "24 Hours" },
+    ],
+    deliveryDays: "3 day delivery",
   },
   // 3
   {
@@ -211,6 +234,14 @@ const SHOP_PRODUCTS: ShopProductItem[] = [
     rating: 5,
     description:
       "Personalized Spatial Audio with dynamic head tracking, sweat and water resistance, and contoured design with force sensor control.",
+    specs: [
+      { label: "Brand", value: "Apple" },
+      { label: "Model Name", value: "AirPods (3rd Gen)" },
+      { label: "Color", value: "White" },
+      { label: "Audio", value: "Spatial Audio" },
+      { label: "Battery Life", value: "30 Hours" },
+    ],
+    deliveryDays: "3 day delivery",
   },
   // 4
   {
@@ -235,6 +266,14 @@ const SHOP_PRODUCTS: ShopProductItem[] = [
     rating: 4.8,
     description:
       "Curved 3D bezel-less design, all-round health tracking, 90 built-in sports modes, and Bluetooth phone call support.",
+    specs: [
+      { label: "Brand", value: "Amazfit" },
+      { label: "Model Name", value: "GTS 2" },
+      { label: "Display", value: "1.65\" AMOLED" },
+      { label: "Battery Life", value: "7 Days" },
+      { label: "Water Resist", value: "5 ATM" },
+    ],
+    deliveryDays: "5 day delivery",
   },
   // 5
   {
@@ -261,6 +300,14 @@ const SHOP_PRODUCTS: ShopProductItem[] = [
     rating: 4.5,
     description:
       "8-inch vibrant HD display, 30% faster quad-core processor, all-day battery life up to 12 hours, and enhanced USB-C charging.",
+    specs: [
+      { label: "Brand", value: "Amazon" },
+      { label: "Model Name", value: "Fire HD 8" },
+      { label: "Screen Size", value: "8.0 Inches" },
+      { label: "Hard Disk Size", value: "32 GB" },
+      { label: "Ram Memory", value: "2 GB" },
+    ],
+    deliveryDays: "2 day delivery",
   },
   // 6
   {
@@ -286,6 +333,14 @@ const SHOP_PRODUCTS: ShopProductItem[] = [
     rating: 4.6,
     description:
       "Stunning 4K Ultra HD, HDR 10, and HLG provide clear picture and vivid colors. Control entertainment hands-free with Alexa Voice Remote.",
+    specs: [
+      { label: "Brand", value: "Amazon" },
+      { label: "Model Name", value: "Fire TV 50\"" },
+      { label: "Screen Size", value: "50 Inches" },
+      { label: "Resolution", value: "4K UHD" },
+      { label: "OS", value: "Fire OS" },
+    ],
+    deliveryDays: "5 day delivery",
   },
   // 7
   {
@@ -305,6 +360,14 @@ const SHOP_PRODUCTS: ShopProductItem[] = [
     rating: 5,
     description:
       "Apple-designed dynamic driver provides high-fidelity audio. Active Noise Cancellation blocks outside noise, so you can immerse yourself in music.",
+    specs: [
+      { label: "Brand", value: "Apple" },
+      { label: "Model Name", value: "AirPods Max" },
+      { label: "Color", value: "Green" },
+      { label: "ANC", value: "Active Noise" },
+      { label: "Battery Life", value: "20 Hours" },
+    ],
+    deliveryDays: "4 day delivery",
   },
   // 8
   {
@@ -324,6 +387,14 @@ const SHOP_PRODUCTS: ShopProductItem[] = [
     rating: 4.9,
     description:
       "Fully unlocked and compatible with any carrier of choice. Stunning 6.5-inch Super Retina XDR OLED display with A13 Bionic chip.",
+    specs: [
+      { label: "Brand", value: "Apple" },
+      { label: "Model Name", value: "iPhone 11 Pro Max" },
+      { label: "Screen Size", value: "6.5 Inches" },
+      { label: "Hard Disk Size", value: "64 GB" },
+      { label: "Color", value: "Gold" },
+    ],
+    deliveryDays: "3 day delivery",
   },
   // 9
   {
@@ -343,6 +414,14 @@ const SHOP_PRODUCTS: ShopProductItem[] = [
     rating: 4.9,
     description:
       "Triple-camera system with 12MP Ultra Wide, Wide, and Telephoto cameras; Night mode and 4K video recording up to 60 fps.",
+    specs: [
+      { label: "Brand", value: "Apple" },
+      { label: "Model Name", value: "iPhone 11 Pro Max" },
+      { label: "Screen Size", value: "6.5 Inches" },
+      { label: "Hard Disk Size", value: "64 GB" },
+      { label: "Color", value: "Gold" },
+    ],
+    deliveryDays: "3 day delivery",
   },
   // 10
   {
@@ -362,6 +441,14 @@ const SHOP_PRODUCTS: ShopProductItem[] = [
     rating: 4.8,
     description:
       "Always-On Retina display, electrical and optical heart sensors, built-in compass, and emergency SOS for ultimate health monitoring.",
+    specs: [
+      { label: "Brand", value: "Apple" },
+      { label: "Model Name", value: "Apple Watch S5" },
+      { label: "Case Size", value: "40 MM" },
+      { label: "Connectivity", value: "GPS + Cellular" },
+      { label: "Color", value: "Pink Sand" },
+    ],
+    deliveryDays: "5 day delivery",
   },
   // 11
   {
@@ -381,6 +468,14 @@ const SHOP_PRODUCTS: ShopProductItem[] = [
     rating: 4.8,
     description:
       "Measure your blood oxygen level with a revolutionary sensor and app. Take an ECG anytime, anywhere on the Always-On Retina display.",
+    specs: [
+      { label: "Brand", value: "Apple" },
+      { label: "Model Name", value: "Apple Watch S6" },
+      { label: "Case Size", value: "40 MM" },
+      { label: "Connectivity", value: "GPS + Cellular" },
+      { label: "Color", value: "Space Gray" },
+    ],
+    deliveryDays: "5 day delivery",
   },
   // 12
   {
@@ -407,6 +502,14 @@ const SHOP_PRODUCTS: ShopProductItem[] = [
     rating: 4.7,
     description:
       "13.3-inch OLED FHD Touch Display with 360 ErgoLift hinge, Intel Core i5 processor, 8GB RAM, and 512GB SSD for premium versatility.",
+    specs: [
+      { label: "Brand", value: "ASUS" },
+      { label: "Model Name", value: "ZenBook Flip 13" },
+      { label: "Screen Size", value: "13.3 Inches OLED" },
+      { label: "Hard Disk Size", value: "512 GB SSD" },
+      { label: "Ram Memory", value: "8GB" },
+    ],
+    deliveryDays: "5 day delivery",
   },
 ];
 
@@ -1195,67 +1298,144 @@ function ShopContent() {
                       key={product.id}
                       className="group flex flex-col justify-between bg-white relative transition-all duration-200"
                     >
-                      {/* Product Image Area with Hover Action Overlay */}
-                      <div className="relative aspect-square w-full bg-white flex items-center justify-center p-3 overflow-hidden">
-                        <Link
-                          href={`/product/lenovo-tab-m10-plus`}
-                          className="relative w-full h-full flex items-center justify-center"
-                        >
-                          <Image
-                            src={currentImg}
-                            alt={product.name}
-                            fill
-                            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
-                            className="object-contain transition-transform duration-300 group-hover:scale-105"
-                          />
-                        </Link>
-
-                        {/* Quick Action Floating Bar on Hover */}
-                        <div className="absolute bottom-2 left-1/2 -translate-x-1/2 flex items-center gap-1.5 bg-white/95 shadow-md border border-gray-100 rounded-full px-2 py-1 opacity-0 group-hover:opacity-100 transition-all duration-200 translate-y-2 group-hover:translate-y-0 z-10">
-                          <button
-                            type="button"
-                            title="Add to Cart"
-                            onClick={(e) => handleAddToCart(product, e)}
-                            className="w-7 h-7 rounded-full flex items-center justify-center text-[#444] hover:text-[#ff3d3d] hover:bg-red-50 transition-colors cursor-pointer"
+                      {/* Upper Stage: Fixed height (260px) for Image (Normal) vs Specs/Actions/Delivery/Add-to-cart (Hover) */}
+                      <div className="relative w-full h-[260px] bg-white overflow-hidden">
+                        {/* Normal View: Centered Product Image */}
+                        <div className="absolute inset-0 flex items-center justify-center p-3 transition-opacity duration-200 group-hover:opacity-0 group-hover:pointer-events-none z-0">
+                          <Link
+                            href={`/product/lenovo-tab-m10-plus`}
+                            className="relative w-full h-full flex items-center justify-center"
                           >
-                            <ShoppingCart size={13} />
-                          </button>
-                          <button
-                            type="button"
-                            title="Wishlist"
-                            onClick={(e) => handleToggleWishlist(product, e)}
-                            className={`w-7 h-7 rounded-full flex items-center justify-center transition-colors cursor-pointer ${
-                              isWishlisted(product.id)
-                                ? "text-[#ff3d3d] bg-red-50"
-                                : "text-[#444] hover:text-[#ff3d3d] hover:bg-red-50"
-                            }`}
-                          >
-                            <Heart
-                              size={13}
-                              className={
-                                isWishlisted(product.id)
-                                  ? "fill-[#ff3d3d]"
-                                  : ""
-                              }
+                            <Image
+                              src={currentImg}
+                              alt={product.name}
+                              fill
+                              sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
+                              className="object-contain"
                             />
-                          </button>
-                          <button
-                            type="button"
-                            title="Quick View"
-                            onClick={(e) => {
-                              e.preventDefault();
-                              e.stopPropagation();
-                              setQuickViewItem(product);
-                            }}
-                            className="w-7 h-7 rounded-full flex items-center justify-center text-[#444] hover:text-[#ff3d3d] hover:bg-red-50 transition-colors cursor-pointer"
-                          >
-                            <Eye size={13} />
-                          </button>
+                          </Link>
+                        </div>
+
+                        {/* Hover View: Specs + 3 Circular Action Icons + Delivery + Add to Cart Button */}
+                        <div className="absolute inset-0 bg-white flex flex-col justify-between py-1.5 transition-opacity duration-200 opacity-0 pointer-events-none group-hover:opacity-100 group-hover:pointer-events-auto z-10">
+                          {/* Translucent Watermark Laptop Image in background */}
+                          <div className="absolute inset-0 flex items-center justify-center opacity-[0.20] pointer-events-none overflow-hidden scale-110 translate-y-2 select-none">
+                            <Image
+                              src={currentImg}
+                              alt=""
+                              fill
+                              sizes="300px"
+                              className="object-contain"
+                            />
+                          </div>
+
+                          {/* Top section: Specs Key-Value Table + 3 Stacked Circular Action Buttons */}
+                          <div className="flex items-start justify-between gap-1 relative z-10">
+                            {/* Specs Table */}
+                            <div className="space-y-1 text-[12px] flex-1 min-w-0 pr-1 select-text">
+                              {product.specs?.slice(0, 5).map((s) => (
+                                <div
+                                  key={s.label}
+                                  className="grid grid-cols-[98px_1fr] gap-1 leading-snug"
+                                >
+                                  <span className="text-[#8c94a0] font-normal">
+                                    {s.label}
+                                  </span>
+                                  <span className="text-[#374151] font-normal truncate">
+                                    {s.value}
+                                  </span>
+                                </div>
+                              ))}
+                            </div>
+
+                            {/* 3 Circular Action Buttons */}
+                            <div className="flex flex-col gap-2 shrink-0">
+                              {/* Quick View Button */}
+                              <button
+                                type="button"
+                                title="Quick View"
+                                aria-label="Quick View"
+                                onClick={(e) => {
+                                  e.preventDefault();
+                                  e.stopPropagation();
+                                  setQuickViewItem(product);
+                                }}
+                                className="w-[36px] h-[36px] rounded-full bg-white shadow-[0_2px_8px_rgba(0,0,0,0.08)] flex items-center justify-center text-[#1a202c] hover:text-[#f04438] hover:shadow-md transition-all cursor-pointer"
+                              >
+                                <Eye size={17} strokeWidth={1.75} />
+                              </button>
+
+                              {/* Wishlist Button */}
+                              <button
+                                type="button"
+                                title="Wishlist"
+                                aria-label="Wishlist"
+                                onClick={(e) => handleToggleWishlist(product, e)}
+                                className={`w-[36px] h-[36px] rounded-full bg-white shadow-[0_2px_8px_rgba(0,0,0,0.08)] flex items-center justify-center transition-all cursor-pointer ${
+                                  isWishlisted(product.id)
+                                    ? "text-[#f04438]"
+                                    : "text-[#1a202c] hover:text-[#f04438] hover:shadow-md"
+                                }`}
+                              >
+                                <Heart
+                                  size={17}
+                                  strokeWidth={1.75}
+                                  fill={
+                                    isWishlisted(product.id)
+                                      ? "#f04438"
+                                      : "none"
+                                  }
+                                />
+                              </button>
+
+                              {/* Compare Button */}
+                              <button
+                                type="button"
+                                title="Compare"
+                                aria-label="Compare"
+                                onClick={(e) => {
+                                  e.preventDefault();
+                                  e.stopPropagation();
+                                  showToast(
+                                    `Added "${product.shortName}" to compare list!`
+                                  );
+                                }}
+                                className="w-[36px] h-[36px] rounded-full bg-white shadow-[0_2px_8px_rgba(0,0,0,0.08)] flex items-center justify-center text-[#1a202c] hover:text-[#f04438] hover:shadow-md transition-all cursor-pointer"
+                              >
+                                <ArrowLeftRight size={16} strokeWidth={1.75} />
+                              </button>
+                            </div>
+                          </div>
+
+                          {/* Middle: Subtle divider + Delivery info */}
+                          <div className="relative z-10 pt-1 border-t border-[#f0f0f0]">
+                            <div className="flex items-center gap-2 text-[13px] text-[#374151]">
+                              <Truck
+                                size={17}
+                                strokeWidth={1.5}
+                                className="text-[#374151]"
+                              />
+                              <span>
+                                {product.deliveryDays || "5 day delivery"}
+                              </span>
+                            </div>
+                          </div>
+
+                          {/* Bottom: Vibrant Red Add to Cart Button */}
+                          <div className="relative z-10 pt-1">
+                            <button
+                              type="button"
+                              onClick={(e) => handleAddToCart(product, e)}
+                              className="w-full h-[40px] bg-[#f04438] hover:bg-[#dc2626] text-white font-medium text-[14px] rounded-[6px] transition-colors flex items-center justify-center cursor-pointer shadow-sm active:scale-[0.99]"
+                            >
+                              Add to cart
+                            </button>
+                          </div>
                         </div>
                       </div>
 
-                      {/* Small Thumbnails Strip (Matching Image 1 Exact Layout) */}
-                      <div className="flex items-center gap-1.5 my-2.5 px-0.5">
+                      {/* Small Thumbnails Strip (Matching Image 1 & 2 Exact Layout) */}
+                      <div className="flex items-center gap-2 mt-3 mb-2 px-0.5">
                         {product.thumbnails.map((thumbSrc, idx) => {
                           const isActive = currentImg === thumbSrc;
                           return (
@@ -1274,18 +1454,19 @@ function ShopContent() {
                                   [product.id]: thumbSrc,
                                 }))
                               }
-                              className={`w-8 h-8 rounded border flex items-center justify-center p-0.5 bg-white transition-all cursor-pointer ${
+                              className={`w-[42px] h-[42px] rounded-[4px] border flex items-center justify-center p-1 bg-white transition-all cursor-pointer ${
                                 isActive
-                                  ? "border-[#ff3d3d] shadow-xs"
-                                  : "border-[#e5e5e5] hover:border-gray-400"
+                                  ? "border-[#1a202c]"
+                                  : "border-[#e5e7eb] hover:border-gray-400"
                               }`}
+                              aria-label={`Thumbnail ${idx + 1}`}
                             >
                               <div className="relative w-full h-full">
                                 <Image
                                   src={thumbSrc}
                                   alt={`${product.name} thumb ${idx + 1}`}
                                   fill
-                                  sizes="32px"
+                                  sizes="42px"
                                   className="object-contain"
                                 />
                               </div>
@@ -1295,7 +1476,7 @@ function ShopContent() {
 
                         {/* Extra Thumbnails Badge "+1" or "+2" */}
                         {product.moreThumbnailsCount > 0 && (
-                          <div className="w-8 h-8 rounded border border-[#e5e5e5] bg-[#f9f9f9] flex items-center justify-center text-[11px] font-semibold text-[#666666] select-none">
+                          <div className="w-[42px] h-[42px] rounded-[4px] border border-[#e5e7eb] bg-[#f3f4f6] flex items-center justify-center text-[15px] font-semibold text-[#1e293b] select-none">
                             +{product.moreThumbnailsCount}
                           </div>
                         )}
@@ -1303,27 +1484,27 @@ function ShopContent() {
 
                       {/* Info Area */}
                       <div className="pt-1 flex flex-col flex-1">
-                        {/* Categories tags line */}
+                        {/* Categories tags line: wrapped, muted gray, matching screenshot */}
                         <p
-                          className="text-[11px] text-[#999999] leading-tight line-clamp-1 mb-1.5"
+                          className="text-[12.5px] text-[#718096] leading-normal mb-1.5"
                           title={product.categoryLine}
                         >
                           {product.categoryLine}
                         </p>
 
-                        {/* Product Title (Blue link) */}
-                        <h3 className="text-[13.5px] font-medium leading-[1.35] mb-2 flex-1">
+                        {/* Product Title (Blue link, 2 lines clamped with ellipsis) */}
+                        <h3 className="text-[15px] font-semibold leading-[1.35] mb-2 flex-1">
                           <Link
                             href={`/product/lenovo-tab-m10-plus`}
-                            className="text-[#0e8ce4] hover:text-[#ff3d3d] hover:underline transition-colors line-clamp-2"
+                            className="text-[#005bb5] hover:text-[#004085] hover:underline transition-colors line-clamp-2"
                             title={product.name}
                           >
                             {product.shortName}
                           </Link>
                         </h3>
 
-                        {/* Price */}
-                        <div className="text-[15.5px] font-bold text-[#1a1a1a] tracking-tight">
+                        {/* Price: Bold large price */}
+                        <div className="text-[22px] font-bold text-[#1a202c] tracking-tight">
                           ${product.price.toLocaleString("en-US", {
                             minimumFractionDigits: 2,
                             maximumFractionDigits: 2,
