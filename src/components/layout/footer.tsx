@@ -51,16 +51,13 @@ export default function Footer() {
           <div className="flex flex-col">
             <Link href="/" className="inline-flex items-center gap-2.5 mb-4 group">
               <Image
-                src="/images/logo-icon.png"
-                alt="IndustrialEdge"
-                width={36}
-                height={40}
-                className="h-[36px] w-auto object-contain transition-transform group-hover:scale-105"
+                src="/images/logo-footer.png"
+                alt="onsus."
+                width={130}
+                height={36}
+                className="h-[32px] w-auto object-contain transition-transform group-hover:scale-105"
                 priority
               />
-              <span className="text-[24px] font-bold tracking-tight text-[#141539]">
-                Industrial<span className="text-[#00937a]">Edge</span>
-              </span>
             </Link>
             <h4 className="text-[15px] font-semibold text-[#333e48] mt-4 mb-3">
               We accept:
@@ -140,22 +137,22 @@ export default function Footer() {
             </h3>
             <div className="space-y-2.5 text-[14px]">
               <p className="text-[#73787d] leading-[22px]">
-                8500 Lorem Street Chicago, IL 55030 Dolor sit amet
+                8500 Lorem Street Chicago, IL 55030 Door 81 USA
               </p>
               <p>
                 <a
                   href="tel:+88001234567"
-                  className="font-bold text-[#333e48] hover:text-[#ff3d3d] transition-colors text-[15px]"
+                  className="font-bold text-[#ff3d3d] hover:text-[#333e48] transition-colors text-[15px]"
                 >
                   +8(800) 123 4567
                 </a>
               </p>
               <p>
                 <a
-                  href="mailto:support@industrialedge.com"
+                  href="mailto:onsus@support.com"
                   className="text-[#73787d] hover:text-[#ff3d3d] transition-colors"
                 >
-                  support@industrialedge.com
+                  onsus@support.com
                 </a>
               </p>
             </div>
@@ -280,7 +277,7 @@ export default function Footer() {
 
           {/* Copyright */}
           <p className="text-[13px] text-[#73787d]">
-            IndustrialEdge. &copy; {year}. All rights reserved
+            Onsus &copy; 2023 All right reserved | Designed by ThemeMier
           </p>
         </div>
       </div>

@@ -272,16 +272,13 @@ export default function Header() {
           {/* Logo */}
           <Link href="/" className="shrink-0 flex items-center gap-2.5 group">
             <Image
-              src="/images/logo-icon.png"
-              alt="IndustrialEdge"
-              width={38}
-              height={42}
+              src="/logo-onsus.png"
+              alt="onsus."
+              width={130}
+              height={36}
               priority
-              className="h-[36px] w-auto object-contain transition-transform group-hover:scale-105"
+              className="h-[32px] md:h-[36px] w-auto object-contain transition-transform group-hover:scale-105"
             />
-            <span className="text-[22px] font-bold tracking-tight text-[#141539]">
-              Industrial<span className="text-[#00937a]">Edge</span>
-            </span>
           </Link>
 
           {/* Center: Scoped Search Bar with Pill Border */}
