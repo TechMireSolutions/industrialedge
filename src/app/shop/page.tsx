@@ -78,20 +78,36 @@ const TOP_CATEGORIES: TopCategoryItem[] = [
   },
 ];
 
-// Sidebar Filter Categories
+// Sidebar Filter Categories (Matching Image 1 & 2)
 const SIDEBAR_CATEGORIES = [
-  { name: "Apple products", hasSub: true },
+  {
+    name: "Apple products",
+    hasSub: true,
+    subItems: ["AirPods", "Apple Watch", "Iphone", "Mac"],
+  },
   { name: "Audio Equipments", hasSub: false },
   { name: "Camera & Video", hasSub: false },
-  { name: "Computers & Accessories", hasSub: false },
+  {
+    name: "Computers & Accessories",
+    displayLines: ["Computers &", "Accessories"],
+    hasSub: false,
+  },
   { name: "Game & Room Furniture", hasSub: false },
   { name: "Gaming Accessories", hasSub: false },
-  { name: "Headphone", hasSub: true },
-  { name: "Laptop & Tablet", hasSub: true },
+  {
+    name: "Headphone",
+    hasSub: true,
+    subItems: ["Earbuds", "On Ear", "Over Ear"],
+  },
+  {
+    name: "Laptop & Tablet",
+    hasSub: true,
+    subItems: ["Acer", "Amazon", "Apple", "ASUS", "HP", "Lenovo"],
+  },
   { name: "Server & Workstation", hasSub: false },
   { name: "Smartphone", hasSub: false },
   { name: "Smartwatch", hasSub: false },
-  { name: "Sensor & Digital Devices", hasSub: false },
+  { name: "Storage & Digital Devices", hasSub: false },
   { name: "TV & Computer Screen", hasSub: false },
 ];
 
@@ -461,11 +477,34 @@ function ShopContent() {
     }, 2400);
   };
 
+  // Expandable Category State (matching Image 1 & 2)
+  const [expandedCategories, setExpandedCategories] = useState<string[]>([
+    "Apple products",
+  ]);
+  const [selectedSubCategories, setSelectedSubCategories] = useState<string[]>([]);
+
+  const toggleCategoryExpand = (catName: string, e: React.MouseEvent) => {
+    e.stopPropagation();
+    setExpandedCategories((prev) =>
+      prev.includes(catName)
+        ? prev.filter((c) => c !== catName)
+        : [...prev, catName]
+    );
+  };
+
   const handleCategoryToggle = (categoryName: string) => {
     setSelectedCategories((prev) =>
       prev.includes(categoryName)
         ? prev.filter((c) => c !== categoryName)
         : [...prev, categoryName]
+    );
+  };
+
+  const handleSubCategoryToggle = (subName: string) => {
+    setSelectedSubCategories((prev) =>
+      prev.includes(subName)
+        ? prev.filter((s) => s !== subName)
+        : [...prev, subName]
     );
   };
 
@@ -488,6 +527,18 @@ function ShopContent() {
           item.categories.some(
             (c) => c.toLowerCase() === cat.toLowerCase()
           )
+        )
+      );
+    }
+
+    // Filter by subcategory
+    if (selectedSubCategories.length > 0) {
+      result = result.filter((item) =>
+        selectedSubCategories.some((sub) =>
+          item.categories.some(
+            (c) => c.toLowerCase() === sub.toLowerCase()
+          ) ||
+          item.name.toLowerCase().includes(sub.toLowerCase())
         )
       );
     }
@@ -528,6 +579,7 @@ function ShopContent() {
     return result;
   }, [
     selectedCategories,
+    selectedSubCategories,
     selectedBrands,
     priceRange,
     minRating,
@@ -815,61 +867,113 @@ function ShopContent() {
               </div>
             )}
 
-            {/* SECTION 1: FILTER CATEGORIES */}
-            <div className="mb-7">
-              <h2 className="text-[15px] font-bold text-[#222222] mb-3.5 tracking-tight">
-                Filter Categories
-              </h2>
-              <ul className="space-y-2">
-                {SIDEBAR_CATEGORIES.map((cat) => {
-                  const isChecked = selectedCategories.includes(cat.name);
-                  return (
-                    <li
-                      key={cat.name}
-                      className="flex items-center justify-between group cursor-pointer py-0.5"
-                      onClick={() => handleCategoryToggle(cat.name)}
-                    >
-                      <label className="flex items-center gap-2.5 text-[13px] text-[#444444] group-hover:text-[#ff3d3d] cursor-pointer select-none transition-colors">
-                        <input
-                          type="checkbox"
-                          checked={isChecked}
-                          onChange={() => {}} // Handled by li click
-                          className="w-[14px] h-[14px] rounded-[3px] border-[#c8c8c8] text-[#ff3d3d] focus:ring-0 cursor-pointer"
-                        />
-                        <span>{cat.name}</span>
-                      </label>
-                      {cat.hasSub && (
-                        <ChevronRight
-                          size={13}
-                          className="text-[#999999] group-hover:text-[#ff3d3d] transition-colors"
-                        />
-                      )}
-                    </li>
-                  );
-                })}
-              </ul>
+            {/* SECTION 1: FILTER CATEGORIES (Matching Image 1 & 2) */}
+            <div className="border border-[#e8ecef] rounded-xl overflow-hidden bg-white shadow-xs">
+              {/* Card Header with Gray Background */}
+              <div className="bg-[#f5f6f8] px-5 py-3.5 border-b border-[#edf0f2]">
+                <h2 className="text-[16px] font-bold text-[#1f2937] tracking-tight">
+                  Filter Categories
+                </h2>
+              </div>
+
+              {/* Card Body */}
+              <div className="p-5">
+                <ul className="space-y-3.5">
+                  {SIDEBAR_CATEGORIES.map((cat) => {
+                    const isChecked = selectedCategories.includes(cat.name);
+                    const isExpanded = expandedCategories.includes(cat.name);
+
+                    return (
+                      <li key={cat.name} className="flex flex-col">
+                        <div className="flex items-center justify-between group">
+                          <label
+                            onClick={() => handleCategoryToggle(cat.name)}
+                            className="flex items-start gap-3 text-[13.5px] text-[#2d3748] group-hover:text-[#ff3d3d] cursor-pointer select-none transition-colors flex-1"
+                          >
+                            <input
+                              type="checkbox"
+                              checked={isChecked}
+                              onChange={() => {}}
+                              className="w-[15px] h-[15px] rounded-[2px] border border-[#d6dade] text-[#ff3d3d] focus:ring-0 cursor-pointer mt-0.5 shrink-0 accent-[#ff3d3d]"
+                            />
+                            <span className="leading-[1.35]">
+                              {cat.displayLines ? (
+                                <>
+                                  {cat.displayLines[0]}
+                                  <br />
+                                  {cat.displayLines[1]}
+                                </>
+                              ) : (
+                                cat.name
+                              )}
+                            </span>
+                          </label>
+
+                          {/* + or - toggle button */}
+                          {cat.hasSub && (
+                            <button
+                              type="button"
+                              onClick={(e) => toggleCategoryExpand(cat.name, e)}
+                              className="w-5 h-5 flex items-center justify-center text-[#1f2937] hover:text-[#ff3d3d] text-[16px] font-bold cursor-pointer transition-colors shrink-0"
+                              aria-label={isExpanded ? "Collapse" : "Expand"}
+                            >
+                              {isExpanded ? "−" : "+"}
+                            </button>
+                          )}
+                        </div>
+
+                        {/* Indented Subcategories List (Image 2) */}
+                        {cat.hasSub && isExpanded && cat.subItems && (
+                          <ul className="pl-6 pt-3 pb-1 space-y-2.5">
+                            {cat.subItems.map((sub) => {
+                              const isSubChecked = selectedSubCategories.includes(sub);
+                              return (
+                                <li
+                                  key={sub}
+                                  onClick={() => handleSubCategoryToggle(sub)}
+                                  className="flex items-center group cursor-pointer"
+                                >
+                                  <label className="flex items-center gap-3 text-[13px] text-[#4a5568] group-hover:text-[#ff3d3d] cursor-pointer select-none transition-colors">
+                                    <input
+                                      type="checkbox"
+                                      checked={isSubChecked}
+                                      onChange={() => {}}
+                                      className="w-[14px] h-[14px] rounded-[2px] border border-[#d6dade] text-[#ff3d3d] focus:ring-0 cursor-pointer accent-[#ff3d3d]"
+                                    />
+                                    <span>{sub}</span>
+                                  </label>
+                                </li>
+                              );
+                            })}
+                          </ul>
+                        )}
+                      </li>
+                    );
+                  })}
+                </ul>
+              </div>
             </div>
 
-            {/* SECTION 2: BRAND */}
-            <div className="mb-7 pt-5 border-t border-[#ececec]">
-              <h2 className="text-[15px] font-bold text-[#222222] mb-3.5 tracking-tight">
+            {/* SECTION 2: BRAND (Matching Image 3) */}
+            <div className="mt-8">
+              <h2 className="text-[16px] font-bold text-[#1f2937] tracking-tight mb-4">
                 Brand
               </h2>
-              <ul className="space-y-2">
+              <ul className="space-y-3">
                 {SIDEBAR_BRANDS.map((brand) => {
                   const isChecked = selectedBrands.includes(brand);
                   return (
                     <li
                       key={brand}
-                      className="flex items-center group cursor-pointer py-0.5"
+                      className="flex items-center group cursor-pointer"
                       onClick={() => handleBrandToggle(brand)}
                     >
-                      <label className="flex items-center gap-2.5 text-[13px] text-[#444444] group-hover:text-[#ff3d3d] cursor-pointer select-none transition-colors">
+                      <label className="flex items-center gap-3 text-[13.5px] text-[#2d3748] group-hover:text-[#ff3d3d] cursor-pointer select-none transition-colors">
                         <input
                           type="checkbox"
                           checked={isChecked}
-                          onChange={() => {}} // Handled by li click
-                          className="w-[14px] h-[14px] rounded-[3px] border-[#c8c8c8] text-[#ff3d3d] focus:ring-0 cursor-pointer"
+                          onChange={() => {}}
+                          className="w-[15px] h-[15px] rounded-[2px] border border-[#d6dade] text-[#ff3d3d] focus:ring-0 cursor-pointer accent-[#ff3d3d]"
                         />
                         <span>{brand}</span>
                       </label>
@@ -879,14 +983,23 @@ function ShopContent() {
               </ul>
             </div>
 
-            {/* SECTION 3: PRICE */}
-            <div className="mb-7 pt-5 border-t border-[#ececec]">
-              <h2 className="text-[15px] font-bold text-[#222222] mb-3.5 tracking-tight">
+            {/* SECTION 3: PRICE (Matching Image 3) */}
+            <div className="mt-8">
+              <h2 className="text-[16px] font-bold text-[#1f2937] tracking-tight mb-4">
                 Price
               </h2>
 
-              {/* Slider Track */}
-              <div className="relative pt-1 pb-4">
+              {/* Range Track with exact handles */}
+              <div className="relative pt-2 pb-3 flex items-center">
+                <div className="w-full h-[2.5px] bg-black rounded-full relative">
+                  {/* Left handle */}
+                  <div className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-1/2 w-4 h-4 rounded-full bg-white border-[3px] border-black shadow-xs pointer-events-none" />
+                  {/* Right handle */}
+                  <div
+                    className="absolute top-1/2 -translate-y-1/2 -translate-x-1/2 w-4 h-4 rounded-full bg-white border-[3px] border-black shadow-xs pointer-events-none transition-all duration-75"
+                    style={{ left: `${(priceRange / 2000) * 100}%` }}
+                  />
+                </div>
                 <input
                   type="range"
                   min="0"
@@ -894,13 +1007,14 @@ function ShopContent() {
                   step="25"
                   value={priceRange}
                   onChange={(e) => setPriceRange(Number(e.target.value))}
-                  className="w-full h-1.5 bg-[#222222] rounded-lg appearance-none cursor-pointer accent-[#222222]"
+                  className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+                  aria-label="Price range filter"
                 />
               </div>
 
               {/* Value and Filter Button */}
-              <div className="flex items-center justify-between text-[13px]">
-                <span className="text-[#333333] font-medium">
+              <div className="flex items-center justify-between text-[14px] mt-1">
+                <span className="text-[#1f2937] font-normal tracking-wide">
                   0 - {priceRange}
                 </span>
                 <button
@@ -908,56 +1022,57 @@ function ShopContent() {
                   onClick={() => {
                     if (mobileFilterOpen) setMobileFilterOpen(false);
                   }}
-                  className="px-4 py-1.5 rounded-[4px] bg-[#333e48] hover:bg-black text-white text-[12px] font-semibold transition-colors cursor-pointer"
+                  className="px-4 py-1.5 rounded-[6px] bg-[#2d3748] hover:bg-black text-white text-[13px] font-medium transition-colors cursor-pointer shadow-xs"
                 >
                   Filter
                 </button>
               </div>
             </div>
 
-            {/* SECTION 4: CUSTOMER REVIEW */}
-            <div className="mb-7 pt-5 border-t border-[#ececec]">
-              <h2 className="text-[15px] font-bold text-[#222222] mb-3.5 tracking-tight">
+            {/* SECTION 4: CUSTOMER REVIEW (Matching Image 3) */}
+            <div className="mt-8">
+              <h2 className="text-[16px] font-bold text-[#1f2937] tracking-tight mb-4">
                 Customer Review
               </h2>
-              <div className="space-y-2">
+              <div className="space-y-2.5">
                 {[
                   { stars: 5, label: "" },
                   { stars: 4, label: "& Up" },
                   { stars: 3, label: "& Up" },
                   { stars: 2, label: "& Up" },
                   { stars: 1, label: "& Up" },
-                ].map((item) => (
+                ].map((tier) => (
                   <button
                     type="button"
-                    key={item.stars}
+                    key={tier.stars}
                     onClick={() =>
                       setMinRating((prev) =>
-                        prev === item.stars ? null : item.stars
+                        prev === tier.stars ? null : tier.stars
                       )
                     }
-                    className={`flex items-center gap-1.5 text-[13px] py-1 px-1.5 rounded transition-colors w-full text-left cursor-pointer ${
-                      minRating === item.stars
-                        ? "bg-amber-50 text-[#ff3d3d]"
-                        : "hover:bg-gray-50 text-[#555555]"
+                    className={`flex items-center gap-1.5 py-1 px-1 rounded transition-colors w-full text-left cursor-pointer ${
+                      minRating === tier.stars
+                        ? "bg-amber-50/70"
+                        : "hover:bg-gray-50"
                     }`}
                   >
-                    <div className="flex items-center gap-0.5">
+                    <div className="flex items-center gap-1">
                       {[...Array(5)].map((_, i) => (
                         <Star
                           key={i}
-                          size={14}
+                          size={15}
+                          strokeWidth={1.5}
                           className={
-                            i < item.stars
-                              ? "fill-[#f5a623] text-[#f5a623]"
-                              : "text-gray-300"
+                            i < tier.stars
+                              ? "text-[#f59e0b] stroke-[#f59e0b] fill-none"
+                              : "text-[#d1d5db] stroke-[#d1d5db] fill-none"
                           }
                         />
                       ))}
                     </div>
-                    {item.label && (
-                      <span className="text-[12.5px] ml-1 text-[#666]">
-                        {item.label}
+                    {tier.label && (
+                      <span className="text-[13.5px] text-[#1f2937] ml-1 font-normal select-none">
+                        {tier.label}
                       </span>
                     )}
                   </button>
