@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useMemo, Suspense } from "react";
+import { useState, useMemo, useRef, useEffect, Suspense } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
@@ -8,6 +8,7 @@ import {
   Grid,
   List,
   ChevronRight,
+  ChevronLeft,
   Eye,
   Heart,
   ShoppingCart,
@@ -18,11 +19,11 @@ import {
 } from "lucide-react";
 import { useStore, type Product } from "@/lib/store";
 
-// Top Circular Categories (Image 1 Carousel)
+// Top Circular Categories (Image 1 & 2 Carousel)
 interface TopCategoryItem {
   id: string;
   name: string;
-  displayName: string;
+  titleLines: string[];
   image: string;
 }
 
@@ -30,50 +31,50 @@ const TOP_CATEGORIES: TopCategoryItem[] = [
   {
     id: "apple",
     name: "Apple products",
-    displayName: "Apple products",
-    image: "/images/apple-imac.jpg",
+    titleLines: ["Apple products"],
+    image: "/images/cat-imac.jpg",
   },
   {
     id: "audio",
     name: "Audio Equipments",
-    displayName: "Audio Equipme...",
-    image: "/images/bose-speaker.png",
+    titleLines: ["Audio Equipments"],
+    image: "/images/cat-speakers.jpg",
   },
   {
     id: "camera",
     name: "Camera & Video",
-    displayName: "Camera & Video",
-    image: "/images/o_3801-540x540.webp",
+    titleLines: ["Camera & Video"],
+    image: "/images/cat-camera.jpg",
   },
   {
     id: "computers",
     name: "Computers & Accessories",
-    displayName: "Computers &...",
-    image: "/images/o_3701-540x540.webp",
+    titleLines: ["Computers &", "Accessories"],
+    image: "/images/cat-pc-tower.jpg",
   },
   {
     id: "furniture",
     name: "Game & Room Furniture",
-    displayName: "Game & Room...",
-    image: "/images/gaming-chair.jpg",
+    titleLines: ["Game & Room", "Furniture"],
+    image: "/images/cat-gaming-chair.jpg",
   },
   {
     id: "gaming",
     name: "Gaming Accessories",
-    displayName: "Gaming Accesso...",
-    image: "/images/xbox-controller.png",
+    titleLines: ["Gaming", "Accessories"],
+    image: "/images/cat-gamepad.jpg",
   },
   {
     id: "headphone",
     name: "Headphone",
-    displayName: "Headphone...",
-    image: "/images/beats-headphones.png",
+    titleLines: ["Headphone"],
+    image: "/images/cat-headphones.jpg",
   },
   {
     id: "laptop",
     name: "Laptop & Tablet",
-    displayName: "Laptop & Tablet",
-    image: "/images/o_3603-540x540.webp",
+    titleLines: ["Laptop & Tablet"],
+    image: "/images/cat-laptop.jpg",
   },
 ];
 
@@ -424,6 +425,35 @@ function ShopContent() {
   // Quick View Modal
   const [quickViewItem, setQuickViewItem] = useState<ShopProductItem | null>(null);
 
+  // Top Categories Carousel Ref & Scroll state (Image 1 & 2)
+  const carouselRef = useRef<HTMLDivElement>(null);
+  const [canScrollLeft, setCanScrollLeft] = useState(false);
+  const [canScrollRight, setCanScrollRight] = useState(true);
+
+  const checkCarouselScroll = () => {
+    if (!carouselRef.current) return;
+    const { scrollLeft, scrollWidth, clientWidth } = carouselRef.current;
+    setCanScrollLeft(scrollLeft > 10);
+    setCanScrollRight(scrollLeft + clientWidth < scrollWidth - 10);
+  };
+
+  const handleCarouselScroll = (direction: "left" | "right") => {
+    if (!carouselRef.current) return;
+    const scrollAmount = 280;
+    carouselRef.current.scrollBy({
+      left: direction === "right" ? scrollAmount : -scrollAmount,
+      behavior: "smooth",
+    });
+    setTimeout(checkCarouselScroll, 350);
+  };
+
+  useEffect(() => {
+    checkCarouselScroll();
+    const handleResize = () => checkCarouselScroll();
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
   const showToast = (msg: string) => {
     setToastMessage(msg);
     setTimeout(() => {
@@ -663,53 +693,83 @@ function ShopContent() {
         </nav>
 
         {/* ========================================================= */}
-        {/* 2. TOP CIRCULAR CATEGORIES (Carousel / Badges)           */}
+        {/* 2. TOP CATEGORIES BOX (Matching Image 1 & 2 Exactly)       */}
         {/* ========================================================= */}
-        <section aria-label="Category Highlights" className="pt-2 pb-6 border-b border-[#f0f0f0] mb-8">
-          <div className="flex items-start justify-between gap-3 sm:gap-4 overflow-x-auto pb-2 scrollbar-none">
-            {TOP_CATEGORIES.map((cat) => {
-              const isSelected = selectedCategories.includes(cat.name);
-              return (
-                <button
-                  type="button"
-                  key={cat.id}
-                  onClick={() => handleCategoryToggle(cat.name)}
-                  className="flex flex-col items-center group cursor-pointer shrink-0 text-center focus:outline-none"
-                  style={{ width: "105px" }}
-                >
-                  {/* Circle Image Wrapper */}
-                  <div
-                    className={`w-[84px] h-[84px] sm:w-[94px] sm:h-[94px] rounded-full border flex items-center justify-center p-3.5 transition-all duration-200 bg-white ${
-                      isSelected
-                        ? "border-[#ff3d3d] shadow-[0_0_0_2px_rgba(255,61,61,0.2)]"
-                        : "border-[#e9ecef] hover:border-[#ff3d3d] hover:shadow-md"
+        <section aria-label="Category Highlights" className="relative mb-8">
+          <div className="relative border border-[#e5e5e5] bg-white">
+            <div
+              ref={carouselRef}
+              onScroll={checkCarouselScroll}
+              className="flex items-stretch overflow-x-auto scrollbar-none divide-x divide-[#e5e5e5]"
+            >
+              {TOP_CATEGORIES.map((cat) => {
+                const isSelected = selectedCategories.includes(cat.name);
+                return (
+                  <button
+                    type="button"
+                    key={cat.id}
+                    onClick={() => handleCategoryToggle(cat.name)}
+                    className={`flex-1 min-w-[130px] sm:min-w-[140px] xl:min-w-0 py-6 px-2 flex flex-col items-center justify-between text-center group cursor-pointer transition-colors focus:outline-none ${
+                      isSelected ? "bg-[#fcfcfc]" : "hover:bg-[#fafafa]"
                     }`}
                   >
-                    <div className="relative w-full h-full">
-                      <Image
-                        src={cat.image}
-                        alt={cat.name}
-                        fill
-                        sizes="94px"
-                        className="object-contain transition-transform duration-300 group-hover:scale-110"
-                      />
+                    {/* Light Grey Circular Backdrop behind image */}
+                    <div
+                      className={`w-[78px] h-[78px] sm:w-[82px] sm:h-[82px] rounded-full bg-[#f4f5f7] flex items-center justify-center p-2.5 mb-3 transition-transform duration-200 group-hover:scale-105 ${
+                        isSelected ? "ring-2 ring-[#ff3d3d] bg-[#edf2f7]" : ""
+                      }`}
+                    >
+                      <div className="relative w-[52px] h-[52px]">
+                        <Image
+                          src={cat.image}
+                          alt={cat.name}
+                          fill
+                          sizes="54px"
+                          className="object-contain"
+                        />
+                      </div>
                     </div>
-                  </div>
 
-                  {/* Label */}
-                  <span
-                    className={`mt-2.5 text-[12px] sm:text-[13px] font-medium leading-tight max-w-[95px] truncate transition-colors ${
-                      isSelected
-                        ? "text-[#ff3d3d] font-semibold"
-                        : "text-[#222222] group-hover:text-[#ff3d3d]"
-                    }`}
-                    title={cat.name}
-                  >
-                    {cat.displayName}
-                  </span>
-                </button>
-              );
-            })}
+                    {/* Category Label (Single line or Two lines) */}
+                    <div
+                      className={`text-[13px] leading-[1.3] text-center transition-colors min-h-[34px] flex flex-col justify-center ${
+                        isSelected
+                          ? "text-[#ff3d3d] font-semibold"
+                          : "text-[#333333] group-hover:text-[#ff3d3d]"
+                      }`}
+                    >
+                      {cat.titleLines.map((line, idx) => (
+                        <span key={idx} className="block whitespace-nowrap">
+                          {line}
+                        </span>
+                      ))}
+                    </div>
+                  </button>
+                );
+              })}
+            </div>
+
+            {/* Left Carousel Arrow (if scrolled) */}
+            {canScrollLeft && (
+              <button
+                type="button"
+                onClick={() => handleCarouselScroll("left")}
+                aria-label="Previous categories"
+                className="w-9 h-9 rounded-full bg-white border border-[#e5e5e5] shadow-[0_2px_10px_rgba(0,0,0,0.12)] flex items-center justify-center text-[#333] hover:text-[#ff3d3d] hover:border-[#ff3d3d] transition-all absolute -left-4.5 top-1/2 -translate-y-1/2 z-20 cursor-pointer"
+              >
+                <ChevronLeft size={18} strokeWidth={2.2} />
+              </button>
+            )}
+
+            {/* Right Carousel Arrow Button (Image 2) */}
+            <button
+              type="button"
+              onClick={() => handleCarouselScroll("right")}
+              aria-label="Next categories"
+              className="w-9 h-9 rounded-full bg-white border border-[#e5e5e5] shadow-[0_2px_10px_rgba(0,0,0,0.12)] flex items-center justify-center text-[#333] hover:text-[#ff3d3d] hover:border-[#ff3d3d] transition-all absolute -right-4.5 top-1/2 -translate-y-1/2 z-20 cursor-pointer"
+            >
+              <ChevronRight size={18} strokeWidth={2.2} />
+            </button>
           </div>
         </section>
 
