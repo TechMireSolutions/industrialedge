@@ -26,9 +26,9 @@ const CUSTOMER_CARE = [
   { label: "Blog", href: "/blog" },
   { label: "Cart", href: "/cart" },
   { label: "Shop", href: "/shop" },
-  { label: "Wishlist", href: "#" },
-  { label: "Checkout", href: "#" },
-  { label: "My Account", href: "#" },
+  { label: "Wishlist", href: "/wishlist" },
+  { label: "Checkout", href: "/checkout" },
+  { label: "My Account", href: "/shop" },
 ];
 
 const BOTTOM_LINKS = [
