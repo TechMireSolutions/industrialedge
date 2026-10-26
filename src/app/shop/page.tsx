@@ -20,6 +20,10 @@ import {
   ArrowLeftRight,
 } from "lucide-react";
 import { useStore, type Product } from "@/lib/store";
+import ShopProductCard, {
+  type ShopProductItem,
+  type ProductSpec,
+} from "@/components/products/shop-product-card";
 
 // Top Circular Categories (Image 1 & 2 Carousel)
 interface TopCategoryItem {
@@ -129,32 +133,36 @@ const SIDEBAR_BRANDS = [
   "Xbox",
 ];
 
-export interface ProductSpec {
-  label: string;
-  value: string;
-}
-
-export interface ShopProductItem {
-  id: string;
-  name: string;
-  shortName: string;
-  categoryLine: string;
-  categories: string[];
-  brand: string;
-  price: number;
-  originalPrice?: number;
-  mainImage: string;
-  thumbnails: string[];
-  moreThumbnailsCount: number;
-  rating: number;
-  reviewsCount?: number;
-  description: string;
-  specs: ProductSpec[];
-  deliveryDays?: string;
-}
-
 const SHOP_PRODUCTS: ShopProductItem[] = [
-  // 1
+  // 1. AirPods (2nd Gen) - Exact match to user screenshot
+  {
+    id: "p-airpods-2nd-gen",
+    name: "AirPods (2nd generation) with Wired Charging Case",
+    shortName: "AirPods (2nd generation) with Wired Charging Case",
+    categoryLine: "AirPods, Apple products, Earbuds, Headphone",
+    categories: ["AirPods", "Apple products", "Earbuds", "Headphone"],
+    brand: "Apple",
+    price: 129.0,
+    mainImage: "/images/o_2003-540x540.webp",
+    thumbnails: [
+      "/images/o_2003-540x540.webp",
+      "/images/airpods-th2.jpg",
+      "/images/airpods-th3.jpg",
+    ],
+    moreThumbnailsCount: 2,
+    rating: 5,
+    description:
+      "Effortless setup, high-quality audio, hands-free Siri access, and over 24 hours of listening time with the charging case.",
+    specs: [
+      { label: "Brand", value: "Apple" },
+      { label: "Model Name", value: "AirPods Pro" },
+      { label: "Color", value: "White" },
+      { label: "Form Factor", value: "In Ear" },
+      { label: "Connectivity Technology", value: "Bluetooth 5.0" },
+    ],
+    deliveryDays: "2 day delivery",
+  },
+  // 2. Acer Aspire 5
   {
     id: "p-acer-aspire-5",
     name: "Acer Aspire 5 A515-56-347N Slim Laptop – 15.6\" Full HD IPS Display – 11th Gen Intel i3",
@@ -188,33 +196,6 @@ const SHOP_PRODUCTS: ShopProductItem[] = [
       { label: "Ram Memory", value: "8GB" },
     ],
     deliveryDays: "5 day delivery",
-  },
-  // 2
-  {
-    id: "p-airpods-2nd-gen",
-    name: "AirPods (2nd generation) with Wired Charging Case",
-    shortName: "AirPods (2nd generation) with Wired Charging ...",
-    categoryLine: "AirPods, Apple products, Earbuds, Headphone",
-    categories: ["AirPods", "Apple products", "Earbuds", "Headphone"],
-    brand: "Apple",
-    price: 129.0,
-    mainImage: "/images/o_2003-540x540.webp",
-    thumbnails: [
-      "/images/o_2003-540x540.webp",
-      "/images/o_2101-540x540.webp",
-    ],
-    moreThumbnailsCount: 2,
-    rating: 5,
-    description:
-      "Effortless setup, high-quality audio, hands-free Siri access, and over 24 hours of listening time with the charging case.",
-    specs: [
-      { label: "Brand", value: "Apple" },
-      { label: "Model Name", value: "AirPods (2nd Gen)" },
-      { label: "Color", value: "White" },
-      { label: "Connectivity", value: "Bluetooth 5.0" },
-      { label: "Battery Life", value: "24 Hours" },
-    ],
-    deliveryDays: "3 day delivery",
   },
   // 3
   {
@@ -545,6 +526,9 @@ function ShopContent() {
 
   // Quick View Modal
   const [quickViewItem, setQuickViewItem] = useState<ShopProductItem | null>(null);
+
+  // Card Interactive Preview Mode ('auto' = mouse hover/focus, 'hover' = force hover, 'normal' = force normal)
+  const [cardPreviewMode, setCardPreviewMode] = useState<"auto" | "hover" | "normal">("auto");
 
   // Top Categories Carousel Ref & Scroll state (Image 1 & 2)
   const carouselRef = useRef<HTMLDivElement>(null);
@@ -1217,7 +1201,45 @@ function ShopContent() {
               </div>
 
               {/* Right: View & Sort Controls */}
-              <div className="flex items-center gap-3">
+              <div className="flex flex-wrap items-center gap-3">
+                {/* Interactive Card State Inspector */}
+                <div className="hidden sm:flex items-center gap-1 bg-[#f4f5f7] p-0.5 rounded-[4px] border border-[#e5e7eb] text-[12px]">
+                  <span className="text-[11px] text-[#64748b] px-1.5 font-medium">State:</span>
+                  <button
+                    type="button"
+                    onClick={() => setCardPreviewMode("auto")}
+                    className={`px-2 py-0.5 rounded text-[11px] font-medium transition-all cursor-pointer ${
+                      cardPreviewMode === "auto"
+                        ? "bg-white text-[#1e293b] shadow-xs"
+                        : "text-[#64748b] hover:text-[#1e293b]"
+                    }`}
+                  >
+                    Interactive (Hover)
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setCardPreviewMode("normal")}
+                    className={`px-2 py-0.5 rounded text-[11px] font-medium transition-all cursor-pointer ${
+                      cardPreviewMode === "normal"
+                        ? "bg-white text-[#1e293b] shadow-xs"
+                        : "text-[#64748b] hover:text-[#1e293b]"
+                    }`}
+                  >
+                    Normal
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setCardPreviewMode("hover")}
+                    className={`px-2 py-0.5 rounded text-[11px] font-medium transition-all cursor-pointer ${
+                      cardPreviewMode === "hover"
+                        ? "bg-[#f04438] text-white shadow-xs"
+                        : "text-[#64748b] hover:text-[#1e293b]"
+                    }`}
+                  >
+                    Hover
+                  </button>
+                </div>
+
                 <span className="text-[13px] text-[#777777] hidden md:inline">
                   View 16
                 </span>
@@ -1288,232 +1310,24 @@ function ShopContent() {
                 </button>
               </div>
             ) : viewMode === "grid" ? (
-              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-x-5 gap-y-8">
-                {filteredProducts.map((product) => {
-                  const currentImg =
-                    cardImageMap[product.id] || product.mainImage;
-
-                  return (
-                    <article
-                      key={product.id}
-                      className="group flex flex-col justify-between bg-white relative transition-all duration-200"
-                    >
-                      {/* Upper Stage: Fixed height (260px) for Image (Normal) vs Specs/Actions/Delivery/Add-to-cart (Hover) */}
-                      <div className="relative w-full h-[260px] bg-white overflow-hidden">
-                        {/* Normal View: Centered Product Image */}
-                        <div className="absolute inset-0 flex items-center justify-center p-3 transition-opacity duration-200 group-hover:opacity-0 group-hover:pointer-events-none z-0">
-                          <Link
-                            href={`/product/lenovo-tab-m10-plus`}
-                            className="relative w-full h-full flex items-center justify-center"
-                          >
-                            <Image
-                              src={currentImg}
-                              alt={product.name}
-                              fill
-                              sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
-                              className="object-contain"
-                            />
-                          </Link>
-                        </div>
-
-                        {/* Hover View: Specs + 3 Circular Action Icons + Delivery + Add to Cart Button */}
-                        <div className="absolute inset-0 bg-white flex flex-col justify-between py-1.5 transition-opacity duration-200 opacity-0 pointer-events-none group-hover:opacity-100 group-hover:pointer-events-auto z-10">
-                          {/* Translucent Watermark Laptop Image in background */}
-                          <div className="absolute inset-0 flex items-center justify-center opacity-[0.20] pointer-events-none overflow-hidden scale-110 translate-y-2 select-none">
-                            <Image
-                              src={currentImg}
-                              alt=""
-                              fill
-                              sizes="300px"
-                              className="object-contain"
-                            />
-                          </div>
-
-                          {/* Top section: Specs Key-Value Table + 3 Stacked Circular Action Buttons */}
-                          <div className="flex items-start justify-between gap-1 relative z-10">
-                            {/* Specs Table */}
-                            <div className="space-y-1 text-[12px] flex-1 min-w-0 pr-1 select-text">
-                              {product.specs?.slice(0, 5).map((s) => (
-                                <div
-                                  key={s.label}
-                                  className="grid grid-cols-[98px_1fr] gap-1 leading-snug"
-                                >
-                                  <span className="text-[#8c94a0] font-normal">
-                                    {s.label}
-                                  </span>
-                                  <span className="text-[#374151] font-normal truncate">
-                                    {s.value}
-                                  </span>
-                                </div>
-                              ))}
-                            </div>
-
-                            {/* 3 Circular Action Buttons */}
-                            <div className="flex flex-col gap-2 shrink-0">
-                              {/* Quick View Button */}
-                              <button
-                                type="button"
-                                title="Quick View"
-                                aria-label="Quick View"
-                                onClick={(e) => {
-                                  e.preventDefault();
-                                  e.stopPropagation();
-                                  setQuickViewItem(product);
-                                }}
-                                className="w-[36px] h-[36px] rounded-full bg-white shadow-[0_2px_8px_rgba(0,0,0,0.08)] flex items-center justify-center text-[#1a202c] hover:text-[#f04438] hover:shadow-md transition-all cursor-pointer"
-                              >
-                                <Eye size={17} strokeWidth={1.75} />
-                              </button>
-
-                              {/* Wishlist Button */}
-                              <button
-                                type="button"
-                                title="Wishlist"
-                                aria-label="Wishlist"
-                                onClick={(e) => handleToggleWishlist(product, e)}
-                                className={`w-[36px] h-[36px] rounded-full bg-white shadow-[0_2px_8px_rgba(0,0,0,0.08)] flex items-center justify-center transition-all cursor-pointer ${
-                                  isWishlisted(product.id)
-                                    ? "text-[#f04438]"
-                                    : "text-[#1a202c] hover:text-[#f04438] hover:shadow-md"
-                                }`}
-                              >
-                                <Heart
-                                  size={17}
-                                  strokeWidth={1.75}
-                                  fill={
-                                    isWishlisted(product.id)
-                                      ? "#f04438"
-                                      : "none"
-                                  }
-                                />
-                              </button>
-
-                              {/* Compare Button */}
-                              <button
-                                type="button"
-                                title="Compare"
-                                aria-label="Compare"
-                                onClick={(e) => {
-                                  e.preventDefault();
-                                  e.stopPropagation();
-                                  showToast(
-                                    `Added "${product.shortName}" to compare list!`
-                                  );
-                                }}
-                                className="w-[36px] h-[36px] rounded-full bg-white shadow-[0_2px_8px_rgba(0,0,0,0.08)] flex items-center justify-center text-[#1a202c] hover:text-[#f04438] hover:shadow-md transition-all cursor-pointer"
-                              >
-                                <ArrowLeftRight size={16} strokeWidth={1.75} />
-                              </button>
-                            </div>
-                          </div>
-
-                          {/* Middle: Subtle divider + Delivery info */}
-                          <div className="relative z-10 pt-1 border-t border-[#f0f0f0]">
-                            <div className="flex items-center gap-2 text-[13px] text-[#374151]">
-                              <Truck
-                                size={17}
-                                strokeWidth={1.5}
-                                className="text-[#374151]"
-                              />
-                              <span>
-                                {product.deliveryDays || "5 day delivery"}
-                              </span>
-                            </div>
-                          </div>
-
-                          {/* Bottom: Vibrant Red Add to Cart Button */}
-                          <div className="relative z-10 pt-1">
-                            <button
-                              type="button"
-                              onClick={(e) => handleAddToCart(product, e)}
-                              className="w-full h-[40px] bg-[#f04438] hover:bg-[#dc2626] text-white font-medium text-[14px] rounded-[6px] transition-colors flex items-center justify-center cursor-pointer shadow-sm active:scale-[0.99]"
-                            >
-                              Add to cart
-                            </button>
-                          </div>
-                        </div>
-                      </div>
-
-                      {/* Small Thumbnails Strip (Matching Image 1 & 2 Exact Layout) */}
-                      <div className="flex items-center gap-2 mt-3 mb-2 px-0.5">
-                        {product.thumbnails.map((thumbSrc, idx) => {
-                          const isActive = currentImg === thumbSrc;
-                          return (
-                            <button
-                              type="button"
-                              key={idx}
-                              onClick={() =>
-                                setCardImageMap((prev) => ({
-                                  ...prev,
-                                  [product.id]: thumbSrc,
-                                }))
-                              }
-                              onMouseEnter={() =>
-                                setCardImageMap((prev) => ({
-                                  ...prev,
-                                  [product.id]: thumbSrc,
-                                }))
-                              }
-                              className={`w-[42px] h-[42px] rounded-[4px] border flex items-center justify-center p-1 bg-white transition-all cursor-pointer ${
-                                isActive
-                                  ? "border-[#1a202c]"
-                                  : "border-[#e5e7eb] hover:border-gray-400"
-                              }`}
-                              aria-label={`Thumbnail ${idx + 1}`}
-                            >
-                              <div className="relative w-full h-full">
-                                <Image
-                                  src={thumbSrc}
-                                  alt={`${product.name} thumb ${idx + 1}`}
-                                  fill
-                                  sizes="42px"
-                                  className="object-contain"
-                                />
-                              </div>
-                            </button>
-                          );
-                        })}
-
-                        {/* Extra Thumbnails Badge "+1" or "+2" */}
-                        {product.moreThumbnailsCount > 0 && (
-                          <div className="w-[42px] h-[42px] rounded-[4px] border border-[#e5e7eb] bg-[#f3f4f6] flex items-center justify-center text-[15px] font-semibold text-[#1e293b] select-none">
-                            +{product.moreThumbnailsCount}
-                          </div>
-                        )}
-                      </div>
-
-                      {/* Info Area */}
-                      <div className="pt-1 flex flex-col flex-1">
-                        {/* Categories tags line: wrapped, muted gray, matching screenshot */}
-                        <p
-                          className="text-[12.5px] text-[#718096] leading-normal mb-1.5"
-                          title={product.categoryLine}
-                        >
-                          {product.categoryLine}
-                        </p>
-
-                        {/* Product Title (Blue link, 2 lines clamped with ellipsis) */}
-                        <h3 className="text-[15px] font-semibold leading-[1.35] mb-2 flex-1">
-                          <Link
-                            href={`/product/lenovo-tab-m10-plus`}
-                            className="text-[#005bb5] hover:text-[#004085] hover:underline transition-colors line-clamp-2"
-                            title={product.name}
-                          >
-                            {product.shortName}
-                          </Link>
-                        </h3>
-
-                        {/* Price: Bold large price */}
-                        <div className="text-[22px] font-bold text-[#1a202c] tracking-tight">
-                          ${product.price.toLocaleString("en-US", {
-                            minimumFractionDigits: 2,
-                            maximumFractionDigits: 2,
-                          })}
-                        </div>
-                      </div>
-                    </article>
-                  );
-                })}
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-x-6 gap-y-10">
+                {filteredProducts.map((product) => (
+                  <ShopProductCard
+                    key={product.id}
+                    product={product}
+                    forceHover={
+                      cardPreviewMode === "hover"
+                        ? true
+                        : cardPreviewMode === "normal"
+                        ? false
+                        : undefined
+                    }
+                    onQuickView={(p) => setQuickViewItem(p)}
+                    onCompare={(p) =>
+                      showToast(`Added "${p.name}" to compare list!`)
+                    }
+                  />
+                ))}
               </div>
             ) : (
               /* LIST VIEW MODE */

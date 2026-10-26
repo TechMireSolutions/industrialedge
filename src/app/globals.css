@@ -62,3 +62,46 @@ body {
 ::-webkit-scrollbar-thumb:hover {
   background: #a8a8a8;
 }
+
+/* Product Card Interactive Keyframes */
+@keyframes heartBurst {
+  0% { transform: scale(1); }
+  35% { transform: scale(1.38); }
+  65% { transform: scale(0.92); }
+  100% { transform: scale(1); }
+}
+
+@keyframes floatUpBadge {
+  0% { transform: translate(-50%, 0) scale(0.8); opacity: 0; }
+  25% { transform: translate(-50%, -8px) scale(1.08); opacity: 1; }
+  80% { transform: translate(-50%, -22px) scale(1); opacity: 0.9; }
+  100% { transform: translate(-50%, -30px) scale(0.95); opacity: 0; }
+}
+
+@keyframes slideInRightBounce {
+  0% { transform: translateX(14px); opacity: 0; }
+  70% { transform: translateX(-2px); opacity: 1; }
+  100% { transform: translateX(0); opacity: 1; }
+}
+
+@keyframes cardHoverReveal {
+  0% { opacity: 0; transform: translateY(6px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+.animate-heart-burst {
+  animation: heartBurst 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}
+
+.animate-float-up {
+  animation: floatUpBadge 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.animate-slide-in-right {
+  animation: slideInRightBounce 0.32s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.animate-hover-reveal {
+  animation: cardHoverReveal 0.28s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
