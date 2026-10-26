@@ -2,36 +2,65 @@
 
 @theme {
   --font-rubik: var(--font-rubik), "Rubik", sans-serif;
+  --font-nunito-sans: var(--font-nunito-sans), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
 
-  --color-brand: #0e8ce4;
-  --color-brand-hover: #3e9ce8;
-  --color-coral: #df3b3b;
-  --color-surface-light: #eff6fa;
-  --color-surface-gray: #f2f4f8;
-  --color-text-primary: #212529;
-  --color-text-muted: rgba(0, 0, 0, 0.5);
-  --color-text-subtle: #828282;
-  --color-border: #e5e5e5;
-  --color-border-light: #e8e8e8;
-  --color-divider: #cccccc;
+  /* UI/UX Pro Max Design Tokens */
+  --color-primary: #15233e;
+  --color-secondary: #64748b;
+  --color-cta: #ff3d3d;
+  --color-emerald: #0ea57a;
+  --color-background: #ffffff;
+  --color-bg-subtle: #f8fafc;
+  --color-border: #e2e8f0;
+  --color-border-light: #f1f5f9;
 
-  --shadow-card: 0 10px 25px rgba(0, 0, 0, 0.1);
-  --shadow-drawer: 0 15px 25px rgba(0, 0, 0, 0.1);
-  --shadow-pill: 0 1px 5px rgba(0, 0, 0, 0.1);
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
+  --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
 }
 
 html {
   scroll-behavior: smooth;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 body {
   background: #ffffff;
-  color: #212529;
-  font-family: var(--font-rubik), "Rubik", sans-serif;
+  color: #334155;
+  font-family: var(--font-nunito-sans), var(--font-rubik), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+/* Headings font styling */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-rubik), sans-serif;
+}
+
+/* Accessible focus outline */
+:focus-visible {
+  outline: 2px solid #ff3d3d;
+  outline-offset: 2px;
+}
+
+/* Selection highlight */
+::selection {
+  background-color: #fee2e2;
+  color: #991b1b;
+}
+
+/* Cursor pointer on all interactive triggers */
+button,
+[role="button"],
+input[type="submit"],
+input[type="button"],
+select {
+  cursor: pointer;
 }
 
 .container {
-  max-width: 1140px;
+  max-width: 1440px;
   margin: 0 auto;
   padding: 0 1rem;
 }
