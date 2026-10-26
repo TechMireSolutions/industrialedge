@@ -729,7 +729,7 @@ export default function Header() {
                     {[
                       { label: "FAQs", href: "/contact" },
                       { label: "Contact Us", href: "/contact" },
-                      { label: "About Us", href: "/blog" },
+                      { label: "About Us", href: "/about" },
                     ].map((item) => (
                       <Link
                         key={item.label}
