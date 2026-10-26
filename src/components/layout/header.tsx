@@ -729,6 +729,7 @@ export default function Header() {
                     {[
                       { label: "About Us", href: "/about" },
                       { label: "What We Do", href: "/what-we-do" },
+                      { label: "Partners", href: "/partners" },
                       { label: "FAQs", href: "/contact" },
                       { label: "Contact Us", href: "/contact" },
                     ].map((item) => (
