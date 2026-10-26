@@ -383,7 +383,7 @@ export default function Header() {
           <div className="flex items-center gap-5 sm:gap-7 shrink-0">
             {/* 1. Sign In */}
             <Link
-              href="/shop"
+              href="/my-account"
               className="group flex flex-col items-center justify-center cursor-pointer text-[#333e48] hover:text-[#ff3d3d] transition-colors"
               aria-label="Sign In"
             >
@@ -1091,7 +1091,7 @@ export default function Header() {
               {/* User Account & Cart Quick Actions */}
               <div className="pt-4 pb-2 space-y-3">
                 <Link
-                  href="/shop"
+                  href="/my-account"
                   onClick={() => setMobileMenuOpen(false)}
                   className="flex items-center gap-2.5 text-[14px] text-[#333e48] hover:text-[#ff3d3d] transition-colors"
                 >
