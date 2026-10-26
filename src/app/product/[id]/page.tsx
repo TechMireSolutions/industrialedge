@@ -4,6 +4,7 @@ import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useStore } from "@/lib/store";
+import ShopProductCard, { ShopProductItem } from "@/components/products/shop-product-card";
 import {
   ShoppingCart,
   Heart,
@@ -93,35 +94,113 @@ const REVIEWS = [
   },
 ];
 
-// Recently viewed products
-const RECENT_PRODUCTS = [
+// Recently viewed products using official ShopProductItem format
+const RECENT_PRODUCTS: ShopProductItem[] = [
   {
-    id: "rv-watch",
-    name: "Amazfit GTS 2 Smart Watch",
-    category: "Smartwatch",
+    id: "p-amazfit-gts-2",
+    name: "Amazfit GTS 2 Smart Watch for Men Android iPhone, Bluetooth Phone Call",
+    shortName: "Amazfit GTS 2 Smart Watch for Men Android iPhone...",
+    categoryLine: "Apple products, Computers & Accessories, Smartwatch",
+    categories: ["Smartwatch", "Apple products"],
+    brand: "Amazfit",
     price: 134.99,
-    image: "/images/lenovo-tab/rv-watch.png",
+    originalPrice: 179.99,
+    mainImage: "/images/o_0601-540x540.webp",
+    thumbnails: [
+      "/images/o_0601-540x540.webp",
+      "/images/o_1101-540x540.webp",
+    ],
+    moreThumbnailsCount: 1,
+    rating: 5,
+    description:
+      "AMOLED display, blood oxygen saturation measurement, 90 sports modes, and 7-day battery life.",
+    specs: [
+      { label: "Platform", value: "Android / iOS" },
+      { label: "Display", value: "1.65\" AMOLED" },
+      { label: "Color", value: "Desert Gold" },
+      { label: "Brand", value: "Amazfit" },
+      { label: "Battery Life", value: "7 Days" },
+    ],
+    deliveryDays: "2 day delivery",
   },
   {
-    id: "rv-ps4",
-    name: "Sony PlayStation 4 Pro 1TB Console",
-    category: "Gaming",
+    id: "p-sony-ps4-pro",
+    name: "Sony PlayStation 4 Pro 1TB White Edition Console (PS4)",
+    shortName: "Sony PlayStation 4 Pro 1TB White Edition Console (PS4)",
+    categoryLine: "Gaming Accessories, TV & Video Games",
+    categories: ["Gaming Accessories"],
+    brand: "PlayStation",
     price: 399.99,
-    image: "/images/lenovo-tab/rv-ps4.png",
+    mainImage: "/images/o_4301-540x540.webp",
+    thumbnails: [
+      "/images/o_4301-540x540.webp",
+      "/images/o_4501-540x540.webp",
+    ],
+    moreThumbnailsCount: 1,
+    rating: 5,
+    description:
+      "Dynamic 4K gaming and 4K entertainment, faster frame rates, and enhanced graphics.",
+    specs: [
+      { label: "Platform", value: "PlayStation 4" },
+      { label: "Storage", value: "1TB" },
+      { label: "Color", value: "Glacier White" },
+      { label: "Brand", value: "PlayStation" },
+      { label: "Input Device", value: "Gamepad" },
+    ],
+    deliveryDays: "2 day delivery",
   },
   {
-    id: "rv-laptop",
-    name: "Acer Aspire 5 A515-56-347N Slim Laptop",
-    category: "Laptops",
+    id: "p-acer-aspire-5",
+    name: "Acer Aspire 5 A515-56-347N Slim Laptop – 15.6\" Full HD IPS Display – 11th Gen Intel i3",
+    shortName: "Acer Aspire 5 A515-56-347N Slim Laptop – 15.6'' Full HD IPS Display...",
+    categoryLine: "Acer, Computers & Accessories, Laptop & Tablet",
+    categories: ["Acer", "Computers & Accessories", "Laptop & Tablet"],
+    brand: "Acer",
     price: 529.75,
-    image: "/images/lenovo-tab/rv-laptop.png",
+    mainImage: "/images/o_3603-540x540.webp",
+    thumbnails: [
+      "/images/o_3603-540x540.webp",
+      "/images/o_3701-540x540.webp",
+    ],
+    moreThumbnailsCount: 2,
+    rating: 5,
+    description:
+      "Powerful 11th Gen Intel Core i3 processor, 15.6-inch Full HD IPS display with narrow bezels.",
+    specs: [
+      { label: "Screen Size", value: "15.6 Inches" },
+      { label: "CPU Model", value: "Core i3" },
+      { label: "RAM", value: "8 GB" },
+      { label: "Storage", value: "128 GB SSD" },
+      { label: "Brand", value: "Acer" },
+    ],
+    deliveryDays: "3 day delivery",
   },
   {
-    id: "rv-camera",
-    name: "Canon EOS M50 Mark II Mirrorless Camera",
-    category: "Cameras",
+    id: "p-canon-eos-m50",
+    name: "Canon EOS M50 Mark II Mirrorless Camera with 15-45mm Lens (White)",
+    shortName: "Canon EOS M50 Mark II Mirrorless Camera with 15-45mm Lens (White)",
+    categoryLine: "Camera & Video, Photography & Video",
+    categories: ["Camera & Video"],
+    brand: "Canon",
     price: 519.0,
-    image: "/images/lenovo-tab/rv-camera.png",
+    originalPrice: 839.95,
+    mainImage: "/images/o_5001-540x540.webp",
+    thumbnails: [
+      "/images/o_5001-540x540.webp",
+      "/images/o_4901-540x540.webp",
+    ],
+    moreThumbnailsCount: 2,
+    rating: 5,
+    description:
+      "24.1MP APS-C CMOS sensor, DIGIC 8 image processor, 4K UHD 24p and HD 120p for slow motion.",
+    specs: [
+      { label: "Sensor", value: "24.1MP APS-C CMOS" },
+      { label: "Video", value: "4K UHD 24p" },
+      { label: "Color", value: "White" },
+      { label: "Brand", value: "Canon" },
+      { label: "Lens", value: "EF-M 15-45mm STM" },
+    ],
+    deliveryDays: "2 day delivery",
   },
 ];
 
@@ -579,38 +658,22 @@ export default function ProductSinglePage() {
         </div>
 
         {/* ========================================================= */}
-        {/* RECENTLY VIEWED (Simple, Clean 4-Column Grid)            */}
+        {/* RECENTLY VIEWED (Exact Shop Product Cards)                */}
         {/* ========================================================= */}
         <div className="mt-16 pt-10 border-t border-slate-100">
-          <div className="flex items-center justify-between mb-6">
-            <h2 className="text-base font-bold text-slate-900">Recently Viewed</h2>
-            <Link href="/shop" className="text-xs font-semibold text-slate-500 hover:text-slate-900">
+          <div className="flex items-center justify-between mb-8">
+            <h2 className="text-xl font-bold text-[#15233e]">Recently Viewed</h2>
+            <Link
+              href="/shop"
+              className="text-xs font-semibold text-slate-500 hover:text-[#ff3d3d] transition-colors"
+            >
               View all
             </Link>
           </div>
 
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 xl:gap-8">
             {RECENT_PRODUCTS.map((prod) => (
-              <Link
-                key={prod.id}
-                href="/product/lenovo-tab-m10-plus"
-                className="group flex flex-col p-3 rounded-xl hover:bg-slate-50 transition-colors"
-              >
-                <div className="relative w-full aspect-square bg-[#fafafa] rounded-lg p-4 flex items-center justify-center mb-3">
-                  <Image
-                    src={prod.image}
-                    alt={prod.name}
-                    width={140}
-                    height={140}
-                    className="object-contain max-h-full transition-transform duration-200 group-hover:scale-105"
-                  />
-                </div>
-                <span className="text-[11px] text-slate-400 mb-0.5">{prod.category}</span>
-                <h3 className="text-xs font-bold text-slate-800 line-clamp-1 group-hover:text-[#ff3d3d] transition-colors mb-1">
-                  {prod.name}
-                </h3>
-                <span className="text-xs font-bold text-slate-900">${prod.price.toFixed(2)}</span>
-              </Link>
+              <ShopProductCard key={prod.id} product={prod} />
             ))}
           </div>
         </div>
