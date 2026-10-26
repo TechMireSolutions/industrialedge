@@ -744,29 +744,44 @@ export default function Header() {
             </div>
           </div>
 
-          {/* Right: Contact Support Widget (Image 2) */}
-          <div className="hidden lg:flex items-center gap-3 text-left">
-            <Headphones size={26} strokeWidth={1.5} className="text-[#333e48]" />
-            <div className="text-[12px] leading-tight">
-              <div className="text-[#73787d]">
-                Call us now:{" "}
-                <a
-                  href="tel:+18001234567"
-                  className="font-bold text-[#ff3d3d] hover:underline"
-                >
-                  +1(800) 123 4567
-                </a>
+          {/* Right: Language Selector (Image 1) */}
+          <div className="relative hidden sm:flex items-center" ref={languageRef}>
+            <button
+              type="button"
+              onClick={() => setLanguageOpen((prev) => !prev)}
+              className="flex items-center gap-1.5 text-[13.5px] text-[#555555] hover:text-[#ff3d3d] transition-colors py-2 cursor-pointer select-none"
+              aria-label="Select Language"
+            >
+              <Globe size={16} strokeWidth={1.5} className="text-[#666666]" />
+              <span className="text-[#777777]">Language:</span>
+              <span className="font-medium text-[#222222]">{selectedLanguage}</span>
+              <ChevronDown size={14} className="text-[#888888] ml-0.5" />
+            </button>
+
+            {languageOpen && (
+              <div className="absolute right-0 top-full mt-1 w-[130px] bg-white border border-[#e5e5e5] shadow-[0_8px_20px_rgba(0,0,0,0.1)] rounded-md py-1.5 z-50 animate-in fade-in slide-in-from-top-1 duration-150">
+                {LANGUAGES.map((lang) => (
+                  <button
+                    key={lang.code}
+                    type="button"
+                    onClick={() => {
+                      setSelectedLanguage(lang.label);
+                      setLanguageOpen(false);
+                    }}
+                    className={`w-full text-left px-3.5 py-1.5 text-[13px] flex items-center justify-between cursor-pointer transition-colors ${
+                      selectedLanguage === lang.label
+                        ? "text-[#ff3d3d] font-semibold bg-[#fef2f2]"
+                        : "text-[#444444] hover:text-[#ff3d3d] hover:bg-[#f8f9fa]"
+                    }`}
+                  >
+                    <span>{lang.label}</span>
+                    {selectedLanguage === lang.label && (
+                      <Check size={14} className="text-[#ff3d3d]" />
+                    )}
+                  </button>
+                ))}
               </div>
-              <div className="text-[#73787d] mt-0.5">
-                Email:{" "}
-                <a
-                  href="mailto:support@industrialedge.com"
-                  className="text-[#0e8ce4] hover:underline font-medium"
-                >
-                  support@industrialedge.com
-                </a>
-              </div>
-            </div>
+            )}
           </div>
         </div>
       </nav>
