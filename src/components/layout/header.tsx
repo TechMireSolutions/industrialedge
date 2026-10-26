@@ -727,9 +727,10 @@ export default function Header() {
                 {pageDropdownOpen && (
                   <div className="absolute left-0 top-full w-[160px] bg-white border border-[#e5e5e5] shadow-[0_10px_25px_rgba(0,0,0,0.1)] rounded-md py-2 z-50 animate-in fade-in slide-in-from-top-1 duration-150">
                     {[
+                      { label: "About Us", href: "/about" },
+                      { label: "What We Do", href: "/what-we-do" },
                       { label: "FAQs", href: "/contact" },
                       { label: "Contact Us", href: "/contact" },
-                      { label: "About Us", href: "/about" },
                     ].map((item) => (
                       <Link
                         key={item.label}
