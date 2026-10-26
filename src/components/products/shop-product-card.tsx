@@ -92,31 +92,12 @@ export default function ShopProductCard({
     }
   };
 
-  const normalClasses =
-    forceHover === true
-      ? "opacity-0 scale-95 pointer-events-none"
-      : forceHover === false
-      ? "opacity-100 scale-100 pointer-events-auto"
-      : `${
-          isHovered
-            ? "opacity-0 scale-95 pointer-events-none"
-            : "opacity-100 scale-100 pointer-events-auto"
-        } group-hover:opacity-0 group-hover:scale-95 group-hover:pointer-events-none`;
-
-  const hoverClasses =
-    forceHover === true
-      ? "opacity-100 translate-y-0 pointer-events-auto"
-      : forceHover === false
-      ? "opacity-0 translate-y-2 pointer-events-none"
-      : `${
-          isHovered
-            ? "opacity-100 translate-y-0 pointer-events-auto"
-            : "opacity-0 translate-y-2 pointer-events-none"
-        } group-hover:opacity-100 group-hover:translate-y-0 group-hover:pointer-events-auto`;
+  const isCardHovered =
+    forceHover === true ? true : forceHover === false ? false : isHovered;
 
   return (
     <article
-      className="group relative bg-white flex flex-col justify-between transition-all duration-300 w-full select-none"
+      className="group relative bg-white flex flex-col justify-between w-full select-none"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => {
         setIsHovered(false);
@@ -133,7 +114,13 @@ export default function ShopProductCard({
       <div className="relative w-full h-[275px] bg-white overflow-hidden rounded-[4px]">
         {/* NORMAL STATE: Centered Product Image */}
         <div
-          className={`absolute inset-0 flex items-center justify-center p-3 transition-all duration-300 ease-out ${normalClasses}`}
+          className="absolute inset-0 flex items-center justify-center p-3 transition-all duration-300 ease-out"
+          style={{
+            opacity: isCardHovered ? 0 : 1,
+            transform: isCardHovered ? "scale(0.96)" : "scale(1)",
+            pointerEvents: isCardHovered ? "none" : "auto",
+            zIndex: isCardHovered ? 0 : 10,
+          }}
         >
           <Link
             href={`/product/${product.id}`}
@@ -154,7 +141,14 @@ export default function ShopProductCard({
 
         {/* HOVER STATE: Interactive Specs + Floating Action Buttons + Delivery + Add to Cart */}
         <div
-          className={`absolute inset-0 bg-white flex flex-col justify-between py-1 transition-all duration-300 ease-out z-10 ${hoverClasses}`}
+          className="absolute inset-0 bg-white flex flex-col justify-between py-1 transition-all duration-300 ease-out"
+          style={{
+            opacity: isCardHovered ? 1 : 0,
+            transform: isCardHovered ? "translateY(0)" : "translateY(8px)",
+            pointerEvents: isCardHovered ? "auto" : "none",
+            visibility: isCardHovered ? "visible" : "hidden",
+            zIndex: isCardHovered ? 20 : 0,
+          }}
         >
           {/* Top Row: Key-Value Specs Table (Left) + 3 Floating Action Buttons (Right) */}
           <div className="flex items-start justify-between gap-2 pt-1">

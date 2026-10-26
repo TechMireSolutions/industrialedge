@@ -527,9 +527,6 @@ function ShopContent() {
   // Quick View Modal
   const [quickViewItem, setQuickViewItem] = useState<ShopProductItem | null>(null);
 
-  // Card Interactive Preview Mode ('auto' = mouse hover/focus, 'hover' = force hover, 'normal' = force normal)
-  const [cardPreviewMode, setCardPreviewMode] = useState<"auto" | "hover" | "normal">("auto");
-
   // Top Categories Carousel Ref & Scroll state (Image 1 & 2)
   const carouselRef = useRef<HTMLDivElement>(null);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
@@ -1201,45 +1198,7 @@ function ShopContent() {
               </div>
 
               {/* Right: View & Sort Controls */}
-              <div className="flex flex-wrap items-center gap-3">
-                {/* Interactive Card State Inspector */}
-                <div className="hidden sm:flex items-center gap-1 bg-[#f4f5f7] p-0.5 rounded-[4px] border border-[#e5e7eb] text-[12px]">
-                  <span className="text-[11px] text-[#64748b] px-1.5 font-medium">State:</span>
-                  <button
-                    type="button"
-                    onClick={() => setCardPreviewMode("auto")}
-                    className={`px-2 py-0.5 rounded text-[11px] font-medium transition-all cursor-pointer ${
-                      cardPreviewMode === "auto"
-                        ? "bg-white text-[#1e293b] shadow-xs"
-                        : "text-[#64748b] hover:text-[#1e293b]"
-                    }`}
-                  >
-                    Interactive (Hover)
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => setCardPreviewMode("normal")}
-                    className={`px-2 py-0.5 rounded text-[11px] font-medium transition-all cursor-pointer ${
-                      cardPreviewMode === "normal"
-                        ? "bg-white text-[#1e293b] shadow-xs"
-                        : "text-[#64748b] hover:text-[#1e293b]"
-                    }`}
-                  >
-                    Normal
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => setCardPreviewMode("hover")}
-                    className={`px-2 py-0.5 rounded text-[11px] font-medium transition-all cursor-pointer ${
-                      cardPreviewMode === "hover"
-                        ? "bg-[#f04438] text-white shadow-xs"
-                        : "text-[#64748b] hover:text-[#1e293b]"
-                    }`}
-                  >
-                    Hover
-                  </button>
-                </div>
-
+              <div className="flex items-center gap-3">
                 <span className="text-[13px] text-[#777777] hidden md:inline">
                   View 16
                 </span>
@@ -1315,13 +1274,6 @@ function ShopContent() {
                   <ShopProductCard
                     key={product.id}
                     product={product}
-                    forceHover={
-                      cardPreviewMode === "hover"
-                        ? true
-                        : cardPreviewMode === "normal"
-                        ? false
-                        : undefined
-                    }
                     onQuickView={(p) => setQuickViewItem(p)}
                     onCompare={(p) =>
                       showToast(`Added "${p.name}" to compare list!`)
