@@ -456,15 +456,12 @@ export default function CartPage() {
                 </div>
 
                 {/* Proceed To Checkout Button */}
-                <button
-                  type="button"
-                  onClick={() => {
-                    alert("Proceeding to checkout with order total: $" + finalTotal.toFixed(2));
-                  }}
+                <Link
+                  href="/checkout"
                   className="w-full mt-2 h-[48px] bg-[#ff3d3d] hover:bg-[#e03131] text-white font-bold text-[14.5px] rounded-[6px] flex items-center justify-center transition-colors shadow-xs cursor-pointer active:scale-[0.99]"
                 >
                   Proceed To Checkout
-                </button>
+                </Link>
               </div>
             </div>
           </div>

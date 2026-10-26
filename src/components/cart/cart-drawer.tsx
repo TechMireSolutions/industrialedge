@@ -217,7 +217,7 @@ export default function CartDrawer() {
                 View cart
               </Link>
               <Link
-                href="/cart"
+                href="/checkout"
                 onClick={closeCartDrawer}
                 className="h-[44px] bg-[#ff3d3d] hover:bg-[#e03131] text-white font-semibold text-[14px] rounded-[6px] flex items-center justify-center transition-colors shadow-xs active:scale-[0.99]"
               >
