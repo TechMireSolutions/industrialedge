@@ -136,7 +136,7 @@ const LANGUAGES = [
 
 export default function Header() {
   const router = useRouter();
-  const { cart } = useStore();
+  const { cart, openCartDrawer } = useStore();
 
   // Search & Categories Modal State (Image 2)
   const [searchTerm, setSearchTerm] = useState("");
@@ -379,30 +379,51 @@ export default function Header() {
             )}
           </div>
 
-          {/* Right: User, Cart, Hamburger Menu (Matching Reference) */}
-          <div className="flex items-center gap-5 sm:gap-6 shrink-0">
-            {/* 1. User */}
+          {/* Right: Sign In, Support, Your cart: (Matching Image 1 Reference) */}
+          <div className="flex items-center gap-5 sm:gap-7 shrink-0">
+            {/* 1. Sign In */}
             <Link
               href="/shop"
-              className="text-[#333e48] hover:text-[#ff3d3d] transition-colors p-1 cursor-pointer flex items-center justify-center"
-              aria-label="Account"
+              className="group flex flex-col items-center justify-center cursor-pointer text-[#333e48] hover:text-[#ff3d3d] transition-colors"
+              aria-label="Sign In"
             >
-              <User size={23} strokeWidth={1.6} />
-            </Link>
-
-            {/* 2. Cart with Red Badge */}
-            <Link
-              href="/cart"
-              className="relative text-[#333e48] hover:text-[#ff3d3d] transition-colors p-1 cursor-pointer flex items-center justify-center"
-              aria-label="Shopping Cart"
-            >
-              <ShoppingCart size={23} strokeWidth={1.6} />
-              <span className="absolute -top-1.5 -right-2 min-w-[18px] h-[18px] px-1 bg-[#ff3d3d] text-white rounded-full text-[10px] font-bold flex items-center justify-center leading-none shadow-sm">
-                {cartCount}
+              <User size={22} strokeWidth={1.5} className="group-hover:text-[#ff3d3d] transition-colors" />
+              <span className="text-[12px] text-[#333e48] group-hover:text-[#ff3d3d] font-normal leading-tight mt-1 transition-colors">
+                Sign In
               </span>
             </Link>
 
-            {/* 3. Hamburger Menu (Toggles Bottom Menu in Sticky Mode) */}
+            {/* 2. Support */}
+            <Link
+              href="/contact"
+              className="group hidden sm:flex flex-col items-center justify-center cursor-pointer text-[#333e48] hover:text-[#ff3d3d] transition-colors"
+              aria-label="Support"
+            >
+              <Headphones size={22} strokeWidth={1.5} className="group-hover:text-[#ff3d3d] transition-colors" />
+              <span className="text-[12px] text-[#333e48] group-hover:text-[#ff3d3d] font-normal leading-tight mt-1 transition-colors">
+                Support
+              </span>
+            </Link>
+
+            {/* 3. Your cart: (Clicking opens cart drawer from right) */}
+            <button
+              type="button"
+              onClick={openCartDrawer}
+              className="group flex flex-col items-center justify-center cursor-pointer text-[#333e48] hover:text-[#ff3d3d] transition-colors focus:outline-none"
+              aria-label={`Your cart: ${cartCount} items`}
+            >
+              <div className="relative flex items-center justify-center">
+                <ShoppingCart size={22} strokeWidth={1.5} className="group-hover:text-[#ff3d3d] transition-colors" />
+                <span className="absolute -top-1.5 -right-2.5 min-w-[17px] h-[17px] px-1 bg-[#ff3d3d] text-white rounded-full text-[10px] font-bold flex items-center justify-center leading-none shadow-sm">
+                  {cartCount}
+                </span>
+              </div>
+              <span className="text-[12px] text-[#333e48] group-hover:text-[#ff3d3d] font-normal leading-tight mt-1 transition-colors">
+                Your cart:
+              </span>
+            </button>
+
+            {/* 4. Hamburger Menu (Toggles Bottom Menu on Mobile / Sticky Mode) */}
             <button
               type="button"
               onClick={() => {
@@ -413,13 +434,15 @@ export default function Header() {
                 }
               }}
               className={`p-1 cursor-pointer flex items-center justify-center transition-colors ${
+                isSticky ? "flex" : "md:hidden"
+              } ${
                 isSticky && stickyMenuOpen
                   ? "text-[#ff3d3d]"
                   : "text-[#333e48] hover:text-[#ff3d3d]"
               }`}
               aria-label="Toggle menu"
             >
-              <Menu size={25} strokeWidth={1.75} />
+              <Menu size={24} strokeWidth={1.75} />
             </button>
           </div>
         </div>
@@ -1060,14 +1083,17 @@ export default function Header() {
                   <User size={18} strokeWidth={1.6} />
                   <span>My Account / Sign In</span>
                 </Link>
-                <Link
-                  href="/cart"
-                  onClick={() => setMobileMenuOpen(false)}
-                  className="flex items-center gap-2.5 text-[14px] text-[#333e48] hover:text-[#ff3d3d] transition-colors"
+                <button
+                  type="button"
+                  onClick={() => {
+                    setMobileMenuOpen(false);
+                    openCartDrawer();
+                  }}
+                  className="flex items-center gap-2.5 text-[14px] text-[#333e48] hover:text-[#ff3d3d] transition-colors cursor-pointer w-full text-left"
                 >
                   <ShoppingCart size={18} strokeWidth={1.6} />
                   <span>Shopping Cart ({cartCount})</span>
-                </Link>
+                </button>
               </div>
 
               {/* Support & Contact Footer */}

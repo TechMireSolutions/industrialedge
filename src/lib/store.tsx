@@ -1,6 +1,6 @@
 "use client";
 
-import { createContext, useContext, useCallback, useSyncExternalStore } from "react";
+import { createContext, useContext, useCallback, useState, useSyncExternalStore } from "react";
 
 export type ProductStatus = "none" | "discount" | "new";
 
@@ -96,12 +96,16 @@ interface StoreState {
   cart: CartItem[];
   isWishlisted: (id: string) => boolean;
   toggleWishlist: (id: string) => void;
-  addToCart: (product: Product, quantity?: number) => void;
+  addToCart: (product: Product, quantity?: number, openDrawer?: boolean) => void;
   removeFromCart: (id: string) => void;
   updateCartQty: (id: string, qty: number) => void;
   cartCount: number;
   cartTotal: number;
   wishlistCount: number;
+  isCartDrawerOpen: boolean;
+  setIsCartDrawerOpen: (open: boolean) => void;
+  openCartDrawer: () => void;
+  closeCartDrawer: () => void;
 }
 
 const StoreContext = createContext<StoreState | null>(null);
@@ -118,6 +122,11 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
     getCartServerSnapshot
   );
 
+  const [isCartDrawerOpen, setIsCartDrawerOpen] = useState(false);
+
+  const openCartDrawer = useCallback(() => setIsCartDrawerOpen(true), []);
+  const closeCartDrawer = useCallback(() => setIsCartDrawerOpen(false), []);
+
   const isWishlisted = useCallback((id: string) => wishlist.includes(id), [wishlist]);
 
   const toggleWishlist = useCallback((id: string) => {
@@ -131,7 +140,7 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
     notify();
   }, []);
 
-  const addToCart = useCallback((product: Product, quantity = 1) => {
+  const addToCart = useCallback((product: Product, quantity = 1, openDrawer = true) => {
     const qtyToAdd = Math.max(1, quantity);
     const existing = memoryCart.find((item) => item.id === product.id);
     let next: CartItem[];
@@ -157,6 +166,9 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
       localStorage.setItem(CART_KEY, JSON.stringify(next));
     } catch {}
     notify();
+    if (openDrawer) {
+      setIsCartDrawerOpen(true);
+    }
   }, []);
 
   const removeFromCart = useCallback((id: string) => {
@@ -197,6 +209,10 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
     cartCount,
     cartTotal,
     wishlistCount,
+    isCartDrawerOpen,
+    setIsCartDrawerOpen,
+    openCartDrawer,
+    closeCartDrawer,
   };
 
   return <StoreContext.Provider value={value}>{children}</StoreContext.Provider>;

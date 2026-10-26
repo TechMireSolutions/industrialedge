@@ -3,6 +3,7 @@ import { Rubik } from "next/font/google";
 import StoreProvider from "@/components/providers/store-provider";
 import Header from "@/components/layout/header";
 import Footer from "@/components/layout/footer";
+import CartDrawer from "@/components/cart/cart-drawer";
 import "./globals.css";
 
 const rubik = Rubik({
@@ -28,8 +29,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <Header />
           <main className="flex-1">{children}</main>
           <Footer />
+          <CartDrawer />
         </StoreProvider>
       </body>
     </html>
   );
 }
+
