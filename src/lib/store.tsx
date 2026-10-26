@@ -106,6 +106,11 @@ interface StoreState {
   setIsCartDrawerOpen: (open: boolean) => void;
   openCartDrawer: () => void;
   closeCartDrawer: () => void;
+  isAuthModalOpen: boolean;
+  authModalTab: "login" | "register";
+  openAuthModal: (tab?: "login" | "register") => void;
+  closeAuthModal: () => void;
+  setAuthModalTab: (tab: "login" | "register") => void;
 }
 
 const StoreContext = createContext<StoreState | null>(null);
@@ -123,9 +128,17 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
   );
 
   const [isCartDrawerOpen, setIsCartDrawerOpen] = useState(false);
+  const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
+  const [authModalTab, setAuthModalTab] = useState<"login" | "register">("login");
 
   const openCartDrawer = useCallback(() => setIsCartDrawerOpen(true), []);
   const closeCartDrawer = useCallback(() => setIsCartDrawerOpen(false), []);
+
+  const openAuthModal = useCallback((tab: "login" | "register" = "login") => {
+    setAuthModalTab(tab);
+    setIsAuthModalOpen(true);
+  }, []);
+  const closeAuthModal = useCallback(() => setIsAuthModalOpen(false), []);
 
   const isWishlisted = useCallback((id: string) => wishlist.includes(id), [wishlist]);
 
@@ -213,6 +226,11 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
     setIsCartDrawerOpen,
     openCartDrawer,
     closeCartDrawer,
+    isAuthModalOpen,
+    authModalTab,
+    openAuthModal,
+    closeAuthModal,
+    setAuthModalTab,
   };
 
   return <StoreContext.Provider value={value}>{children}</StoreContext.Provider>;

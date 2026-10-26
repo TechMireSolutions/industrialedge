@@ -4,6 +4,7 @@ import StoreProvider from "@/components/providers/store-provider";
 import Header from "@/components/layout/header";
 import Footer from "@/components/layout/footer";
 import CartDrawer from "@/components/cart/cart-drawer";
+import AuthModal from "@/components/auth/auth-modal";
 import "./globals.css";
 
 const rubik = Rubik({
@@ -30,6 +31,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <main className="flex-1">{children}</main>
           <Footer />
           <CartDrawer />
+          <AuthModal />
         </StoreProvider>
       </body>
     </html>

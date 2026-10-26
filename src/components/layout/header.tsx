@@ -136,7 +136,7 @@ const LANGUAGES = [
 
 export default function Header() {
   const router = useRouter();
-  const { cart, openCartDrawer } = useStore();
+  const { cart, openCartDrawer, openAuthModal } = useStore();
 
   // Search & Categories Modal State (Image 2)
   const [searchTerm, setSearchTerm] = useState("");
@@ -381,17 +381,18 @@ export default function Header() {
 
           {/* Right: Sign In, Support, Your cart: (Matching Image 1 Reference) */}
           <div className="flex items-center gap-5 sm:gap-7 shrink-0">
-            {/* 1. Sign In */}
-            <Link
-              href="/my-account"
-              className="group flex flex-col items-center justify-center cursor-pointer text-[#333e48] hover:text-[#ff3d3d] transition-colors"
+            {/* 1. Sign In (Opens Login / Register Modal) */}
+            <button
+              type="button"
+              onClick={() => openAuthModal("login")}
+              className="group flex flex-col items-center justify-center cursor-pointer text-[#333e48] hover:text-[#ff3d3d] transition-colors focus:outline-none"
               aria-label="Sign In"
             >
               <User size={22} strokeWidth={1.5} className="group-hover:text-[#ff3d3d] transition-colors" />
               <span className="text-[12px] text-[#333e48] group-hover:text-[#ff3d3d] font-normal leading-tight mt-1 transition-colors">
                 Sign In
               </span>
-            </Link>
+            </button>
 
             {/* 2. Support */}
             <Link
@@ -1090,14 +1091,17 @@ export default function Header() {
 
               {/* User Account & Cart Quick Actions */}
               <div className="pt-4 pb-2 space-y-3">
-                <Link
-                  href="/my-account"
-                  onClick={() => setMobileMenuOpen(false)}
-                  className="flex items-center gap-2.5 text-[14px] text-[#333e48] hover:text-[#ff3d3d] transition-colors"
+                <button
+                  type="button"
+                  onClick={() => {
+                    setMobileMenuOpen(false);
+                    openAuthModal("login");
+                  }}
+                  className="flex items-center gap-2.5 text-[14px] text-[#333e48] hover:text-[#ff3d3d] transition-colors cursor-pointer w-full text-left"
                 >
                   <User size={18} strokeWidth={1.6} />
                   <span>My Account / Sign In</span>
-                </Link>
+                </button>
                 <button
                   type="button"
                   onClick={() => {
