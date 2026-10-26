@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { Mail } from "lucide-react";
+import { Mail, MapPin, Phone, Clock } from "lucide-react";
 
 const GET_HELP = [
   { label: "Privacy Notice", href: "#" },
@@ -51,13 +51,17 @@ export default function Footer() {
           <div className="flex flex-col">
             <Link href="/" className="inline-flex items-center gap-2.5 mb-4 group">
               <Image
-                src="/images/logo-footer.png"
-                alt="onsus."
-                width={130}
+                src="/images/logo.png"
+                alt="IndustrialEdge.pk"
+                width={36}
                 height={36}
-                className="h-[32px] w-auto object-contain transition-transform group-hover:scale-105"
+                className="h-[34px] w-auto object-contain transition-transform group-hover:scale-105"
                 priority
               />
+              <span className="text-[20px] font-black tracking-tight text-[#15233e] flex items-center">
+                Industrial<span className="text-[#0ea57a]">Edge</span>
+                <span className="text-[#ff3d3d] text-[12px] font-extrabold ml-1 px-1.5 py-0.5 bg-[#fef2f2] rounded border border-[#fee2e2]">.pk</span>
+              </span>
             </Link>
             <h4 className="text-[15px] font-semibold text-[#333e48] mt-4 mb-3">
               We accept:
@@ -135,26 +139,42 @@ export default function Footer() {
             <h3 className="font-['Poppins',sans-serif] text-[18px] font-semibold text-[#333e48] mb-4">
               Contact
             </h3>
-            <div className="space-y-2.5 text-[14px]">
-              <p className="text-[#73787d] leading-[22px]">
-                8500 Lorem Street Chicago, IL 55030 Door 81 USA
-              </p>
-              <p>
+            <div className="space-y-3 text-[14px]">
+              <div>
                 <a
-                  href="tel:+88001234567"
-                  className="font-bold text-[#ff3d3d] hover:text-[#333e48] transition-colors text-[15px]"
+                  href="https://maps.app.goo.gl/52dT7YxfarFZ4nPQ7"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-[#73787d] hover:text-[#ff3d3d] transition-colors leading-[22px] flex items-start gap-2 group"
                 >
-                  +8(800) 123 4567
+                  <MapPin size={16} className="text-[#ff3d3d] shrink-0 mt-1" />
+                  <span>Suite M-107 Odeon Center Regal chowk saddar Karachi, Pakistan</span>
                 </a>
-              </p>
-              <p>
+              </div>
+              <div className="pt-0.5">
                 <a
-                  href="mailto:onsus@support.com"
-                  className="text-[#73787d] hover:text-[#ff3d3d] transition-colors"
+                  href="https://wa.me/923322316225"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="font-bold text-[#ff3d3d] hover:text-[#333e48] transition-colors text-[15px] flex items-center gap-2"
                 >
-                  onsus@support.com
+                  <Phone size={15} className="shrink-0" />
+                  <span>+92 332 2316225</span>
                 </a>
-              </p>
+                <div className="flex items-center gap-1.5 text-[12px] text-[#8e9398] mt-1 pl-6">
+                  <Clock size={12} className="shrink-0" />
+                  <span>Mon - Sat: 9:00 AM - 6:00 PM</span>
+                </div>
+              </div>
+              <div>
+                <a
+                  href="mailto:info@industrialedge.pk"
+                  className="text-[#73787d] hover:text-[#ff3d3d] transition-colors flex items-center gap-2"
+                >
+                  <Mail size={15} className="text-[#ff3d3d] shrink-0" />
+                  <span>info@industrialedge.pk</span>
+                </a>
+              </div>
             </div>
           </div>
         </div>
@@ -204,7 +224,9 @@ export default function Footer() {
           <div className="flex items-center justify-center gap-2.5">
             {/* Facebook */}
             <a
-              href="#"
+              href="https://facebook.com/industrialedge.pk"
+              target="_blank"
+              rel="noopener noreferrer"
               aria-label="Facebook"
               className="w-9 h-9 rounded-full bg-white border border-[#e5e5e5] flex items-center justify-center text-[#73787d] hover:text-[#ff3d3d] hover:border-[#ff3d3d] transition-all shadow-sm"
             >
@@ -213,20 +235,11 @@ export default function Footer() {
               </svg>
             </a>
 
-            {/* Twitter */}
-            <a
-              href="#"
-              aria-label="Twitter"
-              className="w-9 h-9 rounded-full bg-white border border-[#e5e5e5] flex items-center justify-center text-[#73787d] hover:text-[#ff3d3d] hover:border-[#ff3d3d] transition-all shadow-sm"
-            >
-              <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24">
-                <path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z" />
-              </svg>
-            </a>
-
             {/* Instagram */}
             <a
-              href="#"
+              href="https://instagram.com/industrialedge.pk"
+              target="_blank"
+              rel="noopener noreferrer"
               aria-label="Instagram"
               className="w-9 h-9 rounded-full bg-white border border-[#e5e5e5] flex items-center justify-center text-[#73787d] hover:text-[#ff3d3d] hover:border-[#ff3d3d] transition-all shadow-sm"
             >
@@ -239,7 +252,9 @@ export default function Footer() {
 
             {/* LinkedIn */}
             <a
-              href="#"
+              href="https://linkedin.com/company/industrial-edge-pk"
+              target="_blank"
+              rel="noopener noreferrer"
               aria-label="LinkedIn"
               className="w-9 h-9 rounded-full bg-white border border-[#e5e5e5] flex items-center justify-center text-[#73787d] hover:text-[#ff3d3d] hover:border-[#ff3d3d] transition-all shadow-sm"
             >
@@ -252,7 +267,9 @@ export default function Footer() {
 
             {/* WhatsApp */}
             <a
-              href="#"
+              href="https://wa.me/923322316225"
+              target="_blank"
+              rel="noopener noreferrer"
               aria-label="WhatsApp"
               className="w-9 h-9 rounded-full bg-white border border-[#e5e5e5] flex items-center justify-center text-[#73787d] hover:text-[#ff3d3d] hover:border-[#ff3d3d] transition-all shadow-sm"
             >
@@ -277,7 +294,7 @@ export default function Footer() {
 
           {/* Copyright */}
           <p className="text-[13px] text-[#73787d]">
-            Onsus &copy; 2023 All right reserved | Designed by ThemeMier
+            IndustrialEdge.pk &copy; 2026 All rights reserved
           </p>
         </div>
       </div>

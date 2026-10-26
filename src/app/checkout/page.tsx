@@ -85,12 +85,12 @@ function CheckoutContent() {
       return;
     }
     const cleanCode = couponCode.trim().toUpperCase();
-    if (["SAVE10", "ONSUS", "DISCOUNT", "OFF15"].includes(cleanCode)) {
+    if (["SAVE10", "INDUSTRIALEDGE", "ONSUS", "DISCOUNT", "OFF15"].includes(cleanCode)) {
       setAppliedCoupon(cleanCode);
       setCouponError(null);
     } else {
       setAppliedCoupon(null);
-      setCouponError("Invalid coupon code. Try 'SAVE10' or 'ONSUS'.");
+      setCouponError("Invalid coupon code. Try 'SAVE10' or 'INDUSTRIALEDGE'.");
     }
   };
 

@@ -15,8 +15,8 @@ const rubik = Rubik({
 });
 
 export const metadata: Metadata = {
-  title: "IndustrialEdge — Industrial Electronics & Tech Store",
-  description: "Your trusted destination for cutting-edge electronics, industrial hardware, smart devices, and premium gadgets.",
+  title: "IndustrialEdge.pk — Industrial Electronics & Tech Store",
+  description: "Your trusted destination for cutting-edge electronics, industrial hardware, smart devices, and premium gadgets in Pakistan.",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

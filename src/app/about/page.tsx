@@ -145,7 +145,7 @@ export default function AboutPage() {
 
               <p className="text-[15px] sm:text-[16px] text-[#52525b] leading-relaxed mb-6">
                 Founded with a mission to bridge the gap between industrial-grade reliability and consumer sleekness,
-                <strong> IndustrialEdge (Onsus)</strong> curates state-of-the-art computers, pro audio, gaming gear,
+                <strong> IndustrialEdge.pk</strong> curates state-of-the-art computers, pro audio, gaming gear,
                 and smart digital hardware for professionals, creators, and enthusiasts worldwide.
               </p>
 

@@ -53,13 +53,14 @@ export default function CartPage() {
       couponCode.trim().toUpperCase() === "SAVE10" ||
       couponCode.trim().toUpperCase() === "DISCOUNT" ||
       couponCode.trim().toUpperCase() === "OFF15" ||
+      couponCode.trim().toUpperCase() === "INDUSTRIALEDGE" ||
       couponCode.trim().toUpperCase() === "ONSUS"
     ) {
       setAppliedCoupon(couponCode.trim().toUpperCase());
       setCouponError(null);
     } else {
       setAppliedCoupon(null);
-      setCouponError("Invalid coupon code. Try 'SAVE10' or 'ONSUS'.");
+      setCouponError("Invalid coupon code. Try 'SAVE10' or 'INDUSTRIALEDGE'.");
     }
   };
 

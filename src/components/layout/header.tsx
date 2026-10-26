@@ -270,15 +270,19 @@ export default function Header() {
         >
           <div className="max-w-[1440px] mx-auto px-6 lg:px-12 flex items-center justify-between gap-6">
           {/* Logo */}
-          <Link href="/" className="shrink-0 flex items-center gap-2.5 group">
+          <Link href="/" className="shrink-0 flex items-center gap-2.5 sm:gap-3 group">
             <Image
-              src="/logo-onsus.png"
-              alt="onsus."
-              width={130}
-              height={36}
+              src="/images/logo.png"
+              alt="IndustrialEdge.pk"
+              width={38}
+              height={38}
               priority
-              className="h-[32px] md:h-[36px] w-auto object-contain transition-transform group-hover:scale-105"
+              className="h-[32px] md:h-[38px] w-auto object-contain transition-transform group-hover:scale-105"
             />
+            <span className="text-[19px] md:text-[22px] font-black tracking-tight text-[#15233e] flex items-center leading-none">
+              Industrial<span className="text-[#0ea57a]">Edge</span>
+              <span className="text-[#ff3d3d] text-[11px] md:text-[12px] font-extrabold ml-1 px-1.5 py-0.5 bg-[#fef2f2] rounded border border-[#fee2e2]">.pk</span>
+            </span>
           </Link>
 
           {/* Center: Scoped Search Bar with Pill Border */}
@@ -809,17 +813,18 @@ export default function Header() {
               <Link
                 href="/"
                 onClick={() => setMobileMenuOpen(false)}
-                className="flex items-center gap-2 group"
+                className="flex items-center gap-2.5 group"
               >
                 <Image
-                  src="/images/logo-icon.png"
-                  alt="IndustrialEdge"
-                  width={30}
-                  height={34}
+                  src="/images/logo.png"
+                  alt="IndustrialEdge.pk"
+                  width={32}
+                  height={32}
                   className="h-[28px] w-auto object-contain transition-transform group-hover:scale-105"
                 />
-                <span className="text-[19px] font-bold tracking-tight text-[#141539]">
-                  Industrial<span className="text-[#00937a]">Edge</span>
+                <span className="text-[18px] font-black tracking-tight text-[#15233e] flex items-center">
+                  Industrial<span className="text-[#0ea57a]">Edge</span>
+                  <span className="text-[#ff3d3d] text-[11px] font-extrabold ml-1 px-1.5 py-0.5 bg-[#fef2f2] rounded border border-[#fee2e2]">.pk</span>
                 </span>
               </Link>
               <button
@@ -1121,19 +1126,28 @@ export default function Header() {
               <div className="pt-4 pb-2 text-[13px] text-[#73787d] space-y-1.5">
                 <div className="font-semibold text-[#222222]">Need Help?</div>
                 <div>
-                  Call us now:{" "}
-                  <a href="tel:+18001234567" className="font-semibold text-[#ff3d3d]">
-                    +1(800) 123 4567
+                  Call / WhatsApp:{" "}
+                  <a
+                    href="https://wa.me/923322316225"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="font-semibold text-[#ff3d3d]"
+                  >
+                    +92 332 2316225
                   </a>
+                  <span className="block text-[11px] text-[#888] mt-0.5">Mon - Sat: 9:00 AM - 6:00 PM</span>
                 </div>
                 <div>
                   Email:{" "}
                   <a
-                    href="mailto:support@industrialedge.com"
-                    className="text-[#0e8ce4]"
+                    href="mailto:info@industrialedge.pk"
+                    className="text-[#0e8ce4] font-medium"
                   >
-                    support@industrialedge.com
+                    info@industrialedge.pk
                   </a>
+                </div>
+                <div className="text-[12px] text-[#666] pt-1 leading-snug">
+                  Suite M-107 Odeon Center Regal chowk saddar Karachi, Pakistan
                 </div>
               </div>
             </div>
