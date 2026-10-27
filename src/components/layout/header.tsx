@@ -280,13 +280,13 @@ export default function Header() {
           <div className="flex-1 max-w-[640px] relative hidden md:block">
             <form
               onSubmit={handleSearchSubmit}
-              className="h-[46px] w-full rounded-full border border-[#0ea57a] bg-white flex items-center pl-5 pr-1.5 transition-shadow focus-within:shadow-[0_0_0_2px_rgba(14, 165, 122,0.15)]"
+              className="h-[46px] w-full rounded-full border border-[#0ea57a] bg-white flex items-center pl-5 pr-1.5 transition-all focus-within:ring-2 focus-within:ring-[#0ea57a]/25 focus-within:border-[#0ea57a]"
             >
               {/* Category Dropdown Trigger */}
               <button
                 type="button"
                 onClick={() => setCategoryModalOpen((prev) => !prev)}
-                className="flex items-center gap-2 text-[13px] text-[#333e48] hover:text-[#0ea57a] transition-colors cursor-pointer shrink-0 whitespace-nowrap focus:outline-none"
+                className="flex items-center gap-2 text-[13px] text-[#333e48] hover:text-[#0ea57a] transition-colors cursor-pointer shrink-0 whitespace-nowrap outline-none focus:outline-none focus-visible:outline-none"
                 aria-expanded={categoryModalOpen}
               >
                 <span className="font-normal text-[13px] text-[#333e48]">
@@ -310,13 +310,14 @@ export default function Header() {
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 placeholder="Search for products"
-                className="flex-1 h-full bg-transparent text-[13px] text-[#333e48] placeholder:text-[#999999] focus:outline-none pr-3"
+                style={{ outline: "none", boxShadow: "none" }}
+                className="flex-1 h-full bg-transparent text-[13px] text-[#333e48] placeholder:text-[#999999] outline-none focus:outline-none focus-visible:outline-none focus:ring-0 focus-visible:ring-0 border-none shadow-none pr-3"
               />
 
-              {/* Circular Red Search Button */}
+              {/* Circular Search Button */}
               <button
                 type="submit"
-                className="w-[36px] h-[36px] rounded-full bg-[#0ea57a] hover:bg-[#0b8462] text-white flex items-center justify-center transition-colors cursor-pointer shrink-0 shadow-sm"
+                className="w-[36px] h-[36px] rounded-full bg-[#0ea57a] hover:bg-[#0b8462] text-white flex items-center justify-center transition-colors cursor-pointer shrink-0 shadow-sm outline-none focus:outline-none focus-visible:outline-none"
                 aria-label="Search"
               >
                 <Search size={16} strokeWidth={2.5} />
@@ -448,18 +449,19 @@ export default function Header() {
           <div className="w-full px-4 mt-2 pb-2 md:hidden">
             <form
               onSubmit={handleSearchSubmit}
-              className="h-[40px] w-full rounded-full border border-[#0ea57a] bg-white flex items-center pl-4 pr-1 relative shadow-2xs"
+              className="h-[40px] w-full rounded-full border border-[#0ea57a] bg-white flex items-center pl-4 pr-1 relative shadow-2xs transition-all focus-within:ring-2 focus-within:ring-[#0ea57a]/25 focus-within:border-[#0ea57a]"
             >
               <input
                 type="text"
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 placeholder="Search for products..."
-                className="flex-1 h-full bg-transparent text-xs text-[#333e48] placeholder:text-[#999999] focus:outline-none pr-2"
+                style={{ outline: "none", boxShadow: "none" }}
+                className="flex-1 h-full bg-transparent text-xs text-[#333e48] placeholder:text-[#999999] outline-none focus:outline-none focus-visible:outline-none focus:ring-0 focus-visible:ring-0 border-none shadow-none pr-2"
               />
               <button
                 type="submit"
-                className="w-[32px] h-[32px] rounded-full bg-[#0ea57a] text-white flex items-center justify-center shrink-0 cursor-pointer"
+                className="w-[32px] h-[32px] rounded-full bg-[#0ea57a] text-white flex items-center justify-center shrink-0 cursor-pointer outline-none focus:outline-none focus-visible:outline-none"
                 aria-label="Search"
               >
                 <Search size={14} />

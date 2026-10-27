@@ -43,10 +43,21 @@ h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-rubik), sans-serif;
 }
 
-/* Accessible focus outline */
-:focus-visible {
-  outline: 2px solid #0ea57a;
-  outline-offset: 2px;
+/* Reset focus outlines on inputs, selects, textareas to prevent rectangular outline boxes */
+input,
+textarea,
+select {
+  outline: none;
+}
+
+input:focus,
+input:focus-visible,
+textarea:focus,
+textarea:focus-visible,
+select:focus,
+select:focus-visible {
+  outline: none !important;
+  outline-offset: 0 !important;
 }
 
 /* Selection highlight */
