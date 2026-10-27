@@ -138,19 +138,22 @@ function CheckoutContent() {
         {/* ========================================================= */}
         {/* 2. THREE-STEP CHECKOUT PROGRESS BAR (STEPPER)             */}
         {/* ========================================================= */}
-        <div className="max-w-[760px] mx-auto my-6 sm:my-10">
+        {/* ========================================================= */}
+        {/* 2. THREE-STEP CHECKOUT PROGRESS BAR (STEPPER)             */}
+        {/* ========================================================= */}
+        <div className="max-w-[760px] mx-auto my-4 sm:my-10 px-2 sm:px-0">
           <div className="relative flex items-center justify-between">
             {/* Step 1: Shopping Cart */}
             <Link href="/cart" className="relative flex-1 flex flex-col items-center z-10 group cursor-pointer">
               {/* Line left (RED) */}
-              <div className="absolute top-5 left-0 right-1/2 h-[2.5px] bg-[#ff3d3d] -z-10" />
+              <div className="absolute top-4 sm:top-5 left-0 right-1/2 h-[2px] sm:h-[2.5px] bg-[#ff3d3d] -z-10" />
               {/* Line right (RED) */}
-              <div className="absolute top-5 left-1/2 right-0 h-[2.5px] bg-[#ff3d3d] -z-10" />
+              <div className="absolute top-4 sm:top-5 left-1/2 right-0 h-[2px] sm:h-[2.5px] bg-[#ff3d3d] -z-10" />
 
-              <div className="w-11 h-11 rounded-full bg-[#ff3d3d] text-white flex items-center justify-center shadow-[0_4px_12px_rgba(255,61,61,0.25)] ring-4 ring-white">
-                <ShoppingCart size={19} strokeWidth={2} />
+              <div className="w-8 h-8 sm:w-11 sm:h-11 rounded-full bg-[#ff3d3d] text-white flex items-center justify-center shadow-[0_4px_12px_rgba(255,61,61,0.25)] ring-2 sm:ring-4 ring-white">
+                <ShoppingCart className="w-3.5 h-3.5 sm:w-[19px] sm:h-[19px]" strokeWidth={2} />
               </div>
-              <span className="mt-2.5 text-[14px] font-medium text-[#71717a] group-hover:text-[#ff3d3d] transition-colors">
+              <span className="mt-1.5 sm:mt-2.5 text-[11px] sm:text-[14px] font-medium text-center text-[#71717a] group-hover:text-[#ff3d3d] transition-colors">
                 Shopping Cart
               </span>
             </Link>
@@ -162,19 +165,19 @@ function CheckoutContent() {
               className="relative flex-1 flex flex-col items-center z-10 cursor-pointer focus:outline-none"
             >
               {/* Line left (RED) */}
-              <div className="absolute top-5 left-0 right-1/2 h-[2.5px] bg-[#ff3d3d] -z-10" />
+              <div className="absolute top-4 sm:top-5 left-0 right-1/2 h-[2px] sm:h-[2.5px] bg-[#ff3d3d] -z-10" />
               {/* Line right (RED if step 3, else GREY) */}
               <div
-                className={`absolute top-5 left-1/2 right-0 h-[2.5px] -z-10 ${
+                className={`absolute top-4 sm:top-5 left-1/2 right-0 h-[2px] sm:h-[2.5px] -z-10 ${
                   currentStep === 3 ? "bg-[#ff3d3d]" : "bg-[#e4e4e7]"
                 }`}
               />
 
-              <div className="w-11 h-11 rounded-full bg-[#ff3d3d] text-white flex items-center justify-center shadow-[0_4px_12px_rgba(255,61,61,0.25)] ring-4 ring-white">
-                <ShoppingCart size={19} strokeWidth={2} />
+              <div className="w-8 h-8 sm:w-11 sm:h-11 rounded-full bg-[#ff3d3d] text-white flex items-center justify-center shadow-[0_4px_12px_rgba(255,61,61,0.25)] ring-2 sm:ring-4 ring-white">
+                <ShoppingCart className="w-3.5 h-3.5 sm:w-[19px] sm:h-[19px]" strokeWidth={2} />
               </div>
               <span
-                className={`mt-2.5 text-[14px] ${
+                className={`mt-1.5 sm:mt-2.5 text-[11px] sm:text-[14px] text-center ${
                   currentStep === 2 ? "font-semibold text-[#18181b]" : "font-medium text-[#71717a]"
                 }`}
               >
@@ -190,28 +193,28 @@ function CheckoutContent() {
             >
               {/* Line left (RED if step 3, else GREY) */}
               <div
-                className={`absolute top-5 left-0 right-1/2 h-[2.5px] -z-10 ${
+                className={`absolute top-4 sm:top-5 left-0 right-1/2 h-[2px] sm:h-[2.5px] -z-10 ${
                   currentStep === 3 ? "bg-[#ff3d3d]" : "bg-[#e4e4e7]"
                 }`}
               />
               {/* Line right (RED if step 3, else GREY) */}
               <div
-                className={`absolute top-5 left-1/2 right-0 h-[2.5px] -z-10 ${
+                className={`absolute top-4 sm:top-5 left-1/2 right-0 h-[2px] sm:h-[2.5px] -z-10 ${
                   currentStep === 3 ? "bg-[#ff3d3d]" : "bg-[#e4e4e7]"
                 }`}
               />
 
               <div
-                className={`w-11 h-11 rounded-full flex items-center justify-center ring-4 ring-white ${
+                className={`w-8 h-8 sm:w-11 sm:h-11 rounded-full flex items-center justify-center ring-2 sm:ring-4 ring-white ${
                   currentStep === 3
                     ? "bg-[#ff3d3d] text-white shadow-[0_4px_12px_rgba(255,61,61,0.25)]"
                     : "bg-[#f4f4f5] text-[#a1a1aa] border border-[#e4e4e7]"
                 }`}
               >
-                <ShoppingCart size={19} strokeWidth={2} />
+                <ShoppingCart className="w-3.5 h-3.5 sm:w-[19px] sm:h-[19px]" strokeWidth={2} />
               </div>
               <span
-                className={`mt-2.5 text-[14px] ${
+                className={`mt-1.5 sm:mt-2.5 text-[11px] sm:text-[14px] text-center ${
                   currentStep === 3 ? "font-semibold text-[#18181b]" : "font-medium text-[#71717a]"
                 }`}
               >

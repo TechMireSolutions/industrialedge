@@ -33,8 +33,8 @@ export default function DualPromoBanners() {
           </div>
 
           {/* Right Dual Camera Images */}
-          <div className="flex items-center justify-center gap-6 z-10 w-full max-w-lg">
-            <div className="relative w-44 sm:w-56 h-40 sm:h-48 flex items-center justify-center">
+          <div className="flex items-center justify-center gap-3 sm:gap-6 z-10 w-full max-w-lg">
+            <div className="relative w-28 sm:w-56 h-24 sm:h-48 flex items-center justify-center">
               <Image
                 src="/images/img-prd16.webp"
                 alt="Camera Body"
@@ -43,7 +43,7 @@ export default function DualPromoBanners() {
                 className="w-full h-auto object-contain drop-shadow-lg hover:scale-105 transition-transform duration-300"
               />
             </div>
-            <div className="relative w-40 sm:w-52 h-36 sm:h-44 flex items-center justify-center">
+            <div className="relative w-24 sm:w-52 h-20 sm:h-44 flex items-center justify-center">
               <Image
                 src="/images/img-prd15.webp"
                 alt="Camera Lens"

@@ -241,7 +241,7 @@ export default function Header() {
   return (
     <header className="w-full bg-white select-none">
       {/* Spacer when sticky to prevent layout jump */}
-      {isSticky && <div className="h-[134px] w-full" />}
+      {isSticky && <div className="h-[58px] md:h-[134px] w-full" />}
 
       {/* ========================================================= */}
       {/* STICKY HEADER WRAPPER (Bar 1 + Toggleable Bar 2)          */}
@@ -443,28 +443,30 @@ export default function Header() {
           </div>
         </div>
 
-        {/* Mobile Search Bar (<md) */}
-        <div className="container mx-auto px-4 mt-3 md:hidden">
-          <form
-            onSubmit={handleSearchSubmit}
-            className="h-[42px] w-full rounded-full border border-[#ff3d3d] bg-white flex items-center pl-4 pr-1 relative"
-          >
-            <input
-              type="text"
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              placeholder="Search for products"
-              className="flex-1 h-full bg-transparent text-xs text-[#333e48] placeholder:text-[#999999] focus:outline-none pr-2"
-            />
-            <button
-              type="submit"
-              className="w-[32px] h-[32px] rounded-full bg-[#ff3d3d] text-white flex items-center justify-center shrink-0 cursor-pointer"
-              aria-label="Search"
+        {/* Mobile Search Bar (<md) - only visible at top of page */}
+        {!isSticky && (
+          <div className="w-full px-4 mt-2 pb-2 md:hidden">
+            <form
+              onSubmit={handleSearchSubmit}
+              className="h-[40px] w-full rounded-full border border-[#ff3d3d] bg-white flex items-center pl-4 pr-1 relative shadow-2xs"
             >
-              <Search size={14} />
-            </button>
-          </form>
-        </div>
+              <input
+                type="text"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                placeholder="Search for products..."
+                className="flex-1 h-full bg-transparent text-xs text-[#333e48] placeholder:text-[#999999] focus:outline-none pr-2"
+              />
+              <button
+                type="submit"
+                className="w-[32px] h-[32px] rounded-full bg-[#ff3d3d] text-white flex items-center justify-center shrink-0 cursor-pointer"
+                aria-label="Search"
+              >
+                <Search size={14} />
+              </button>
+            </form>
+          </div>
+        )}
       </div>
 
       {/* ========================================================= */}
@@ -472,7 +474,7 @@ export default function Header() {
       {/* ========================================================= */}
       {(!isSticky || stickyMenuOpen) && (
         <nav
-          className={`h-[48px] border-b border-[#eeeeee] transition-all duration-200 ${
+          className={`hidden md:block h-[48px] border-b border-[#eeeeee] transition-all duration-200 ${
             isSticky
               ? "bg-[#f4f5f7] shadow-[0_4px_12px_rgba(0,0,0,0.06)] animate-in fade-in slide-in-from-top-1 duration-150"
               : "bg-white"

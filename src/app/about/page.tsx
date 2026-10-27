@@ -194,20 +194,20 @@ export default function AboutPage() {
                 </div>
 
                 {/* Floating Experience Badge */}
-                <div className="absolute -bottom-4 -left-4 bg-white border border-[#e5e7eb] rounded-[10px] p-4 shadow-xl flex items-center gap-3">
-                  <div className="w-12 h-12 rounded-full bg-[#ff3d3d] text-white flex items-center justify-center font-bold text-lg shadow-md">
-                    <Zap size={22} />
+                <div className="absolute -bottom-3 left-2 sm:-left-4 sm:-bottom-4 bg-white border border-[#e5e7eb] rounded-[10px] p-3 sm:p-4 shadow-xl flex items-center gap-3">
+                  <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-[#ff3d3d] text-white flex items-center justify-center font-bold text-base sm:text-lg shadow-md">
+                    <Zap size={20} />
                   </div>
                   <div>
-                    <div className="text-[18px] font-bold text-[#18181b]">8+ Years</div>
-                    <div className="text-[12px] text-[#71717a]">Of Tech Excellence</div>
+                    <div className="text-[16px] sm:text-[18px] font-bold text-[#18181b]">8+ Years</div>
+                    <div className="text-[11px] sm:text-[12px] text-[#71717a]">Of Tech Excellence</div>
                   </div>
                 </div>
 
                 {/* Floating Global Reach Badge */}
-                <div className="absolute -top-3 -right-3 bg-white border border-[#e5e7eb] rounded-[10px] py-2 px-3.5 shadow-lg flex items-center gap-2">
-                  <Globe2 size={16} className="text-[#ff3d3d]" />
-                  <span className="text-xs font-semibold text-[#18181b]">45+ Countries Served</span>
+                <div className="absolute -top-2 right-2 sm:-right-3 sm:-top-3 bg-white border border-[#e5e7eb] rounded-[10px] py-1.5 px-3 sm:py-2 sm:px-3.5 shadow-lg flex items-center gap-2">
+                  <Globe2 size={15} className="text-[#ff3d3d]" />
+                  <span className="text-[11px] sm:text-xs font-semibold text-[#18181b]">45+ Countries Served</span>
                 </div>
               </div>
             </div>

@@ -38,14 +38,14 @@ export default function GameConsoleBanner() {
           </div>
 
           {/* Right Text Block (Single-line title, strike price, yellow price, shop now) */}
-          <div className="relative z-20 pl-[45%] sm:pl-[44%] md:pl-[45%] lg:pl-[46%] xl:pl-[47%] pr-4 sm:pr-8 flex flex-col items-start justify-center">
+          <div className="relative z-20 pl-[48%] sm:pl-[44%] md:pl-[45%] lg:pl-[46%] xl:pl-[47%] pr-3 sm:pr-8 flex flex-col items-start justify-center">
             {/* Title */}
-            <h2 className="text-white text-lg sm:text-2xl md:text-3xl lg:text-4xl xl:text-[42px] font-normal tracking-normal leading-tight mb-1.5 sm:mb-2.5 whitespace-nowrap drop-shadow-sm font-sans">
+            <h2 className="text-white text-[15px] sm:text-2xl md:text-3xl lg:text-4xl xl:text-[42px] font-normal tracking-normal leading-tight mb-1 sm:mb-2.5 whitespace-normal sm:whitespace-nowrap drop-shadow-sm font-sans line-clamp-2 sm:line-clamp-none">
               GameConsole Destiny Special Edition
             </h2>
 
             {/* Old Price */}
-            <div className="text-white/70 text-xs sm:text-sm md:text-base lg:text-lg font-light line-through tracking-wider mb-1 sm:mb-1.5">
+            <div className="text-white/70 text-[11px] sm:text-sm md:text-base lg:text-lg font-light line-through tracking-wider mb-0.5 sm:mb-1.5">
               $99.000
             </div>
 

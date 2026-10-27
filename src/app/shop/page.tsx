@@ -893,7 +893,7 @@ function ShopContent() {
                 type="button"
                 onClick={() => handleCarouselScroll("left")}
                 aria-label="Previous categories"
-                className="w-9 h-9 rounded-full bg-white border border-[#e5e5e5] shadow-[0_2px_10px_rgba(0,0,0,0.12)] flex items-center justify-center text-[#333] hover:text-[#ff3d3d] hover:border-[#ff3d3d] transition-all absolute -left-4.5 top-1/2 -translate-y-1/2 z-20 cursor-pointer"
+                className="w-9 h-9 rounded-full bg-white border border-[#e5e5e5] shadow-[0_2px_10px_rgba(0,0,0,0.12)] hidden sm:flex items-center justify-center text-[#333] hover:text-[#ff3d3d] hover:border-[#ff3d3d] transition-all absolute -left-4.5 top-1/2 -translate-y-1/2 z-20 cursor-pointer"
               >
                 <ChevronLeft size={18} strokeWidth={2.2} />
               </button>
@@ -904,7 +904,7 @@ function ShopContent() {
               type="button"
               onClick={() => handleCarouselScroll("right")}
               aria-label="Next categories"
-              className="w-9 h-9 rounded-full bg-white border border-[#e5e5e5] shadow-[0_2px_10px_rgba(0,0,0,0.12)] flex items-center justify-center text-[#333] hover:text-[#ff3d3d] hover:border-[#ff3d3d] transition-all absolute -right-4.5 top-1/2 -translate-y-1/2 z-20 cursor-pointer"
+              className="w-9 h-9 rounded-full bg-white border border-[#e5e5e5] shadow-[0_2px_10px_rgba(0,0,0,0.12)] hidden sm:flex items-center justify-center text-[#333] hover:text-[#ff3d3d] hover:border-[#ff3d3d] transition-all absolute -right-4.5 top-1/2 -translate-y-1/2 z-20 cursor-pointer"
             >
               <ChevronRight size={18} strokeWidth={2.2} />
             </button>
