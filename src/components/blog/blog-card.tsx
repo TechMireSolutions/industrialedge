@@ -28,7 +28,7 @@ export default function BlogCard({ post, layout = "grid" }: BlogCardProps) {
               {post.category}
             </span>
             {post.trending && (
-              <span className="px-2 py-1 rounded-md text-[10px] font-bold uppercase tracking-wider bg-[#ff3d3d] text-white flex items-center gap-1 shadow-sm">
+              <span className="px-2 py-1 rounded-md text-[10px] font-bold uppercase tracking-wider bg-[#0ea57a] text-white flex items-center gap-1 shadow-sm">
                 <TrendingUp className="w-3 h-3" /> Hot
               </span>
             )}
@@ -51,7 +51,7 @@ export default function BlogCard({ post, layout = "grid" }: BlogCardProps) {
             </div>
 
             <Link href={`/blog/${post.slug}`}>
-              <h3 className="text-lg sm:text-xl font-bold text-slate-900 group-hover:text-[#ff3d3d] transition-colors leading-snug mb-2.5">
+              <h3 className="text-lg sm:text-xl font-bold text-slate-900 group-hover:text-[#0ea57a] transition-colors leading-snug mb-2.5">
                 {post.title}
               </h3>
             </Link>
@@ -85,7 +85,7 @@ export default function BlogCard({ post, layout = "grid" }: BlogCardProps) {
               </span>
               <Link
                 href={`/blog/${post.slug}`}
-                className="inline-flex items-center gap-1 text-sm font-semibold text-[#ff3d3d] hover:text-[#d32f2f] ml-1"
+                className="inline-flex items-center gap-1 text-sm font-semibold text-[#0ea57a] hover:text-[#047857] ml-1"
               >
                 <span>Read</span>
                 <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
@@ -116,7 +116,7 @@ export default function BlogCard({ post, layout = "grid" }: BlogCardProps) {
             {post.category}
           </span>
           {post.trending && (
-            <span className="px-2 py-0.5 rounded-md text-[10px] font-bold uppercase tracking-wider bg-[#ff3d3d] text-white flex items-center gap-1 shadow-sm">
+            <span className="px-2 py-0.5 rounded-md text-[10px] font-bold uppercase tracking-wider bg-[#0ea57a] text-white flex items-center gap-1 shadow-sm">
               <TrendingUp className="w-3 h-3" /> Hot
             </span>
           )}
@@ -141,7 +141,7 @@ export default function BlogCard({ post, layout = "grid" }: BlogCardProps) {
 
           {/* Title */}
           <Link href={`/blog/${post.slug}`}>
-            <h3 className="text-base sm:text-lg font-bold text-slate-900 group-hover:text-[#ff3d3d] transition-colors leading-snug mb-2 line-clamp-2">
+            <h3 className="text-base sm:text-lg font-bold text-slate-900 group-hover:text-[#0ea57a] transition-colors leading-snug mb-2 line-clamp-2">
               {post.title}
             </h3>
           </Link>
@@ -174,7 +174,7 @@ export default function BlogCard({ post, layout = "grid" }: BlogCardProps) {
             </span>
             <Link
               href={`/blog/${post.slug}`}
-              className="text-xs font-semibold text-[#ff3d3d] hover:text-[#d32f2f] flex items-center gap-1 group/btn"
+              className="text-xs font-semibold text-[#0ea57a] hover:text-[#047857] flex items-center gap-1 group/btn"
             >
               <span>Read</span>
               <ArrowRight className="w-3.5 h-3.5 group-hover/btn:translate-x-0.5 transition-transform" />

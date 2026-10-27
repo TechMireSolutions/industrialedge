@@ -32,7 +32,7 @@ export default function ContactPage() {
       {/* Breadcrumb Bar */}
       <div className="w-full bg-[#f4f4f4] border-b border-[#e5e5e5] py-3.5">
         <div className="max-w-[1440px] mx-auto px-6 lg:px-12 flex items-center gap-2 text-[13px] text-[#73787d]">
-          <Link href="/" className="hover:text-[#ff3d3d] transition-colors">
+          <Link href="/" className="hover:text-[#0ea57a] transition-colors">
             Home
           </Link>
           <span>/</span>
@@ -44,10 +44,10 @@ export default function ContactPage() {
         <div className="max-w-[1440px] mx-auto px-6 lg:px-12">
           {/* Header */}
           <div className="mb-10 max-w-2xl">
-            <span className="inline-block text-xs font-bold uppercase tracking-wider text-[#ff3d3d] bg-[#fef2f2] px-3 py-1 rounded-full border border-[#fee2e2] mb-3">
+            <span className="inline-block text-xs font-bold uppercase tracking-wider text-[#0ea57a] bg-[#ecfdf5] px-3 py-1 rounded-full border border-[#d1fae5] mb-3">
               We&apos;re Here To Assist You
             </span>
-            <h1 className="text-[32px] sm:text-[38px] font-bold text-[#15233e] tracking-tight leading-tight mb-3">
+            <h1 className="text-[32px] sm:text-[38px] font-bold text-[#171145] tracking-tight leading-tight mb-3">
               Contact IndustrialEdge.pk
             </h1>
             <p className="text-[15px] text-[#73787d] leading-relaxed">
@@ -58,7 +58,7 @@ export default function ContactPage() {
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-start">
             {/* Form Column */}
             <div className="lg:col-span-7 bg-white p-7 sm:p-9 rounded-xl border border-[#ebebeb] shadow-xs">
-              <h2 className="text-xl font-bold text-[#15233e] mb-1">
+              <h2 className="text-xl font-bold text-[#171145] mb-1">
                 Send Us A Message
               </h2>
               <p className="text-[13px] text-[#73787d] mb-6">
@@ -80,7 +80,7 @@ export default function ContactPage() {
                       setSubmitted(false);
                       setFormData({ name: "", email: "", subject: "", message: "" });
                     }}
-                    className="bg-[#15233e] hover:bg-[#ff3d3d] text-white px-7 py-2.5 rounded-lg text-sm font-semibold transition-colors cursor-pointer shadow-sm"
+                    className="bg-[#171145] hover:bg-[#0ea57a] text-white px-7 py-2.5 rounded-lg text-sm font-semibold transition-colors cursor-pointer shadow-sm"
                   >
                     Send Another Message
                   </button>
@@ -90,7 +90,7 @@ export default function ContactPage() {
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                     <div>
                       <label htmlFor="contact-name" className="block text-sm font-semibold text-[#333e48] mb-1.5">
-                        Full Name <span className="text-[#ff3d3d]">*</span>
+                        Full Name <span className="text-[#0ea57a]">*</span>
                       </label>
                       <input
                         id="contact-name"
@@ -99,12 +99,12 @@ export default function ContactPage() {
                         value={formData.name}
                         onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                         placeholder="e.g. Tariq Khan"
-                        className="w-full h-[46px] border border-[#e0e0e0] rounded-lg px-4 text-sm text-[#333e48] focus:outline-none focus:border-[#ff3d3d] focus:ring-1 focus:ring-[#ff3d3d] transition-all placeholder:text-[#aaa]"
+                        className="w-full h-[46px] border border-[#e0e0e0] rounded-lg px-4 text-sm text-[#333e48] focus:outline-none focus:border-[#0ea57a] focus:ring-1 focus:ring-[#0ea57a] transition-all placeholder:text-[#aaa]"
                       />
                     </div>
                     <div>
                       <label htmlFor="contact-email" className="block text-sm font-semibold text-[#333e48] mb-1.5">
-                        Email Address <span className="text-[#ff3d3d]">*</span>
+                        Email Address <span className="text-[#0ea57a]">*</span>
                       </label>
                       <input
                         id="contact-email"
@@ -113,7 +113,7 @@ export default function ContactPage() {
                         value={formData.email}
                         onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                         placeholder="e.g. name@company.com"
-                        className="w-full h-[46px] border border-[#e0e0e0] rounded-lg px-4 text-sm text-[#333e48] focus:outline-none focus:border-[#ff3d3d] focus:ring-1 focus:ring-[#ff3d3d] transition-all placeholder:text-[#aaa]"
+                        className="w-full h-[46px] border border-[#e0e0e0] rounded-lg px-4 text-sm text-[#333e48] focus:outline-none focus:border-[#0ea57a] focus:ring-1 focus:ring-[#0ea57a] transition-all placeholder:text-[#aaa]"
                       />
                     </div>
                   </div>
@@ -128,13 +128,13 @@ export default function ContactPage() {
                       value={formData.subject}
                       onChange={(e) => setFormData({ ...formData, subject: e.target.value })}
                       placeholder="e.g. Technical Specs / Bulk Quotation"
-                      className="w-full h-[46px] border border-[#e0e0e0] rounded-lg px-4 text-sm text-[#333e48] focus:outline-none focus:border-[#ff3d3d] focus:ring-1 focus:ring-[#ff3d3d] transition-all placeholder:text-[#aaa]"
+                      className="w-full h-[46px] border border-[#e0e0e0] rounded-lg px-4 text-sm text-[#333e48] focus:outline-none focus:border-[#0ea57a] focus:ring-1 focus:ring-[#0ea57a] transition-all placeholder:text-[#aaa]"
                     />
                   </div>
 
                   <div>
                     <label htmlFor="contact-message" className="block text-sm font-semibold text-[#333e48] mb-1.5">
-                      Message <span className="text-[#ff3d3d]">*</span>
+                      Message <span className="text-[#0ea57a]">*</span>
                     </label>
                     <textarea
                       id="contact-message"
@@ -143,13 +143,13 @@ export default function ContactPage() {
                       value={formData.message}
                       onChange={(e) => setFormData({ ...formData, message: e.target.value })}
                       placeholder="How can our technical and procurement team assist you today?"
-                      className="w-full h-[130px] border border-[#e0e0e0] rounded-lg px-4 py-3 text-sm text-[#333e48] focus:outline-none focus:border-[#ff3d3d] focus:ring-1 focus:ring-[#ff3d3d] transition-all resize-none placeholder:text-[#aaa]"
+                      className="w-full h-[130px] border border-[#e0e0e0] rounded-lg px-4 py-3 text-sm text-[#333e48] focus:outline-none focus:border-[#0ea57a] focus:ring-1 focus:ring-[#0ea57a] transition-all resize-none placeholder:text-[#aaa]"
                     />
                   </div>
 
                   <button
                     type="submit"
-                    className="w-full h-[48px] bg-[#ff3d3d] hover:bg-[#e03131] text-white text-sm font-bold rounded-lg transition-colors cursor-pointer flex items-center justify-center gap-2 shadow-sm"
+                    className="w-full h-[48px] bg-[#0ea57a] hover:bg-[#0b8462] text-white text-sm font-bold rounded-lg transition-colors cursor-pointer flex items-center justify-center gap-2 shadow-sm"
                   >
                     <Send size={16} strokeWidth={2.2} />
                     <span>Send Message</span>
@@ -162,18 +162,18 @@ export default function ContactPage() {
             <div className="lg:col-span-5 space-y-6">
               {/* Primary Contact Card */}
               <div className="bg-white border border-[#ebebeb] rounded-xl p-7 shadow-xs">
-                <h2 className="text-lg font-bold text-[#15233e] mb-5 pb-3 border-b border-[#f0f0f0]">
+                <h2 className="text-lg font-bold text-[#171145] mb-5 pb-3 border-b border-[#f0f0f0]">
                   Head Office &amp; Inquiries
                 </h2>
 
                 <div className="space-y-6">
                   {/* Address */}
                   <div className="flex items-start gap-4">
-                    <div className="w-11 h-11 bg-[#fef2f2] text-[#ff3d3d] rounded-xl flex items-center justify-center shrink-0 border border-[#fee2e2]">
+                    <div className="w-11 h-11 bg-[#ecfdf5] text-[#0ea57a] rounded-xl flex items-center justify-center shrink-0 border border-[#d1fae5]">
                       <MapPin size={20} strokeWidth={2} />
                     </div>
                     <div className="flex-1">
-                      <h3 className="font-bold text-[#15233e] text-sm">Office Address</h3>
+                      <h3 className="font-bold text-[#171145] text-sm">Office Address</h3>
                       <p className="text-sm text-[#666666] leading-relaxed mt-1">
                         Suite M-107 Odeon Center Regal chowk saddar Karachi, Pakistan
                       </p>
@@ -181,7 +181,7 @@ export default function ContactPage() {
                         href="https://maps.app.goo.gl/52dT7YxfarFZ4nPQ7"
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="inline-flex items-center gap-1.5 text-xs font-bold text-[#ff3d3d] hover:underline mt-2"
+                        className="inline-flex items-center gap-1.5 text-xs font-bold text-[#0ea57a] hover:underline mt-2"
                       >
                         <span>Open in Google Maps</span>
                         <ExternalLink size={12} />
@@ -195,8 +195,8 @@ export default function ContactPage() {
                       <Phone size={20} strokeWidth={2} />
                     </div>
                     <div className="flex-1">
-                      <h3 className="font-bold text-[#15233e] text-sm">Direct Phone &amp; WhatsApp</h3>
-                      <p className="text-sm font-semibold text-[#15233e] mt-1">
+                      <h3 className="font-bold text-[#171145] text-sm">Direct Phone &amp; WhatsApp</h3>
+                      <p className="text-sm font-semibold text-[#171145] mt-1">
                         +92 332 2316225
                       </p>
                       <div className="flex items-center gap-1.5 text-xs text-[#73787d] mt-1">
@@ -221,7 +221,7 @@ export default function ContactPage() {
                       <Mail size={20} strokeWidth={2} />
                     </div>
                     <div className="flex-1">
-                      <h3 className="font-bold text-[#15233e] text-sm">Email Inquiries</h3>
+                      <h3 className="font-bold text-[#171145] text-sm">Email Inquiries</h3>
                       <a
                         href="mailto:info@industrialedge.pk"
                         className="text-sm text-[#2563eb] hover:underline font-medium block mt-1"
@@ -245,7 +245,7 @@ export default function ContactPage() {
                       target="_blank"
                       rel="noopener noreferrer"
                       aria-label="Facebook"
-                      className="w-10 h-10 rounded-lg bg-[#fafafa] border border-[#e5e5e5] flex items-center justify-center text-[#73787d] hover:text-[#ff3d3d] hover:border-[#ff3d3d] hover:bg-white transition-all shadow-xs"
+                      className="w-10 h-10 rounded-lg bg-[#fafafa] border border-[#e5e5e5] flex items-center justify-center text-[#73787d] hover:text-[#0ea57a] hover:border-[#0ea57a] hover:bg-white transition-all shadow-xs"
                     >
                       <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24">
                         <path d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z" />
@@ -258,7 +258,7 @@ export default function ContactPage() {
                       target="_blank"
                       rel="noopener noreferrer"
                       aria-label="Instagram"
-                      className="w-10 h-10 rounded-lg bg-[#fafafa] border border-[#e5e5e5] flex items-center justify-center text-[#73787d] hover:text-[#ff3d3d] hover:border-[#ff3d3d] hover:bg-white transition-all shadow-xs"
+                      className="w-10 h-10 rounded-lg bg-[#fafafa] border border-[#e5e5e5] flex items-center justify-center text-[#73787d] hover:text-[#0ea57a] hover:border-[#0ea57a] hover:bg-white transition-all shadow-xs"
                     >
                       <svg className="w-4 h-4 fill-none stroke-current stroke-2" viewBox="0 0 24 24">
                         <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
@@ -273,7 +273,7 @@ export default function ContactPage() {
                       target="_blank"
                       rel="noopener noreferrer"
                       aria-label="LinkedIn"
-                      className="w-10 h-10 rounded-lg bg-[#fafafa] border border-[#e5e5e5] flex items-center justify-center text-[#73787d] hover:text-[#ff3d3d] hover:border-[#ff3d3d] hover:bg-white transition-all shadow-xs"
+                      className="w-10 h-10 rounded-lg bg-[#fafafa] border border-[#e5e5e5] flex items-center justify-center text-[#73787d] hover:text-[#0ea57a] hover:border-[#0ea57a] hover:bg-white transition-all shadow-xs"
                     >
                       <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24">
                         <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z" />
@@ -301,12 +301,12 @@ export default function ContactPage() {
               {/* Map Card */}
               <div className="bg-white border border-[#ebebeb] rounded-xl p-5 shadow-xs">
                 <div className="flex items-center justify-between mb-3">
-                  <span className="text-xs font-bold text-[#15233e]">Location Map</span>
+                  <span className="text-xs font-bold text-[#171145]">Location Map</span>
                   <a
                     href="https://maps.app.goo.gl/52dT7YxfarFZ4nPQ7"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-xs text-[#ff3d3d] hover:underline flex items-center gap-1 font-semibold"
+                    className="text-xs text-[#0ea57a] hover:underline flex items-center gap-1 font-semibold"
                   >
                     <span>View Map</span>
                     <ExternalLink size={11} />

@@ -75,11 +75,11 @@ export default function BlogArchivePage() {
       <div className="container max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Breadcrumb */}
         <nav aria-label="Breadcrumb" className="mb-6 flex items-center gap-2 text-xs text-slate-500">
-          <Link href="/" className="hover:text-[#ff3d3d] transition-colors">
+          <Link href="/" className="hover:text-[#0ea57a] transition-colors">
             Home
           </Link>
           <ChevronRight className="w-3 h-3 text-slate-400" />
-          <Link href="/blog" className="hover:text-[#ff3d3d] transition-colors">
+          <Link href="/blog" className="hover:text-[#0ea57a] transition-colors">
             Blog
           </Link>
           <ChevronRight className="w-3 h-3 text-slate-400" />
@@ -90,7 +90,7 @@ export default function BlogArchivePage() {
         <div className="bg-gradient-to-br from-[#0f172a] via-[#1e293b] to-[#0f172a] text-white rounded-2xl p-6 sm:p-10 shadow-xl border border-slate-700/80 mb-10 relative overflow-hidden">
           <div className="absolute right-0 top-0 w-96 h-96 bg-red-600/10 rounded-full blur-3xl pointer-events-none" />
           <div className="relative z-10 max-w-3xl">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold bg-[#ff3d3d] text-white mb-3 shadow-xs">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold bg-[#0ea57a] text-white mb-3 shadow-xs">
               <Archive className="w-3.5 h-3.5" />
               Chronological Repository
             </div>
@@ -106,7 +106,7 @@ export default function BlogArchivePage() {
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mt-8 pt-8 border-t border-slate-700/80">
             <div className="bg-white/5 backdrop-blur-xs p-3.5 rounded-xl border border-white/10">
               <div className="flex items-center gap-2 text-slate-400 text-xs mb-1">
-                <BookOpen className="w-4 h-4 text-[#ff3d3d]" />
+                <BookOpen className="w-4 h-4 text-[#0ea57a]" />
                 <span>Total Published</span>
               </div>
               <div className="text-xl sm:text-2xl font-bold text-white">
@@ -156,7 +156,7 @@ export default function BlogArchivePage() {
                 placeholder="Search within archive..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full pl-9 pr-4 py-2 text-xs sm:text-sm bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#ff3d3d]/20 focus:border-[#ff3d3d]"
+                className="w-full pl-9 pr-4 py-2 text-xs sm:text-sm bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#0ea57a]/20 focus:border-[#0ea57a]"
               />
               <Search className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
             </div>
@@ -169,7 +169,7 @@ export default function BlogArchivePage() {
                 <select
                   value={selectedMonth}
                   onChange={(e) => setSelectedMonth(e.target.value)}
-                  className="bg-slate-50 border border-slate-200 text-slate-700 text-xs rounded-lg px-2.5 py-1.5 focus:outline-none focus:ring-2 focus:ring-[#ff3d3d]"
+                  className="bg-slate-50 border border-slate-200 text-slate-700 text-xs rounded-lg px-2.5 py-1.5 focus:outline-none focus:ring-2 focus:ring-[#0ea57a]"
                 >
                   <option value="all">All Months</option>
                   {availableMonths.map((m) => (
@@ -186,7 +186,7 @@ export default function BlogArchivePage() {
                 <select
                   value={selectedCategory}
                   onChange={(e) => setSelectedCategory(e.target.value)}
-                  className="bg-slate-50 border border-slate-200 text-slate-700 text-xs rounded-lg px-2.5 py-1.5 focus:outline-none focus:ring-2 focus:ring-[#ff3d3d]"
+                  className="bg-slate-50 border border-slate-200 text-slate-700 text-xs rounded-lg px-2.5 py-1.5 focus:outline-none focus:ring-2 focus:ring-[#0ea57a]"
                 >
                   <option value="all">All Categories</option>
                   {categories.map((c) => (
@@ -204,7 +204,7 @@ export default function BlogArchivePage() {
                     setSelectedCategory("all");
                     setSearchTerm("");
                   }}
-                  className="text-xs text-[#ff3d3d] hover:underline font-semibold"
+                  className="text-xs text-[#0ea57a] hover:underline font-semibold"
                 >
                   Reset
                 </button>
@@ -232,7 +232,7 @@ export default function BlogArchivePage() {
                     setSelectedCategory("all");
                     setSearchTerm("");
                   }}
-                  className="px-4 py-2 rounded-lg bg-[#ff3d3d] text-white text-xs font-semibold"
+                  className="px-4 py-2 rounded-lg bg-[#0ea57a] text-white text-xs font-semibold"
                 >
                   Reset Archive Filters
                 </button>
@@ -246,8 +246,8 @@ export default function BlogArchivePage() {
                       {/* Sticky Month Heading */}
                       <div className="sticky top-20 z-10 bg-[#f8fafc]/95 backdrop-blur-sm py-2 mb-4 flex items-center justify-between border-b-2 border-slate-300">
                         <div className="flex items-center gap-2.5">
-                          <span className="w-3 h-3 rounded-full bg-[#ff3d3d]" />
-                          <h2 className="text-lg sm:text-xl font-bold text-[#15233e]">
+                          <span className="w-3 h-3 rounded-full bg-[#0ea57a]" />
+                          <h2 className="text-lg sm:text-xl font-bold text-[#171145]">
                             {month}
                           </h2>
                         </div>
@@ -271,8 +271,8 @@ export default function BlogArchivePage() {
                               {/* Left: Date Badge + Title + Excerpt */}
                               <div className="flex items-start gap-4">
                                 {/* Calendar Day Badge */}
-                                <div className="flex-shrink-0 w-12 h-14 bg-slate-50 border border-slate-200 rounded-lg flex flex-col items-center justify-center text-center group-hover:border-[#ff3d3d] group-hover:bg-red-50/50 transition-colors">
-                                  <span className="text-xs font-bold text-[#ff3d3d] uppercase leading-none">
+                                <div className="flex-shrink-0 w-12 h-14 bg-slate-50 border border-slate-200 rounded-lg flex flex-col items-center justify-center text-center group-hover:border-[#0ea57a] group-hover:bg-red-50/50 transition-colors">
+                                  <span className="text-xs font-bold text-[#0ea57a] uppercase leading-none">
                                     {monthShort}
                                   </span>
                                   <span className="text-lg font-extrabold text-slate-800 leading-tight">
@@ -295,7 +295,7 @@ export default function BlogArchivePage() {
                                   </div>
 
                                   <Link href={`/blog/${post.slug}`}>
-                                    <h3 className="text-base sm:text-lg font-bold text-slate-900 group-hover:text-[#ff3d3d] transition-colors leading-snug">
+                                    <h3 className="text-base sm:text-lg font-bold text-slate-900 group-hover:text-[#0ea57a] transition-colors leading-snug">
                                       {post.title}
                                     </h3>
                                   </Link>
@@ -310,7 +310,7 @@ export default function BlogArchivePage() {
                               <div className="flex-shrink-0 self-end sm:self-center pl-16 sm:pl-0">
                                 <Link
                                   href={`/blog/${post.slug}`}
-                                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold text-[#15233e] group-hover:text-white bg-slate-100 group-hover:bg-[#ff3d3d] transition-all"
+                                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold text-[#171145] group-hover:text-white bg-slate-100 group-hover:bg-[#0ea57a] transition-all"
                                 >
                                   <span>Read</span>
                                   <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
@@ -332,7 +332,7 @@ export default function BlogArchivePage() {
             {/* Quick Month Jump Index */}
             <div className="bg-white p-5 rounded-xl border border-slate-200 shadow-sm">
               <h4 className="text-xs font-bold uppercase tracking-wider text-slate-800 mb-3 flex items-center gap-2">
-                <Calendar className="w-4 h-4 text-[#ff3d3d]" />
+                <Calendar className="w-4 h-4 text-[#0ea57a]" />
                 Jump to Month
               </h4>
               <div className="space-y-1">
@@ -340,7 +340,7 @@ export default function BlogArchivePage() {
                   onClick={() => setSelectedMonth("all")}
                   className={`w-full flex items-center justify-between px-3 py-2 rounded-lg text-xs font-medium transition-colors ${
                     selectedMonth === "all"
-                      ? "bg-[#ff3d3d] text-white"
+                      ? "bg-[#0ea57a] text-white"
                       : "text-slate-700 hover:bg-slate-50"
                   }`}
                 >
@@ -356,7 +356,7 @@ export default function BlogArchivePage() {
                       onClick={() => setSelectedMonth(m)}
                       className={`w-full flex items-center justify-between px-3 py-2 rounded-lg text-xs font-medium transition-colors ${
                         isSelected
-                          ? "bg-[#ff3d3d] text-white"
+                          ? "bg-[#0ea57a] text-white"
                           : "text-slate-700 hover:bg-slate-50"
                       }`}
                     >
@@ -373,7 +373,7 @@ export default function BlogArchivePage() {
             {/* Archive Topics Breakdown */}
             <div className="bg-white p-5 rounded-xl border border-slate-200 shadow-sm">
               <h4 className="text-xs font-bold uppercase tracking-wider text-slate-800 mb-3 flex items-center gap-2">
-                <Layers className="w-4 h-4 text-[#ff3d3d]" />
+                <Layers className="w-4 h-4 text-[#0ea57a]" />
                 Topic Breakdown
               </h4>
               <div className="space-y-2">
@@ -405,7 +405,7 @@ export default function BlogArchivePage() {
               </p>
               <Link
                 href="/blog"
-                className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-[#ff3d3d] hover:bg-[#e03131] text-white text-xs font-semibold transition-colors"
+                className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-[#0ea57a] hover:bg-[#0b8462] text-white text-xs font-semibold transition-colors"
               >
                 <span>Go to Blog Hub</span>
                 <ArrowRight className="w-3.5 h-3.5" />

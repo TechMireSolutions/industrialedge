@@ -107,7 +107,7 @@ export default function CartDrawer() {
               <Link
                 href="/shop"
                 onClick={closeCartDrawer}
-                className="px-6 py-2.5 bg-[#ff3d3d] hover:bg-[#e03131] text-white text-[13.5px] font-medium rounded-[6px] transition-colors shadow-sm"
+                className="px-6 py-2.5 bg-[#0ea57a] hover:bg-[#0b8462] text-white text-[13.5px] font-medium rounded-[6px] transition-colors shadow-sm"
               >
                 Browse Shop
               </Link>
@@ -155,7 +155,7 @@ export default function CartDrawer() {
                       <button
                         type="button"
                         onClick={() => updateCartQty(item.id, item.qty - 1)}
-                        className="w-5 h-5 flex items-center justify-center text-[#64748b] hover:text-[#ff3d3d] hover:bg-white transition-colors cursor-pointer"
+                        className="w-5 h-5 flex items-center justify-center text-[#64748b] hover:text-[#0ea57a] hover:bg-white transition-colors cursor-pointer"
                         title="Decrease quantity"
                         aria-label="Decrease quantity"
                       >
@@ -167,7 +167,7 @@ export default function CartDrawer() {
                       <button
                         type="button"
                         onClick={() => updateCartQty(item.id, item.qty + 1)}
-                        className="w-5 h-5 flex items-center justify-center text-[#64748b] hover:text-[#ff3d3d] hover:bg-white transition-colors cursor-pointer"
+                        className="w-5 h-5 flex items-center justify-center text-[#64748b] hover:text-[#0ea57a] hover:bg-white transition-colors cursor-pointer"
                         title="Increase quantity"
                         aria-label="Increase quantity"
                       >
@@ -181,7 +181,7 @@ export default function CartDrawer() {
                 <button
                   type="button"
                   onClick={() => removeFromCart(item.id)}
-                  className="text-[#9ca3af] hover:text-[#ff3d3d] p-1 transition-colors cursor-pointer shrink-0 mt-0.5 rounded"
+                  className="text-[#9ca3af] hover:text-[#0ea57a] p-1 transition-colors cursor-pointer shrink-0 mt-0.5 rounded"
                   title="Remove product"
                   aria-label={`Remove ${item.name}`}
                 >
@@ -202,7 +202,7 @@ export default function CartDrawer() {
               <span className="text-[15px] font-semibold text-[#1e293b]">
                 Subtotal:
               </span>
-              <span className="text-[18px] font-bold text-[#ff3d3d]">
+              <span className="text-[18px] font-bold text-[#0ea57a]">
                 ${cartTotal.toFixed(2)}
               </span>
             </div>
@@ -219,16 +219,16 @@ export default function CartDrawer() {
               <Link
                 href="/checkout"
                 onClick={closeCartDrawer}
-                className="h-[44px] bg-[#ff3d3d] hover:bg-[#e03131] text-white font-semibold text-[14px] rounded-[6px] flex items-center justify-center transition-colors shadow-xs active:scale-[0.99]"
+                className="h-[44px] bg-[#0ea57a] hover:bg-[#0b8462] text-white font-semibold text-[14px] rounded-[6px] flex items-center justify-center transition-colors shadow-xs active:scale-[0.99]"
               >
                 Checkout
               </Link>
             </div>
 
             {/* Free Shipping Progress Bar */}
-            <div className="w-full h-[3px] bg-[#fee2e2] rounded-full overflow-hidden mb-3">
+            <div className="w-full h-[3px] bg-[#d1fae5] rounded-full overflow-hidden mb-3">
               <div
-                className="h-full bg-[#ff3d3d] rounded-full transition-all duration-300"
+                className="h-full bg-[#0ea57a] rounded-full transition-all duration-300"
                 style={{ width: `${shippingProgress}%` }}
               />
             </div>

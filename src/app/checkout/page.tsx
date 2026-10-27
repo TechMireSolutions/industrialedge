@@ -128,7 +128,7 @@ function CheckoutContent() {
         {/* 1. BREADCRUMBS                                            */}
         {/* ========================================================= */}
         <nav aria-label="Breadcrumb" className="flex items-center gap-2 text-[13px] text-[#71717a] mb-8">
-          <Link href="/" className="hover:text-[#ff3d3d] transition-colors">
+          <Link href="/" className="hover:text-[#0ea57a] transition-colors">
             Home
           </Link>
           <span className="text-[#a1a1aa] font-normal">&gt;</span>
@@ -146,14 +146,14 @@ function CheckoutContent() {
             {/* Step 1: Shopping Cart */}
             <Link href="/cart" className="relative flex-1 flex flex-col items-center z-10 group cursor-pointer">
               {/* Line left (RED) */}
-              <div className="absolute top-4 sm:top-5 left-0 right-1/2 h-[2px] sm:h-[2.5px] bg-[#ff3d3d] -z-10" />
+              <div className="absolute top-4 sm:top-5 left-0 right-1/2 h-[2px] sm:h-[2.5px] bg-[#0ea57a] -z-10" />
               {/* Line right (RED) */}
-              <div className="absolute top-4 sm:top-5 left-1/2 right-0 h-[2px] sm:h-[2.5px] bg-[#ff3d3d] -z-10" />
+              <div className="absolute top-4 sm:top-5 left-1/2 right-0 h-[2px] sm:h-[2.5px] bg-[#0ea57a] -z-10" />
 
-              <div className="w-8 h-8 sm:w-11 sm:h-11 rounded-full bg-[#ff3d3d] text-white flex items-center justify-center shadow-[0_4px_12px_rgba(255,61,61,0.25)] ring-2 sm:ring-4 ring-white">
+              <div className="w-8 h-8 sm:w-11 sm:h-11 rounded-full bg-[#0ea57a] text-white flex items-center justify-center shadow-[0_4px_12px_rgba(14, 165, 122, 0.25)] ring-2 sm:ring-4 ring-white">
                 <ShoppingCart className="w-3.5 h-3.5 sm:w-[19px] sm:h-[19px]" strokeWidth={2} />
               </div>
-              <span className="mt-1.5 sm:mt-2.5 text-[11px] sm:text-[14px] font-medium text-center text-[#71717a] group-hover:text-[#ff3d3d] transition-colors">
+              <span className="mt-1.5 sm:mt-2.5 text-[11px] sm:text-[14px] font-medium text-center text-[#71717a] group-hover:text-[#0ea57a] transition-colors">
                 Shopping Cart
               </span>
             </Link>
@@ -165,15 +165,15 @@ function CheckoutContent() {
               className="relative flex-1 flex flex-col items-center z-10 cursor-pointer focus:outline-none"
             >
               {/* Line left (RED) */}
-              <div className="absolute top-4 sm:top-5 left-0 right-1/2 h-[2px] sm:h-[2.5px] bg-[#ff3d3d] -z-10" />
+              <div className="absolute top-4 sm:top-5 left-0 right-1/2 h-[2px] sm:h-[2.5px] bg-[#0ea57a] -z-10" />
               {/* Line right (RED if step 3, else GREY) */}
               <div
                 className={`absolute top-4 sm:top-5 left-1/2 right-0 h-[2px] sm:h-[2.5px] -z-10 ${
-                  currentStep === 3 ? "bg-[#ff3d3d]" : "bg-[#e4e4e7]"
+                  currentStep === 3 ? "bg-[#0ea57a]" : "bg-[#e4e4e7]"
                 }`}
               />
 
-              <div className="w-8 h-8 sm:w-11 sm:h-11 rounded-full bg-[#ff3d3d] text-white flex items-center justify-center shadow-[0_4px_12px_rgba(255,61,61,0.25)] ring-2 sm:ring-4 ring-white">
+              <div className="w-8 h-8 sm:w-11 sm:h-11 rounded-full bg-[#0ea57a] text-white flex items-center justify-center shadow-[0_4px_12px_rgba(14, 165, 122, 0.25)] ring-2 sm:ring-4 ring-white">
                 <ShoppingCart className="w-3.5 h-3.5 sm:w-[19px] sm:h-[19px]" strokeWidth={2} />
               </div>
               <span
@@ -194,20 +194,20 @@ function CheckoutContent() {
               {/* Line left (RED if step 3, else GREY) */}
               <div
                 className={`absolute top-4 sm:top-5 left-0 right-1/2 h-[2px] sm:h-[2.5px] -z-10 ${
-                  currentStep === 3 ? "bg-[#ff3d3d]" : "bg-[#e4e4e7]"
+                  currentStep === 3 ? "bg-[#0ea57a]" : "bg-[#e4e4e7]"
                 }`}
               />
               {/* Line right (RED if step 3, else GREY) */}
               <div
                 className={`absolute top-4 sm:top-5 left-1/2 right-0 h-[2px] sm:h-[2.5px] -z-10 ${
-                  currentStep === 3 ? "bg-[#ff3d3d]" : "bg-[#e4e4e7]"
+                  currentStep === 3 ? "bg-[#0ea57a]" : "bg-[#e4e4e7]"
                 }`}
               />
 
               <div
                 className={`w-8 h-8 sm:w-11 sm:h-11 rounded-full flex items-center justify-center ring-2 sm:ring-4 ring-white ${
                   currentStep === 3
-                    ? "bg-[#ff3d3d] text-white shadow-[0_4px_12px_rgba(255,61,61,0.25)]"
+                    ? "bg-[#0ea57a] text-white shadow-[0_4px_12px_rgba(14, 165, 122, 0.25)]"
                     : "bg-[#f4f4f5] text-[#a1a1aa] border border-[#e4e4e7]"
                 }`}
               >
@@ -231,7 +231,7 @@ function CheckoutContent() {
           <div className="max-w-[1440px] mx-auto mt-6 mb-20 animate-in fade-in duration-200">
             {/* Top Red Alert Banner (Matching Reference) */}
             <div className="bg-white border border-[#e5e7eb] rounded-[4px] flex items-center overflow-hidden mb-8 shadow-2xs">
-              <div className="w-12 h-12 bg-[#ff3d3d] text-white flex items-center justify-center shrink-0">
+              <div className="w-12 h-12 bg-[#0ea57a] text-white flex items-center justify-center shrink-0">
                 <Check size={22} strokeWidth={2.5} />
               </div>
               <div className="px-5 py-3 text-[14.5px] text-[#3f3f46]">
@@ -329,7 +329,7 @@ function CheckoutContent() {
                 {/* Total Row */}
                 <div className="py-4 flex items-center justify-between text-[14.5px] border-b border-[#e5e7eb]">
                   <span className="font-bold text-[#18181b]">Total:</span>
-                  <span className="text-[17px] font-bold text-[#ff3d3d]">
+                  <span className="text-[17px] font-bold text-[#0ea57a]">
                     ${finalTotal.toFixed(2)}
                   </span>
                 </div>
@@ -369,7 +369,7 @@ function CheckoutContent() {
             {/* Coupon notice banner */}
             <div className="mb-10">
               <div className="bg-white border border-[#e5e7eb] rounded-[4px] flex items-center overflow-hidden">
-                <div className="w-11 h-11 bg-[#ff3d3d] text-white flex items-center justify-center shrink-0">
+                <div className="w-11 h-11 bg-[#0ea57a] text-white flex items-center justify-center shrink-0">
                   <Info size={18} strokeWidth={2.5} />
                 </div>
                 <div className="px-4 py-2.5 text-[14px] text-[#3f3f46]">
@@ -377,7 +377,7 @@ function CheckoutContent() {
                   <button
                     type="button"
                     onClick={() => setShowCouponInput((prev) => !prev)}
-                    className="text-[#18181b] hover:text-[#ff3d3d] hover:underline font-normal cursor-pointer transition-colors"
+                    className="text-[#18181b] hover:text-[#0ea57a] hover:underline font-normal cursor-pointer transition-colors"
                   >
                     Click here to enter your code
                   </button>
@@ -428,7 +428,7 @@ function CheckoutContent() {
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
                     <label className="block text-[13px] font-medium text-[#27272a] mb-1.5">
-                      First name <span className="text-[#ff3d3d]">*</span>
+                      First name <span className="text-[#0ea57a]">*</span>
                     </label>
                     <input
                       type="text"
@@ -441,7 +441,7 @@ function CheckoutContent() {
                   </div>
                   <div>
                     <label className="block text-[13px] font-medium text-[#27272a] mb-1.5">
-                      Last name <span className="text-[#ff3d3d]">*</span>
+                      Last name <span className="text-[#0ea57a]">*</span>
                     </label>
                     <input
                       type="text"
@@ -471,7 +471,7 @@ function CheckoutContent() {
                 {/* Country / Region * */}
                 <div>
                   <label className="block text-[13px] font-medium text-[#27272a] mb-1.5">
-                    Country / Region <span className="text-[#ff3d3d]">*</span>
+                    Country / Region <span className="text-[#0ea57a]">*</span>
                   </label>
                   <div className="relative">
                     <select
@@ -493,7 +493,7 @@ function CheckoutContent() {
                 {/* Street address * */}
                 <div>
                   <label className="block text-[13px] font-medium text-[#27272a] mb-1.5">
-                    Street address <span className="text-[#ff3d3d]">*</span>
+                    Street address <span className="text-[#0ea57a]">*</span>
                   </label>
                   <input
                     type="text"
@@ -517,7 +517,7 @@ function CheckoutContent() {
                 {/* Town / City * */}
                 <div>
                   <label className="block text-[13px] font-medium text-[#27272a] mb-1.5">
-                    Town / City <span className="text-[#ff3d3d]">*</span>
+                    Town / City <span className="text-[#0ea57a]">*</span>
                   </label>
                   <input
                     type="text"
@@ -532,7 +532,7 @@ function CheckoutContent() {
                 {/* State * */}
                 <div>
                   <label className="block text-[13px] font-medium text-[#27272a] mb-1.5">
-                    State <span className="text-[#ff3d3d]">*</span>
+                    State <span className="text-[#0ea57a]">*</span>
                   </label>
                   <div className="relative">
                     <select
@@ -554,7 +554,7 @@ function CheckoutContent() {
                 {/* ZIP Code * */}
                 <div>
                   <label className="block text-[13px] font-medium text-[#27272a] mb-1.5">
-                    ZIP Code <span className="text-[#ff3d3d]">*</span>
+                    ZIP Code <span className="text-[#0ea57a]">*</span>
                   </label>
                   <input
                     type="text"
@@ -569,7 +569,7 @@ function CheckoutContent() {
                 {/* Phone * */}
                 <div>
                   <label className="block text-[13px] font-medium text-[#27272a] mb-1.5">
-                    Phone <span className="text-[#ff3d3d]">*</span>
+                    Phone <span className="text-[#0ea57a]">*</span>
                   </label>
                   <input
                     type="tel"
@@ -584,7 +584,7 @@ function CheckoutContent() {
                 {/* Email address * */}
                 <div>
                   <label className="block text-[13px] font-medium text-[#27272a] mb-1.5">
-                    Email address <span className="text-[#ff3d3d]">*</span>
+                    Email address <span className="text-[#0ea57a]">*</span>
                   </label>
                   <input
                     type="email"
@@ -760,7 +760,7 @@ function CheckoutContent() {
                   {/* Total Row */}
                   <div className="py-4 flex items-center justify-between text-[15px] border-b border-[#f4f4f5]">
                     <span className="font-bold text-[#18181b]">Total</span>
-                    <span className="text-[20px] font-bold text-[#ff3d3d]">
+                    <span className="text-[20px] font-bold text-[#0ea57a]">
                       ${finalTotal.toFixed(2)}
                     </span>
                   </div>
@@ -836,7 +836,7 @@ function CheckoutContent() {
                   {/* Place Order Button */}
                   <button
                     type="submit"
-                    className="w-full mt-2 h-[48px] bg-[#ff3d3d] hover:bg-[#e03131] text-white font-bold text-[14.5px] rounded-[6px] flex items-center justify-center transition-colors shadow-xs cursor-pointer active:scale-[0.99]"
+                    className="w-full mt-2 h-[48px] bg-[#0ea57a] hover:bg-[#0b8462] text-white font-bold text-[14.5px] rounded-[6px] flex items-center justify-center transition-colors shadow-xs cursor-pointer active:scale-[0.99]"
                   >
                     Place Order
                   </button>

@@ -68,7 +68,7 @@ export default function BlogSidebar({
       {/* 1. Search Box */}
       <div className="bg-white p-5 rounded-xl border border-slate-200 shadow-sm">
         <h4 className="text-sm font-bold uppercase tracking-wider text-slate-800 mb-3 flex items-center gap-2">
-          <Search className="w-4 h-4 text-[#ff3d3d]" />
+          <Search className="w-4 h-4 text-[#0ea57a]" />
           Search Articles
         </h4>
         <form onSubmit={handleSearchSubmit} className="relative">
@@ -80,11 +80,11 @@ export default function BlogSidebar({
               setSearchTerm(e.target.value);
               if (onSearch) onSearch(e.target.value);
             }}
-            className="w-full pl-3.5 pr-10 py-2.5 text-sm bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#ff3d3d]/20 focus:border-[#ff3d3d] transition-all"
+            className="w-full pl-3.5 pr-10 py-2.5 text-sm bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#0ea57a]/20 focus:border-[#0ea57a] transition-all"
           />
           <button
             type="submit"
-            className="absolute right-2 top-1/2 -translate-y-1/2 p-1.5 text-slate-400 hover:text-[#ff3d3d] transition-colors"
+            className="absolute right-2 top-1/2 -translate-y-1/2 p-1.5 text-slate-400 hover:text-[#0ea57a] transition-colors"
             title="Search"
           >
             <Search className="w-4 h-4" />
@@ -96,13 +96,13 @@ export default function BlogSidebar({
       <div className="bg-white p-5 rounded-xl border border-slate-200 shadow-sm">
         <h4 className="text-sm font-bold uppercase tracking-wider text-slate-800 mb-3.5 flex items-center justify-between">
           <span className="flex items-center gap-2">
-            <FolderOpen className="w-4 h-4 text-[#ff3d3d]" />
+            <FolderOpen className="w-4 h-4 text-[#0ea57a]" />
             Categories
           </span>
           {currentCategory && (
             <button
               onClick={() => onSelectCategory && onSelectCategory("")}
-              className="text-xs text-[#ff3d3d] hover:underline font-normal normal-case"
+              className="text-xs text-[#0ea57a] hover:underline font-normal normal-case"
             >
               Reset
             </button>
@@ -121,8 +121,8 @@ export default function BlogSidebar({
                 }}
                 className={`w-full flex items-center justify-between px-3 py-2 rounded-lg text-sm transition-colors text-left ${
                   isActive
-                    ? "bg-[#ff3d3d] text-white font-medium"
-                    : "text-slate-700 hover:bg-slate-50 hover:text-[#ff3d3d]"
+                    ? "bg-[#0ea57a] text-white font-medium"
+                    : "text-slate-700 hover:bg-slate-50 hover:text-[#0ea57a]"
                 }`}
               >
                 <span>{cat.name}</span>
@@ -142,7 +142,7 @@ export default function BlogSidebar({
       {/* 3. Trending / Top Reads */}
       <div className="bg-white p-5 rounded-xl border border-slate-200 shadow-sm">
         <h4 className="text-sm font-bold uppercase tracking-wider text-slate-800 mb-4 flex items-center gap-2">
-          <TrendingUp className="w-4 h-4 text-[#ff3d3d]" />
+          <TrendingUp className="w-4 h-4 text-[#0ea57a]" />
           Trending Articles
         </h4>
         <div className="space-y-4">
@@ -165,10 +165,10 @@ export default function BlogSidebar({
                 </span>
               </div>
               <div className="flex-1 min-w-0">
-                <span className="text-[11px] font-semibold uppercase text-[#ff3d3d] block mb-1">
+                <span className="text-[11px] font-semibold uppercase text-[#0ea57a] block mb-1">
                   {item.category}
                 </span>
-                <h5 className="text-xs sm:text-sm font-bold text-slate-800 group-hover:text-[#ff3d3d] transition-colors line-clamp-2 leading-snug">
+                <h5 className="text-xs sm:text-sm font-bold text-slate-800 group-hover:text-[#0ea57a] transition-colors line-clamp-2 leading-snug">
                   {item.title}
                 </h5>
                 <span className="text-[11px] text-slate-400 mt-1 block">
@@ -182,9 +182,9 @@ export default function BlogSidebar({
 
       {/* 4. IndustrialEdge Newsletter Box */}
       <div className="bg-gradient-to-br from-[#0f172a] to-[#1e293b] text-white p-5 rounded-xl border border-slate-700 shadow-md relative overflow-hidden">
-        <div className="absolute -right-6 -bottom-6 w-24 h-24 bg-red-600/20 rounded-full blur-xl pointer-events-none" />
+        <div className="absolute -right-6 -bottom-6 w-24 h-24 bg-emerald-600/20 rounded-full blur-xl pointer-events-none" />
         <div className="relative z-10">
-          <div className="w-10 h-10 rounded-lg bg-[#ff3d3d] flex items-center justify-center text-white mb-3 shadow">
+          <div className="w-10 h-10 rounded-lg bg-[#0ea57a] flex items-center justify-center text-white mb-3 shadow">
             <Mail className="w-5 h-5" />
           </div>
           <h4 className="text-base font-bold text-white mb-1">IndustrialEdge Dispatch</h4>
@@ -205,11 +205,11 @@ export default function BlogSidebar({
                 placeholder="engineer@company.com"
                 value={newsletterEmail}
                 onChange={(e) => setNewsletterEmail(e.target.value)}
-                className="w-full px-3 py-2 text-xs bg-white/10 border border-white/20 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#ff3d3d] focus:border-transparent transition-all"
+                className="w-full px-3 py-2 text-xs bg-white/10 border border-white/20 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#0ea57a] focus:border-transparent transition-all"
               />
               <button
                 type="submit"
-                className="w-full py-2 px-3 text-xs font-semibold bg-[#ff3d3d] hover:bg-[#e03131] text-white rounded-lg transition-colors flex items-center justify-center gap-1.5 shadow"
+                className="w-full py-2 px-3 text-xs font-semibold bg-[#0ea57a] hover:bg-[#0b8462] text-white rounded-lg transition-colors flex items-center justify-center gap-1.5 shadow"
               >
                 <span>Subscribe Free</span>
                 <ArrowRight className="w-3.5 h-3.5" />
@@ -223,13 +223,13 @@ export default function BlogSidebar({
       <div className="bg-white p-5 rounded-xl border border-slate-200 shadow-sm">
         <h4 className="text-sm font-bold uppercase tracking-wider text-slate-800 mb-3 flex items-center justify-between">
           <span className="flex items-center gap-2">
-            <Tag className="w-4 h-4 text-[#ff3d3d]" />
+            <Tag className="w-4 h-4 text-[#0ea57a]" />
             Tags Cloud
           </span>
           {currentTag && (
             <button
               onClick={() => onSelectTag && onSelectTag("")}
-              className="text-xs text-[#ff3d3d] hover:underline font-normal normal-case"
+              className="text-xs text-[#0ea57a] hover:underline font-normal normal-case"
             >
               Clear
             </button>
@@ -248,7 +248,7 @@ export default function BlogSidebar({
                 }}
                 className={`text-xs px-2.5 py-1 rounded-md transition-all ${
                   isActive
-                    ? "bg-[#ff3d3d] text-white font-medium"
+                    ? "bg-[#0ea57a] text-white font-medium"
                     : "bg-slate-100 hover:bg-slate-200 text-slate-600"
                 }`}
               >
@@ -264,7 +264,7 @@ export default function BlogSidebar({
       <div className="bg-slate-50 border border-dashed border-slate-300 p-4 rounded-xl flex items-center justify-between">
         <div className="flex items-center gap-3">
           <div className="w-9 h-9 rounded-lg bg-white border border-slate-200 flex items-center justify-center text-slate-700 shadow-sm">
-            <Archive className="w-4 h-4 text-[#ff3d3d]" />
+            <Archive className="w-4 h-4 text-[#0ea57a]" />
           </div>
           <div>
             <h5 className="text-xs font-bold text-slate-800">Looking for Old Posts?</h5>
@@ -273,7 +273,7 @@ export default function BlogSidebar({
         </div>
         <Link
           href="/blog/archive"
-          className="text-xs font-semibold text-[#ff3d3d] hover:underline flex items-center gap-1 flex-shrink-0"
+          className="text-xs font-semibold text-[#0ea57a] hover:underline flex items-center gap-1 flex-shrink-0"
         >
           <span>Archive</span>
           <ArrowRight className="w-3.5 h-3.5" />
@@ -294,7 +294,7 @@ export default function BlogSidebar({
         </p>
         <Link
           href="/shop"
-          className="inline-flex items-center gap-1.5 text-xs font-semibold text-white bg-slate-900 hover:bg-[#ff3d3d] px-3.5 py-2 rounded-lg transition-colors w-full justify-center"
+          className="inline-flex items-center gap-1.5 text-xs font-semibold text-white bg-slate-900 hover:bg-[#0ea57a] px-3.5 py-2 rounded-lg transition-colors w-full justify-center"
         >
           <span>Shop Hardware Components</span>
           <ArrowRight className="w-3.5 h-3.5" />

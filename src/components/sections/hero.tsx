@@ -87,7 +87,7 @@ export default function Hero() {
     <section className="relative w-full bg-[#f4f6f8] bg-[url('/images/hero-bg-exact.webp')] bg-cover bg-center bg-no-repeat py-10 sm:py-14 lg:py-16 border-b border-gray-200/50">
       {/* Toast Notification */}
       {toastMessage && (
-        <div className="fixed bottom-6 right-6 z-50 bg-[#1e2d3b] text-white px-4 py-2.5 rounded-lg shadow-xl text-sm flex items-center gap-2 animate-bounce">
+        <div className="fixed bottom-6 right-6 z-50 bg-[#171145] text-white px-4 py-2.5 rounded-lg shadow-xl text-sm flex items-center gap-2 animate-bounce">
           <Check className="w-4 h-4 text-emerald-400" />
           <span>{toastMessage}</span>
         </div>
@@ -117,7 +117,7 @@ export default function Hero() {
               Price
             </span>
 
-            <div className="text-[52px] sm:text-[62px] lg:text-[72px] font-bold text-[#004ec3] tracking-tight leading-none mb-3">
+            <div className="text-[52px] sm:text-[62px] lg:text-[72px] font-bold text-[#0ea57a] tracking-tight leading-none mb-3">
               $450
             </div>
 
@@ -125,7 +125,7 @@ export default function Hero() {
               Let power flow through you
             </p>
 
-            <h1 className="text-[26px] sm:text-[30px] lg:text-[36px] font-bold text-[#1e2d3b] tracking-normal uppercase leading-[1.18]">
+            <h1 className="text-[26px] sm:text-[30px] lg:text-[36px] font-bold text-[#171145] tracking-normal uppercase leading-[1.18]">
               DELL G5
               <br />
               GAMING LAPTOP
@@ -158,7 +158,7 @@ export default function Hero() {
                     {/* Category */}
                     <Link
                       href={product.categoryLink}
-                      className="text-[11px] sm:text-[12px] text-[#73787d] font-normal hover:text-[#004ec3] transition-colors leading-tight mb-1 truncate block"
+                      className="text-[11px] sm:text-[12px] text-[#73787d] font-normal hover:text-[#0ea57a] transition-colors leading-tight mb-1 truncate block"
                     >
                       {product.category}
                     </Link>
@@ -166,7 +166,7 @@ export default function Hero() {
                     {/* Title */}
                     <Link
                       href={`/product/${product.id}`}
-                      className="text-[12px] sm:text-[13px] font-semibold text-[#004ec3] leading-[1.3] line-clamp-2 hover:underline mb-1.5 transition-colors block"
+                      className="text-[12px] sm:text-[13px] font-semibold text-[#0ea57a] leading-[1.3] line-clamp-2 hover:underline mb-1.5 transition-colors block"
                       title={product.name}
                     >
                       {product.name}
@@ -192,7 +192,7 @@ export default function Hero() {
                               e.stopPropagation();
                               setQuickViewProduct(product);
                             }}
-                            className="w-7 h-7 sm:w-7.5 sm:h-7.5 rounded-full border border-gray-200 bg-white flex items-center justify-center text-gray-700 hover:bg-[#004ec3] hover:text-white hover:border-[#004ec3] transition-colors shadow-xs cursor-pointer"
+                            className="w-7 h-7 sm:w-7.5 sm:h-7.5 rounded-full border border-gray-200 bg-white flex items-center justify-center text-gray-700 hover:bg-[#0ea57a] hover:text-white hover:border-[#0ea57a] transition-colors shadow-xs cursor-pointer"
                             aria-label="Quick View"
                           >
                             <Eye className="w-3.5 h-3.5 stroke-[1.8]" />
@@ -212,7 +212,7 @@ export default function Hero() {
                             className={`w-7 h-7 sm:w-7.5 sm:h-7.5 rounded-full border transition-colors shadow-xs flex items-center justify-center cursor-pointer ${
                               liked
                                 ? "border-red-500 bg-red-50 text-red-500"
-                                : "border-gray-200 bg-white text-gray-700 hover:bg-[#004ec3] hover:text-white hover:border-[#004ec3]"
+                                : "border-gray-200 bg-white text-gray-700 hover:bg-[#0ea57a] hover:text-white hover:border-[#0ea57a]"
                             }`}
                             aria-label="Wishlist"
                           >
@@ -233,7 +233,7 @@ export default function Hero() {
                           <button
                             type="button"
                             onClick={(e) => handleCompare(product, e)}
-                            className="w-7 h-7 sm:w-7.5 sm:h-7.5 rounded-full border border-gray-200 bg-white flex items-center justify-center text-gray-700 hover:bg-[#004ec3] hover:text-white hover:border-[#004ec3] transition-colors shadow-xs cursor-pointer"
+                            className="w-7 h-7 sm:w-7.5 sm:h-7.5 rounded-full border border-gray-200 bg-white flex items-center justify-center text-gray-700 hover:bg-[#0ea57a] hover:text-white hover:border-[#0ea57a] transition-colors shadow-xs cursor-pointer"
                             aria-label="Compare"
                           >
                             <ArrowLeftRight className="w-3.5 h-3.5 stroke-[1.8]" />
@@ -250,7 +250,7 @@ export default function Hero() {
                           <button
                             type="button"
                             onClick={(e) => handleAddToCart(product, e)}
-                            className="w-7 h-7 sm:w-7.5 sm:h-7.5 rounded-full border border-gray-200 bg-white flex items-center justify-center text-gray-700 hover:bg-[#004ec3] hover:text-white hover:border-[#004ec3] transition-colors shadow-xs cursor-pointer"
+                            className="w-7 h-7 sm:w-7.5 sm:h-7.5 rounded-full border border-gray-200 bg-white flex items-center justify-center text-gray-700 hover:bg-[#0ea57a] hover:text-white hover:border-[#0ea57a] transition-colors shadow-xs cursor-pointer"
                             aria-label="Add to cart"
                           >
                             <ShoppingCart className="w-3.5 h-3.5 stroke-[1.8]" />
@@ -306,13 +306,13 @@ export default function Hero() {
                 <span className="text-xs uppercase tracking-wider text-[#73787d] font-semibold">
                   {quickViewProduct.category}
                 </span>
-                <h3 className="text-base font-bold text-[#1e2d3b] mt-1 leading-snug">
+                <h3 className="text-base font-bold text-[#171145] mt-1 leading-snug">
                   {quickViewProduct.name}
                 </h3>
                 <p className="text-xs text-gray-500 mt-2 line-clamp-3">
                   {quickViewProduct.description}
                 </p>
-                <div className="text-xl font-bold text-[#004ec3] mt-3">
+                <div className="text-xl font-bold text-[#0ea57a] mt-3">
                   ${quickViewProduct.price.toFixed(2)}
                 </div>
 
@@ -323,7 +323,7 @@ export default function Hero() {
                       handleAddToCart(quickViewProduct);
                       setQuickViewProduct(null);
                     }}
-                    className="flex-1 bg-[#004ec3] hover:bg-[#003da0] text-white py-2 px-4 rounded-md text-sm font-semibold flex items-center justify-center gap-2 transition-colors cursor-pointer"
+                    className="flex-1 bg-[#0ea57a] hover:bg-[#0b8462] text-white py-2 px-4 rounded-md text-sm font-semibold flex items-center justify-center gap-2 transition-colors cursor-pointer"
                   >
                     <ShoppingCart className="w-4 h-4" />
                     Add to Cart

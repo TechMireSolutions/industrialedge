@@ -66,7 +66,7 @@ export default function WishlistPage() {
         {/* 1. BREADCRUMBS                                            */}
         {/* ========================================================= */}
         <nav aria-label="Breadcrumb" className="flex items-center gap-2 text-[13px] text-[#71717a] mb-8">
-          <Link href="/" className="hover:text-[#ff3d3d] transition-colors">
+          <Link href="/" className="hover:text-[#0ea57a] transition-colors">
             Home
           </Link>
           <span className="text-[#a1a1aa] font-normal">&gt;</span>
@@ -97,7 +97,7 @@ export default function WishlistPage() {
             </p>
             <Link
               href="/shop"
-              className="inline-flex items-center gap-2 px-7 py-3 bg-[#ff3d3d] hover:bg-[#e03131] text-white font-medium text-[14px] rounded-[6px] transition-all shadow-sm active:scale-[0.99]"
+              className="inline-flex items-center gap-2 px-7 py-3 bg-[#0ea57a] hover:bg-[#0b8462] text-white font-medium text-[14px] rounded-[6px] transition-all shadow-sm active:scale-[0.99]"
             >
               <span>Explore Products</span>
               <ArrowRight size={16} />
@@ -127,7 +127,7 @@ export default function WishlistPage() {
                         <button
                           type="button"
                           onClick={() => handleRemove(item.id)}
-                          className="text-[#9ca3af] hover:text-[#ff3d3d] transition-colors p-1 cursor-pointer shrink-0"
+                          className="text-[#9ca3af] hover:text-[#0ea57a] transition-colors p-1 cursor-pointer shrink-0"
                           title="Remove from wishlist"
                           aria-label={`Remove ${item.name}`}
                         >
@@ -152,7 +152,7 @@ export default function WishlistPage() {
                     <td className="py-6 pl-4 pr-6 align-middle">
                       <Link
                         href={`/product/${item.id}`}
-                        className="text-[14.5px] font-medium text-[#18181b] hover:text-[#ff3d3d] transition-colors leading-[1.4] block max-w-[500px]"
+                        className="text-[14.5px] font-medium text-[#18181b] hover:text-[#0ea57a] transition-colors leading-[1.4] block max-w-[500px]"
                       >
                         {item.name}
                       </Link>

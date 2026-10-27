@@ -58,7 +58,7 @@ export default function TableOfContents({ items }: { items: TocItem[] }) {
   return (
     <div className="bg-white rounded-xl border border-slate-200 p-5 shadow-sm">
       <h4 className="text-xs font-bold uppercase tracking-wider text-slate-800 mb-3.5 flex items-center gap-2">
-        <ListOrdered className="w-4 h-4 text-[#ff3d3d]" />
+        <ListOrdered className="w-4 h-4 text-[#0ea57a]" />
         Table of Contents
       </h4>
       <nav className="space-y-1">
@@ -70,7 +70,7 @@ export default function TableOfContents({ items }: { items: TocItem[] }) {
               onClick={() => scrollToHeading(item.id)}
               className={`w-full text-left py-1.5 px-2.5 rounded-lg text-xs transition-all flex items-start gap-2 ${
                 isActive
-                  ? "bg-[#ff3d3d]/10 text-[#ff3d3d] font-semibold border-l-2 border-[#ff3d3d]"
+                  ? "bg-[#0ea57a]/10 text-[#0ea57a] font-semibold border-l-2 border-[#0ea57a]"
                   : "text-slate-600 hover:text-slate-900 hover:bg-slate-50 font-normal"
               } ${item.level === 3 ? "pl-5" : ""}`}
             >

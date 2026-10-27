@@ -55,9 +55,9 @@ export default function Footer() {
                 className="w-[34px] h-[34px] object-contain transition-transform group-hover:scale-105"
                 priority
               />
-              <span className="text-[20px] font-black tracking-tight text-[#15233e] flex items-center">
+              <span className="text-[20px] font-black tracking-tight text-[#171145] flex items-center">
                 Industrial<span className="text-[#0ea57a]">Edge</span>
-                <span className="text-[#ff3d3d] text-[12px] font-extrabold ml-1 px-1.5 py-0.5 bg-[#fef2f2] rounded border border-[#fee2e2]">.pk</span>
+                <span className="text-[#0ea57a] text-[12px] font-extrabold ml-1 px-1.5 py-0.5 bg-[#ecfdf5] rounded border border-[#a7f3d0]">.pk</span>
               </span>
             </Link>
             <h4 className="text-[15px] font-semibold text-[#333e48] mt-4 mb-3">
@@ -84,7 +84,7 @@ export default function Footer() {
                 <li key={item.label}>
                   <Link
                     href={item.href}
-                    className="text-[14px] text-[#73787d] hover:text-[#ff3d3d] transition-colors leading-[24px]"
+                    className="text-[14px] text-[#73787d] hover:text-[#0ea57a] transition-colors leading-[24px]"
                   >
                     {item.label}
                   </Link>
@@ -103,7 +103,7 @@ export default function Footer() {
                 <li key={item.label}>
                   <Link
                     href={item.href}
-                    className="text-[14px] text-[#73787d] hover:text-[#ff3d3d] transition-colors leading-[24px]"
+                    className="text-[14px] text-[#73787d] hover:text-[#0ea57a] transition-colors leading-[24px]"
                   >
                     {item.label}
                   </Link>
@@ -122,7 +122,7 @@ export default function Footer() {
                 <li key={item.label}>
                   <Link
                     href={item.href}
-                    className="text-[14px] text-[#73787d] hover:text-[#ff3d3d] transition-colors leading-[24px]"
+                    className="text-[14px] text-[#73787d] hover:text-[#0ea57a] transition-colors leading-[24px]"
                   >
                     {item.label}
                   </Link>
@@ -142,9 +142,9 @@ export default function Footer() {
                   href="https://maps.app.goo.gl/52dT7YxfarFZ4nPQ7"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-[#73787d] hover:text-[#ff3d3d] transition-colors leading-[22px] flex items-start gap-2 group"
+                  className="text-[#73787d] hover:text-[#0ea57a] transition-colors leading-[22px] flex items-start gap-2 group"
                 >
-                  <MapPin size={16} className="text-[#ff3d3d] shrink-0 mt-1" />
+                  <MapPin size={16} className="text-[#0ea57a] shrink-0 mt-1" />
                   <span>Suite M-107 Odeon Center Regal chowk saddar Karachi, Pakistan</span>
                 </a>
               </div>
@@ -153,7 +153,7 @@ export default function Footer() {
                   href="https://wa.me/923322316225"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="font-bold text-[#ff3d3d] hover:text-[#333e48] transition-colors text-[15px] flex items-center gap-2"
+                  className="font-bold text-[#0ea57a] hover:text-[#333e48] transition-colors text-[15px] flex items-center gap-2"
                 >
                   <Phone size={15} className="shrink-0" />
                   <span>+92 332 2316225</span>
@@ -166,9 +166,9 @@ export default function Footer() {
               <div>
                 <a
                   href="mailto:info@industrialedge.pk"
-                  className="text-[#73787d] hover:text-[#ff3d3d] transition-colors flex items-center gap-2"
+                  className="text-[#73787d] hover:text-[#0ea57a] transition-colors flex items-center gap-2"
                 >
-                  <Mail size={15} className="text-[#ff3d3d] shrink-0" />
+                  <Mail size={15} className="text-[#0ea57a] shrink-0" />
                   <span>info@industrialedge.pk</span>
                 </a>
               </div>
@@ -206,7 +206,7 @@ export default function Footer() {
             />
             <button
               type="submit"
-              className="h-[44px] px-6 sm:px-8 bg-[#ff3d3d] hover:bg-black text-white text-sm font-semibold rounded-r transition-colors whitespace-nowrap"
+              className="h-[44px] px-6 sm:px-8 bg-[#0ea57a] hover:bg-black text-white text-sm font-semibold rounded-r transition-colors whitespace-nowrap"
             >
               Subscribe
             </button>
@@ -225,7 +225,7 @@ export default function Footer() {
               target="_blank"
               rel="noopener noreferrer"
               aria-label="Facebook"
-              className="w-9 h-9 rounded-full bg-white border border-[#e5e5e5] flex items-center justify-center text-[#73787d] hover:text-[#ff3d3d] hover:border-[#ff3d3d] transition-all shadow-sm"
+              className="w-9 h-9 rounded-full bg-white border border-[#e5e5e5] flex items-center justify-center text-[#73787d] hover:text-[#0ea57a] hover:border-[#0ea57a] transition-all shadow-sm"
             >
               <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24">
                 <path d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z" />
@@ -238,7 +238,7 @@ export default function Footer() {
               target="_blank"
               rel="noopener noreferrer"
               aria-label="Instagram"
-              className="w-9 h-9 rounded-full bg-white border border-[#e5e5e5] flex items-center justify-center text-[#73787d] hover:text-[#ff3d3d] hover:border-[#ff3d3d] transition-all shadow-sm"
+              className="w-9 h-9 rounded-full bg-white border border-[#e5e5e5] flex items-center justify-center text-[#73787d] hover:text-[#0ea57a] hover:border-[#0ea57a] transition-all shadow-sm"
             >
               <svg className="w-4 h-4 fill-none stroke-current stroke-2" viewBox="0 0 24 24">
                 <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
@@ -253,7 +253,7 @@ export default function Footer() {
               target="_blank"
               rel="noopener noreferrer"
               aria-label="LinkedIn"
-              className="w-9 h-9 rounded-full bg-white border border-[#e5e5e5] flex items-center justify-center text-[#73787d] hover:text-[#ff3d3d] hover:border-[#ff3d3d] transition-all shadow-sm"
+              className="w-9 h-9 rounded-full bg-white border border-[#e5e5e5] flex items-center justify-center text-[#73787d] hover:text-[#0ea57a] hover:border-[#0ea57a] transition-all shadow-sm"
             >
               <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24">
                 <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z" />
@@ -268,7 +268,7 @@ export default function Footer() {
               target="_blank"
               rel="noopener noreferrer"
               aria-label="WhatsApp"
-              className="w-9 h-9 rounded-full bg-white border border-[#e5e5e5] flex items-center justify-center text-[#73787d] hover:text-[#ff3d3d] hover:border-[#ff3d3d] transition-all shadow-sm"
+              className="w-9 h-9 rounded-full bg-white border border-[#e5e5e5] flex items-center justify-center text-[#73787d] hover:text-[#0ea57a] hover:border-[#0ea57a] transition-all shadow-sm"
             >
               <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24">
                 <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
@@ -282,7 +282,7 @@ export default function Footer() {
               <Link
                 key={link.label}
                 href={link.href}
-                className="hover:text-[#ff3d3d] transition-colors"
+                className="hover:text-[#0ea57a] transition-colors"
               >
                 {link.label}
               </Link>

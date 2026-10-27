@@ -250,7 +250,7 @@ export default function ProductSinglePage() {
     <div className="w-full bg-white min-h-screen text-[#1f2937]">
       {/* Toast Notification */}
       {toastMessage && (
-        <div className="fixed bottom-8 right-6 z-50 bg-[#15233e] text-white px-5 py-3 rounded-lg shadow-xl text-xs sm:text-sm flex items-center gap-2.5 animate-in slide-in-from-bottom-2 duration-200">
+        <div className="fixed bottom-8 right-6 z-50 bg-[#171145] text-white px-5 py-3 rounded-lg shadow-xl text-xs sm:text-sm flex items-center gap-2.5 animate-in slide-in-from-bottom-2 duration-200">
           <Check size={16} className="text-emerald-400 shrink-0" />
           <span>{toastMessage}</span>
         </div>
@@ -388,7 +388,7 @@ export default function ProductSinglePage() {
               <span className="text-sm text-slate-400 line-through">
                 ${originalPrice.toFixed(2)}
               </span>
-              <span className="text-xs font-bold text-[#ff3d3d] bg-red-50 px-2 py-0.5 rounded">
+              <span className="text-xs font-bold text-[#0ea57a] bg-emerald-50 px-2 py-0.5 rounded">
                 Save ${(originalPrice - unitPrice).toFixed(2)}
               </span>
             </div>
@@ -415,7 +415,7 @@ export default function ProductSinglePage() {
                     onClick={() => setSelectedStorage(opt.id)}
                     className={`px-4 py-2 rounded-lg text-xs font-bold transition-all cursor-pointer ${
                       selectedStorage === opt.id
-                        ? "bg-[#15233e] text-white shadow-2xs"
+                        ? "bg-[#171145] text-white shadow-2xs"
                         : "bg-slate-100 text-slate-700 hover:bg-slate-200"
                     }`}
                   >
@@ -439,7 +439,7 @@ export default function ProductSinglePage() {
                     aria-label={col.name}
                     className={`w-7 h-7 rounded-full flex items-center justify-center transition-all cursor-pointer ${
                       selectedColor === col.id
-                        ? "ring-2 ring-offset-2 ring-[#15233e]"
+                        ? "ring-2 ring-offset-2 ring-[#171145]"
                         : "hover:scale-105"
                     }`}
                   >
@@ -497,7 +497,7 @@ export default function ProductSinglePage() {
               <button
                 type="button"
                 onClick={handleAddToCart}
-                className="flex-1 h-11 bg-[#ff3d3d] hover:bg-[#e03131] text-white font-bold text-xs sm:text-sm rounded-lg transition-colors flex items-center justify-center gap-2 shadow-xs cursor-pointer active:scale-[0.99]"
+                className="flex-1 h-11 bg-[#0ea57a] hover:bg-[#0b8462] text-white font-bold text-xs sm:text-sm rounded-lg transition-colors flex items-center justify-center gap-2 shadow-xs cursor-pointer active:scale-[0.99]"
               >
                 <ShoppingCart size={16} />
                 <span>Add to Cart</span>
@@ -512,7 +512,7 @@ export default function ProductSinglePage() {
                 }}
                 className={`w-11 h-11 rounded-lg border flex items-center justify-center transition-colors cursor-pointer ${
                   isLiked
-                    ? "border-[#ff3d3d] text-[#ff3d3d] bg-red-50"
+                    ? "border-[#0ea57a] text-[#0ea57a] bg-emerald-50"
                     : "border-slate-200 text-slate-500 hover:border-slate-400"
                 }`}
                 aria-label="Wishlist"
@@ -662,10 +662,10 @@ export default function ProductSinglePage() {
         {/* ========================================================= */}
         <div className="mt-16 pt-10 border-t border-slate-100">
           <div className="flex items-center justify-between mb-8">
-            <h2 className="text-xl font-bold text-[#15233e]">Recently Viewed</h2>
+            <h2 className="text-xl font-bold text-[#171145]">Recently Viewed</h2>
             <Link
               href="/shop"
-              className="text-xs font-semibold text-slate-500 hover:text-[#ff3d3d] transition-colors"
+              className="text-xs font-semibold text-slate-500 hover:text-[#0ea57a] transition-colors"
             >
               View all
             </Link>

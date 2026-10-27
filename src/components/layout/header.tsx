@@ -270,9 +270,9 @@ export default function Header() {
               priority
               className="w-[32px] h-[32px] md:w-[38px] md:h-[38px] object-contain transition-transform group-hover:scale-105"
             />
-            <span className="text-[19px] md:text-[22px] font-black tracking-tight text-[#15233e] flex items-center leading-none">
+            <span className="text-[19px] md:text-[22px] font-black tracking-tight text-[#171145] flex items-center leading-none">
               Industrial<span className="text-[#0ea57a]">Edge</span>
-              <span className="text-[#ff3d3d] text-[11px] md:text-[12px] font-extrabold ml-1 px-1.5 py-0.5 bg-[#fef2f2] rounded border border-[#fee2e2]">.pk</span>
+              <span className="text-[#0ea57a] text-[11px] md:text-[12px] font-extrabold ml-1 px-1.5 py-0.5 bg-[#ecfdf5] rounded border border-[#a7f3d0]">.pk</span>
             </span>
           </Link>
 
@@ -280,13 +280,13 @@ export default function Header() {
           <div className="flex-1 max-w-[640px] relative hidden md:block">
             <form
               onSubmit={handleSearchSubmit}
-              className="h-[46px] w-full rounded-full border border-[#ff3d3d] bg-white flex items-center pl-5 pr-1.5 transition-shadow focus-within:shadow-[0_0_0_2px_rgba(255,61,61,0.15)]"
+              className="h-[46px] w-full rounded-full border border-[#0ea57a] bg-white flex items-center pl-5 pr-1.5 transition-shadow focus-within:shadow-[0_0_0_2px_rgba(14, 165, 122,0.15)]"
             >
               {/* Category Dropdown Trigger */}
               <button
                 type="button"
                 onClick={() => setCategoryModalOpen((prev) => !prev)}
-                className="flex items-center gap-2 text-[13px] text-[#333e48] hover:text-[#ff3d3d] transition-colors cursor-pointer shrink-0 whitespace-nowrap focus:outline-none"
+                className="flex items-center gap-2 text-[13px] text-[#333e48] hover:text-[#0ea57a] transition-colors cursor-pointer shrink-0 whitespace-nowrap focus:outline-none"
                 aria-expanded={categoryModalOpen}
               >
                 <span className="font-normal text-[13px] text-[#333e48]">
@@ -295,7 +295,7 @@ export default function Header() {
                 <ChevronDown
                   size={12}
                   className={`text-[#73787d] transition-transform duration-200 ${
-                    categoryModalOpen ? "rotate-180 text-[#ff3d3d]" : ""
+                    categoryModalOpen ? "rotate-180 text-[#0ea57a]" : ""
                   }`}
                 />
               </button>
@@ -316,7 +316,7 @@ export default function Header() {
               {/* Circular Red Search Button */}
               <button
                 type="submit"
-                className="w-[36px] h-[36px] rounded-full bg-[#ff3d3d] hover:bg-[#e03131] text-white flex items-center justify-center transition-colors cursor-pointer shrink-0 shadow-sm"
+                className="w-[36px] h-[36px] rounded-full bg-[#0ea57a] hover:bg-[#0b8462] text-white flex items-center justify-center transition-colors cursor-pointer shrink-0 shadow-sm"
                 aria-label="Search"
               >
                 <Search size={16} strokeWidth={2.5} />
@@ -359,8 +359,8 @@ export default function Header() {
                             onClick={() => handleCategorySelect(category)}
                             className={`text-left text-[13px] py-1.5 transition-colors cursor-pointer ${
                               isSelected
-                                ? "text-[#ff3d3d] font-medium"
-                                : "text-[#444444] hover:text-[#ff3d3d]"
+                                ? "text-[#0ea57a] font-medium"
+                                : "text-[#444444] hover:text-[#0ea57a]"
                             }`}
                           >
                             {category}
@@ -380,11 +380,11 @@ export default function Header() {
             <button
               type="button"
               onClick={() => openAuthModal("login")}
-              className="group flex flex-col items-center justify-center cursor-pointer text-[#333e48] hover:text-[#ff3d3d] transition-colors focus:outline-none"
+              className="group flex flex-col items-center justify-center cursor-pointer text-[#333e48] hover:text-[#0ea57a] transition-colors focus:outline-none"
               aria-label="Sign In"
             >
-              <User size={22} strokeWidth={1.5} className="group-hover:text-[#ff3d3d] transition-colors" />
-              <span className="text-[12px] text-[#333e48] group-hover:text-[#ff3d3d] font-normal leading-tight mt-1 transition-colors">
+              <User size={22} strokeWidth={1.5} className="group-hover:text-[#0ea57a] transition-colors" />
+              <span className="text-[12px] text-[#333e48] group-hover:text-[#0ea57a] font-normal leading-tight mt-1 transition-colors">
                 Sign In
               </span>
             </button>
@@ -392,11 +392,11 @@ export default function Header() {
             {/* 2. Support */}
             <Link
               href="/contact"
-              className="group hidden sm:flex flex-col items-center justify-center cursor-pointer text-[#333e48] hover:text-[#ff3d3d] transition-colors"
+              className="group hidden sm:flex flex-col items-center justify-center cursor-pointer text-[#333e48] hover:text-[#0ea57a] transition-colors"
               aria-label="Support"
             >
-              <Headphones size={22} strokeWidth={1.5} className="group-hover:text-[#ff3d3d] transition-colors" />
-              <span className="text-[12px] text-[#333e48] group-hover:text-[#ff3d3d] font-normal leading-tight mt-1 transition-colors">
+              <Headphones size={22} strokeWidth={1.5} className="group-hover:text-[#0ea57a] transition-colors" />
+              <span className="text-[12px] text-[#333e48] group-hover:text-[#0ea57a] font-normal leading-tight mt-1 transition-colors">
                 Support
               </span>
             </Link>
@@ -405,16 +405,16 @@ export default function Header() {
             <button
               type="button"
               onClick={openCartDrawer}
-              className="group flex flex-col items-center justify-center cursor-pointer text-[#333e48] hover:text-[#ff3d3d] transition-colors focus:outline-none"
+              className="group flex flex-col items-center justify-center cursor-pointer text-[#333e48] hover:text-[#0ea57a] transition-colors focus:outline-none"
               aria-label={`Your cart: ${cartCount} items`}
             >
               <div className="relative flex items-center justify-center">
-                <ShoppingCart size={22} strokeWidth={1.5} className="group-hover:text-[#ff3d3d] transition-colors" />
-                <span className="absolute -top-1.5 -right-2.5 min-w-[17px] h-[17px] px-1 bg-[#ff3d3d] text-white rounded-full text-[10px] font-bold flex items-center justify-center leading-none shadow-sm">
+                <ShoppingCart size={22} strokeWidth={1.5} className="group-hover:text-[#0ea57a] transition-colors" />
+                <span className="absolute -top-1.5 -right-2.5 min-w-[17px] h-[17px] px-1 bg-[#0ea57a] text-white rounded-full text-[10px] font-bold flex items-center justify-center leading-none shadow-sm">
                   {cartCount}
                 </span>
               </div>
-              <span className="text-[12px] text-[#333e48] group-hover:text-[#ff3d3d] font-normal leading-tight mt-1 transition-colors">
+              <span className="text-[12px] text-[#333e48] group-hover:text-[#0ea57a] font-normal leading-tight mt-1 transition-colors">
                 Your cart:
               </span>
             </button>
@@ -433,8 +433,8 @@ export default function Header() {
                 isSticky ? "flex" : "md:hidden"
               } ${
                 isSticky && stickyMenuOpen
-                  ? "text-[#ff3d3d]"
-                  : "text-[#333e48] hover:text-[#ff3d3d]"
+                  ? "text-[#0ea57a]"
+                  : "text-[#333e48] hover:text-[#0ea57a]"
               }`}
               aria-label="Toggle menu"
             >
@@ -448,7 +448,7 @@ export default function Header() {
           <div className="w-full px-4 mt-2 pb-2 md:hidden">
             <form
               onSubmit={handleSearchSubmit}
-              className="h-[40px] w-full rounded-full border border-[#ff3d3d] bg-white flex items-center pl-4 pr-1 relative shadow-2xs"
+              className="h-[40px] w-full rounded-full border border-[#0ea57a] bg-white flex items-center pl-4 pr-1 relative shadow-2xs"
             >
               <input
                 type="text"
@@ -459,7 +459,7 @@ export default function Header() {
               />
               <button
                 type="submit"
-                className="w-[32px] h-[32px] rounded-full bg-[#ff3d3d] text-white flex items-center justify-center shrink-0 cursor-pointer"
+                className="w-[32px] h-[32px] rounded-full bg-[#0ea57a] text-white flex items-center justify-center shrink-0 cursor-pointer"
                 aria-label="Search"
               >
                 <Search size={14} />
@@ -496,7 +496,7 @@ export default function Header() {
               <button
                 type="button"
                 onClick={() => setAllCategoriesOpen((prev) => !prev)}
-                className="flex items-center gap-2.5 text-[15px] font-semibold text-[#1e293b] hover:text-[#ff3d3d] transition-colors py-3 cursor-pointer select-none focus:outline-none"
+                className="flex items-center gap-2.5 text-[15px] font-semibold text-[#1e293b] hover:text-[#0ea57a] transition-colors py-3 cursor-pointer select-none focus:outline-none"
                 aria-expanded={allCategoriesOpen}
               >
                 {/* 9-dot grid icon (3x3 dots matching Image 1, 2, 3) */}
@@ -505,7 +505,7 @@ export default function Header() {
                   height="18"
                   viewBox="0 0 18 18"
                   fill="none"
-                  className="shrink-0 text-[#1e293b] group-hover:text-[#ff3d3d]"
+                  className="shrink-0 text-[#1e293b] group-hover:text-[#0ea57a]"
                 >
                   <rect x="1" y="1" width="3" height="3" rx="0.5" fill="currentColor" />
                   <rect x="7.5" y="1" width="3" height="3" rx="0.5" fill="currentColor" />
@@ -545,8 +545,8 @@ export default function Header() {
                           href={dept.href}
                           className={`flex items-center justify-between px-5 py-2.5 text-[13.5px] border-b border-[#f5f5f5] last:border-b-0 transition-colors ${
                             isSubActive
-                              ? "text-[#ff3d3d] bg-white"
-                              : "text-[#333e48] hover:text-[#ff3d3d] hover:bg-[#fafafa]"
+                              ? "text-[#0ea57a] bg-white"
+                              : "text-[#333e48] hover:text-[#0ea57a] hover:bg-[#fafafa]"
                           }`}
                         >
                           <div className="flex items-center gap-3">
@@ -554,7 +554,7 @@ export default function Header() {
                               size={18}
                               strokeWidth={1.5}
                               className={`shrink-0 transition-colors ${
-                                isSubActive ? "text-[#ff3d3d]" : "text-[#555555]"
+                                isSubActive ? "text-[#0ea57a]" : "text-[#555555]"
                               }`}
                             />
                             <span className="truncate">{dept.name}</span>
@@ -564,7 +564,7 @@ export default function Header() {
                             <ChevronRight
                               size={14}
                               className={`shrink-0 transition-colors ${
-                                isSubActive ? "text-[#ff3d3d]" : "text-[#888888]"
+                                isSubActive ? "text-[#0ea57a]" : "text-[#888888]"
                               }`}
                             />
                           )}
@@ -580,7 +580,7 @@ export default function Header() {
                               <Link
                                 key={sub}
                                 href={`/shop?cat=${encodeURIComponent(dept.name)}&sub=${encodeURIComponent(sub)}`}
-                                className="block px-4 py-2 text-[13.5px] text-[#333e48] hover:text-[#ff3d3d] hover:bg-[#f8f9fa] rounded transition-colors"
+                                className="block px-4 py-2 text-[13.5px] text-[#333e48] hover:text-[#0ea57a] hover:bg-[#f8f9fa] rounded transition-colors"
                               >
                                 {sub}
                               </Link>
@@ -604,8 +604,8 @@ export default function Header() {
                 href="/"
                 className={`flex items-center text-[14px] py-3 transition-colors ${
                   pathname === "/"
-                    ? "text-[#ff3d3d] font-semibold"
-                    : "text-[#333e48] hover:text-[#ff3d3d] font-medium"
+                    ? "text-[#0ea57a] font-semibold"
+                    : "text-[#333e48] hover:text-[#0ea57a] font-medium"
                 }`}
               >
                 <span>Home</span>
@@ -616,8 +616,8 @@ export default function Header() {
                 href="/shop"
                 className={`flex items-center text-[14px] py-3 transition-colors ${
                   pathname.startsWith("/shop")
-                    ? "text-[#ff3d3d] font-semibold"
-                    : "text-[#333e48] hover:text-[#ff3d3d] font-medium"
+                    ? "text-[#0ea57a] font-semibold"
+                    : "text-[#333e48] hover:text-[#0ea57a] font-medium"
                 }`}
               >
                 <span>Shop</span>
@@ -628,8 +628,8 @@ export default function Header() {
                 href="/blog"
                 className={`flex items-center text-[14px] py-3 transition-colors ${
                   pathname.startsWith("/blog")
-                    ? "text-[#ff3d3d] font-semibold"
-                    : "text-[#333e48] hover:text-[#ff3d3d] font-medium"
+                    ? "text-[#0ea57a] font-semibold"
+                    : "text-[#333e48] hover:text-[#0ea57a] font-medium"
                 }`}
               >
                 <span>Blogs</span>
@@ -640,8 +640,8 @@ export default function Header() {
                 href="/about"
                 className={`flex items-center text-[14px] py-3 transition-colors ${
                   pathname.startsWith("/about")
-                    ? "text-[#ff3d3d] font-semibold"
-                    : "text-[#333e48] hover:text-[#ff3d3d] font-medium"
+                    ? "text-[#0ea57a] font-semibold"
+                    : "text-[#333e48] hover:text-[#0ea57a] font-medium"
                 }`}
               >
                 <span>About Us</span>
@@ -652,8 +652,8 @@ export default function Header() {
                 href="/what-we-do"
                 className={`flex items-center text-[14px] py-3 transition-colors ${
                   pathname.startsWith("/what-we-do")
-                    ? "text-[#ff3d3d] font-semibold"
-                    : "text-[#333e48] hover:text-[#ff3d3d] font-medium"
+                    ? "text-[#0ea57a] font-semibold"
+                    : "text-[#333e48] hover:text-[#0ea57a] font-medium"
                 }`}
               >
                 <span>What we do</span>
@@ -664,8 +664,8 @@ export default function Header() {
                 href="/partners"
                 className={`flex items-center text-[14px] py-3 transition-colors ${
                   pathname.startsWith("/partners")
-                    ? "text-[#ff3d3d] font-semibold"
-                    : "text-[#333e48] hover:text-[#ff3d3d] font-medium"
+                    ? "text-[#0ea57a] font-semibold"
+                    : "text-[#333e48] hover:text-[#0ea57a] font-medium"
                 }`}
               >
                 <span>Our partners</span>
@@ -678,7 +678,7 @@ export default function Header() {
             <button
               type="button"
               onClick={() => setLanguageOpen((prev) => !prev)}
-              className="flex items-center gap-1.5 text-[13.5px] text-[#555555] hover:text-[#ff3d3d] transition-colors py-2 cursor-pointer select-none"
+              className="flex items-center gap-1.5 text-[13.5px] text-[#555555] hover:text-[#0ea57a] transition-colors py-2 cursor-pointer select-none"
               aria-label="Select Language"
             >
               <Globe size={16} strokeWidth={1.5} className="text-[#666666]" />
@@ -699,13 +699,13 @@ export default function Header() {
                     }}
                     className={`w-full text-left px-3.5 py-1.5 text-[13px] flex items-center justify-between cursor-pointer transition-colors ${
                       selectedLanguage === lang.label
-                        ? "text-[#ff3d3d] font-semibold bg-[#fef2f2]"
-                        : "text-[#444444] hover:text-[#ff3d3d] hover:bg-[#f8f9fa]"
+                        ? "text-[#0ea57a] font-semibold bg-[#ecfdf5]"
+                        : "text-[#444444] hover:text-[#0ea57a] hover:bg-[#f8f9fa]"
                     }`}
                   >
                     <span>{lang.label}</span>
                     {selectedLanguage === lang.label && (
-                      <Check size={14} className="text-[#ff3d3d]" />
+                      <Check size={14} className="text-[#0ea57a]" />
                     )}
                   </button>
                 ))}
@@ -744,15 +744,15 @@ export default function Header() {
                   height={32}
                   className="w-[28px] h-[28px] object-contain transition-transform group-hover:scale-105"
                 />
-                <span className="text-[18px] font-black tracking-tight text-[#15233e] flex items-center">
+                <span className="text-[18px] font-black tracking-tight text-[#171145] flex items-center">
                   Industrial<span className="text-[#0ea57a]">Edge</span>
-                  <span className="text-[#ff3d3d] text-[11px] font-extrabold ml-1 px-1.5 py-0.5 bg-[#fef2f2] rounded border border-[#fee2e2]">.pk</span>
+                  <span className="text-[#0ea57a] text-[11px] font-extrabold ml-1 px-1.5 py-0.5 bg-[#ecfdf5] rounded border border-[#a7f3d0]">.pk</span>
                 </span>
               </Link>
               <button
                 type="button"
                 onClick={() => setMobileMenuOpen(false)}
-                className="w-8 h-8 rounded-full bg-[#f5f5f5] hover:bg-[#ff3d3d] text-[#555] hover:text-white flex items-center justify-center transition-colors cursor-pointer"
+                className="w-8 h-8 rounded-full bg-[#f5f5f5] hover:bg-[#0ea57a] text-[#555] hover:text-white flex items-center justify-center transition-colors cursor-pointer"
                 aria-label="Close menu"
               >
                 <X size={16} strokeWidth={2.5} />
@@ -766,8 +766,8 @@ export default function Header() {
                 onClick={() => setCanvasTab("menu")}
                 className={`py-3 text-[14px] font-semibold transition-all cursor-pointer relative ${
                   canvasTab === "menu"
-                    ? "text-[#ff3d3d] bg-white border-b-2 border-[#ff3d3d]"
-                    : "text-[#555555] hover:text-[#ff3d3d]"
+                    ? "text-[#0ea57a] bg-white border-b-2 border-[#0ea57a]"
+                    : "text-[#555555] hover:text-[#0ea57a]"
                 }`}
               >
                 Menu
@@ -777,8 +777,8 @@ export default function Header() {
                 onClick={() => setCanvasTab("categories")}
                 className={`py-3 text-[14px] font-semibold transition-all cursor-pointer relative ${
                   canvasTab === "categories"
-                    ? "text-[#ff3d3d] bg-white border-b-2 border-[#ff3d3d]"
-                    : "text-[#555555] hover:text-[#ff3d3d]"
+                    ? "text-[#0ea57a] bg-white border-b-2 border-[#0ea57a]"
+                    : "text-[#555555] hover:text-[#0ea57a]"
                 }`}
               >
                 Categories
@@ -797,8 +797,8 @@ export default function Header() {
                       onClick={() => setMobileMenuOpen(false)}
                       className={`text-[14px] transition-colors block ${
                         pathname === "/"
-                          ? "text-[#ff3d3d] font-semibold"
-                          : "text-[#222222] hover:text-[#ff3d3d] font-medium"
+                          ? "text-[#0ea57a] font-semibold"
+                          : "text-[#222222] hover:text-[#0ea57a] font-medium"
                       }`}
                     >
                       Home
@@ -812,8 +812,8 @@ export default function Header() {
                       onClick={() => setMobileMenuOpen(false)}
                       className={`text-[14px] transition-colors block ${
                         pathname.startsWith("/shop")
-                          ? "text-[#ff3d3d] font-semibold"
-                          : "text-[#222222] hover:text-[#ff3d3d] font-medium"
+                          ? "text-[#0ea57a] font-semibold"
+                          : "text-[#222222] hover:text-[#0ea57a] font-medium"
                       }`}
                     >
                       Shop
@@ -827,8 +827,8 @@ export default function Header() {
                       onClick={() => setMobileMenuOpen(false)}
                       className={`text-[14px] transition-colors block ${
                         pathname.startsWith("/blog")
-                          ? "text-[#ff3d3d] font-semibold"
-                          : "text-[#222222] hover:text-[#ff3d3d] font-medium"
+                          ? "text-[#0ea57a] font-semibold"
+                          : "text-[#222222] hover:text-[#0ea57a] font-medium"
                       }`}
                     >
                       Blogs
@@ -842,8 +842,8 @@ export default function Header() {
                       onClick={() => setMobileMenuOpen(false)}
                       className={`text-[14px] transition-colors block ${
                         pathname.startsWith("/about")
-                          ? "text-[#ff3d3d] font-semibold"
-                          : "text-[#222222] hover:text-[#ff3d3d] font-medium"
+                          ? "text-[#0ea57a] font-semibold"
+                          : "text-[#222222] hover:text-[#0ea57a] font-medium"
                       }`}
                     >
                       About Us
@@ -857,8 +857,8 @@ export default function Header() {
                       onClick={() => setMobileMenuOpen(false)}
                       className={`text-[14px] transition-colors block ${
                         pathname.startsWith("/what-we-do")
-                          ? "text-[#ff3d3d] font-semibold"
-                          : "text-[#222222] hover:text-[#ff3d3d] font-medium"
+                          ? "text-[#0ea57a] font-semibold"
+                          : "text-[#222222] hover:text-[#0ea57a] font-medium"
                       }`}
                     >
                       What we do
@@ -872,8 +872,8 @@ export default function Header() {
                       onClick={() => setMobileMenuOpen(false)}
                       className={`text-[14px] transition-colors block ${
                         pathname.startsWith("/partners")
-                          ? "text-[#ff3d3d] font-semibold"
-                          : "text-[#222222] hover:text-[#ff3d3d] font-medium"
+                          ? "text-[#0ea57a] font-semibold"
+                          : "text-[#222222] hover:text-[#0ea57a] font-medium"
                       }`}
                     >
                       Our partners
@@ -887,8 +887,8 @@ export default function Header() {
                       onClick={() => setMobileMenuOpen(false)}
                       className={`text-[14px] transition-colors block ${
                         pathname.startsWith("/contact")
-                          ? "text-[#ff3d3d] font-semibold"
-                          : "text-[#222222] hover:text-[#ff3d3d] font-medium"
+                          ? "text-[#0ea57a] font-semibold"
+                          : "text-[#222222] hover:text-[#0ea57a] font-medium"
                       }`}
                     >
                       Contact Us
@@ -906,7 +906,7 @@ export default function Header() {
                           <Link
                             href={dept.href}
                             onClick={() => setMobileMenuOpen(false)}
-                            className="flex items-center gap-2.5 text-[14px] text-[#333e48] hover:text-[#ff3d3d] transition-colors"
+                            className="flex items-center gap-2.5 text-[14px] text-[#333e48] hover:text-[#0ea57a] transition-colors"
                           >
                             <IconComp
                               size={16}
@@ -925,13 +925,13 @@ export default function Header() {
                                     : dept.name
                                 )
                               }
-                              className="p-1 text-[#888] hover:text-[#ff3d3d]"
+                              className="p-1 text-[#888] hover:text-[#0ea57a]"
                             >
                               <ChevronRight
                                 size={15}
                                 className={`transition-transform duration-200 ${
                                   expandedCanvasMenu === dept.name
-                                    ? "rotate-90 text-[#ff3d3d]"
+                                    ? "rotate-90 text-[#0ea57a]"
                                     : ""
                                 }`}
                               />
@@ -945,7 +945,7 @@ export default function Header() {
                                 key={sub}
                                 href={`/shop?cat=${encodeURIComponent(sub)}`}
                                 onClick={() => setMobileMenuOpen(false)}
-                                className="block py-1 text-[13px] text-[#666666] hover:text-[#ff3d3d]"
+                                className="block py-1 text-[13px] text-[#666666] hover:text-[#0ea57a]"
                               >
                                 {sub}
                               </Link>
@@ -966,7 +966,7 @@ export default function Header() {
                     setMobileMenuOpen(false);
                     openAuthModal("login");
                   }}
-                  className="flex items-center gap-2.5 text-[14px] text-[#333e48] hover:text-[#ff3d3d] transition-colors cursor-pointer w-full text-left"
+                  className="flex items-center gap-2.5 text-[14px] text-[#333e48] hover:text-[#0ea57a] transition-colors cursor-pointer w-full text-left"
                 >
                   <User size={18} strokeWidth={1.6} />
                   <span>My Account / Sign In</span>
@@ -977,7 +977,7 @@ export default function Header() {
                     setMobileMenuOpen(false);
                     openCartDrawer();
                   }}
-                  className="flex items-center gap-2.5 text-[14px] text-[#333e48] hover:text-[#ff3d3d] transition-colors cursor-pointer w-full text-left"
+                  className="flex items-center gap-2.5 text-[14px] text-[#333e48] hover:text-[#0ea57a] transition-colors cursor-pointer w-full text-left"
                 >
                   <ShoppingCart size={18} strokeWidth={1.6} />
                   <span>Shopping Cart ({cartCount})</span>
@@ -993,7 +993,7 @@ export default function Header() {
                     href="https://wa.me/923322316225"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="font-semibold text-[#ff3d3d]"
+                    className="font-semibold text-[#0ea57a]"
                   >
                     +92 332 2316225
                   </a>

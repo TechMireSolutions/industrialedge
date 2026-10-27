@@ -40,7 +40,7 @@ export default function MyAccountPage() {
         {/* 1. BREADCRUMBS                                            */}
         {/* ========================================================= */}
         <nav aria-label="Breadcrumb" className="flex items-center gap-2 text-[13px] text-[#71717a] mb-8">
-          <Link href="/" className="hover:text-[#ff3d3d] transition-colors">
+          <Link href="/" className="hover:text-[#0ea57a] transition-colors">
             Home
           </Link>
           <span className="text-[#a1a1aa] font-normal">&gt;</span>
@@ -76,7 +76,7 @@ export default function MyAccountPage() {
                 <button
                   type="button"
                   onClick={() => setIsLoggedIn(false)}
-                  className="inline-flex items-center gap-1.5 px-4 py-2 border border-[#e4e4e7] hover:border-[#ff3d3d] hover:text-[#ff3d3d] text-[13px] font-medium rounded-[5px] transition-colors cursor-pointer"
+                  className="inline-flex items-center gap-1.5 px-4 py-2 border border-[#e4e4e7] hover:border-[#0ea57a] hover:text-[#0ea57a] text-[13px] font-medium rounded-[5px] transition-colors cursor-pointer"
                 >
                   <LogOut size={15} />
                   <span>Log out</span>
@@ -87,10 +87,10 @@ export default function MyAccountPage() {
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-5">
                 <Link
                   href="/checkout?step=confirmation"
-                  className="p-5 border border-[#e5e7eb] hover:border-[#ff3d3d] rounded-[6px] transition-colors group block text-left"
+                  className="p-5 border border-[#e5e7eb] hover:border-[#0ea57a] rounded-[6px] transition-colors group block text-left"
                 >
-                  <Package size={22} className="text-[#ff3d3d] mb-3" />
-                  <h3 className="font-bold text-[15px] text-[#18181b] group-hover:text-[#ff3d3d] transition-colors">
+                  <Package size={22} className="text-[#0ea57a] mb-3" />
+                  <h3 className="font-bold text-[15px] text-[#18181b] group-hover:text-[#0ea57a] transition-colors">
                     Orders
                   </h3>
                   <p className="text-[12.5px] text-[#71717a] mt-1">
@@ -99,7 +99,7 @@ export default function MyAccountPage() {
                 </Link>
 
                 <div className="p-5 border border-[#e5e7eb] rounded-[6px] text-left">
-                  <MapPin size={22} className="text-[#ff3d3d] mb-3" />
+                  <MapPin size={22} className="text-[#0ea57a] mb-3" />
                   <h3 className="font-bold text-[15px] text-[#18181b]">
                     Addresses
                   </h3>
@@ -109,7 +109,7 @@ export default function MyAccountPage() {
                 </div>
 
                 <div className="p-5 border border-[#e5e7eb] rounded-[6px] text-left">
-                  <Settings size={22} className="text-[#ff3d3d] mb-3" />
+                  <Settings size={22} className="text-[#0ea57a] mb-3" />
                   <h3 className="font-bold text-[15px] text-[#18181b]">
                     Account details
                   </h3>
@@ -140,7 +140,7 @@ export default function MyAccountPage() {
 
                   <div className="mb-5">
                     <label className="block text-[13.5px] font-medium text-[#27272a] mb-2">
-                      Username or email <span className="text-[#ff3d3d]">*</span>
+                      Username or email <span className="text-[#0ea57a]">*</span>
                     </label>
                     <input
                       type="text"
@@ -162,7 +162,7 @@ export default function MyAccountPage() {
                   <div className="flex items-center gap-4">
                     <button
                       type="submit"
-                      className="h-[42px] px-7 bg-[#ff3d3d] hover:bg-[#e03131] text-white font-bold text-[13.5px] rounded-[5px] transition-colors shadow-xs cursor-pointer active:scale-[0.99]"
+                      className="h-[42px] px-7 bg-[#0ea57a] hover:bg-[#0b8462] text-white font-bold text-[13.5px] rounded-[5px] transition-colors shadow-xs cursor-pointer active:scale-[0.99]"
                     >
                       Reset password
                     </button>
@@ -181,7 +181,7 @@ export default function MyAccountPage() {
                   {/* Username or email address * */}
                   <div>
                     <label className="block text-[13.5px] font-medium text-[#27272a] mb-2">
-                      Username or email address <span className="text-[#ff3d3d]">*</span>
+                      Username or email address <span className="text-[#0ea57a]">*</span>
                     </label>
                     <input
                       type="text"
@@ -195,7 +195,7 @@ export default function MyAccountPage() {
                   {/* Password * */}
                   <div>
                     <label className="block text-[13.5px] font-medium text-[#27272a] mb-2">
-                      Password <span className="text-[#ff3d3d]">*</span>
+                      Password <span className="text-[#0ea57a]">*</span>
                     </label>
                     <div className="relative">
                       <input
@@ -229,11 +229,11 @@ export default function MyAccountPage() {
                     </label>
                   </div>
 
-                  {/* Log In Button (Red #ff3d3d) */}
+                  {/* Log In Button (Red #0ea57a) */}
                   <div>
                     <button
                       type="submit"
-                      className="h-[44px] px-8 bg-[#ff3d3d] hover:bg-[#e03131] text-white font-bold text-[14px] rounded-[5px] transition-colors shadow-xs active:scale-[0.99] cursor-pointer inline-flex items-center justify-center"
+                      className="h-[44px] px-8 bg-[#0ea57a] hover:bg-[#0b8462] text-white font-bold text-[14px] rounded-[5px] transition-colors shadow-xs active:scale-[0.99] cursor-pointer inline-flex items-center justify-center"
                     >
                       Log In
                     </button>
@@ -244,7 +244,7 @@ export default function MyAccountPage() {
                     <button
                       type="button"
                       onClick={() => setShowForgotPassword(true)}
-                      className="text-[13px] text-[#71717a] hover:text-[#ff3d3d] hover:underline transition-colors cursor-pointer"
+                      className="text-[13px] text-[#71717a] hover:text-[#0ea57a] hover:underline transition-colors cursor-pointer"
                     >
                       Lost your password?
                     </button>

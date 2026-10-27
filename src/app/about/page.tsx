@@ -120,7 +120,7 @@ export default function AboutPage() {
         {/* 1. BREADCRUMBS                                            */}
         {/* ========================================================= */}
         <nav aria-label="Breadcrumb" className="flex items-center gap-2 text-[13px] text-[#71717a] mb-8">
-          <Link href="/" className="hover:text-[#ff3d3d] transition-colors">
+          <Link href="/" className="hover:text-[#0ea57a] transition-colors">
             Home
           </Link>
           <span className="text-[#a1a1aa] font-normal">&gt;</span>
@@ -134,7 +134,7 @@ export default function AboutPage() {
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-center">
             {/* Left Column: Heading, Description, Bullets */}
             <div className="lg:col-span-7">
-              <div className="inline-flex items-center gap-2 px-3 py-1 bg-[#fef2f2] text-[#ff3d3d] border border-[#fecaca] rounded-full text-xs font-semibold uppercase tracking-wider mb-4">
+              <div className="inline-flex items-center gap-2 px-3 py-1 bg-[#ecfdf5] text-[#0ea57a] border border-[#a7f3d0] rounded-full text-xs font-semibold uppercase tracking-wider mb-4">
                 <Sparkles size={14} />
                 <span>About IndustrialEdge</span>
               </div>
@@ -157,7 +157,7 @@ export default function AboutPage() {
                   "Dedicated 24/7 human technical assistance and order consultation",
                 ].map((item) => (
                   <div key={item} className="flex items-start gap-3">
-                    <CheckCircle2 size={18} className="text-[#ff3d3d] shrink-0 mt-0.5" />
+                    <CheckCircle2 size={18} className="text-[#0ea57a] shrink-0 mt-0.5" />
                     <span className="text-[14px] text-[#27272a] font-medium">{item}</span>
                   </div>
                 ))}
@@ -166,7 +166,7 @@ export default function AboutPage() {
               <div className="flex flex-wrap items-center gap-4">
                 <Link
                   href="/shop"
-                  className="px-7 py-3.5 bg-[#ff3d3d] hover:bg-[#e03131] text-white font-bold text-[14px] rounded-[6px] transition-colors shadow-xs active:scale-[0.99] inline-flex items-center gap-2"
+                  className="px-7 py-3.5 bg-[#0ea57a] hover:bg-[#0b8462] text-white font-bold text-[14px] rounded-[6px] transition-colors shadow-xs active:scale-[0.99] inline-flex items-center gap-2"
                 >
                   <span>Explore Catalog</span>
                   <ArrowRight size={16} />
@@ -195,7 +195,7 @@ export default function AboutPage() {
 
                 {/* Floating Experience Badge */}
                 <div className="absolute -bottom-3 left-2 sm:-left-4 sm:-bottom-4 bg-white border border-[#e5e7eb] rounded-[10px] p-3 sm:p-4 shadow-xl flex items-center gap-3">
-                  <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-[#ff3d3d] text-white flex items-center justify-center font-bold text-base sm:text-lg shadow-md">
+                  <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-[#0ea57a] text-white flex items-center justify-center font-bold text-base sm:text-lg shadow-md">
                     <Zap size={20} />
                   </div>
                   <div>
@@ -206,7 +206,7 @@ export default function AboutPage() {
 
                 {/* Floating Global Reach Badge */}
                 <div className="absolute -top-2 right-2 sm:-right-3 sm:-top-3 bg-white border border-[#e5e7eb] rounded-[10px] py-1.5 px-3 sm:py-2 sm:px-3.5 shadow-lg flex items-center gap-2">
-                  <Globe2 size={15} className="text-[#ff3d3d]" />
+                  <Globe2 size={15} className="text-[#0ea57a]" />
                   <span className="text-[11px] sm:text-xs font-semibold text-[#18181b]">45+ Countries Served</span>
                 </div>
               </div>
@@ -221,7 +221,7 @@ export default function AboutPage() {
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 divide-y sm:divide-y-0 sm:divide-x divide-[#e5e7eb]">
             {STATS.map((stat, i) => (
               <div key={stat.label} className={`text-center ${i !== 0 ? "pt-6 sm:pt-0 sm:pl-6" : ""}`}>
-                <div className="text-[32px] sm:text-[40px] font-bold text-[#ff3d3d] tracking-tight">
+                <div className="text-[32px] sm:text-[40px] font-bold text-[#0ea57a] tracking-tight">
                   {stat.value}
                 </div>
                 <div className="text-[15px] font-bold text-[#18181b] mt-1">
@@ -254,9 +254,9 @@ export default function AboutPage() {
               return (
                 <div
                   key={val.title}
-                  className="bg-white border border-[#e5e7eb] hover:border-[#ff3d3d] rounded-[10px] p-6 transition-all duration-200 hover:shadow-md group"
+                  className="bg-white border border-[#e5e7eb] hover:border-[#0ea57a] rounded-[10px] p-6 transition-all duration-200 hover:shadow-md group"
                 >
-                  <div className="w-12 h-12 rounded-[8px] bg-[#fef2f2] group-hover:bg-[#ff3d3d] text-[#ff3d3d] group-hover:text-white flex items-center justify-center transition-colors mb-4">
+                  <div className="w-12 h-12 rounded-[8px] bg-[#ecfdf5] group-hover:bg-[#0ea57a] text-[#0ea57a] group-hover:text-white flex items-center justify-center transition-colors mb-4">
                     <IconComp size={22} strokeWidth={2} />
                   </div>
                   <h3 className="text-[16px] font-bold text-[#18181b] mb-2">
@@ -312,7 +312,7 @@ export default function AboutPage() {
                 key={m.year}
                 className="p-6 bg-[#fafafa] border border-[#e5e7eb] rounded-[10px] relative overflow-hidden"
               >
-                <div className="text-[28px] font-extrabold text-[#ff3d3d] mb-1">
+                <div className="text-[28px] font-extrabold text-[#0ea57a] mb-1">
                   {m.year}
                 </div>
                 <h3 className="text-[16px] font-bold text-[#18181b] mb-2">
@@ -360,7 +360,7 @@ export default function AboutPage() {
                 <div className="border-t border-[#f4f4f5] pt-4">
                   <div className="font-bold text-[14.5px] text-[#18181b]">{t.name}</div>
                   <div className="text-xs text-[#71717a]">
-                    {t.role} &bull; <span className="text-[#ff3d3d]">{t.company}</span>
+                    {t.role} &bull; <span className="text-[#0ea57a]">{t.company}</span>
                   </div>
                 </div>
               </div>
@@ -383,7 +383,7 @@ export default function AboutPage() {
             <div className="flex flex-wrap items-center gap-4">
               <Link
                 href="/shop"
-                className="px-8 py-3.5 bg-[#ff3d3d] hover:bg-[#e03131] text-white font-bold text-[14px] rounded-[6px] transition-colors shadow-xs active:scale-[0.99] inline-flex items-center gap-2"
+                className="px-8 py-3.5 bg-[#0ea57a] hover:bg-[#0b8462] text-white font-bold text-[14px] rounded-[6px] transition-colors shadow-xs active:scale-[0.99] inline-flex items-center gap-2"
               >
                 <span>Browse All Products</span>
                 <ArrowRight size={16} />

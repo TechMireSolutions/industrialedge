@@ -219,7 +219,7 @@ export default function SmartHomeAppliances() {
     <section className="w-full bg-white py-10 sm:py-12 lg:py-14 select-none">
       {/* Toast Notification */}
       {toastMessage && (
-        <div className="fixed bottom-6 right-6 z-50 bg-[#1e2d3b] text-white px-4 py-2 rounded-lg shadow-xl text-xs sm:text-sm flex items-center gap-2 animate-bounce">
+        <div className="fixed bottom-6 right-6 z-50 bg-[#171145] text-white px-4 py-2 rounded-lg shadow-xl text-xs sm:text-sm flex items-center gap-2 animate-bounce">
           <Check className="w-4 h-4 text-emerald-400" />
           <span>{toastMessage}</span>
         </div>
@@ -284,7 +284,7 @@ export default function SmartHomeAppliances() {
                     handleAddToCart(quickViewProduct);
                     setQuickViewProduct(null);
                   }}
-                  className="flex-1 bg-[#ff3d3d] hover:bg-[#e62e2e] text-white py-2.5 px-4 rounded text-sm font-semibold transition-colors flex items-center justify-center gap-2 cursor-pointer shadow-sm"
+                  className="flex-1 bg-[#0ea57a] hover:bg-[#0b8462] text-white py-2.5 px-4 rounded text-sm font-semibold transition-colors flex items-center justify-center gap-2 cursor-pointer shadow-sm"
                 >
                   <ShoppingCart className="w-4 h-4" />
                   <span>Add to Cart</span>
@@ -313,7 +313,7 @@ export default function SmartHomeAppliances() {
       <div className="max-w-[1440px] mx-auto px-6 lg:px-12">
         {/* Section Header with Title on Left and Navigation Chevrons on Right */}
         <div className="flex items-center justify-between pb-2">
-          <h2 className="text-xl sm:text-2xl font-bold text-[#1e2d3b] tracking-tight">
+          <h2 className="text-xl sm:text-2xl font-bold text-[#171145] tracking-tight">
             Smart Home Appliances
           </h2>
 
@@ -322,7 +322,7 @@ export default function SmartHomeAppliances() {
             <button
               type="button"
               onClick={() => setCurrentPage((prev) => (prev === 0 ? 1 : 0))}
-              className="p-1 text-gray-400 hover:text-[#1e2d3b] transition-colors cursor-pointer select-none active:scale-90"
+              className="p-1 text-gray-400 hover:text-[#171145] transition-colors cursor-pointer select-none active:scale-90"
               aria-label="Previous Page"
             >
               <ChevronLeft className="w-4 h-4 stroke-[2]" />
@@ -330,7 +330,7 @@ export default function SmartHomeAppliances() {
             <button
               type="button"
               onClick={() => setCurrentPage((prev) => (prev === 1 ? 0 : 1))}
-              className="p-1 text-gray-400 hover:text-[#1e2d3b] transition-colors cursor-pointer select-none active:scale-90"
+              className="p-1 text-gray-400 hover:text-[#171145] transition-colors cursor-pointer select-none active:scale-90"
               aria-label="Next Page"
             >
               <ChevronRight className="w-4 h-4 stroke-[2]" />
@@ -372,7 +372,7 @@ export default function SmartHomeAppliances() {
                   {/* Title: turns red on card hover */}
                   <Link
                     href={`/product/${product.id}`}
-                    className="text-[13px] sm:text-[14px] font-medium text-[#004ec3] group-hover:text-[#ff3d3d] leading-[1.35] line-clamp-2 mb-2 transition-colors duration-150 block"
+                    className="text-[13px] sm:text-[14px] font-medium text-[#0ea57a] group-hover:text-[#0ea57a] leading-[1.35] line-clamp-2 mb-2 transition-colors duration-150 block"
                     title={product.name}
                   >
                     {product.name}
@@ -393,7 +393,7 @@ export default function SmartHomeAppliances() {
                       <button
                         type="button"
                         onClick={(e) => handleQuickView(product, e)}
-                        className="w-8 h-8 rounded-full bg-white shadow-[0_2px_8px_rgba(0,0,0,0.08)] border border-gray-100 flex items-center justify-center text-gray-700 hover:text-white hover:bg-[#ff3d3d] hover:border-[#ff3d3d] transition-colors cursor-pointer"
+                        className="w-8 h-8 rounded-full bg-white shadow-[0_2px_8px_rgba(0,0,0,0.08)] border border-gray-100 flex items-center justify-center text-gray-700 hover:text-white hover:bg-[#0ea57a] hover:border-[#0ea57a] transition-colors cursor-pointer"
                         title="Quick View"
                         aria-label="Quick View"
                       >
@@ -407,7 +407,7 @@ export default function SmartHomeAppliances() {
                         className={`w-8 h-8 rounded-full bg-white shadow-[0_2px_8px_rgba(0,0,0,0.08)] border border-gray-100 flex items-center justify-center transition-colors cursor-pointer ${
                           liked
                             ? "text-red-500 border-red-200"
-                            : "text-gray-700 hover:text-white hover:bg-[#ff3d3d] hover:border-[#ff3d3d]"
+                            : "text-gray-700 hover:text-white hover:bg-[#0ea57a] hover:border-[#0ea57a]"
                         }`}
                         title="Wishlist"
                         aria-label="Wishlist"
@@ -422,7 +422,7 @@ export default function SmartHomeAppliances() {
                       <button
                         type="button"
                         onClick={(e) => handleCompare(product, e)}
-                        className="w-8 h-8 rounded-full bg-white shadow-[0_2px_8px_rgba(0,0,0,0.08)] border border-gray-100 flex items-center justify-center text-gray-700 hover:text-white hover:bg-[#ff3d3d] hover:border-[#ff3d3d] transition-colors cursor-pointer"
+                        className="w-8 h-8 rounded-full bg-white shadow-[0_2px_8px_rgba(0,0,0,0.08)] border border-gray-100 flex items-center justify-center text-gray-700 hover:text-white hover:bg-[#0ea57a] hover:border-[#0ea57a] transition-colors cursor-pointer"
                         title="Compare"
                         aria-label="Compare"
                       >
@@ -433,7 +433,7 @@ export default function SmartHomeAppliances() {
                       <button
                         type="button"
                         onClick={(e) => handleAddToCart(product, e)}
-                        className="w-8 h-8 rounded-full bg-white shadow-[0_2px_8px_rgba(0,0,0,0.08)] border border-gray-100 flex items-center justify-center text-gray-700 hover:text-white hover:bg-[#ff3d3d] hover:border-[#ff3d3d] transition-colors cursor-pointer"
+                        className="w-8 h-8 rounded-full bg-white shadow-[0_2px_8px_rgba(0,0,0,0.08)] border border-gray-100 flex items-center justify-center text-gray-700 hover:text-white hover:bg-[#0ea57a] hover:border-[#0ea57a] transition-colors cursor-pointer"
                         title="Add to cart"
                         aria-label="Add to cart"
                       >

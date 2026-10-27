@@ -24,9 +24,9 @@ export default function GameConsoleBanner() {
               className="w-full h-full object-contain drop-shadow-[0_15px_35px_rgba(0,0,0,0.6)]"
             />
 
-            {/* Red Circular SALE 70% Badge pinned to top-right of TV screen */}
+            {/* Circular SALE 70% Badge pinned to top-right of TV screen */}
             <div className="absolute top-[16%] right-[2%] z-20">
-              <div className="w-9 h-9 sm:w-11 sm:h-11 md:w-14 md:h-14 rounded-full bg-[#ff3d3d] text-white flex flex-col items-center justify-center shadow-lg shadow-red-600/50 select-none">
+              <div className="w-9 h-9 sm:w-11 sm:h-11 md:w-14 md:h-14 rounded-full bg-[#0ea57a] text-white flex flex-col items-center justify-center shadow-lg shadow-emerald-600/40 select-none">
                 <span className="text-[8px] sm:text-[9px] md:text-[11px] font-bold uppercase tracking-wider leading-none mb-0.5">
                   SALE
                 </span>

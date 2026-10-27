@@ -7,14 +7,14 @@ export default function BlogHeroFeatured({ post }: { post: BlogPost }) {
   return (
     <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-[#0f172a] via-[#1e293b] to-[#0f172a] text-white p-6 sm:p-8 md:p-10 shadow-xl border border-slate-700/60 mb-12">
       {/* Subtle background glow effect */}
-      <div className="absolute -right-20 -top-20 w-80 h-80 bg-red-600/15 rounded-full blur-3xl pointer-events-none" />
+      <div className="absolute -right-20 -top-20 w-80 h-80 bg-emerald-600/15 rounded-full blur-3xl pointer-events-none" />
       <div className="absolute -left-20 -bottom-20 w-80 h-80 bg-blue-600/15 rounded-full blur-3xl pointer-events-none" />
 
       <div className="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
         {/* Left Column: Text & Editorial Details */}
         <div className="lg:col-span-7 flex flex-col justify-center space-y-4">
           <div className="flex flex-wrap items-center gap-2">
-            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wider bg-[#ff3d3d] text-white shadow-sm">
+            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wider bg-[#0ea57a] text-white shadow-sm">
               <Sparkles className="w-3.5 h-3.5" />
               Featured Editorial
             </span>
@@ -65,7 +65,7 @@ export default function BlogHeroFeatured({ post }: { post: BlogPost }) {
           <div className="pt-2">
             <Link
               href={`/blog/${post.slug}`}
-              className="inline-flex items-center gap-2 px-6 py-3 rounded-lg bg-[#ff3d3d] hover:bg-[#e03131] text-white font-medium text-sm transition-all duration-200 shadow-md hover:shadow-lg hover:shadow-red-500/20 group"
+              className="inline-flex items-center gap-2 px-6 py-3 rounded-lg bg-[#0ea57a] hover:bg-[#0b8462] text-white font-medium text-sm transition-all duration-200 shadow-md hover:shadow-lg hover:shadow-emerald-500/20 group"
             >
               <span>Read Full Deep-Dive</span>
               <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />

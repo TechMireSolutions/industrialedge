@@ -155,7 +155,7 @@ export default function WhatWeDoPage() {
         {/* 1. BREADCRUMBS                                            */}
         {/* ========================================================= */}
         <nav aria-label="Breadcrumb" className="flex items-center gap-2 text-[13px] text-[#71717a] mb-8">
-          <Link href="/" className="hover:text-[#ff3d3d] transition-colors">
+          <Link href="/" className="hover:text-[#0ea57a] transition-colors">
             Home
           </Link>
           <span className="text-[#a1a1aa] font-normal">&gt;</span>
@@ -167,7 +167,7 @@ export default function WhatWeDoPage() {
         {/* ========================================================= */}
         <section className="py-6 sm:py-12">
           <div className="max-w-[900px]">
-            <div className="inline-flex items-center gap-2 px-3 py-1 bg-[#fef2f2] text-[#ff3d3d] border border-[#fecaca] rounded-full text-xs font-semibold uppercase tracking-wider mb-4">
+            <div className="inline-flex items-center gap-2 px-3 py-1 bg-[#ecfdf5] text-[#0ea57a] border border-[#a7f3d0] rounded-full text-xs font-semibold uppercase tracking-wider mb-4">
               <Sparkles size={14} />
               <span>Our Capabilities &amp; Services</span>
             </div>
@@ -184,7 +184,7 @@ export default function WhatWeDoPage() {
             <div className="flex flex-wrap items-center gap-4">
               <Link
                 href="/shop"
-                className="px-8 py-3.5 bg-[#ff3d3d] hover:bg-[#e03131] text-white font-bold text-[14px] rounded-[6px] transition-colors shadow-xs active:scale-[0.99] inline-flex items-center gap-2"
+                className="px-8 py-3.5 bg-[#0ea57a] hover:bg-[#0b8462] text-white font-bold text-[14px] rounded-[6px] transition-colors shadow-xs active:scale-[0.99] inline-flex items-center gap-2"
               >
                 <span>Browse Products &amp; Kits</span>
                 <ArrowRight size={16} />
@@ -215,7 +215,7 @@ export default function WhatWeDoPage() {
                     key={ind.label}
                     className="inline-flex items-center gap-2 px-3.5 py-1.5 bg-[#fafafa] border border-[#e5e7eb] rounded-full text-xs font-medium text-[#3f3f46]"
                   >
-                    <IconComp size={14} className="text-[#ff3d3d]" />
+                    <IconComp size={14} className="text-[#0ea57a]" />
                     <span>{ind.label}</span>
                   </div>
                 );
@@ -243,12 +243,12 @@ export default function WhatWeDoPage() {
               return (
                 <div
                   key={service.id}
-                  className="bg-white border border-[#e5e7eb] hover:border-[#ff3d3d] rounded-[12px] p-7 transition-all duration-200 hover:shadow-lg flex flex-col justify-between group"
+                  className="bg-white border border-[#e5e7eb] hover:border-[#0ea57a] rounded-[12px] p-7 transition-all duration-200 hover:shadow-lg flex flex-col justify-between group"
                 >
                   <div>
                     {/* Header: Icon & Metric Badge */}
                     <div className="flex items-center justify-between mb-5">
-                      <div className="w-13 h-13 rounded-[10px] bg-[#fef2f2] group-hover:bg-[#ff3d3d] text-[#ff3d3d] group-hover:text-white flex items-center justify-center transition-colors">
+                      <div className="w-13 h-13 rounded-[10px] bg-[#ecfdf5] group-hover:bg-[#0ea57a] text-[#0ea57a] group-hover:text-white flex items-center justify-center transition-colors">
                         <IconComp size={24} strokeWidth={2} />
                       </div>
                       <span className="text-[11.5px] font-semibold text-[#059669] bg-[#ecfdf5] border border-[#a7f3d0] px-2.5 py-1 rounded-full">
@@ -256,7 +256,7 @@ export default function WhatWeDoPage() {
                       </span>
                     </div>
 
-                    <h3 className="text-[18px] font-bold text-[#18181b] group-hover:text-[#ff3d3d] transition-colors mb-2 leading-snug">
+                    <h3 className="text-[18px] font-bold text-[#18181b] group-hover:text-[#0ea57a] transition-colors mb-2 leading-snug">
                       {service.title}
                     </h3>
 
@@ -272,7 +272,7 @@ export default function WhatWeDoPage() {
                     <div className="space-y-2.5 mb-6 pt-4 border-t border-[#f4f4f5]">
                       {service.benefits.map((b) => (
                         <div key={b} className="flex items-start gap-2.5 text-[12.5px] text-[#3f3f46]">
-                          <CheckCircle2 size={15} className="text-[#ff3d3d] shrink-0 mt-0.5" />
+                          <CheckCircle2 size={15} className="text-[#0ea57a] shrink-0 mt-0.5" />
                           <span>{b}</span>
                         </div>
                       ))}
@@ -281,7 +281,7 @@ export default function WhatWeDoPage() {
 
                   <Link
                     href="/shop"
-                    className="inline-flex items-center gap-1.5 text-[13px] font-semibold text-[#ff3d3d] hover:text-[#b91c1c] transition-colors pt-2 group/link"
+                    className="inline-flex items-center gap-1.5 text-[13px] font-semibold text-[#0ea57a] hover:text-[#047857] transition-colors pt-2 group/link"
                   >
                     <span>Explore Hardware</span>
                     <ArrowRight size={14} className="group-hover/link:translate-x-1 transition-transform" />
@@ -297,7 +297,7 @@ export default function WhatWeDoPage() {
         {/* ========================================================= */}
         <section className="my-14 py-12 px-6 sm:px-10 bg-[#fafafa] border border-[#e5e7eb] rounded-[14px]">
           <div className="text-center max-w-[650px] mx-auto mb-14">
-            <span className="text-xs font-bold uppercase tracking-wider text-[#ff3d3d] mb-2 block">
+            <span className="text-xs font-bold uppercase tracking-wider text-[#0ea57a] mb-2 block">
               Transparent Methodology
             </span>
             <h2 className="text-[28px] sm:text-[34px] font-bold text-[#18181b] tracking-tight mb-3">
@@ -314,7 +314,7 @@ export default function WhatWeDoPage() {
                 key={item.step}
                 className="bg-white border border-[#e5e7eb] rounded-[10px] p-6 shadow-2xs relative"
               >
-                <div className="text-[32px] font-extrabold text-[#fee2e2] group-hover:text-[#ff3d3d] leading-none mb-4">
+                <div className="text-[32px] font-extrabold text-[#d1fae5] group-hover:text-[#0ea57a] leading-none mb-4">
                   {item.step}
                 </div>
                 <h3 className="text-[16px] font-bold text-[#18181b] mb-2">
@@ -347,7 +347,7 @@ export default function WhatWeDoPage() {
             <div className="flex flex-wrap items-center gap-4">
               <Link
                 href="/contact"
-                className="px-8 py-3.5 bg-[#ff3d3d] hover:bg-[#e03131] text-white font-bold text-[14px] rounded-[6px] transition-colors shadow-xs active:scale-[0.99] inline-flex items-center gap-2"
+                className="px-8 py-3.5 bg-[#0ea57a] hover:bg-[#0b8462] text-white font-bold text-[14px] rounded-[6px] transition-colors shadow-xs active:scale-[0.99] inline-flex items-center gap-2"
               >
                 <span>Talk to an Engineer</span>
                 <ArrowRight size={16} />

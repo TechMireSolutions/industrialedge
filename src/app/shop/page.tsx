@@ -781,7 +781,7 @@ function ShopContent() {
                 <button
                   type="button"
                   onClick={() => handleAddToCart(quickViewItem)}
-                  className="flex-1 h-[44px] bg-[#ff3d3d] hover:bg-[#e03131] text-white font-semibold text-sm rounded flex items-center justify-center gap-2 transition-colors cursor-pointer"
+                  className="flex-1 h-[44px] bg-[#0ea57a] hover:bg-[#0b8462] text-white font-semibold text-sm rounded flex items-center justify-center gap-2 transition-colors cursor-pointer"
                 >
                   <ShoppingCart size={16} />
                   <span>Add To Cart</span>
@@ -791,14 +791,14 @@ function ShopContent() {
                   onClick={() => handleToggleWishlist(quickViewItem)}
                   className={`w-[44px] h-[44px] rounded border flex items-center justify-center transition-colors cursor-pointer ${
                     isWishlisted(quickViewItem.id)
-                      ? "border-[#ff3d3d] text-[#ff3d3d] bg-red-50"
-                      : "border-gray-200 text-gray-500 hover:text-[#ff3d3d] hover:border-[#ff3d3d]"
+                      ? "border-[#0ea57a] text-[#0ea57a] bg-emerald-50"
+                      : "border-gray-200 text-gray-500 hover:text-[#0ea57a] hover:border-[#0ea57a]"
                   }`}
                 >
                   <Heart
                     size={18}
                     className={
-                      isWishlisted(quickViewItem.id) ? "fill-[#ff3d3d]" : ""
+                      isWishlisted(quickViewItem.id) ? "fill-[#0ea57a]" : ""
                     }
                   />
                 </button>
@@ -818,7 +818,7 @@ function ShopContent() {
             <li>
               <Link
                 href="/"
-                className="hover:text-[#ff3d3d] transition-colors"
+                className="hover:text-[#0ea57a] transition-colors"
               >
                 Home
               </Link>
@@ -854,7 +854,7 @@ function ShopContent() {
                     {/* Light Grey Circular Backdrop behind image */}
                     <div
                       className={`w-[78px] h-[78px] sm:w-[82px] sm:h-[82px] rounded-full bg-[#f4f5f7] flex items-center justify-center p-2.5 mb-3 transition-transform duration-200 group-hover:scale-105 ${
-                        isSelected ? "ring-2 ring-[#ff3d3d] bg-[#edf2f7]" : ""
+                        isSelected ? "ring-2 ring-[#0ea57a] bg-[#edf2f7]" : ""
                       }`}
                     >
                       <div className="relative w-[52px] h-[52px]">
@@ -872,8 +872,8 @@ function ShopContent() {
                     <div
                       className={`text-[13px] leading-[1.3] text-center transition-colors min-h-[34px] flex flex-col justify-center ${
                         isSelected
-                          ? "text-[#ff3d3d] font-semibold"
-                          : "text-[#333333] group-hover:text-[#ff3d3d]"
+                          ? "text-[#0ea57a] font-semibold"
+                          : "text-[#333333] group-hover:text-[#0ea57a]"
                       }`}
                     >
                       {cat.titleLines.map((line, idx) => (
@@ -893,7 +893,7 @@ function ShopContent() {
                 type="button"
                 onClick={() => handleCarouselScroll("left")}
                 aria-label="Previous categories"
-                className="w-9 h-9 rounded-full bg-white border border-[#e5e5e5] shadow-[0_2px_10px_rgba(0,0,0,0.12)] hidden sm:flex items-center justify-center text-[#333] hover:text-[#ff3d3d] hover:border-[#ff3d3d] transition-all absolute -left-4.5 top-1/2 -translate-y-1/2 z-20 cursor-pointer"
+                className="w-9 h-9 rounded-full bg-white border border-[#e5e5e5] shadow-[0_2px_10px_rgba(0,0,0,0.12)] hidden sm:flex items-center justify-center text-[#333] hover:text-[#0ea57a] hover:border-[#0ea57a] transition-all absolute -left-4.5 top-1/2 -translate-y-1/2 z-20 cursor-pointer"
               >
                 <ChevronLeft size={18} strokeWidth={2.2} />
               </button>
@@ -904,7 +904,7 @@ function ShopContent() {
               type="button"
               onClick={() => handleCarouselScroll("right")}
               aria-label="Next categories"
-              className="w-9 h-9 rounded-full bg-white border border-[#e5e5e5] shadow-[0_2px_10px_rgba(0,0,0,0.12)] hidden sm:flex items-center justify-center text-[#333] hover:text-[#ff3d3d] hover:border-[#ff3d3d] transition-all absolute -right-4.5 top-1/2 -translate-y-1/2 z-20 cursor-pointer"
+              className="w-9 h-9 rounded-full bg-white border border-[#e5e5e5] shadow-[0_2px_10px_rgba(0,0,0,0.12)] hidden sm:flex items-center justify-center text-[#333] hover:text-[#0ea57a] hover:border-[#0ea57a] transition-all absolute -right-4.5 top-1/2 -translate-y-1/2 z-20 cursor-pointer"
             >
               <ChevronRight size={18} strokeWidth={2.2} />
             </button>
@@ -916,7 +916,7 @@ function ShopContent() {
           <button
             type="button"
             onClick={() => setMobileFilterOpen(true)}
-            className="flex items-center gap-2 px-4 py-2 border border-[#ddd] rounded text-[13.5px] font-medium text-[#333] hover:border-[#ff3d3d]"
+            className="flex items-center gap-2 px-4 py-2 border border-[#ddd] rounded text-[13.5px] font-medium text-[#333] hover:border-[#0ea57a]"
           >
             <SlidersHorizontal size={15} />
             <span>Filter Products</span>
@@ -974,13 +974,13 @@ function ShopContent() {
                         <div className="flex items-center justify-between group">
                           <label
                             onClick={() => handleCategoryToggle(cat.name)}
-                            className="flex items-start gap-3 text-[13.5px] text-[#2d3748] group-hover:text-[#ff3d3d] cursor-pointer select-none transition-colors flex-1"
+                            className="flex items-start gap-3 text-[13.5px] text-[#2d3748] group-hover:text-[#0ea57a] cursor-pointer select-none transition-colors flex-1"
                           >
                             <input
                               type="checkbox"
                               checked={isChecked}
                               onChange={() => {}}
-                              className="w-[15px] h-[15px] rounded-[2px] border border-[#d6dade] text-[#ff3d3d] focus:ring-0 cursor-pointer mt-0.5 shrink-0 accent-[#ff3d3d]"
+                              className="w-[15px] h-[15px] rounded-[2px] border border-[#d6dade] text-[#0ea57a] focus:ring-0 cursor-pointer mt-0.5 shrink-0 accent-[#0ea57a]"
                             />
                             <span className="leading-[1.35]">
                               {cat.displayLines ? (
@@ -1000,7 +1000,7 @@ function ShopContent() {
                             <button
                               type="button"
                               onClick={(e) => toggleCategoryExpand(cat.name, e)}
-                              className="w-5 h-5 flex items-center justify-center text-[#1f2937] hover:text-[#ff3d3d] text-[16px] font-bold cursor-pointer transition-colors shrink-0"
+                              className="w-5 h-5 flex items-center justify-center text-[#1f2937] hover:text-[#0ea57a] text-[16px] font-bold cursor-pointer transition-colors shrink-0"
                               aria-label={isExpanded ? "Collapse" : "Expand"}
                             >
                               {isExpanded ? "−" : "+"}
@@ -1019,12 +1019,12 @@ function ShopContent() {
                                   onClick={() => handleSubCategoryToggle(sub)}
                                   className="flex items-center group cursor-pointer"
                                 >
-                                  <label className="flex items-center gap-3 text-[13px] text-[#4a5568] group-hover:text-[#ff3d3d] cursor-pointer select-none transition-colors">
+                                  <label className="flex items-center gap-3 text-[13px] text-[#4a5568] group-hover:text-[#0ea57a] cursor-pointer select-none transition-colors">
                                     <input
                                       type="checkbox"
                                       checked={isSubChecked}
                                       onChange={() => {}}
-                                      className="w-[14px] h-[14px] rounded-[2px] border border-[#d6dade] text-[#ff3d3d] focus:ring-0 cursor-pointer accent-[#ff3d3d]"
+                                      className="w-[14px] h-[14px] rounded-[2px] border border-[#d6dade] text-[#0ea57a] focus:ring-0 cursor-pointer accent-[#0ea57a]"
                                     />
                                     <span>{sub}</span>
                                   </label>
@@ -1054,12 +1054,12 @@ function ShopContent() {
                       className="flex items-center group cursor-pointer"
                       onClick={() => handleBrandToggle(brand)}
                     >
-                      <label className="flex items-center gap-3 text-[13.5px] text-[#2d3748] group-hover:text-[#ff3d3d] cursor-pointer select-none transition-colors">
+                      <label className="flex items-center gap-3 text-[13.5px] text-[#2d3748] group-hover:text-[#0ea57a] cursor-pointer select-none transition-colors">
                         <input
                           type="checkbox"
                           checked={isChecked}
                           onChange={() => {}}
-                          className="w-[15px] h-[15px] rounded-[2px] border border-[#d6dade] text-[#ff3d3d] focus:ring-0 cursor-pointer accent-[#ff3d3d]"
+                          className="w-[15px] h-[15px] rounded-[2px] border border-[#d6dade] text-[#0ea57a] focus:ring-0 cursor-pointer accent-[#0ea57a]"
                         />
                         <span>{brand}</span>
                       </label>
@@ -1179,7 +1179,7 @@ function ShopContent() {
                   setPriceRange(2000);
                   setMinRating(null);
                 }}
-                className="w-full py-2 border border-[#ff3d3d] text-[#ff3d3d] hover:bg-[#ff3d3d] hover:text-white rounded text-[13px] font-medium transition-colors cursor-pointer mt-2"
+                className="w-full py-2 border border-[#0ea57a] text-[#0ea57a] hover:bg-[#0ea57a] hover:text-white rounded text-[13px] font-medium transition-colors cursor-pointer mt-2"
               >
                 Clear All Filters
               </button>
@@ -1210,8 +1210,8 @@ function ShopContent() {
                     onClick={() => setViewMode("grid")}
                     className={`w-7 h-7 flex items-center justify-center rounded border transition-colors cursor-pointer ${
                       viewMode === "grid"
-                        ? "border-[#ff3d3d] text-[#ff3d3d] bg-white"
-                        : "border-[#e0e0e0] text-[#888888] bg-white hover:text-[#ff3d3d]"
+                        ? "border-[#0ea57a] text-[#0ea57a] bg-white"
+                        : "border-[#e0e0e0] text-[#888888] bg-white hover:text-[#0ea57a]"
                     }`}
                     aria-label="Grid view"
                   >
@@ -1222,8 +1222,8 @@ function ShopContent() {
                     onClick={() => setViewMode("list")}
                     className={`w-7 h-7 flex items-center justify-center rounded border transition-colors cursor-pointer ${
                       viewMode === "list"
-                        ? "border-[#ff3d3d] text-[#ff3d3d] bg-white"
-                        : "border-[#e0e0e0] text-[#888888] bg-white hover:text-[#ff3d3d]"
+                        ? "border-[#0ea57a] text-[#0ea57a] bg-white"
+                        : "border-[#e0e0e0] text-[#888888] bg-white hover:text-[#0ea57a]"
                     }`}
                     aria-label="List view"
                   >
@@ -1236,7 +1236,7 @@ function ShopContent() {
                   id="shop-sort"
                   value={sortBy}
                   onChange={(e) => setSortBy(e.target.value as typeof sortBy)}
-                  className="h-[34px] border border-[#e2e2e2] rounded-[4px] px-3 text-[12.5px] bg-white text-[#333333] focus:outline-none focus:border-[#ff3d3d] cursor-pointer"
+                  className="h-[34px] border border-[#e2e2e2] rounded-[4px] px-3 text-[12.5px] bg-white text-[#333333] focus:outline-none focus:border-[#0ea57a] cursor-pointer"
                 >
                   <option value="default">Default sorting</option>
                   <option value="price-asc">Price: Low to High</option>
@@ -1263,7 +1263,7 @@ function ShopContent() {
                     setPriceRange(2000);
                     setMinRating(null);
                   }}
-                  className="px-5 py-2 bg-[#ff3d3d] text-white rounded text-sm font-medium hover:bg-[#e03131] transition-colors"
+                  className="px-5 py-2 bg-[#0ea57a] text-white rounded text-sm font-medium hover:bg-[#0b8462] transition-colors"
                 >
                   Reset Filters
                 </button>
@@ -1330,7 +1330,7 @@ function ShopContent() {
                           <button
                             type="button"
                             onClick={() => handleAddToCart(product)}
-                            className="px-4 py-2 bg-[#ff3d3d] hover:bg-[#e03131] text-white text-[13px] font-semibold rounded flex items-center gap-2 transition-colors cursor-pointer"
+                            className="px-4 py-2 bg-[#0ea57a] hover:bg-[#0b8462] text-white text-[13px] font-semibold rounded flex items-center gap-2 transition-colors cursor-pointer"
                           >
                             <ShoppingCart size={15} />
                             <span>Add To Cart</span>
@@ -1338,12 +1338,12 @@ function ShopContent() {
                           <button
                             type="button"
                             onClick={() => handleToggleWishlist(product)}
-                            className="p-2 border border-gray-200 rounded text-gray-500 hover:text-[#ff3d3d] hover:border-[#ff3d3d] transition-colors"
+                            className="p-2 border border-gray-200 rounded text-gray-500 hover:text-[#0ea57a] hover:border-[#0ea57a] transition-colors"
                           >
                             <Heart
                               size={16}
                               className={
-                                isWishlisted(product.id) ? "fill-[#ff3d3d] text-[#ff3d3d]" : ""
+                                isWishlisted(product.id) ? "fill-[#0ea57a] text-[#0ea57a]" : ""
                               }
                             />
                           </button>
@@ -1423,7 +1423,7 @@ export default function ShopPage() {
     <Suspense
       fallback={
         <div className="min-h-[500px] flex items-center justify-center">
-          <div className="w-8 h-8 border-4 border-[#ff3d3d] border-t-transparent rounded-full animate-spin" />
+          <div className="w-8 h-8 border-4 border-[#0ea57a] border-t-transparent rounded-full animate-spin" />
         </div>
       }
     >

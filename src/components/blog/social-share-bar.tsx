@@ -89,7 +89,7 @@ export default function SocialShareBar({
       {/* Right: Share Buttons */}
       <div className="flex items-center gap-1.5">
         <span className="text-xs font-semibold text-slate-500 mr-1 flex items-center gap-1">
-          <Share2 className="w-3.5 h-3.5 text-[#ff3d3d]" />
+          <Share2 className="w-3.5 h-3.5 text-[#0ea57a]" />
           Share:
         </span>
 

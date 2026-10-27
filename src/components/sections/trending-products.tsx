@@ -319,7 +319,7 @@ export default function TrendingProducts() {
                 e.stopPropagation();
                 setQuickViewProduct(product);
               }}
-              className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-white shadow-md border border-gray-100 flex items-center justify-center text-gray-700 hover:text-[#004ec3] transition-colors cursor-pointer"
+              className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-white shadow-md border border-gray-100 flex items-center justify-center text-gray-700 hover:text-[#0ea57a] transition-colors cursor-pointer"
               title="Quick View"
               aria-label="Quick View"
             >
@@ -331,7 +331,7 @@ export default function TrendingProducts() {
               type="button"
               onClick={(e) => handleToggleWishlist(product, e)}
               className={`w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-white shadow-md border border-gray-100 flex items-center justify-center transition-colors cursor-pointer ${
-                liked ? "text-red-500" : "text-gray-700 hover:text-[#004ec3]"
+                liked ? "text-red-500" : "text-gray-700 hover:text-[#0ea57a]"
               }`}
               title="Wishlist"
               aria-label="Wishlist"
@@ -346,7 +346,7 @@ export default function TrendingProducts() {
             <button
               type="button"
               onClick={(e) => handleCompare(product, e)}
-              className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-white shadow-md border border-gray-100 flex items-center justify-center text-gray-700 hover:text-[#004ec3] transition-colors cursor-pointer"
+              className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-white shadow-md border border-gray-100 flex items-center justify-center text-gray-700 hover:text-[#0ea57a] transition-colors cursor-pointer"
               title="Compare"
               aria-label="Compare"
             >
@@ -359,7 +359,7 @@ export default function TrendingProducts() {
             <button
               type="button"
               onClick={(e) => handleAddToCart(product, e)}
-              className="w-full bg-[#ff3d3d] hover:bg-[#e62e2e] text-white text-[12px] font-semibold py-2 rounded-[4px] shadow-sm transition-colors flex items-center justify-center cursor-pointer"
+              className="w-full bg-[#0ea57a] hover:bg-[#0b8462] text-white text-[12px] font-semibold py-2 rounded-[4px] shadow-sm transition-colors flex items-center justify-center cursor-pointer"
             >
               Add to cart
             </button>
@@ -377,7 +377,7 @@ export default function TrendingProducts() {
             {/* Product Title */}
             <Link
               href={`/product/${product.id}`}
-              className="text-[12px] sm:text-[13px] font-medium text-[#004ec3] leading-[1.3] line-clamp-2 hover:underline mb-1.5 transition-colors block"
+              className="text-[12px] sm:text-[13px] font-medium text-[#0ea57a] leading-[1.3] line-clamp-2 hover:underline mb-1.5 transition-colors block"
               title={product.name}
             >
               {product.name}
@@ -404,7 +404,7 @@ export default function TrendingProducts() {
     <section className="w-full bg-white py-10 sm:py-12 lg:py-14 select-none overflow-hidden">
       {/* Toast Notification */}
       {toastMessage && (
-        <div className="fixed bottom-6 right-6 z-50 bg-[#1e2d3b] text-white px-4 py-2 rounded-lg shadow-xl text-xs sm:text-sm flex items-center gap-2 animate-bounce">
+        <div className="fixed bottom-6 right-6 z-50 bg-[#171145] text-white px-4 py-2 rounded-lg shadow-xl text-xs sm:text-sm flex items-center gap-2 animate-bounce">
           <Check className="w-4 h-4 text-emerald-400" />
           <span>{toastMessage}</span>
         </div>
@@ -413,7 +413,7 @@ export default function TrendingProducts() {
       <div className="max-w-[1440px] mx-auto px-6 lg:px-12">
         {/* Section Header: Title on left, Carousel controls on right */}
         <div className="flex items-center justify-between pb-3 mb-6">
-          <h2 className="text-xl sm:text-2xl font-bold text-[#1e2d3b] tracking-tight">
+          <h2 className="text-xl sm:text-2xl font-bold text-[#171145] tracking-tight">
             Trending Products
           </h2>
 
@@ -422,7 +422,7 @@ export default function TrendingProducts() {
             <button
               type="button"
               onClick={handlePrev}
-              className="p-1.5 text-gray-400 hover:text-[#1e2d3b] transition-colors cursor-pointer select-none active:scale-90"
+              className="p-1.5 text-gray-400 hover:text-[#171145] transition-colors cursor-pointer select-none active:scale-90"
               aria-label="Previous Products"
             >
               <ChevronLeft className="w-4 h-4 stroke-[2]" />
@@ -430,7 +430,7 @@ export default function TrendingProducts() {
             <button
               type="button"
               onClick={handleNext}
-              className="p-1.5 text-gray-400 hover:text-[#1e2d3b] transition-colors cursor-pointer select-none active:scale-90"
+              className="p-1.5 text-gray-400 hover:text-[#171145] transition-colors cursor-pointer select-none active:scale-90"
               aria-label="Next Products"
             >
               <ChevronRight className="w-4 h-4 stroke-[2]" />
@@ -504,14 +504,14 @@ export default function TrendingProducts() {
                 <span className="text-xs uppercase tracking-wider text-[#73787d] font-semibold">
                   {quickViewProduct.category}
                 </span>
-                <h3 className="text-base font-bold text-[#1e2d3b] mt-1 leading-snug">
+                <h3 className="text-base font-bold text-[#171145] mt-1 leading-snug">
                   {quickViewProduct.name}
                 </h3>
                 <p className="text-xs text-gray-500 mt-2 line-clamp-3">
                   {quickViewProduct.description}
                 </p>
                 <div className="flex items-baseline gap-2 mt-3">
-                  <span className="text-xl font-bold text-[#004ec3]">
+                  <span className="text-xl font-bold text-[#0ea57a]">
                     ${quickViewProduct.price.toFixed(2)}
                   </span>
                   {quickViewProduct.originalPrice && (
@@ -528,7 +528,7 @@ export default function TrendingProducts() {
                       handleAddToCart(quickViewProduct);
                       setQuickViewProduct(null);
                     }}
-                    className="flex-1 bg-[#ff3d3d] hover:bg-[#e62e2e] text-white py-2 px-4 rounded-md text-sm font-semibold flex items-center justify-center gap-2 transition-colors cursor-pointer"
+                    className="flex-1 bg-[#0ea57a] hover:bg-[#0b8462] text-white py-2 px-4 rounded-md text-sm font-semibold flex items-center justify-center gap-2 transition-colors cursor-pointer"
                   >
                     <ShoppingCart className="w-4 h-4" />
                     Add to Cart

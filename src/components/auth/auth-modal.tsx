@@ -118,7 +118,7 @@ export default function AuthModal() {
           <button
             type="button"
             onClick={closeAuthModal}
-            className="p-1 text-[#18181b] hover:text-[#ff3d3d] hover:bg-[#f4f4f5] rounded-full transition-colors cursor-pointer"
+            className="p-1 text-[#18181b] hover:text-[#0ea57a] hover:bg-[#f4f4f5] rounded-full transition-colors cursor-pointer"
             aria-label="Close modal"
           >
             <X size={20} strokeWidth={2} />
@@ -160,7 +160,7 @@ export default function AuthModal() {
 
             <button
               type="submit"
-              className="w-full h-[46px] bg-[#ff3d3d] hover:bg-[#e03131] text-white font-bold text-[14px] rounded-[6px] transition-colors shadow-xs cursor-pointer active:scale-[0.99] mt-3"
+              className="w-full h-[46px] bg-[#0ea57a] hover:bg-[#0b8462] text-white font-bold text-[14px] rounded-[6px] transition-colors shadow-xs cursor-pointer active:scale-[0.99] mt-3"
             >
               Reset Password
             </button>
@@ -169,7 +169,7 @@ export default function AuthModal() {
               <button
                 type="button"
                 onClick={() => setShowForgotPassword(false)}
-                className="text-[13px] text-[#71717a] hover:text-[#ff3d3d] hover:underline cursor-pointer transition-colors"
+                className="text-[13px] text-[#71717a] hover:text-[#0ea57a] hover:underline cursor-pointer transition-colors"
               >
                 Back to Login
               </button>
@@ -215,7 +215,7 @@ export default function AuthModal() {
               <button
                 type="button"
                 onClick={() => setShowForgotPassword(true)}
-                className="text-[12.5px] text-[#71717a] hover:text-[#ff3d3d] hover:underline cursor-pointer transition-colors"
+                className="text-[12.5px] text-[#71717a] hover:text-[#0ea57a] hover:underline cursor-pointer transition-colors"
               >
                 Forgot password?
               </button>
@@ -224,7 +224,7 @@ export default function AuthModal() {
             {/* Red Login Button */}
             <button
               type="submit"
-              className="w-full h-[46px] bg-[#ff3d3d] hover:bg-[#e03131] text-white font-bold text-[14px] rounded-[6px] transition-colors shadow-xs cursor-pointer active:scale-[0.99] mt-3"
+              className="w-full h-[46px] bg-[#0ea57a] hover:bg-[#0b8462] text-white font-bold text-[14px] rounded-[6px] transition-colors shadow-xs cursor-pointer active:scale-[0.99] mt-3"
             >
               Login
             </button>
@@ -238,7 +238,7 @@ export default function AuthModal() {
                   setShowForgotPassword(false);
                   setAuthModalTab("register");
                 }}
-                className="text-[#ff3d3d] hover:underline font-semibold cursor-pointer transition-colors ml-1"
+                className="text-[#0ea57a] hover:underline font-semibold cursor-pointer transition-colors ml-1"
               >
                 Register.
               </button>
@@ -312,7 +312,7 @@ export default function AuthModal() {
             {/* Red Sign Up Button */}
             <button
               type="submit"
-              className="w-full h-[46px] bg-[#ff3d3d] hover:bg-[#e03131] text-white font-bold text-[14px] rounded-[6px] transition-colors shadow-xs cursor-pointer active:scale-[0.99] mt-4"
+              className="w-full h-[46px] bg-[#0ea57a] hover:bg-[#0b8462] text-white font-bold text-[14px] rounded-[6px] transition-colors shadow-xs cursor-pointer active:scale-[0.99] mt-4"
             >
               Sign Up
             </button>
@@ -326,7 +326,7 @@ export default function AuthModal() {
                   setShowForgotPassword(false);
                   setAuthModalTab("login");
                 }}
-                className="text-[#ff3d3d] hover:underline font-semibold cursor-pointer transition-colors ml-1"
+                className="text-[#0ea57a] hover:underline font-semibold cursor-pointer transition-colors ml-1"
               >
                 Sign In.
               </button>

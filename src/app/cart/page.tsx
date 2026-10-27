@@ -84,7 +84,7 @@ export default function CartPage() {
         {/* 1. BREADCRUMBS                                            */}
         {/* ========================================================= */}
         <nav aria-label="Breadcrumb" className="flex items-center gap-2 text-[13px] text-[#71717a] mb-8">
-          <Link href="/" className="hover:text-[#ff3d3d] transition-colors">
+          <Link href="/" className="hover:text-[#0ea57a] transition-colors">
             Home
           </Link>
           <span className="text-[#a1a1aa] font-normal">&gt;</span>
@@ -99,11 +99,11 @@ export default function CartPage() {
             {/* Step 1: Shopping Cart (ACTIVE) */}
             <div className="relative flex-1 flex flex-col items-center z-10">
               {/* Connecting line on the left */}
-              <div className="absolute top-4 sm:top-5 left-0 right-1/2 h-[2px] sm:h-[2.5px] bg-[#ff3d3d] -z-10" />
+              <div className="absolute top-4 sm:top-5 left-0 right-1/2 h-[2px] sm:h-[2.5px] bg-[#0ea57a] -z-10" />
               {/* Connecting line on the right */}
               <div className="absolute top-4 sm:top-5 left-1/2 right-0 h-[2px] bg-[#e4e4e7] -z-10" />
 
-              <div className="w-8 h-8 sm:w-11 sm:h-11 rounded-full bg-[#ff3d3d] text-white flex items-center justify-center shadow-[0_4px_12px_rgba(255,61,61,0.25)] ring-2 sm:ring-4 ring-white">
+              <div className="w-8 h-8 sm:w-11 sm:h-11 rounded-full bg-[#0ea57a] text-white flex items-center justify-center shadow-[0_4px_12px_rgba(14, 165, 122, 0.25)] ring-2 sm:ring-4 ring-white">
                 <ShoppingCart className="w-3.5 h-3.5 sm:w-[19px] sm:h-[19px]" strokeWidth={2} />
               </div>
               <span className="mt-1.5 sm:mt-2.5 text-[11px] sm:text-[14px] font-semibold text-center text-[#18181b]">
@@ -157,7 +157,7 @@ export default function CartPage() {
             </p>
             <Link
               href="/shop"
-              className="inline-flex items-center gap-2 px-7 py-3 bg-[#ff3d3d] hover:bg-[#e03131] text-white font-medium text-[14px] rounded-[6px] transition-all shadow-sm hover:shadow active:scale-[0.99]"
+              className="inline-flex items-center gap-2 px-7 py-3 bg-[#0ea57a] hover:bg-[#0b8462] text-white font-medium text-[14px] rounded-[6px] transition-all shadow-sm hover:shadow active:scale-[0.99]"
             >
               <span>Return to shop</span>
               <ArrowRight size={16} />
@@ -198,7 +198,7 @@ export default function CartPage() {
                             <button
                               type="button"
                               onClick={() => removeFromCart(item.id)}
-                              className="text-[#9ca3af] hover:text-[#ff3d3d] transition-colors p-1 cursor-pointer shrink-0"
+                              className="text-[#9ca3af] hover:text-[#0ea57a] transition-colors p-1 cursor-pointer shrink-0"
                               title="Remove item"
                               aria-label={`Remove ${item.name}`}
                             >
@@ -221,7 +221,7 @@ export default function CartPage() {
                             <div className="min-w-0 flex-1">
                               <Link
                                 href={`/product/${item.id}`}
-                                className="text-[14.5px] font-semibold text-[#18181b] hover:text-[#ff3d3d] transition-colors leading-[1.35] line-clamp-2"
+                                className="text-[14.5px] font-semibold text-[#18181b] hover:text-[#0ea57a] transition-colors leading-[1.35] line-clamp-2"
                               >
                                 {item.name}
                               </Link>
@@ -245,7 +245,7 @@ export default function CartPage() {
                             <button
                               type="button"
                               onClick={() => updateCartQty(item.id, item.qty - 1)}
-                              className="w-6 h-6 rounded-full flex items-center justify-center text-[#71717a] hover:text-[#ff3d3d] hover:bg-[#f4f4f5] transition-colors cursor-pointer"
+                              className="w-6 h-6 rounded-full flex items-center justify-center text-[#71717a] hover:text-[#0ea57a] hover:bg-[#f4f4f5] transition-colors cursor-pointer"
                               title="Decrease quantity"
                               aria-label="Decrease quantity"
                             >
@@ -257,7 +257,7 @@ export default function CartPage() {
                             <button
                               type="button"
                               onClick={() => updateCartQty(item.id, item.qty + 1)}
-                              className="w-6 h-6 rounded-full flex items-center justify-center text-[#71717a] hover:text-[#ff3d3d] hover:bg-[#f4f4f5] transition-colors cursor-pointer"
+                              className="w-6 h-6 rounded-full flex items-center justify-center text-[#71717a] hover:text-[#0ea57a] hover:bg-[#f4f4f5] transition-colors cursor-pointer"
                               title="Increase quantity"
                               aria-label="Increase quantity"
                             >
@@ -388,7 +388,7 @@ export default function CartPage() {
                     <button
                       type="button"
                       onClick={() => setIsChangingAddress((prev) => !prev)}
-                      className="font-medium text-[#18181b] hover:text-[#ff3d3d] hover:underline cursor-pointer transition-colors mt-0.5 inline-block"
+                      className="font-medium text-[#18181b] hover:text-[#0ea57a] hover:underline cursor-pointer transition-colors mt-0.5 inline-block"
                     >
                       {isChangingAddress ? "Close" : "Change address"}
                     </button>
@@ -451,7 +451,7 @@ export default function CartPage() {
                 {/* Total Row */}
                 <div className="py-4 flex items-center justify-between text-[15px]">
                   <span className="font-bold text-[#18181b]">Total</span>
-                  <span className="text-[20px] font-bold text-[#ff3d3d]">
+                  <span className="text-[20px] font-bold text-[#0ea57a]">
                     ${finalTotal.toFixed(2)}
                   </span>
                 </div>
@@ -459,7 +459,7 @@ export default function CartPage() {
                 {/* Proceed To Checkout Button */}
                 <Link
                   href="/checkout"
-                  className="w-full mt-2 h-[48px] bg-[#ff3d3d] hover:bg-[#e03131] text-white font-bold text-[14.5px] rounded-[6px] flex items-center justify-center transition-colors shadow-xs cursor-pointer active:scale-[0.99]"
+                  className="w-full mt-2 h-[48px] bg-[#0ea57a] hover:bg-[#0b8462] text-white font-bold text-[14.5px] rounded-[6px] flex items-center justify-center transition-colors shadow-xs cursor-pointer active:scale-[0.99]"
                 >
                   Proceed To Checkout
                 </Link>
@@ -471,7 +471,7 @@ export default function CartPage() {
         {/* ========================================================= */}
         {/* 4. RED ACCENT BAR & FREE SHIPPING QUALIFIED BANNER        */}
         {/* ========================================================= */}
-        <div className="mt-12 pt-6 border-t-[3px] border-[#ff3d3d]">
+        <div className="mt-12 pt-6 border-t-[3px] border-[#0ea57a]">
           <div className="flex items-center gap-2.5 text-[13.5px] text-[#333e48]">
             <Truck size={18} strokeWidth={1.75} className="text-[#333e48] shrink-0" />
             <span>

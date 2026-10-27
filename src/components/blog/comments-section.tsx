@@ -61,7 +61,7 @@ export default function CommentsSection({
       {/* Header */}
       <div className="flex items-center justify-between mb-8">
         <h3 className="text-xl sm:text-2xl font-bold text-slate-900 flex items-center gap-2.5">
-          <MessageSquare className="w-5 h-5 text-[#ff3d3d]" />
+          <MessageSquare className="w-5 h-5 text-[#0ea57a]" />
           <span>Discussion & Comments</span>
           <span className="text-sm font-normal text-slate-500 bg-slate-100 px-2.5 py-0.5 rounded-full">
             {comments.length}
@@ -99,7 +99,7 @@ export default function CommentsSection({
                   placeholder="e.g. Engr. Hamza"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
-                  className="w-full px-3.5 py-2 text-sm bg-white border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#ff3d3d]/20 focus:border-[#ff3d3d]"
+                  className="w-full px-3.5 py-2 text-sm bg-white border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#0ea57a]/20 focus:border-[#0ea57a]"
                 />
               </div>
               <div>
@@ -112,7 +112,7 @@ export default function CommentsSection({
                   placeholder="hamza@domain.com"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="w-full px-3.5 py-2 text-sm bg-white border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#ff3d3d]/20 focus:border-[#ff3d3d]"
+                  className="w-full px-3.5 py-2 text-sm bg-white border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#0ea57a]/20 focus:border-[#0ea57a]"
                 />
               </div>
             </div>
@@ -150,13 +150,13 @@ export default function CommentsSection({
                 placeholder={`Write your thoughts regarding "${postTitle}"...`}
                 value={content}
                 onChange={(e) => setContent(e.target.value)}
-                className="w-full px-3.5 py-2.5 text-sm bg-white border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#ff3d3d]/20 focus:border-[#ff3d3d]"
+                className="w-full px-3.5 py-2.5 text-sm bg-white border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#0ea57a]/20 focus:border-[#0ea57a]"
               />
             </div>
 
             <button
               type="submit"
-              className="inline-flex items-center gap-2 px-6 py-2.5 bg-[#ff3d3d] hover:bg-[#e03131] text-white font-semibold text-sm rounded-lg shadow-sm hover:shadow transition-all"
+              className="inline-flex items-center gap-2 px-6 py-2.5 bg-[#0ea57a] hover:bg-[#0b8462] text-white font-semibold text-sm rounded-lg shadow-sm hover:shadow transition-all"
             >
               <span>Submit Comment</span>
               <Send className="w-4 h-4" />

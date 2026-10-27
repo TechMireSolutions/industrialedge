@@ -65,10 +65,10 @@ export default async function BlogPostPage({ params }: PageProps) {
   if (!post) {
     return (
       <div className="min-h-[70vh] flex flex-col items-center justify-center text-center px-4 bg-[#f8fafc]">
-        <div className="w-16 h-16 rounded-full bg-red-100 text-[#ff3d3d] flex items-center justify-center mb-4">
+        <div className="w-16 h-16 rounded-full bg-emerald-100 text-[#0ea57a] flex items-center justify-center mb-4">
           <Cpu className="w-8 h-8" />
         </div>
-        <h1 className="text-2xl sm:text-3xl font-extrabold text-[#15233e] mb-2">
+        <h1 className="text-2xl sm:text-3xl font-extrabold text-[#171145] mb-2">
           Article Not Found
         </h1>
         <p className="text-slate-600 max-w-md mb-6 text-sm">
@@ -76,7 +76,7 @@ export default async function BlogPostPage({ params }: PageProps) {
         </p>
         <Link
           href="/blog"
-          className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg bg-[#ff3d3d] text-white text-sm font-semibold hover:bg-[#e03131] transition-colors"
+          className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg bg-[#0ea57a] text-white text-sm font-semibold hover:bg-[#0b8462] transition-colors"
         >
           <ArrowLeft className="w-4 h-4" />
           <span>Back to Blog Hub</span>
@@ -102,11 +102,11 @@ export default async function BlogPostPage({ params }: PageProps) {
         <div className="container max-w-5xl mx-auto px-4 sm:px-6">
           {/* Breadcrumbs */}
           <nav aria-label="Breadcrumb" className="mb-6 flex items-center gap-2 text-xs text-slate-500 flex-wrap">
-            <Link href="/" className="hover:text-[#ff3d3d] transition-colors">
+            <Link href="/" className="hover:text-[#0ea57a] transition-colors">
               Home
             </Link>
             <ChevronRight className="w-3 h-3 text-slate-400" />
-            <Link href="/blog" className="hover:text-[#ff3d3d] transition-colors">
+            <Link href="/blog" className="hover:text-[#0ea57a] transition-colors">
               Blog
             </Link>
             <ChevronRight className="w-3 h-3 text-slate-400" />
@@ -119,7 +119,7 @@ export default async function BlogPostPage({ params }: PageProps) {
 
           {/* Badges & Meta */}
           <div className="flex flex-wrap items-center gap-3 mb-4">
-            <span className="px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wider bg-red-100 text-[#ff3d3d]">
+            <span className="px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wider bg-emerald-100 text-[#0ea57a]">
               {post.category}
             </span>
             <span className="text-xs text-slate-500 flex items-center gap-1.5">
@@ -139,7 +139,7 @@ export default async function BlogPostPage({ params }: PageProps) {
           </div>
 
           {/* H1 Title */}
-          <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-[42px] font-extrabold text-[#15233e] tracking-tight leading-[1.25] mb-5">
+          <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-[42px] font-extrabold text-[#171145] tracking-tight leading-[1.25] mb-5">
             {post.title}
           </h1>
 
@@ -240,7 +240,7 @@ export default async function BlogPostPage({ params }: PageProps) {
               {post.sections.map((section) => (
                 <section key={section.id} id={section.id} className="scroll-mt-24">
                   {section.heading && (
-                    <h2 className="text-xl sm:text-2xl font-bold text-[#15233e] tracking-tight mb-4 pt-4 border-t border-slate-200/60 first:border-t-0 first:pt-0">
+                    <h2 className="text-xl sm:text-2xl font-bold text-[#171145] tracking-tight mb-4 pt-4 border-t border-slate-200/60 first:border-t-0 first:pt-0">
                       {section.heading}
                     </h2>
                   )}
@@ -264,8 +264,8 @@ export default async function BlogPostPage({ params }: PageProps) {
 
                   {/* Optional Blockquote */}
                   {section.quote && (
-                    <div className="my-6 p-5 sm:p-6 rounded-xl bg-slate-50 border-l-4 border-[#ff3d3d] shadow-xs">
-                      <Quote className="w-6 h-6 text-[#ff3d3d] opacity-50 mb-2" />
+                    <div className="my-6 p-5 sm:p-6 rounded-xl bg-slate-50 border-l-4 border-[#0ea57a] shadow-xs">
+                      <Quote className="w-6 h-6 text-[#0ea57a] opacity-50 mb-2" />
                       <p className="text-slate-800 font-medium italic text-sm sm:text-base leading-relaxed mb-2">
                         &ldquo;{section.quote.text}&rdquo;
                       </p>
@@ -332,7 +332,7 @@ export default async function BlogPostPage({ params }: PageProps) {
                     <ul className="my-4 space-y-2">
                       {section.bulletPoints.map((pt, pIdx) => (
                         <li key={pIdx} className="flex items-start gap-2 text-xs sm:text-sm text-slate-700">
-                          <span className="text-[#ff3d3d] font-bold mr-1">•</span>
+                          <span className="text-[#0ea57a] font-bold mr-1">•</span>
                           <span>{pt}</span>
                         </li>
                       ))}
@@ -344,7 +344,7 @@ export default async function BlogPostPage({ params }: PageProps) {
 
             {/* In-Article Product Spotlight Card */}
             {post.featuredProduct && (
-              <div className="my-10 bg-white rounded-2xl border-2 border-[#15233e]/10 p-5 sm:p-6 shadow-md">
+              <div className="my-10 bg-white rounded-2xl border-2 border-[#171145]/10 p-5 sm:p-6 shadow-md">
                 <div className="flex flex-col sm:flex-row items-center gap-6">
                   <div className="relative w-32 h-32 rounded-xl overflow-hidden bg-slate-100 flex-shrink-0 border border-slate-200">
                     <Image
@@ -355,13 +355,13 @@ export default async function BlogPostPage({ params }: PageProps) {
                       className="object-cover"
                     />
                     {post.featuredProduct.badge && (
-                      <span className="absolute top-1 left-1 px-1.5 py-0.5 rounded text-[10px] font-bold bg-[#ff3d3d] text-white">
+                      <span className="absolute top-1 left-1 px-1.5 py-0.5 rounded text-[10px] font-bold bg-[#0ea57a] text-white">
                         {post.featuredProduct.badge}
                       </span>
                     )}
                   </div>
                   <div className="flex-1 text-center sm:text-left">
-                    <span className="text-xs font-semibold text-[#ff3d3d] uppercase tracking-wider">
+                    <span className="text-xs font-semibold text-[#0ea57a] uppercase tracking-wider">
                       Featured in this article
                     </span>
                     <h4 className="text-base sm:text-lg font-bold text-slate-900 mt-1 mb-2">
@@ -375,7 +375,7 @@ export default async function BlogPostPage({ params }: PageProps) {
                         </span>
                       </div>
                       <span className="text-slate-300">•</span>
-                      <span className="text-sm font-bold text-[#15233e]">
+                      <span className="text-sm font-bold text-[#171145]">
                         {post.featuredProduct.price}
                       </span>
                       {post.featuredProduct.originalPrice && (
@@ -386,7 +386,7 @@ export default async function BlogPostPage({ params }: PageProps) {
                     </div>
                     <Link
                       href={post.featuredProduct.href}
-                      className="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg bg-[#15233e] hover:bg-[#ff3d3d] text-white text-xs font-semibold transition-colors"
+                      className="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg bg-[#171145] hover:bg-[#0ea57a] text-white text-xs font-semibold transition-colors"
                     >
                       <span>View Specifications & Buy</span>
                       <ExternalLink className="w-3.5 h-3.5" />
@@ -420,7 +420,7 @@ export default async function BlogPostPage({ params }: PageProps) {
                 className="w-16 h-16 sm:w-20 sm:h-20 rounded-full object-cover ring-2 ring-slate-200 flex-shrink-0"
               />
               <div className="flex-1">
-                <span className="text-[11px] font-bold uppercase tracking-wider text-[#ff3d3d]">
+                <span className="text-[11px] font-bold uppercase tracking-wider text-[#0ea57a]">
                   Written By Contributor
                 </span>
                 <h4 className="text-lg font-bold text-slate-900 mt-0.5">
@@ -434,7 +434,7 @@ export default async function BlogPostPage({ params }: PageProps) {
                 </p>
                 <Link
                   href="/blog"
-                  className="text-xs font-semibold text-[#ff3d3d] hover:underline inline-flex items-center gap-1"
+                  className="text-xs font-semibold text-[#0ea57a] hover:underline inline-flex items-center gap-1"
                 >
                   <span>More articles by {post.author.name.split(" ")[0]}</span>
                   <ArrowRight className="w-3.5 h-3.5" />
@@ -453,7 +453,7 @@ export default async function BlogPostPage({ params }: PageProps) {
                     <ArrowLeft className="w-3.5 h-3.5 group-hover:-translate-x-1 transition-transform" />
                     Previous Article
                   </span>
-                  <h5 className="text-sm font-bold text-slate-800 group-hover:text-[#ff3d3d] transition-colors line-clamp-2">
+                  <h5 className="text-sm font-bold text-slate-800 group-hover:text-[#0ea57a] transition-colors line-clamp-2">
                     {prevPost.title}
                   </h5>
                 </Link>
@@ -472,7 +472,7 @@ export default async function BlogPostPage({ params }: PageProps) {
                     Next Article
                     <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
                   </span>
-                  <h5 className="text-sm font-bold text-slate-800 group-hover:text-[#ff3d3d] transition-colors line-clamp-2">
+                  <h5 className="text-sm font-bold text-slate-800 group-hover:text-[#0ea57a] transition-colors line-clamp-2">
                     {nextPost.title}
                   </h5>
                 </Link>
@@ -487,16 +487,16 @@ export default async function BlogPostPage({ params }: PageProps) {
             <div className="mt-12 pt-10 border-t border-slate-200">
               <div className="flex items-center justify-between mb-6">
                 <div>
-                  <span className="text-xs font-bold uppercase tracking-wider text-[#ff3d3d]">
+                  <span className="text-xs font-bold uppercase tracking-wider text-[#0ea57a]">
                     Further Reading
                   </span>
-                  <h3 className="text-xl font-bold text-[#15233e]">
+                  <h3 className="text-xl font-bold text-[#171145]">
                     Related Articles in {post.category}
                   </h3>
                 </div>
                 <Link
                   href="/blog"
-                  className="text-xs font-semibold text-[#ff3d3d] hover:underline flex items-center gap-1"
+                  className="text-xs font-semibold text-[#0ea57a] hover:underline flex items-center gap-1"
                 >
                   <span>View All</span>
                   <ArrowRight className="w-3.5 h-3.5" />
@@ -546,10 +546,10 @@ export default async function BlogPostPage({ params }: PageProps) {
                         />
                       </div>
                       <div className="flex-1 min-w-0">
-                        <span className="text-[10px] font-semibold uppercase text-[#ff3d3d] block">
+                        <span className="text-[10px] font-semibold uppercase text-[#0ea57a] block">
                           {tPost.category}
                         </span>
-                        <h5 className="text-xs font-bold text-slate-800 group-hover:text-[#ff3d3d] transition-colors line-clamp-2 leading-snug">
+                        <h5 className="text-xs font-bold text-slate-800 group-hover:text-[#0ea57a] transition-colors line-clamp-2 leading-snug">
                           {tPost.title}
                         </h5>
                         <span className="text-[10px] text-slate-400 mt-1 block">
@@ -562,8 +562,8 @@ export default async function BlogPostPage({ params }: PageProps) {
               </div>
 
               {/* 3. Hardware Store CTA */}
-              <div className="bg-[#15233e] text-white p-5 rounded-xl border border-slate-800 shadow-md">
-                <span className="text-[11px] font-bold uppercase tracking-wider text-[#ff3d3d] block mb-1">
+              <div className="bg-[#171145] text-white p-5 rounded-xl border border-slate-800 shadow-md">
+                <span className="text-[11px] font-bold uppercase tracking-wider text-[#0ea57a] block mb-1">
                   Need Industrial Hardware?
                 </span>
                 <h5 className="text-sm font-bold text-white mb-2">
@@ -574,7 +574,7 @@ export default async function BlogPostPage({ params }: PageProps) {
                 </p>
                 <Link
                   href="/shop"
-                  className="inline-flex items-center justify-center gap-1.5 w-full py-2 px-3 rounded-lg bg-[#ff3d3d] hover:bg-[#e03131] text-white text-xs font-semibold transition-colors"
+                  className="inline-flex items-center justify-center gap-1.5 w-full py-2 px-3 rounded-lg bg-[#0ea57a] hover:bg-[#0b8462] text-white text-xs font-semibold transition-colors"
                 >
                   <span>Explore Catalog</span>
                   <ArrowRight className="w-3.5 h-3.5" />

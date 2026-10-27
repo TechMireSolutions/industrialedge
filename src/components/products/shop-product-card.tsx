@@ -192,7 +192,7 @@ export default function ShopProductCard({
               {/* Quick View Button */}
               <div className="relative flex items-center">
                 {activeTooltip === "quickview" && (
-                  <span className="absolute right-[44px] whitespace-nowrap bg-[#1e293b] text-white text-[11px] font-medium px-2 py-0.5 rounded shadow-md pointer-events-none animate-fadeIn z-30">
+                  <span className="absolute right-[44px] whitespace-nowrap bg-[#171145] text-white text-[11px] font-medium px-2 py-0.5 rounded shadow-md pointer-events-none animate-fadeIn z-30">
                     Quick view
                   </span>
                 )}
@@ -207,7 +207,7 @@ export default function ShopProductCard({
                   }}
                   onMouseEnter={() => setActiveTooltip("quickview")}
                   onMouseLeave={() => setActiveTooltip(null)}
-                  className="w-[38px] h-[38px] rounded-full bg-white shadow-[0_2px_8px_rgba(0,0,0,0.08)] flex items-center justify-center text-[#1e293b] hover:text-[#f04438] hover:shadow-[0_4px_14px_rgba(0,0,0,0.12)] hover:scale-110 active:scale-95 transition-all duration-200 cursor-pointer border border-gray-100/60"
+                  className="w-[38px] h-[38px] rounded-full bg-white shadow-[0_2px_8px_rgba(0,0,0,0.08)] flex items-center justify-center text-[#171145] hover:text-[#0ea57a] hover:shadow-[0_4px_14px_rgba(0,0,0,0.12)] hover:scale-110 active:scale-95 transition-all duration-200 cursor-pointer border border-gray-100/60"
                   style={{ animationDelay: "50ms" }}
                 >
                   <Eye size={17} strokeWidth={1.8} />
@@ -217,7 +217,7 @@ export default function ShopProductCard({
               {/* Wishlist Button */}
               <div className="relative flex items-center">
                 {activeTooltip === "wishlist" && (
-                  <span className="absolute right-[44px] whitespace-nowrap bg-[#1e293b] text-white text-[11px] font-medium px-2 py-0.5 rounded shadow-md pointer-events-none animate-fadeIn z-30">
+                  <span className="absolute right-[44px] whitespace-nowrap bg-[#171145] text-white text-[11px] font-medium px-2 py-0.5 rounded shadow-md pointer-events-none animate-fadeIn z-30">
                     {liked ? "In wishlist" : "Add to wishlist"}
                   </span>
                 )}
@@ -230,15 +230,15 @@ export default function ShopProductCard({
                   onMouseLeave={() => setActiveTooltip(null)}
                   className={`w-[38px] h-[38px] rounded-full bg-white shadow-[0_2px_8px_rgba(0,0,0,0.08)] flex items-center justify-center hover:shadow-[0_4px_14px_rgba(0,0,0,0.12)] hover:scale-110 active:scale-95 transition-all duration-200 cursor-pointer border border-gray-100/60 ${
                     liked
-                      ? "text-[#f04438]"
-                      : "text-[#1e293b] hover:text-[#f04438]"
+                      ? "text-[#0ea57a]"
+                      : "text-[#171145] hover:text-[#0ea57a]"
                   } ${heartBurst ? "animate-heart-burst" : ""}`}
                   style={{ animationDelay: "100ms" }}
                 >
                   <Heart
                     size={17}
                     strokeWidth={1.8}
-                    className={liked ? "fill-[#f04438]" : "fill-none"}
+                    className={liked ? "fill-[#0ea57a]" : "fill-none"}
                   />
                 </button>
               </div>
@@ -246,7 +246,7 @@ export default function ShopProductCard({
               {/* Compare Button */}
               <div className="relative flex items-center">
                 {activeTooltip === "compare" && (
-                  <span className="absolute right-[44px] whitespace-nowrap bg-[#1e293b] text-white text-[11px] font-medium px-2 py-0.5 rounded shadow-md pointer-events-none animate-fadeIn z-30">
+                  <span className="absolute right-[44px] whitespace-nowrap bg-[#171145] text-white text-[11px] font-medium px-2 py-0.5 rounded shadow-md pointer-events-none animate-fadeIn z-30">
                     Compare
                   </span>
                 )}
@@ -261,7 +261,7 @@ export default function ShopProductCard({
                   }}
                   onMouseEnter={() => setActiveTooltip("compare")}
                   onMouseLeave={() => setActiveTooltip(null)}
-                  className="w-[38px] h-[38px] rounded-full bg-white shadow-[0_2px_8px_rgba(0,0,0,0.08)] flex items-center justify-center text-[#1e293b] hover:text-[#f04438] hover:shadow-[0_4px_14px_rgba(0,0,0,0.12)] hover:scale-110 active:scale-95 transition-all duration-200 cursor-pointer border border-gray-100/60 group/btn"
+                  className="w-[38px] h-[38px] rounded-full bg-white shadow-[0_2px_8px_rgba(0,0,0,0.08)] flex items-center justify-center text-[#171145] hover:text-[#0ea57a] hover:shadow-[0_4px_14px_rgba(0,0,0,0.12)] hover:scale-110 active:scale-95 transition-all duration-200 cursor-pointer border border-gray-100/60 group/btn"
                   style={{ animationDelay: "150ms" }}
                 >
                   <ArrowLeftRight
@@ -290,7 +290,7 @@ export default function ShopProductCard({
           <div className="pt-2 relative">
             {/* Floating +1 Particle Effect */}
             {addedAnimation && (
-              <span className="absolute -top-3 left-1/2 -translate-x-1/2 bg-[#f04438] text-white text-[11px] font-bold px-2 py-0.5 rounded-full animate-float-up pointer-events-none shadow-md">
+              <span className="absolute -top-3 left-1/2 -translate-x-1/2 bg-[#0ea57a] text-white text-[11px] font-bold px-2 py-0.5 rounded-full animate-float-up pointer-events-none shadow-md">
                 +1 Added
               </span>
             )}
@@ -300,7 +300,7 @@ export default function ShopProductCard({
               className={`w-full h-[42px] font-medium text-[14.5px] rounded-[6px] transition-all duration-200 flex items-center justify-center gap-2 cursor-pointer shadow-sm active:scale-[0.98] ${
                 addedAnimation
                   ? "bg-[#16a34a] hover:bg-[#15803d] text-white"
-                  : "bg-[#f04438] hover:bg-[#dc2626] text-white hover:shadow-[0_4px_14px_rgba(240,68,56,0.35)]"
+                  : "bg-[#0ea57a] hover:bg-[#0b8462] text-white hover:shadow-[0_4px_14px_rgba(14, 165, 122, 0.35)]"
               }`}
             >
               {addedAnimation ? (
@@ -332,7 +332,7 @@ export default function ShopProductCard({
               onMouseEnter={() => handleThumbSelect(thumbSrc, idx)}
               className={`w-[42px] h-[42px] rounded-[3px] flex items-center justify-center p-1 bg-white transition-all duration-200 cursor-pointer ${
                 isActive
-                  ? "border-[1.5px] border-[#1e293b] ring-1 ring-[#1e293b]"
+                  ? "border-[1.5px] border-[#171145] ring-1 ring-[#171145]"
                   : "border border-[#e5e7eb] hover:border-gray-400 hover:scale-105"
               }`}
               aria-label={`Thumbnail ${idx + 1}`}
@@ -380,7 +380,7 @@ export default function ShopProductCard({
         <h3 className="text-[15.5px] font-semibold leading-[1.35] mb-2 flex-1">
           <Link
             href={`/product/${product.id}`}
-            className="text-[#1e5bc6] hover:text-[#1a44a5] hover:underline transition-colors block"
+            className="text-[#171145] hover:text-[#0ea57a] hover:underline transition-colors block"
             title={product.name}
           >
             {product.name}
@@ -388,7 +388,7 @@ export default function ShopProductCard({
         </h3>
 
         {/* Price (Bold, Dark Charcoal / Navy, matching screenshot) */}
-        <div className="text-[22px] font-bold text-[#1e293b] tracking-tight leading-none mt-1">
+        <div className="text-[22px] font-bold text-[#171145] tracking-tight leading-none mt-1">
           ${product.price.toLocaleString("en-US", {
             minimumFractionDigits: 2,
             maximumFractionDigits: 2,

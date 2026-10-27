@@ -185,7 +185,7 @@ export default function PartnersPage() {
         {/* 1. BREADCRUMBS                                            */}
         {/* ========================================================= */}
         <nav aria-label="Breadcrumb" className="flex items-center gap-2 text-[13px] text-[#71717a] mb-8">
-          <Link href="/" className="hover:text-[#ff3d3d] transition-colors">
+          <Link href="/" className="hover:text-[#0ea57a] transition-colors">
             Home
           </Link>
           <span className="text-[#a1a1aa] font-normal">&gt;</span>
@@ -197,7 +197,7 @@ export default function PartnersPage() {
         {/* ========================================================= */}
         <section className="py-6 sm:py-10">
           <div className="max-w-[900px]">
-            <div className="inline-flex items-center gap-2 px-3 py-1 bg-[#fef2f2] text-[#ff3d3d] border border-[#fecaca] rounded-full text-xs font-semibold uppercase tracking-wider mb-4">
+            <div className="inline-flex items-center gap-2 px-3 py-1 bg-[#ecfdf5] text-[#0ea57a] border border-[#a7f3d0] rounded-full text-xs font-semibold uppercase tracking-wider mb-4">
               <Handshake size={14} />
               <span>Ecosystem &amp; Global Alliances</span>
             </div>
@@ -214,7 +214,7 @@ export default function PartnersPage() {
             <div className="flex flex-wrap items-center gap-4">
               <a
                 href="#partner-form"
-                className="px-8 py-3.5 bg-[#ff3d3d] hover:bg-[#e03131] text-white font-bold text-[14px] rounded-[6px] transition-colors shadow-xs active:scale-[0.99] inline-flex items-center gap-2"
+                className="px-8 py-3.5 bg-[#0ea57a] hover:bg-[#0b8462] text-white font-bold text-[14px] rounded-[6px] transition-colors shadow-xs active:scale-[0.99] inline-flex items-center gap-2"
               >
                 <span>Become a Partner</span>
                 <ArrowRight size={16} />
@@ -235,22 +235,22 @@ export default function PartnersPage() {
         <section className="my-10 py-8 px-6 sm:px-10 bg-[#fafafa] border border-[#f0f0f0] rounded-[12px]">
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 divide-y sm:divide-y-0 sm:divide-x divide-[#e5e7eb]">
             <div className="text-center">
-              <div className="text-[32px] sm:text-[38px] font-bold text-[#ff3d3d] tracking-tight">50+</div>
+              <div className="text-[32px] sm:text-[38px] font-bold text-[#0ea57a] tracking-tight">50+</div>
               <div className="text-[14.5px] font-bold text-[#18181b] mt-0.5">Tier-1 OEM Partners</div>
               <div className="text-xs text-[#71717a]">Direct manufacturer agreements</div>
             </div>
             <div className="text-center pt-6 sm:pt-0 sm:pl-6">
-              <div className="text-[32px] sm:text-[38px] font-bold text-[#ff3d3d] tracking-tight">100%</div>
+              <div className="text-[32px] sm:text-[38px] font-bold text-[#0ea57a] tracking-tight">100%</div>
               <div className="text-[14.5px] font-bold text-[#18181b] mt-0.5">Genuine Serialized Tech</div>
               <div className="text-xs text-[#71717a]">Zero counterfeit tolerance</div>
             </div>
             <div className="text-center pt-6 sm:pt-0 sm:pl-6">
-              <div className="text-[32px] sm:text-[38px] font-bold text-[#ff3d3d] tracking-tight">45+</div>
+              <div className="text-[32px] sm:text-[38px] font-bold text-[#0ea57a] tracking-tight">45+</div>
               <div className="text-[14.5px] font-bold text-[#18181b] mt-0.5">Countries Fulfilled</div>
               <div className="text-xs text-[#71717a]">Global expedited logistics</div>
             </div>
             <div className="text-center pt-6 sm:pt-0 sm:pl-6">
-              <div className="text-[32px] sm:text-[38px] font-bold text-[#ff3d3d] tracking-tight">$45M+</div>
+              <div className="text-[32px] sm:text-[38px] font-bold text-[#0ea57a] tracking-tight">$45M+</div>
               <div className="text-[14.5px] font-bold text-[#18181b] mt-0.5">Annual B2B Volume</div>
               <div className="text-xs text-[#71717a]">Enterprise &amp; retail supply</div>
             </div>
@@ -279,7 +279,7 @@ export default function PartnersPage() {
                 onClick={() => setActiveTab(tab.id)}
                 className={`px-5 py-2.5 rounded-full text-[13px] font-semibold transition-all cursor-pointer ${
                   activeTab === tab.id
-                    ? "bg-[#ff3d3d] text-white shadow-xs"
+                    ? "bg-[#0ea57a] text-white shadow-xs"
                     : "bg-[#f4f4f5] text-[#52525b] hover:bg-[#e4e4e7] hover:text-[#18181b]"
                 }`}
               >
@@ -293,7 +293,7 @@ export default function PartnersPage() {
             {filteredPartners.map((p) => (
               <div
                 key={p.id}
-                className="bg-white border border-[#e5e7eb] hover:border-[#ff3d3d] rounded-[12px] p-6 transition-all duration-200 hover:shadow-lg flex flex-col justify-between group"
+                className="bg-white border border-[#e5e7eb] hover:border-[#0ea57a] rounded-[12px] p-6 transition-all duration-200 hover:shadow-lg flex flex-col justify-between group"
               >
                 <div>
                   {/* Top Logo Container */}
@@ -310,11 +310,11 @@ export default function PartnersPage() {
                   </div>
 
                   {/* Tier Badge */}
-                  <span className="inline-block text-[11px] font-bold text-[#ff3d3d] bg-[#fef2f2] border border-[#fecaca] px-2.5 py-0.5 rounded-full mb-3">
+                  <span className="inline-block text-[11px] font-bold text-[#0ea57a] bg-[#ecfdf5] border border-[#a7f3d0] px-2.5 py-0.5 rounded-full mb-3">
                     {p.tier}
                   </span>
 
-                  <h3 className="text-[16px] font-bold text-[#18181b] group-hover:text-[#ff3d3d] transition-colors mb-2">
+                  <h3 className="text-[16px] font-bold text-[#18181b] group-hover:text-[#0ea57a] transition-colors mb-2">
                     {p.name}
                   </h3>
 
@@ -336,7 +336,7 @@ export default function PartnersPage() {
 
                 <Link
                   href="/shop"
-                  className="mt-5 inline-flex items-center gap-1.5 text-xs font-bold text-[#ff3d3d] hover:text-[#b91c1c] transition-colors"
+                  className="mt-5 inline-flex items-center gap-1.5 text-xs font-bold text-[#0ea57a] hover:text-[#047857] transition-colors"
                 >
                   <span>View Certified Products</span>
                   <ArrowRight size={13} />
@@ -364,7 +364,7 @@ export default function PartnersPage() {
               const IconComp = b.icon;
               return (
                 <div key={b.title} className="bg-white border border-[#e5e7eb] rounded-[10px] p-6 shadow-2xs">
-                  <div className="w-12 h-12 rounded-[8px] bg-[#fef2f2] text-[#ff3d3d] flex items-center justify-center mb-4">
+                  <div className="w-12 h-12 rounded-[8px] bg-[#ecfdf5] text-[#0ea57a] flex items-center justify-center mb-4">
                     <IconComp size={22} strokeWidth={2} />
                   </div>
                   <h3 className="text-[16px] font-bold text-[#18181b] mb-2">
@@ -385,7 +385,7 @@ export default function PartnersPage() {
         <section id="partner-form" className="py-12 mb-16 scroll-mt-24">
           <div className="max-w-[850px] mx-auto bg-white border border-[#e5e7eb] rounded-[12px] p-8 sm:p-12 shadow-[0_2px_14px_rgba(0,0,0,0.03)]">
             <div className="text-center max-w-[550px] mx-auto mb-8">
-              <span className="text-xs font-bold uppercase tracking-wider text-[#ff3d3d] mb-1.5 block">
+              <span className="text-xs font-bold uppercase tracking-wider text-[#0ea57a] mb-1.5 block">
                 Join Our Global Network
               </span>
               <h2 className="text-[26px] sm:text-[30px] font-bold text-[#18181b] tracking-tight mb-2">
@@ -423,7 +423,7 @@ export default function PartnersPage() {
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                   <div>
                     <label className="block text-[13.5px] font-semibold text-[#18181b] mb-1.5">
-                      Company / Organization Name <span className="text-[#ff3d3d]">*</span>
+                      Company / Organization Name <span className="text-[#0ea57a]">*</span>
                     </label>
                     <input
                       type="text"
@@ -437,7 +437,7 @@ export default function PartnersPage() {
 
                   <div>
                     <label className="block text-[13.5px] font-semibold text-[#18181b] mb-1.5">
-                      Contact Person Name <span className="text-[#ff3d3d]">*</span>
+                      Contact Person Name <span className="text-[#0ea57a]">*</span>
                     </label>
                     <input
                       type="text"
@@ -453,7 +453,7 @@ export default function PartnersPage() {
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                   <div>
                     <label className="block text-[13.5px] font-semibold text-[#18181b] mb-1.5">
-                      Business Email Address <span className="text-[#ff3d3d]">*</span>
+                      Business Email Address <span className="text-[#0ea57a]">*</span>
                     </label>
                     <input
                       type="email"
@@ -467,7 +467,7 @@ export default function PartnersPage() {
 
                   <div>
                     <label className="block text-[13.5px] font-semibold text-[#18181b] mb-1.5">
-                      Partnership Category <span className="text-[#ff3d3d]">*</span>
+                      Partnership Category <span className="text-[#0ea57a]">*</span>
                     </label>
                     <select
                       value={formData.category}
@@ -485,7 +485,7 @@ export default function PartnersPage() {
 
                 <div>
                   <label className="block text-[13.5px] font-semibold text-[#18181b] mb-1.5">
-                    Proposal Summary &amp; Catalog Overview <span className="text-[#ff3d3d]">*</span>
+                    Proposal Summary &amp; Catalog Overview <span className="text-[#0ea57a]">*</span>
                   </label>
                   <textarea
                     rows={4}
@@ -499,7 +499,7 @@ export default function PartnersPage() {
 
                 <button
                   type="submit"
-                  className="w-full h-[48px] bg-[#ff3d3d] hover:bg-[#e03131] text-white font-bold text-[14px] rounded-[6px] transition-colors shadow-xs active:scale-[0.99] cursor-pointer flex items-center justify-center gap-2"
+                  className="w-full h-[48px] bg-[#0ea57a] hover:bg-[#0b8462] text-white font-bold text-[14px] rounded-[6px] transition-colors shadow-xs active:scale-[0.99] cursor-pointer flex items-center justify-center gap-2"
                 >
                   <Send size={16} />
                   <span>Submit Partnership Proposal</span>
