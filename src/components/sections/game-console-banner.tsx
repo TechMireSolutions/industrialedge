@@ -56,7 +56,7 @@ export default function GameConsoleBanner() {
 
             {/* Shop Now CTA */}
             <Link
-              href="/product-category/tv-computer-screen"
+              href="/shop?cat=TV+%26+Computer+Screen"
               className="inline-flex items-center gap-2 text-white hover:text-[#ffdc00] text-xs sm:text-sm md:text-base lg:text-lg font-semibold transition-colors duration-200 group/btn"
             >
               <svg

@@ -156,7 +156,6 @@ export default function Header() {
   const languageRef = useRef<HTMLDivElement>(null);
 
   // Nav Dropdowns
-  const [homeDropdownOpen, setHomeDropdownOpen] = useState(false);
   const [blogDropdownOpen, setBlogDropdownOpen] = useState(false);
   const [shopDropdownOpen, setShopDropdownOpen] = useState(false);
   const [pageDropdownOpen, setPageDropdownOpen] = useState(false);
@@ -211,7 +210,6 @@ export default function Header() {
         setAllCategoriesOpen(false);
         setActiveSubMenu(null);
         setLanguageOpen(false);
-        setHomeDropdownOpen(false);
         setBlogDropdownOpen(false);
         setShopDropdownOpen(false);
         setPageDropdownOpen(false);
@@ -604,49 +602,15 @@ export default function Header() {
             {/* Vertical Separator Line | */}
             <div className="h-5 w-[1px] bg-[#e2e8f0] mx-5" />
 
-            {/* Navigation Links: Home +, Blog +, Shop +, Page + */}
+            {/* Navigation Links: Home, Blog +, Shop +, Pages + */}
             <div className="flex items-center gap-7 h-full">
-              {/* Home + (in red #ff3d3d) */}
-              <div
-                className="relative h-full flex items-center"
-                onMouseEnter={() => setHomeDropdownOpen(true)}
-                onMouseLeave={() => setHomeDropdownOpen(false)}
+              {/* Home */}
+              <Link
+                href="/"
+                className="flex items-center text-[14px] font-medium text-[#ff3d3d] hover:text-[#ff3d3d] transition-colors py-3"
               >
-                <Link
-                  href="/"
-                  className="flex items-center gap-1 text-[14px] font-medium text-[#ff3d3d] hover:text-[#ff3d3d] transition-colors py-3"
-                >
-                  <span>Home</span>
-                  <span className="text-[13px] font-normal leading-none">+</span>
-                </Link>
-
-                {homeDropdownOpen && (
-                  <div className="absolute left-0 top-full w-[170px] bg-white border border-[#e5e5e5] shadow-[0_10px_25px_rgba(0,0,0,0.1)] rounded-md py-2 z-50 animate-in fade-in slide-in-from-top-1 duration-150">
-                    {[
-                      "Home 01",
-                      "Home 02",
-                      "Home 03",
-                      "Home 04",
-                      "Home 05",
-                      "Home 06",
-                      "Home 07",
-                      "Home 08",
-                    ].map((item, idx) => (
-                      <Link
-                        key={item}
-                        href="/"
-                        className={`block px-4 py-2 text-[13px] transition-colors ${
-                          idx === 0
-                            ? "text-[#ff3d3d] font-medium"
-                            : "text-[#333e48] hover:text-[#ff3d3d] hover:bg-[#f8f9fa]"
-                        }`}
-                      >
-                        {item}
-                      </Link>
-                    ))}
-                  </div>
-                )}
-              </div>
+                <span>Home</span>
+              </Link>
 
               {/* Blog + */}
               <div
@@ -696,15 +660,12 @@ export default function Header() {
                 </Link>
 
                 {shopDropdownOpen && (
-                  <div className="absolute left-0 top-full w-[190px] bg-white border border-[#e5e5e5] shadow-[0_10px_25px_rgba(0,0,0,0.1)] rounded-md py-2 z-50 animate-in fade-in slide-in-from-top-1 duration-150">
+                  <div className="absolute left-0 top-full w-[170px] bg-white border border-[#e5e5e5] shadow-[0_10px_25px_rgba(0,0,0,0.1)] rounded-md py-2 z-50 animate-in fade-in slide-in-from-top-1 duration-150">
                     {[
-                      { label: "Shop Grid Style", href: "/shop" },
-                      { label: "Shop List Style", href: "/shop" },
-                      { label: "Product Variable", href: "/product/sample" },
-                      { label: "Product Countdown", href: "/product/sample" },
-                      { label: "Cart", href: "/cart" },
-                      { label: "Wishlist", href: "/shop" },
-                      { label: "Order Tracking", href: "/contact" },
+                      { label: "All Products", href: "/shop" },
+                      { label: "Shopping Cart", href: "/cart" },
+                      { label: "Wishlist", href: "/wishlist" },
+                      { label: "Checkout", href: "/checkout" },
                     ].map((item) => (
                       <Link
                         key={item.label}
@@ -718,7 +679,7 @@ export default function Header() {
                 )}
               </div>
 
-              {/* Page + */}
+              {/* Pages + */}
               <div
                 className="relative h-full flex items-center"
                 onMouseEnter={() => setPageDropdownOpen(true)}
@@ -728,17 +689,17 @@ export default function Header() {
                   type="button"
                   className="flex items-center gap-1 text-[14px] font-medium text-[#333e48] hover:text-[#ff3d3d] transition-colors py-3 cursor-pointer"
                 >
-                  <span>Page</span>
+                  <span>Pages</span>
                   <span className="text-[13px] font-normal leading-none">+</span>
                 </button>
 
                 {pageDropdownOpen && (
-                  <div className="absolute left-0 top-full w-[160px] bg-white border border-[#e5e5e5] shadow-[0_10px_25px_rgba(0,0,0,0.1)] rounded-md py-2 z-50 animate-in fade-in slide-in-from-top-1 duration-150">
+                  <div className="absolute left-0 top-full w-[170px] bg-white border border-[#e5e5e5] shadow-[0_10px_25px_rgba(0,0,0,0.1)] rounded-md py-2 z-50 animate-in fade-in slide-in-from-top-1 duration-150">
                     {[
                       { label: "About Us", href: "/about" },
                       { label: "What We Do", href: "/what-we-do" },
-                      { label: "Partners", href: "/partners" },
-                      { label: "FAQs", href: "/contact" },
+                      { label: "Official Partners", href: "/partners" },
+                      { label: "My Account", href: "/my-account" },
                       { label: "Contact Us", href: "/contact" },
                     ].map((item) => (
                       <Link
@@ -872,62 +833,15 @@ export default function Header() {
               {canvasTab === "menu" ? (
                 /* TAB 1: MENU */
                 <div className="py-2 space-y-1">
-                  {/* Home Accordion */}
-                  <div>
-                    <div className="flex items-center justify-between py-2.5 px-2 hover:bg-[#f8f9fa] rounded">
-                      <Link
-                        href="/"
-                        onClick={() => setMobileMenuOpen(false)}
-                        className="text-[14px] font-medium text-[#222222] hover:text-[#ff3d3d] transition-colors"
-                      >
-                        Home
-                      </Link>
-                      <button
-                        type="button"
-                        onClick={() =>
-                          setExpandedCanvasMenu(
-                            expandedCanvasMenu === "home" ? null : "home"
-                          )
-                        }
-                        className="p-1 text-[#888] hover:text-[#ff3d3d]"
-                      >
-                        <ChevronDown
-                          size={15}
-                          className={`transition-transform duration-200 ${
-                            expandedCanvasMenu === "home"
-                              ? "rotate-180 text-[#ff3d3d]"
-                              : ""
-                          }`}
-                        />
-                      </button>
-                    </div>
-                    {expandedCanvasMenu === "home" && (
-                      <div className="pl-4 pb-2 space-y-1 bg-[#fafafa] rounded-b">
-                        {[
-                          "Home 01",
-                          "Home 02",
-                          "Home 03",
-                          "Home 04",
-                          "Home 05",
-                          "Home 06",
-                          "Home 07",
-                          "Home 08",
-                        ].map((h, i) => (
-                          <Link
-                            key={h}
-                            href="/"
-                            onClick={() => setMobileMenuOpen(false)}
-                            className={`block py-1.5 text-[13px] ${
-                              i === 7
-                                ? "text-[#ff3d3d] font-semibold"
-                                : "text-[#555555] hover:text-[#ff3d3d]"
-                            }`}
-                          >
-                            {h}
-                          </Link>
-                        ))}
-                      </div>
-                    )}
+                  {/* Home */}
+                  <div className="py-2.5 px-2 hover:bg-[#f8f9fa] rounded">
+                    <Link
+                      href="/"
+                      onClick={() => setMobileMenuOpen(false)}
+                      className="text-[14px] font-medium text-[#ff3d3d] hover:text-[#ff3d3d] transition-colors block"
+                    >
+                      Home
+                    </Link>
                   </div>
 
                   {/* Blog Accordion */}
@@ -1011,19 +925,65 @@ export default function Header() {
                     {expandedCanvasMenu === "shop" && (
                       <div className="pl-4 pb-2 space-y-1 bg-[#fafafa] rounded-b">
                         {[
-                          "All Products",
-                          "Computers & Laptops",
-                          "Smartphones",
-                          "Audio & Headphones",
-                          "Cameras",
+                          { label: "All Products", href: "/shop" },
+                          { label: "Shopping Cart", href: "/cart" },
+                          { label: "Wishlist", href: "/wishlist" },
+                          { label: "Checkout", href: "/checkout" },
                         ].map((s) => (
                           <Link
-                            key={s}
-                            href="/shop"
+                            key={s.label}
+                            href={s.href}
                             onClick={() => setMobileMenuOpen(false)}
                             className="block py-1.5 text-[13px] text-[#555555] hover:text-[#ff3d3d]"
                           >
-                            {s}
+                            {s.label}
+                          </Link>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Pages Accordion */}
+                  <div>
+                    <div className="flex items-center justify-between py-2.5 px-2 hover:bg-[#f8f9fa] rounded">
+                      <span className="text-[14px] font-medium text-[#222222]">
+                        Pages
+                      </span>
+                      <button
+                        type="button"
+                        onClick={() =>
+                          setExpandedCanvasMenu(
+                            expandedCanvasMenu === "pages" ? null : "pages"
+                          )
+                        }
+                        className="p-1 text-[#888] hover:text-[#ff3d3d]"
+                      >
+                        <ChevronDown
+                          size={15}
+                          className={`transition-transform duration-200 ${
+                            expandedCanvasMenu === "pages"
+                              ? "rotate-180 text-[#ff3d3d]"
+                              : ""
+                          }`}
+                        />
+                      </button>
+                    </div>
+                    {expandedCanvasMenu === "pages" && (
+                      <div className="pl-4 pb-2 space-y-1 bg-[#fafafa] rounded-b">
+                        {[
+                          { label: "About Us", href: "/about" },
+                          { label: "What We Do", href: "/what-we-do" },
+                          { label: "Official Partners", href: "/partners" },
+                          { label: "My Account", href: "/my-account" },
+                          { label: "Contact Us", href: "/contact" },
+                        ].map((p) => (
+                          <Link
+                            key={p.label}
+                            href={p.href}
+                            onClick={() => setMobileMenuOpen(false)}
+                            className="block py-1.5 text-[13px] text-[#555555] hover:text-[#ff3d3d]"
+                          >
+                            {p.label}
                           </Link>
                         ))}
                       </div>

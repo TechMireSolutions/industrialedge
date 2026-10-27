@@ -24,7 +24,7 @@ export default function DualPromoBanners() {
             </p>
 
             <Link
-              href="/category/cameras"
+              href="/shop?cat=Camera+%26+Video"
               className="inline-flex items-center gap-2 bg-[#1e2d3b] hover:bg-[#004ec3] text-white font-semibold px-8 py-3.5 rounded-full transition-colors duration-200 shadow-md"
             >
               <span>Shop Now</span>

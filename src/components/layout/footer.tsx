@@ -4,12 +4,12 @@ import Link from "next/link";
 import Image from "next/image";
 import { Mail, MapPin, Phone, Clock } from "lucide-react";
 
-const GET_HELP = [
-  { label: "Privacy Notice", href: "#" },
-  { label: "Shopping FAQs", href: "#" },
-  { label: "Returns & Refunds", href: "#" },
-  { label: "Delivery Information", href: "#" },
-  { label: "Sale Terms & Conditions", href: "#" },
+const COMPANY_LINKS = [
+    { label: "Blogs", href: "/blog" },
+  { label: "About Us", href: "/about" },
+  { label: "What We Do", href: "/what-we-do" },
+  { label: "Official Partners", href: "/partners" },
+  { label: "Contact Us", href: "/contact" },
 ];
 
 const POPULAR_CATEGORIES = [
@@ -23,20 +23,17 @@ const POPULAR_CATEGORIES = [
 ];
 
 const CUSTOMER_CARE = [
-  { label: "Blog", href: "/blog" },
+    { label: "My Account", href: "/my-account" },
   { label: "Cart", href: "/cart" },
-  { label: "Shop", href: "/shop" },
   { label: "Wishlist", href: "/wishlist" },
-  { label: "Checkout", href: "/checkout" },
-  { label: "My Account", href: "/shop" },
 ];
 
 const BOTTOM_LINKS = [
-  { label: "New arrivals", href: "/shop" },
-  { label: "Best sale", href: "/shop" },
-  { label: "Value of the day", href: "/shop" },
-  { label: "Top 100 offers", href: "/shop" },
-  { label: "Blog", href: "/blog" },
+  { label: "Home", href: "/" },
+  { label: "Shop All", href: "/shop" },
+  { label: "What We Do", href: "/what-we-do" },
+  { label: "Partners", href: "/partners" },
+  { label: "Contact Us", href: "/contact" },
 ];
 
 export default function Footer() {
@@ -77,13 +74,13 @@ export default function Footer() {
             </div>
           </div>
 
-          {/* Column 2: Get help */}
+          {/* Column 2: Company & Info */}
           <div>
             <h3 className="font-['Poppins',sans-serif] text-[18px] font-semibold text-[#333e48] mb-4">
-              Get help
+              Company
             </h3>
             <ul className="space-y-2.5">
-              {GET_HELP.map((item) => (
+              {COMPANY_LINKS.map((item) => (
                 <li key={item.label}>
                   <Link
                     href={item.href}

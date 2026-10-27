@@ -21,7 +21,7 @@ const HERO_SIDE_PRODUCTS: HeroProduct[] = [
     id: "hero-airpods-max",
     name: "Apple AirPods Max Wireless Over-Ear Headphones – Green",
     category: "AirPods",
-    categoryLink: "/category/headphones",
+    categoryLink: "/shop?cat=Headphone",
     price: 549.0,
     image: "/images/product-airpods-max.webp",
     description:
@@ -31,7 +31,7 @@ const HERO_SIDE_PRODUCTS: HeroProduct[] = [
     id: "hero-fire-tv",
     name: 'Amazon Fire TV 50" 4-Series 4K UHD smart TV',
     category: "Apple products",
-    categoryLink: "/category/tv-audio",
+    categoryLink: "/shop?cat=TV+%26+Computer+Screen",
     price: 299.99,
     image: "/images/product-fire-tv.webp",
     description:

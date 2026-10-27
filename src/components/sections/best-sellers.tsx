@@ -319,7 +319,7 @@ export default function BestSellers() {
           
           {/* Left: Dell G5 Featured Promo Banner */}
           <Link
-            href="/product-category/laptop-tablet"
+            href="/shop?cat=Laptop+%26+Tablet"
             className="w-full lg:w-[350px] xl:w-[370px] shrink-0 h-[285px] sm:h-[295px] relative rounded-[6px] border border-gray-200/70 overflow-hidden bg-cover bg-center p-6 sm:p-7 group transition-shadow duration-300 hover:shadow-md cursor-pointer block"
             style={{
               backgroundImage: "url('/images/bg2-home04.webp')",
