@@ -5,28 +5,28 @@ import { Truck, CreditCard, ThumbsUp, ShieldCheck, PhoneCall } from "lucide-reac
 const FEATURES = [
   {
     icon: Truck,
-    title: "Free delivery",
-    sub: "Velit ullamco elit et aliqua magna",
+    title: "Nationwide Delivery",
+    sub: "Doorstep dispatch across Pakistan",
   },
   {
     icon: PhoneCall,
-    title: "Support 24/7",
-    sub: "Velit ullamco elit et aliqua magna",
+    title: "Dedicated Support",
+    sub: "Fast B2B procurement & query handling",
   },
   {
     icon: CreditCard,
-    title: "Payment",
-    sub: "Velit ullamco elit et aliqua magna",
+    title: "Corporate Billing",
+    sub: "Transparent invoicing & PO options",
   },
   {
     icon: ThumbsUp,
-    title: "Reliable",
-    sub: "Velit ullamco elit et aliqua magna",
+    title: "14+ Years Legacy",
+    sub: "Trusted business partner since 2011",
   },
   {
     icon: ShieldCheck,
-    title: "Guarantee",
-    sub: "Velit ullamco elit et aliqua magna",
+    title: "Quality Assurance",
+    sub: "100% genuine products & warranty",
   },
 ];
 
