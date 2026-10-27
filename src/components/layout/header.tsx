@@ -663,14 +663,18 @@ export default function Header() {
                 </Link>
 
                 {blogDropdownOpen && (
-                  <div className="absolute left-0 top-full w-[160px] bg-white border border-[#e5e5e5] shadow-[0_10px_25px_rgba(0,0,0,0.1)] rounded-md py-2 z-50 animate-in fade-in slide-in-from-top-1 duration-150">
-                    {["Blog List", "Blog Grid", "Blog Single"].map((item) => (
+                  <div className="absolute left-0 top-full w-[170px] bg-white border border-[#e5e5e5] shadow-[0_10px_25px_rgba(0,0,0,0.1)] rounded-md py-2 z-50 animate-in fade-in slide-in-from-top-1 duration-150">
+                    {[
+                      { label: "Blog Hub", href: "/blog" },
+                      { label: "Blog Archive", href: "/blog/archive" },
+                      { label: "Blog Single", href: "/blog/the-future-of-foldable-smartphones-in-2026" },
+                    ].map((item) => (
                       <Link
-                        key={item}
-                        href="/blog"
+                        key={item.label}
+                        href={item.href}
                         className="block px-4 py-2 text-[13px] text-[#333e48] hover:text-[#ff3d3d] hover:bg-[#f8f9fa] transition-colors"
                       >
-                        {item}
+                        {item.label}
                       </Link>
                     ))}
                   </div>
@@ -957,14 +961,18 @@ export default function Header() {
                     </div>
                     {expandedCanvasMenu === "blog" && (
                       <div className="pl-4 pb-2 space-y-1 bg-[#fafafa] rounded-b">
-                        {["Blog List", "Blog Grid", "Blog Single"].map((b) => (
+                        {[
+                          { label: "Blog Hub", href: "/blog" },
+                          { label: "Blog Archive", href: "/blog/archive" },
+                          { label: "Blog Single", href: "/blog/the-future-of-foldable-smartphones-in-2026" },
+                        ].map((b) => (
                           <Link
-                            key={b}
-                            href="/blog"
+                            key={b.label}
+                            href={b.href}
                             onClick={() => setMobileMenuOpen(false)}
                             className="block py-1.5 text-[13px] text-[#555555] hover:text-[#ff3d3d]"
                           >
-                            {b}
+                            {b.label}
                           </Link>
                         ))}
                       </div>
