@@ -15,143 +15,287 @@ import {
   Send,
   Building2,
   Cpu,
-  Server,
-  Headphones,
   Laptop,
-  Network,
+  Truck,
+  FileText,
+  Coffee,
+  Sparkle,
+  Zap,
 } from "lucide-react";
 
 interface PartnerItem {
   id: string;
   name: string;
   logo: string;
-  category: "all" | "computing" | "audio" | "semiconductors" | "networking";
+  category: "all" | "appliances" | "mobiles-computing" | "stationery" | "beverages" | "hygiene";
   categoryLabel: string;
-  tier: "Global Strategic Partner" | "Authorized Premier Partner" | "Certified Alliance";
+  tier: "Official Tier-1 Partner" | "Authorized Premier Distributor" | "Certified Commercial Supplier";
   description: string;
   productsCount: string;
   highlight: string;
 }
 
 const PARTNER_DATA: PartnerItem[] = [
+  // 1. Appliances
   {
-    id: "partner-1",
-    name: "Apple Premier Enterprise",
+    id: "app-1",
+    name: "Dawlance Commercial",
     logo: "/images/partner1.png",
-    category: "computing",
-    categoryLabel: "Computers & Smart Devices",
-    tier: "Global Strategic Partner",
-    description: "Official authorized enterprise partner for M-Series silicon, MacBook Pro, iMac workstations, and AirPods ecosystem.",
-    productsCount: "140+ Products",
+    category: "appliances",
+    categoryLabel: "Appliances",
+    tier: "Official Tier-1 Partner",
+    description: "Reliable commercial cooling units, energy-efficient workplace water dispensers, and office pantry appliances across Pakistan.",
+    productsCount: "80+ Products",
     highlight: "Direct Manufacturer Warranty",
   },
   {
-    id: "partner-2",
-    name: "Bose Professional Audio",
+    id: "app-2",
+    name: "Haier Enterprise",
     logo: "/images/partner2.png",
-    category: "audio",
-    categoryLabel: "Pro Audio & Acoustics",
-    tier: "Authorized Premier Partner",
-    description: "Collaborating on calibrated acoustic hardware, active noise cancellation headphones, and smart wireless speakers.",
-    productsCount: "85+ Products",
-    highlight: "Acoustic Lab Certified",
-  },
-  {
-    id: "partner-3",
-    name: "Acer Industrial Solutions",
-    logo: "/images/partner3.png",
-    category: "computing",
-    categoryLabel: "Laptops & Workstations",
-    tier: "Global Strategic Partner",
-    description: "Supplying high-efficiency Intel and AMD based Aspire and Predator series laptops for commercial workflows.",
-    productsCount: "110+ Products",
-    highlight: "Next-Day Hardware Swap",
-  },
-  {
-    id: "partner-4",
-    name: "Intel Advanced Compute",
-    logo: "/images/partner4.png",
-    category: "semiconductors",
-    categoryLabel: "Silicon & Microchips",
-    tier: "Global Strategic Partner",
-    description: "Direct OEM supply of 11th–14th Gen Intel Core and Xeon processors for heavy computational workflows.",
-    productsCount: "250+ SKUs",
-    highlight: "Verified Factory Steppings",
-  },
-  {
-    id: "partner-5",
-    name: "SkyTech Gaming & AI Rigs",
-    logo: "/images/partner5.png",
-    category: "computing",
-    categoryLabel: "Workstations & AI Clusters",
-    tier: "Authorized Premier Partner",
-    description: "Custom pre-assembled desktop workstations featuring liquid cooling, high-airflow chassis, and NVIDIA RTX cards.",
-    productsCount: "60+ Systems",
-    highlight: "72-Hour Burn-in Tested",
-  },
-  {
-    id: "partner-6",
-    name: "Western Digital Enterprise",
-    logo: "/images/partner6.png",
-    category: "networking",
-    categoryLabel: "Storage & Backbones",
-    tier: "Certified Alliance",
-    description: "High-capacity NVMe SSDs and enterprise datacenter hard drives engineered for zero-data-loss redundancy.",
+    category: "appliances",
+    categoryLabel: "Appliances",
+    tier: "Authorized Premier Distributor",
+    description: "Industrial climate control, smart inverter air conditioners, and breakroom refrigeration units.",
     productsCount: "95+ Products",
-    highlight: "2.5M Hours MTBF Rated",
+    highlight: "Energy Efficient Inverter",
   },
   {
-    id: "partner-7",
-    name: "Sony Electronics Pro",
-    logo: "/images/partner7.png",
-    category: "audio",
-    categoryLabel: "Imaging & Audio Gear",
-    tier: "Authorized Premier Partner",
-    description: "Industry-standard mirrorless sensors, studio broadcast cameras, and LDAC-certified high-resolution audio equipment.",
+    id: "app-3",
+    name: "Gree Commercial HVAC",
+    logo: "/images/partner3.png",
+    category: "appliances",
+    categoryLabel: "Appliances",
+    tier: "Official Tier-1 Partner",
+    description: "Heavy-duty commercial floor standing and split units designed for continuous office cooling.",
+    productsCount: "50+ Systems",
+    highlight: "Factory Certified",
+  },
+  {
+    id: "app-4",
+    name: "Philips Workplace",
+    logo: "/images/partner4.png",
+    category: "appliances",
+    categoryLabel: "Appliances",
+    tier: "Authorized Premier Distributor",
+    description: "Workplace kettles, coffee makers, garment steamers, and premium breakroom culinary electronics.",
+    productsCount: "65+ Products",
+    highlight: "Global Quality Assured",
+  },
+
+  // 2. Mobiles and Computing
+  {
+    id: "comp-1",
+    name: "HP Enterprise Pakistan",
+    logo: "/images/partner5.png",
+    category: "mobiles-computing",
+    categoryLabel: "Mobiles and computing",
+    tier: "Official Tier-1 Partner",
+    description: "Business laptops, ProBook & EliteBook series, desktop towers, and enterprise LaserJet network printers.",
     productsCount: "120+ Products",
-    highlight: "Hi-Res Audio Certified",
+    highlight: "3-Year Official Warranty",
   },
   {
-    id: "partner-8",
-    name: "Cisco & Ubiquiti Networks",
+    id: "comp-2",
+    name: "Dell Technologies",
+    logo: "/images/partner6.png",
+    category: "mobiles-computing",
+    categoryLabel: "Mobiles and computing",
+    tier: "Official Tier-1 Partner",
+    description: "Latitude business notebooks, OptiPlex workstations, and high-resolution commercial monitors.",
+    productsCount: "140+ Products",
+    highlight: "Direct OEM Sourcing",
+  },
+  {
+    id: "comp-3",
+    name: "Lenovo ThinkPad",
+    logo: "/images/partner7.png",
+    category: "mobiles-computing",
+    categoryLabel: "Mobiles and computing",
+    tier: "Authorized Premier Distributor",
+    description: "Rugged military-spec ThinkPad laptops and desktop compute units tailored for corporate mobility.",
+    productsCount: "85+ Products",
+    highlight: "Enterprise Support Included",
+  },
+  {
+    id: "comp-4",
+    name: "Samsung Business",
     logo: "/images/partner8.png",
-    category: "networking",
-    categoryLabel: "Enterprise Networking",
-    tier: "Global Strategic Partner",
-    description: "Managed 10GbE network switches, Wi-Fi 6 enterprise access points, and rackmount infrastructure hardware.",
-    productsCount: "75+ Systems",
-    highlight: "Enterprise QoS Certified",
+    category: "mobiles-computing",
+    categoryLabel: "Mobiles and computing",
+    tier: "Official Tier-1 Partner",
+    description: "PTA-approved corporate Galaxy smartphones, enterprise tablets, and digital interactive display panels.",
+    productsCount: "110+ Products",
+    highlight: "PTA Official Approved",
+  },
+
+  // 3. Stationery
+  {
+    id: "stat-1",
+    name: "Dollar Industries Pakistan",
+    logo: "/images/partner1.png",
+    category: "stationery",
+    categoryLabel: "Stationery",
+    tier: "Official Tier-1 Partner",
+    description: "Pakistan's leading writing instruments, ballpoints, gel pens, highlighters, and whiteboard marker supplies.",
+    productsCount: "150+ SKUs",
+    highlight: "Consistently In Stock",
+  },
+  {
+    id: "stat-2",
+    name: "Double A Paper",
+    logo: "/images/partner2.png",
+    category: "stationery",
+    categoryLabel: "Stationery",
+    tier: "Official Tier-1 Partner",
+    description: "Premium high-opacity 80gsm copier paper engineered for jam-free high-speed corporate printing.",
+    productsCount: "Bulk Pallets",
+    highlight: "Jam-Free High Opacity",
+  },
+  {
+    id: "stat-3",
+    name: "Piano Stationery",
+    logo: "/images/partner3.png",
+    category: "stationery",
+    categoryLabel: "Stationery",
+    tier: "Authorized Premier Distributor",
+    description: "High-demand office writing instruments, correction pens, permanent markers, and desk accessories.",
+    productsCount: "90+ SKUs",
+    highlight: "Wholesale Institutional Rates",
+  },
+  {
+    id: "stat-4",
+    name: "Deli Office Tools",
+    logo: "/images/partner4.png",
+    category: "stationery",
+    categoryLabel: "Stationery",
+    tier: "Certified Commercial Supplier",
+    description: "Heavy-duty paper shredders, punch machines, staplers, tape dispensers, and document binders.",
+    productsCount: "75+ Products",
+    highlight: "1-Year Replacement Warranty",
+  },
+
+  // 4. Beverages
+  {
+    id: "bev-1",
+    name: "Lipton & Unilever Food Solutions",
+    logo: "/images/partner5.png",
+    category: "beverages",
+    categoryLabel: "Beverages",
+    tier: "Official Tier-1 Partner",
+    description: "Yellow Label black tea bags, green tea assortments, and commercial pantry foodservice packages.",
+    productsCount: "35+ Products",
+    highlight: "Fresh Factory Batch",
+  },
+  {
+    id: "bev-2",
+    name: "Tapal Tea Enterprise",
+    logo: "/images/partner6.png",
+    category: "beverages",
+    categoryLabel: "Beverages",
+    tier: "Official Tier-1 Partner",
+    description: "Pakistan's favorite Danedar and round teabag packs supplied in bulk commercial cartons for corporate pantries.",
+    productsCount: "25+ Cartons",
+    highlight: "Scheduled Monthly Supply",
+  },
+  {
+    id: "bev-3",
+    name: "Nestlé Professional",
+    logo: "/images/partner7.png",
+    category: "beverages",
+    categoryLabel: "Beverages",
+    tier: "Official Tier-1 Partner",
+    description: "Nescafé instant coffee, everyday milk powder, creamer, and bottled Pure Life water supply.",
+    productsCount: "40+ Products",
+    highlight: "Wholesale Bulk Pack",
+  },
+  {
+    id: "bev-4",
+    name: "Mitchell's & National Foods",
+    logo: "/images/partner8.png",
+    category: "beverages",
+    categoryLabel: "Beverages",
+    tier: "Certified Commercial Supplier",
+    description: "Pantry juices, fruit concentrates, syrups, snacks, and corporate pantry breakroom provisions.",
+    productsCount: "30+ Products",
+    highlight: "Quality Assured",
+  },
+
+  // 5. Hygiene
+  {
+    id: "hyg-1",
+    name: "Dettol & Reckitt Benckiser",
+    logo: "/images/partner1.png",
+    category: "hygiene",
+    categoryLabel: "Hygiene",
+    tier: "Official Tier-1 Partner",
+    description: "Hospital-grade antiseptic liquid, antibacterial hand washes, surface sprays, and multi-surface wipes.",
+    productsCount: "45+ Products",
+    highlight: "99.9% Germ Protection",
+  },
+  {
+    id: "hyg-2",
+    name: "Lifebuoy & Surf Excel Professional",
+    logo: "/images/partner2.png",
+    category: "hygiene",
+    categoryLabel: "Hygiene",
+    tier: "Official Tier-1 Partner",
+    description: "Bulk industrial hand washes, surface detergents, and facility cleaning formulations in 5L & 10L drums.",
+    productsCount: "30+ Formulations",
+    highlight: "Commercial Drums Available",
+  },
+  {
+    id: "hyg-3",
+    name: "Harpic Commercial",
+    logo: "/images/partner3.png",
+    category: "hygiene",
+    categoryLabel: "Hygiene",
+    tier: "Authorized Premier Distributor",
+    description: "Specialized power cleaner and disinfectant liquids for enterprise washrooms and facility sanitation.",
+    productsCount: "20+ SKUs",
+    highlight: "Deep Disinfection Grade",
+  },
+  {
+    id: "hyg-4",
+    name: "Rose Petal Paper Products",
+    logo: "/images/partner4.png",
+    category: "hygiene",
+    categoryLabel: "Hygiene",
+    tier: "Official Tier-1 Partner",
+    description: "Commercial multi-fold hand towels, toilet tissue rolls, facial tissues, and dispenser napkins.",
+    productsCount: "50+ Varieties",
+    highlight: "100% Virgin Pulp",
   },
 ];
 
 const CATEGORY_TABS = [
   { id: "all", label: "All Partners" },
-  { id: "computing", label: "Computers & Systems" },
-  { id: "audio", label: "Pro Audio & Acoustics" },
-  { id: "semiconductors", label: "Silicon & Processors" },
-  { id: "networking", label: "Enterprise Storage & Networks" },
+  { id: "appliances", label: "Appliances" },
+  { id: "mobiles-computing", label: "Mobiles and computing" },
+  { id: "stationery", label: "Stationery" },
+  { id: "beverages", label: "Beverages" },
+  { id: "hygiene", label: "Hygiene" },
 ];
 
 const PARTNERSHIP_BENEFITS = [
   {
     icon: Globe2,
-    title: "Global Distribution Network",
-    description: "Fast multi-region fulfillment across North America, Europe, and Asia with zero-tariff enterprise handling.",
+    title: "Nationwide Logistics Network",
+    description: "Seamless distribution reaching offices, commercial centers, and industrial facilities across all provinces of Pakistan.",
   },
   {
     icon: ShieldCheck,
-    title: "Anti-Counterfeiting Guarantee",
-    description: "Strict serialization tracking and verified chain of custody protecting your brand's integrity.",
+    title: "100% Authenticity Guarantee",
+    description: "Zero counterfeit tolerance. All items are verified, warrantied, and serialized directly from manufacturers.",
   },
   {
     icon: Building2,
-    title: "Dedicated B2B Sales Channels",
-    description: "High-volume procurement with personalized enterprise account managers and negotiated payment terms.",
+    title: "Corporate B2B Channels",
+    description: "High-volume institutional purchasing with dedicated account reps, centralized billing, and customized payment terms.",
   },
   {
     icon: Award,
-    title: "Co-Marketing & Prime Placement",
-    description: "Featured storefront banners, deep technical reviews, and high-visibility digital showcase opportunities.",
+    title: "14 Years of Procurement Trust",
+    description: "Established procurement reputation connecting premier brands with Pakistan's leading enterprises.",
   },
 ];
 
@@ -162,7 +306,8 @@ export default function PartnersPage() {
     companyName: "",
     contactName: "",
     email: "",
-    category: "Hardware Manufacturer",
+    phone: "",
+    category: "Appliances",
     message: "",
   });
 
@@ -180,7 +325,7 @@ export default function PartnersPage() {
 
   return (
     <div className="min-h-screen bg-white text-[#212529]">
-      <div className="max-w-[1440px] mx-auto px-6 lg:px-12 py-5 sm:py-7">
+      <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-12 py-5 sm:py-7">
         {/* ========================================================= */}
         {/* 1. BREADCRUMBS                                            */}
         {/* ========================================================= */}
@@ -189,7 +334,7 @@ export default function PartnersPage() {
             Home
           </Link>
           <span className="text-[#a1a1aa] font-normal">&gt;</span>
-          <span className="text-[#18181b] font-medium">Partners</span>
+          <span className="text-[#18181b] font-medium">Our Partners</span>
         </nav>
 
         {/* ========================================================= */}
@@ -199,16 +344,19 @@ export default function PartnersPage() {
           <div className="max-w-[900px]">
             <div className="inline-flex items-center gap-2 px-3 py-1 bg-[#ecfdf5] text-[#0ea57a] border border-[#a7f3d0] rounded-full text-xs font-semibold uppercase tracking-wider mb-4">
               <Handshake size={14} />
-              <span>Ecosystem &amp; Global Alliances</span>
+              <span>Verified Brand Ecosystem</span>
             </div>
 
-            <h1 className="text-[34px] sm:text-[46px] font-bold text-[#18181b] tracking-tight leading-[1.15] mb-5">
-              Collaborating With World-Class Hardware &amp; Tech Leaders.
+            <h1 className="text-[32px] sm:text-[44px] lg:text-[46px] font-bold text-[#171145] tracking-tight leading-[1.18] mb-5">
+              Partnering With Leading Manufacturers &amp; Trusted Brands.
             </h1>
 
-            <p className="text-[16px] text-[#52525b] leading-relaxed mb-8 max-w-[780px]">
-              IndustrialEdge partners directly with certified global manufacturers, semiconductor pioneers,
-              and enterprise network developers to deliver authentic, high-reliability technology with official warranties.
+            <p className="text-[15px] sm:text-[16px] text-[#52525b] leading-relaxed mb-6 font-medium">
+              Backed by <strong>14 years of procurement expertise</strong>, Industrial Edge maintains strong alliances with top tier manufacturers in Appliances, Computing, Commercial Stationery, Pantry Beverages, and Facility Hygiene.
+            </p>
+
+            <p className="text-[14px] sm:text-[14.5px] text-[#71717a] leading-relaxed mb-8">
+              We eliminate intermediaries to bring authentic, certified supplies directly to your organization with official warranties, bulk enterprise discounts, and nationwide delivery across Pakistan.
             </p>
 
             <div className="flex flex-wrap items-center gap-4">
@@ -216,14 +364,14 @@ export default function PartnersPage() {
                 href="#partner-form"
                 className="px-8 py-3.5 bg-[#0ea57a] hover:bg-[#0b8462] text-white font-bold text-[14px] rounded-[6px] transition-colors shadow-xs active:scale-[0.99] inline-flex items-center gap-2"
               >
-                <span>Become a Partner</span>
+                <span>Become a Supply Partner</span>
                 <ArrowRight size={16} />
               </a>
               <Link
                 href="/shop"
-                className="px-8 py-3.5 bg-[#333e48] hover:bg-[#222a32] text-white font-bold text-[14px] rounded-[6px] transition-colors shadow-xs active:scale-[0.99]"
+                className="px-8 py-3.5 bg-[#171145] hover:bg-[#201859] text-white font-bold text-[14px] rounded-[6px] transition-colors shadow-xs active:scale-[0.99]"
               >
-                Browse Partner Catalog
+                Browse Partner Supplies
               </Link>
             </div>
           </div>
@@ -235,42 +383,42 @@ export default function PartnersPage() {
         <section className="my-10 py-8 px-6 sm:px-10 bg-[#fafafa] border border-[#f0f0f0] rounded-[12px]">
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 divide-y sm:divide-y-0 sm:divide-x divide-[#e5e7eb]">
             <div className="text-center">
-              <div className="text-[32px] sm:text-[38px] font-bold text-[#0ea57a] tracking-tight">50+</div>
-              <div className="text-[14.5px] font-bold text-[#18181b] mt-0.5">Tier-1 OEM Partners</div>
-              <div className="text-xs text-[#71717a]">Direct manufacturer agreements</div>
+              <div className="text-[32px] sm:text-[38px] font-bold text-[#0ea57a] tracking-tight">14+</div>
+              <div className="text-[14.5px] font-bold text-[#171145] mt-0.5">Years of Trust</div>
+              <div className="text-xs text-[#71717a]">Longstanding vendor ties in Pakistan</div>
             </div>
             <div className="text-center pt-6 sm:pt-0 sm:pl-6">
               <div className="text-[32px] sm:text-[38px] font-bold text-[#0ea57a] tracking-tight">100%</div>
-              <div className="text-[14.5px] font-bold text-[#18181b] mt-0.5">Genuine Serialized Tech</div>
-              <div className="text-xs text-[#71717a]">Zero counterfeit tolerance</div>
+              <div className="text-[14.5px] font-bold text-[#171145] mt-0.5">Authentic &amp; Certified</div>
+              <div className="text-xs text-[#71717a]">Direct manufacturer warranty</div>
             </div>
             <div className="text-center pt-6 sm:pt-0 sm:pl-6">
-              <div className="text-[32px] sm:text-[38px] font-bold text-[#0ea57a] tracking-tight">45+</div>
-              <div className="text-[14.5px] font-bold text-[#18181b] mt-0.5">Countries Fulfilled</div>
-              <div className="text-xs text-[#71717a]">Global expedited logistics</div>
+              <div className="text-[32px] sm:text-[38px] font-bold text-[#0ea57a] tracking-tight">5</div>
+              <div className="text-[14.5px] font-bold text-[#171145] mt-0.5">Partner Categories</div>
+              <div className="text-xs text-[#71717a]">Appliances, Tech, Stationery, &amp; more</div>
             </div>
             <div className="text-center pt-6 sm:pt-0 sm:pl-6">
-              <div className="text-[32px] sm:text-[38px] font-bold text-[#0ea57a] tracking-tight">$45M+</div>
-              <div className="text-[14.5px] font-bold text-[#18181b] mt-0.5">Annual B2B Volume</div>
-              <div className="text-xs text-[#71717a]">Enterprise &amp; retail supply</div>
+              <div className="text-[32px] sm:text-[38px] font-bold text-[#0ea57a] tracking-tight">Nationwide</div>
+              <div className="text-[14.5px] font-bold text-[#171145] mt-0.5">Distribution Network</div>
+              <div className="text-xs text-[#71717a]">All regions across Pakistan</div>
             </div>
           </div>
         </section>
 
         {/* ========================================================= */}
-        {/* 4. PARTNERS DIRECTORY WITH CATEGORY TABS                  */}
+        {/* 4. PARTNERS DIRECTORY WITH THE 5 CATEGORY TABS            */}
         {/* ========================================================= */}
         <section className="py-12">
           <div className="text-center max-w-[700px] mx-auto mb-10">
-            <h2 className="text-[28px] sm:text-[34px] font-bold text-[#18181b] tracking-tight mb-3">
-              Featured Strategic Partners
+            <h2 className="text-[28px] sm:text-[34px] font-bold text-[#171145] tracking-tight mb-3">
+              Featured Brand Partners
             </h2>
             <p className="text-[15px] text-[#71717a] leading-relaxed">
-              Explore the certified brands and manufacturers that form the backbone of our digital inventory.
+              Explore the verified manufacturers and brands that power our general order supply and procurement network.
             </p>
           </div>
 
-          {/* Filter Tabs */}
+          {/* Filter Tabs matching industrialedge.pk */}
           <div className="flex flex-wrap items-center justify-center gap-2 mb-10">
             {CATEGORY_TABS.map((tab) => (
               <button
@@ -314,7 +462,7 @@ export default function PartnersPage() {
                     {p.tier}
                   </span>
 
-                  <h3 className="text-[16px] font-bold text-[#18181b] group-hover:text-[#0ea57a] transition-colors mb-2">
+                  <h3 className="text-[16px] font-bold text-[#171145] group-hover:text-[#0ea57a] transition-colors mb-2">
                     {p.name}
                   </h3>
 
@@ -324,8 +472,8 @@ export default function PartnersPage() {
 
                   <div className="space-y-1.5 text-xs text-[#71717a] pt-3 border-t border-[#f4f4f5]">
                     <div className="flex items-center justify-between">
-                      <span>Available Catalog:</span>
-                      <strong className="text-[#18181b]">{p.productsCount}</strong>
+                      <span>Available Items:</span>
+                      <strong className="text-[#171145]">{p.productsCount}</strong>
                     </div>
                     <div className="flex items-center justify-between">
                       <span>Assurance:</span>
@@ -338,7 +486,7 @@ export default function PartnersPage() {
                   href="/shop"
                   className="mt-5 inline-flex items-center gap-1.5 text-xs font-bold text-[#0ea57a] hover:text-[#047857] transition-colors"
                 >
-                  <span>View Certified Products</span>
+                  <span>Inquire Domain Products</span>
                   <ArrowRight size={13} />
                 </Link>
               </div>
@@ -351,11 +499,11 @@ export default function PartnersPage() {
         {/* ========================================================= */}
         <section className="my-14 py-12 px-6 sm:px-10 bg-[#fafafa] border border-[#e5e7eb] rounded-[14px]">
           <div className="text-center max-w-[650px] mx-auto mb-12">
-            <h2 className="text-[28px] sm:text-[34px] font-bold text-[#18181b] tracking-tight mb-3">
-              Why Partner With IndustrialEdge?
+            <h2 className="text-[28px] sm:text-[34px] font-bold text-[#171145] tracking-tight mb-3">
+              Why Partner With Industrial Edge?
             </h2>
             <p className="text-[15px] text-[#71717a] leading-relaxed">
-              We provide technology innovators with a verified, brand-safe platform to scale hardware distribution.
+              We provide brand manufacturers with a proven, reliable corporate distribution network across Pakistan.
             </p>
           </div>
 
@@ -367,7 +515,7 @@ export default function PartnersPage() {
                   <div className="w-12 h-12 rounded-[8px] bg-[#ecfdf5] text-[#0ea57a] flex items-center justify-center mb-4">
                     <IconComp size={22} strokeWidth={2} />
                   </div>
-                  <h3 className="text-[16px] font-bold text-[#18181b] mb-2">
+                  <h3 className="text-[16px] font-bold text-[#171145] mb-2">
                     {b.title}
                   </h3>
                   <p className="text-[13px] text-[#52525b] leading-relaxed">
@@ -386,13 +534,13 @@ export default function PartnersPage() {
           <div className="max-w-[850px] mx-auto bg-white border border-[#e5e7eb] rounded-[12px] p-8 sm:p-12 shadow-[0_2px_14px_rgba(0,0,0,0.03)]">
             <div className="text-center max-w-[550px] mx-auto mb-8">
               <span className="text-xs font-bold uppercase tracking-wider text-[#0ea57a] mb-1.5 block">
-                Join Our Global Network
+                Expand Your Reach
               </span>
-              <h2 className="text-[26px] sm:text-[30px] font-bold text-[#18181b] tracking-tight mb-2">
-                Apply to Become an Official Partner
+              <h2 className="text-[26px] sm:text-[30px] font-bold text-[#171145] tracking-tight mb-2">
+                Apply to Become an Official Supply Partner
               </h2>
               <p className="text-[14px] text-[#71717a] leading-relaxed">
-                Connect with our vendor procurement specialists to list your hardware or establish commercial agreements.
+                Connect with our procurement alliances department to list your products or establish direct institutional distribution agreements.
               </p>
             </div>
 
@@ -405,13 +553,13 @@ export default function PartnersPage() {
                   Application Received!
                 </h3>
                 <p className="text-[14px] text-[#047857] max-w-[420px] mx-auto mb-6">
-                  Thank you for your interest in partnering with IndustrialEdge. Our alliances team will review your proposal and respond within 2 business days.
+                  Thank you for your interest in partnering with Industrial Edge. Our vendor procurement team will review your proposal and get in touch within 2 business days.
                 </p>
                 <button
                   type="button"
                   onClick={() => {
                     setSubmittedForm(false);
-                    setFormData({ companyName: "", contactName: "", email: "", category: "Hardware Manufacturer", message: "" });
+                    setFormData({ companyName: "", contactName: "", email: "", phone: "", category: "Appliances", message: "" });
                   }}
                   className="px-6 py-2.5 bg-[#059669] hover:bg-[#047857] text-white text-xs font-semibold rounded cursor-pointer transition-colors"
                 >
@@ -423,15 +571,15 @@ export default function PartnersPage() {
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                   <div>
                     <label className="block text-[13.5px] font-semibold text-[#18181b] mb-1.5">
-                      Company / Organization Name <span className="text-[#0ea57a]">*</span>
+                      Company / Manufacturer Name <span className="text-[#0ea57a]">*</span>
                     </label>
                     <input
                       type="text"
                       required
                       value={formData.companyName}
                       onChange={(e) => setFormData({ ...formData, companyName: e.target.value })}
-                      placeholder="e.g. Apex Hardware Technologies"
-                      className="w-full h-[46px] px-3.5 border border-[#e4e4e7] rounded-[5px] text-[13.5px] text-[#18181b] bg-white focus:outline-none focus:border-[#18181b] transition-colors"
+                      placeholder="e.g. Apex Industrial Supplies Ltd"
+                      className="w-full h-[46px] px-3.5 border border-[#e4e4e7] rounded-[5px] text-[13.5px] text-[#18181b] bg-white focus:outline-none focus:border-[#0ea57a] transition-colors"
                     />
                   </div>
 
@@ -444,16 +592,16 @@ export default function PartnersPage() {
                       required
                       value={formData.contactName}
                       onChange={(e) => setFormData({ ...formData, contactName: e.target.value })}
-                      placeholder="e.g. Alex Mercer"
-                      className="w-full h-[46px] px-3.5 border border-[#e4e4e7] rounded-[5px] text-[13.5px] text-[#18181b] bg-white focus:outline-none focus:border-[#18181b] transition-colors"
+                      placeholder="e.g. Muhammad Farooq"
+                      className="w-full h-[46px] px-3.5 border border-[#e4e4e7] rounded-[5px] text-[13.5px] text-[#18181b] bg-white focus:outline-none focus:border-[#0ea57a] transition-colors"
                     />
                   </div>
                 </div>
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-5">
                   <div>
                     <label className="block text-[13.5px] font-semibold text-[#18181b] mb-1.5">
-                      Business Email Address <span className="text-[#0ea57a]">*</span>
+                      Business Email <span className="text-[#0ea57a]">*</span>
                     </label>
                     <input
                       type="email"
@@ -461,24 +609,40 @@ export default function PartnersPage() {
                       value={formData.email}
                       onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                       placeholder="partners@yourcompany.com"
-                      className="w-full h-[46px] px-3.5 border border-[#e4e4e7] rounded-[5px] text-[13.5px] text-[#18181b] bg-white focus:outline-none focus:border-[#18181b] transition-colors"
+                      className="w-full h-[46px] px-3.5 border border-[#e4e4e7] rounded-[5px] text-[13.5px] text-[#18181b] bg-white focus:outline-none focus:border-[#0ea57a] transition-colors"
                     />
                   </div>
 
                   <div>
                     <label className="block text-[13.5px] font-semibold text-[#18181b] mb-1.5">
-                      Partnership Category <span className="text-[#0ea57a]">*</span>
+                      Contact Phone / WhatsApp
+                    </label>
+                    <input
+                      type="tel"
+                      value={formData.phone}
+                      onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                      placeholder="+92 3XX XXXXXXX"
+                      className="w-full h-[46px] px-3.5 border border-[#e4e4e7] rounded-[5px] text-[13.5px] text-[#18181b] bg-white focus:outline-none focus:border-[#0ea57a] transition-colors"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-[13.5px] font-semibold text-[#18181b] mb-1.5">
+                      Partner Category <span className="text-[#0ea57a]">*</span>
                     </label>
                     <select
                       value={formData.category}
                       onChange={(e) => setFormData({ ...formData, category: e.target.value })}
-                      className="w-full h-[46px] px-3.5 border border-[#e4e4e7] rounded-[5px] text-[13.5px] text-[#18181b] bg-white focus:outline-none focus:border-[#18181b] transition-colors cursor-pointer"
+                      className="w-full h-[46px] px-3.5 border border-[#e4e4e7] rounded-[5px] text-[13.5px] text-[#18181b] bg-white focus:outline-none focus:border-[#0ea57a] transition-colors cursor-pointer"
                     >
-                      <option value="Hardware Manufacturer">Hardware / OEM Manufacturer</option>
-                      <option value="Authorized Distributor">Authorized Regional Distributor</option>
-                      <option value="Silicon / Semiconductor Supplier">Silicon / Semiconductor Supplier</option>
-                      <option value="Enterprise Systems Integrator">Enterprise Systems Integrator</option>
-                      <option value="Software / Driver Partner">Software / Driver Ecosystem</option>
+                      <option value="Appliances">Appliances</option>
+                      <option value="Mobiles and computing">Mobiles and computing</option>
+                      <option value="Stationery">Stationery</option>
+                      <option value="Beverages">Beverages</option>
+                      <option value="Hygiene">Hygiene</option>
+                      <option value="Hardware and tools">Hardware and tools</option>
+                      <option value="Uniforms and PPE">Uniforms &amp; Safety PPE</option>
+                      <option value="Corporate Gifting">Corporate Gifting</option>
                     </select>
                   </div>
                 </div>
@@ -492,8 +656,8 @@ export default function PartnersPage() {
                     required
                     value={formData.message}
                     onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                    placeholder="Briefly describe your hardware catalog, production volume, regulatory certifications, and partnership goals..."
-                    className="w-full p-3.5 border border-[#e4e4e7] rounded-[5px] text-[13.5px] text-[#18181b] placeholder:text-[#a1a1aa] bg-white focus:outline-none focus:border-[#18181b] transition-colors resize-y"
+                    placeholder="Describe your supply capabilities, brand authorizations, factory capacity, warranty terms, and partnership objectives..."
+                    className="w-full p-3.5 border border-[#e4e4e7] rounded-[5px] text-[13.5px] text-[#18181b] placeholder:text-[#a1a1aa] bg-white focus:outline-none focus:border-[#0ea57a] transition-colors resize-y"
                   />
                 </div>
 

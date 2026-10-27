@@ -997,13 +997,20 @@ export default function Header() {
                   >
                     +92 332 2316225
                   </a>
+                  {" / "}
+                  <a
+                    href="tel:02134685312"
+                    className="font-semibold text-[#171145] hover:text-[#0ea57a]"
+                  >
+                    021 346 853 12
+                  </a>
                   <span className="block text-[11px] text-[#888] mt-0.5">Mon - Sat: 9:00 AM - 6:00 PM</span>
                 </div>
                 <div>
                   Email:{" "}
                   <a
                     href="mailto:info@industrialedge.pk"
-                    className="text-[#0e8ce4] font-medium"
+                    className="text-[#0ea57a] font-medium hover:underline"
                   >
                     info@industrialedge.pk
                   </a>

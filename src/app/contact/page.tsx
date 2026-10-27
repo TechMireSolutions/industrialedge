@@ -11,6 +11,8 @@ import {
   CheckCircle2,
   ExternalLink,
   MessageSquare,
+  Building2,
+  Sparkles,
 } from "lucide-react";
 
 export default function ContactPage() {
@@ -18,6 +20,7 @@ export default function ContactPage() {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
+    phone: "",
     subject: "",
     message: "",
   });
@@ -31,7 +34,7 @@ export default function ContactPage() {
     <div className="min-h-[calc(100vh-276px)] bg-[#fcfcfc]">
       {/* Breadcrumb Bar */}
       <div className="w-full bg-[#f4f4f4] border-b border-[#e5e5e5] py-3.5">
-        <div className="max-w-[1440px] mx-auto px-6 lg:px-12 flex items-center gap-2 text-[13px] text-[#73787d]">
+        <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-12 flex items-center gap-2 text-[13px] text-[#73787d]">
           <Link href="/" className="hover:text-[#0ea57a] transition-colors">
             Home
           </Link>
@@ -40,45 +43,45 @@ export default function ContactPage() {
         </div>
       </div>
 
-      <section className="py-12 lg:py-16">
-        <div className="max-w-[1440px] mx-auto px-6 lg:px-12">
+      <section className="py-10 lg:py-16">
+        <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-12">
           {/* Header */}
           <div className="mb-10 max-w-2xl">
             <span className="inline-block text-xs font-bold uppercase tracking-wider text-[#0ea57a] bg-[#ecfdf5] px-3 py-1 rounded-full border border-[#d1fae5] mb-3">
               We&apos;re Here To Assist You
             </span>
-            <h1 className="text-[32px] sm:text-[38px] font-bold text-[#171145] tracking-tight leading-tight mb-3">
+            <h1 className="text-[30px] sm:text-[38px] font-bold text-[#171145] tracking-tight leading-tight mb-3">
               Contact IndustrialEdge.pk
             </h1>
             <p className="text-[15px] text-[#73787d] leading-relaxed">
-              Have questions regarding equipment orders, bulk enterprise inquiries, or technical support? Reach out to our Karachi headquarters directly.
+              From office essentials to industrial supplies, we&apos;re your trusted procurement partner with 14 years of expertise. Reach out to our Karachi headquarters directly for corporate requisitions, quotations, and institutional orders.
             </p>
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-start">
             {/* Form Column */}
-            <div className="lg:col-span-7 bg-white p-7 sm:p-9 rounded-xl border border-[#ebebeb] shadow-xs">
+            <div className="lg:col-span-7 bg-white p-6 sm:p-9 rounded-xl border border-[#ebebeb] shadow-xs">
               <h2 className="text-xl font-bold text-[#171145] mb-1">
-                Send Us A Message
+                Send Us A Procurement Inquiry
               </h2>
               <p className="text-[13px] text-[#73787d] mb-6">
-                Fill in your details below and our technical support specialists will get back to you promptly.
+                Fill in your details below and our corporate procurement specialists will get back to you promptly with pricing and product availability.
               </p>
 
               {submitted ? (
                 <div className="bg-[#f0fdf4] border border-[#bbf7d0] rounded-lg p-8 text-center animate-fade-in">
                   <CheckCircle2 size={52} className="text-[#16a34a] mx-auto mb-3" />
                   <h3 className="text-xl font-bold text-[#166534] mb-2">
-                    Message Dispatched Successfully!
+                    Inquiry Dispatched Successfully!
                   </h3>
                   <p className="text-sm text-[#15803d] mb-6 max-w-md mx-auto">
-                    Thank you for reaching out to <strong>IndustrialEdge.pk</strong>. Your inquiry has been logged, and an engineer will reply to <em>{formData.email}</em> within 24 hours.
+                    Thank you for reaching out to <strong>IndustrialEdge.pk</strong>. Your inquiry has been logged, and our team will reply to <em>{formData.email}</em> within 24 hours.
                   </p>
                   <button
                     type="button"
                     onClick={() => {
                       setSubmitted(false);
-                      setFormData({ name: "", email: "", subject: "", message: "" });
+                      setFormData({ name: "", email: "", phone: "", subject: "", message: "" });
                     }}
                     className="bg-[#171145] hover:bg-[#0ea57a] text-white px-7 py-2.5 rounded-lg text-sm font-semibold transition-colors cursor-pointer shadow-sm"
                   >
@@ -112,29 +115,44 @@ export default function ContactPage() {
                         required
                         value={formData.email}
                         onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                        placeholder="e.g. name@company.com"
+                        placeholder="e.g. procurement@company.com"
+                        className="w-full h-[46px] border border-[#e0e0e0] rounded-lg px-4 text-sm text-[#333e48] focus:outline-none focus:border-[#0ea57a] focus:ring-1 focus:ring-[#0ea57a] transition-all placeholder:text-[#aaa]"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                    <div>
+                      <label htmlFor="contact-phone" className="block text-sm font-semibold text-[#333e48] mb-1.5">
+                        Phone / WhatsApp
+                      </label>
+                      <input
+                        id="contact-phone"
+                        type="tel"
+                        value={formData.phone}
+                        onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                        placeholder="e.g. +92 332 1234567"
+                        className="w-full h-[46px] border border-[#e0e0e0] rounded-lg px-4 text-sm text-[#333e48] focus:outline-none focus:border-[#0ea57a] focus:ring-1 focus:ring-[#0ea57a] transition-all placeholder:text-[#aaa]"
+                      />
+                    </div>
+                    <div>
+                      <label htmlFor="contact-subject" className="block text-sm font-semibold text-[#333e48] mb-1.5">
+                        Subject / Domain
+                      </label>
+                      <input
+                        id="contact-subject"
+                        type="text"
+                        value={formData.subject}
+                        onChange={(e) => setFormData({ ...formData, subject: e.target.value })}
+                        placeholder="e.g. Bulk Office Stationery &amp; Hygiene"
                         className="w-full h-[46px] border border-[#e0e0e0] rounded-lg px-4 text-sm text-[#333e48] focus:outline-none focus:border-[#0ea57a] focus:ring-1 focus:ring-[#0ea57a] transition-all placeholder:text-[#aaa]"
                       />
                     </div>
                   </div>
 
                   <div>
-                    <label htmlFor="contact-subject" className="block text-sm font-semibold text-[#333e48] mb-1.5">
-                      Subject
-                    </label>
-                    <input
-                      id="contact-subject"
-                      type="text"
-                      value={formData.subject}
-                      onChange={(e) => setFormData({ ...formData, subject: e.target.value })}
-                      placeholder="e.g. Technical Specs / Bulk Quotation"
-                      className="w-full h-[46px] border border-[#e0e0e0] rounded-lg px-4 text-sm text-[#333e48] focus:outline-none focus:border-[#0ea57a] focus:ring-1 focus:ring-[#0ea57a] transition-all placeholder:text-[#aaa]"
-                    />
-                  </div>
-
-                  <div>
                     <label htmlFor="contact-message" className="block text-sm font-semibold text-[#333e48] mb-1.5">
-                      Message <span className="text-[#0ea57a]">*</span>
+                      Message &amp; Requirements <span className="text-[#0ea57a]">*</span>
                     </label>
                     <textarea
                       id="contact-message"
@@ -142,7 +160,7 @@ export default function ContactPage() {
                       required
                       value={formData.message}
                       onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                      placeholder="How can our technical and procurement team assist you today?"
+                      placeholder="Specify your requisition details, quantities, preferred delivery city, or any custom branding requirements..."
                       className="w-full h-[130px] border border-[#e0e0e0] rounded-lg px-4 py-3 text-sm text-[#333e48] focus:outline-none focus:border-[#0ea57a] focus:ring-1 focus:ring-[#0ea57a] transition-all resize-none placeholder:text-[#aaa]"
                     />
                   </div>
@@ -152,7 +170,7 @@ export default function ContactPage() {
                     className="w-full h-[48px] bg-[#0ea57a] hover:bg-[#0b8462] text-white text-sm font-bold rounded-lg transition-colors cursor-pointer flex items-center justify-center gap-2 shadow-sm"
                   >
                     <Send size={16} strokeWidth={2.2} />
-                    <span>Send Message</span>
+                    <span>Send Requisition</span>
                   </button>
                 </form>
               )}
@@ -161,9 +179,9 @@ export default function ContactPage() {
             {/* Information Column */}
             <div className="lg:col-span-5 space-y-6">
               {/* Primary Contact Card */}
-              <div className="bg-white border border-[#ebebeb] rounded-xl p-7 shadow-xs">
+              <div className="bg-white border border-[#ebebeb] rounded-xl p-6 sm:p-7 shadow-xs">
                 <h2 className="text-lg font-bold text-[#171145] mb-5 pb-3 border-b border-[#f0f0f0]">
-                  Head Office &amp; Inquiries
+                  Head Office &amp; Contact Info
                 </h2>
 
                 <div className="space-y-6">
@@ -173,7 +191,7 @@ export default function ContactPage() {
                       <MapPin size={20} strokeWidth={2} />
                     </div>
                     <div className="flex-1">
-                      <h3 className="font-bold text-[#171145] text-sm">Office Address</h3>
+                      <h3 className="font-bold text-[#171145] text-sm">Official Address</h3>
                       <p className="text-sm text-[#666666] leading-relaxed mt-1">
                         Suite M-107 Odeon Center Regal chowk saddar Karachi, Pakistan
                       </p>
@@ -195,11 +213,22 @@ export default function ContactPage() {
                       <Phone size={20} strokeWidth={2} />
                     </div>
                     <div className="flex-1">
-                      <h3 className="font-bold text-[#171145] text-sm">Direct Phone &amp; WhatsApp</h3>
-                      <p className="text-sm font-semibold text-[#171145] mt-1">
-                        +92 332 2316225
-                      </p>
-                      <div className="flex items-center gap-1.5 text-xs text-[#73787d] mt-1">
+                      <h3 className="font-bold text-[#171145] text-sm">Direct Phone Numbers</h3>
+                      <div className="mt-1 space-y-0.5">
+                        <a
+                          href="tel:+923322316225"
+                          className="text-sm font-semibold text-[#171145] hover:text-[#0ea57a] block"
+                        >
+                          +92 332 2316225
+                        </a>
+                        <a
+                          href="tel:02134685312"
+                          className="text-sm font-semibold text-[#171145] hover:text-[#0ea57a] block"
+                        >
+                          021 346 853 12
+                        </a>
+                      </div>
+                      <div className="flex items-center gap-1.5 text-xs text-[#73787d] mt-1.5">
                         <Clock size={12} />
                         <span>Mon - Sat: 9:00 AM - 6:00 PM</span>
                       </div>
@@ -210,7 +239,7 @@ export default function ContactPage() {
                         className="inline-flex items-center gap-1.5 text-xs font-bold text-[#059669] hover:underline mt-2"
                       >
                         <MessageSquare size={13} />
-                        <span>Chat on WhatsApp</span>
+                        <span>Chat on WhatsApp (+92 332 2316225)</span>
                       </a>
                     </div>
                   </div>
@@ -228,20 +257,35 @@ export default function ContactPage() {
                       >
                         info@industrialedge.pk
                       </a>
-                      <span className="text-xs text-[#73787d]">Official inquiries &amp; sales support</span>
+                      <span className="text-xs text-[#73787d]">Official quotations &amp; general order supply</span>
                     </div>
                   </div>
                 </div>
 
-                {/* Social Channels */}
+                {/* Social Channels from industrialedge.pk */}
                 <div className="mt-8 pt-6 border-t border-[#f0f0f0]">
                   <h3 className="text-xs uppercase font-bold text-[#73787d] tracking-wider mb-3">
-                    Follow Our Channels
+                    Follow Our Official Channels
                   </h3>
                   <div className="flex items-center gap-2.5">
+                    {/* LinkedIn */}
+                    <a
+                      href="https://www.linkedin.com/company/industrial-edge1/"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label="LinkedIn"
+                      className="w-10 h-10 rounded-lg bg-[#fafafa] border border-[#e5e5e5] flex items-center justify-center text-[#73787d] hover:text-[#0ea57a] hover:border-[#0ea57a] hover:bg-white transition-all shadow-xs"
+                    >
+                      <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24">
+                        <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z" />
+                        <rect x="2" y="9" width="4" height="12" />
+                        <circle cx="4" cy="4" r="2" />
+                      </svg>
+                    </a>
+
                     {/* Facebook */}
                     <a
-                      href="https://facebook.com/industrialedge.pk"
+                      href="https://www.facebook.com/people/Industrial-Edge/61575052006846/"
                       target="_blank"
                       rel="noopener noreferrer"
                       aria-label="Facebook"
@@ -254,7 +298,7 @@ export default function ContactPage() {
 
                     {/* Instagram */}
                     <a
-                      href="https://instagram.com/industrialedge.pk"
+                      href="https://www.instagram.com/industrial_edge.pk/"
                       target="_blank"
                       rel="noopener noreferrer"
                       aria-label="Instagram"
@@ -264,21 +308,6 @@ export default function ContactPage() {
                         <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
                         <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
                         <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" />
-                      </svg>
-                    </a>
-
-                    {/* LinkedIn */}
-                    <a
-                      href="https://linkedin.com/company/industrial-edge-pk"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      aria-label="LinkedIn"
-                      className="w-10 h-10 rounded-lg bg-[#fafafa] border border-[#e5e5e5] flex items-center justify-center text-[#73787d] hover:text-[#0ea57a] hover:border-[#0ea57a] hover:bg-white transition-all shadow-xs"
-                    >
-                      <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24">
-                        <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z" />
-                        <rect x="2" y="9" width="4" height="12" />
-                        <circle cx="4" cy="4" r="2" />
                       </svg>
                     </a>
 
@@ -301,7 +330,7 @@ export default function ContactPage() {
               {/* Map Card */}
               <div className="bg-white border border-[#ebebeb] rounded-xl p-5 shadow-xs">
                 <div className="flex items-center justify-between mb-3">
-                  <span className="text-xs font-bold text-[#171145]">Location Map</span>
+                  <span className="text-xs font-bold text-[#171145]">Karachi Location Map</span>
                   <a
                     href="https://maps.app.goo.gl/52dT7YxfarFZ4nPQ7"
                     target="_blank"

@@ -148,7 +148,7 @@ export default function Footer() {
                   <span>Suite M-107 Odeon Center Regal chowk saddar Karachi, Pakistan</span>
                 </a>
               </div>
-              <div className="pt-0.5">
+              <div className="pt-0.5 space-y-1">
                 <a
                   href="https://wa.me/923322316225"
                   target="_blank"
@@ -157,6 +157,12 @@ export default function Footer() {
                 >
                   <Phone size={15} className="shrink-0" />
                   <span>+92 332 2316225</span>
+                </a>
+                <a
+                  href="tel:02134685312"
+                  className="font-semibold text-[#171145] hover:text-[#0ea57a] transition-colors text-[14px] flex items-center gap-2 pl-6"
+                >
+                  <span>021 346 853 12</span>
                 </a>
                 <div className="flex items-center gap-1.5 text-[12px] text-[#8e9398] mt-1 pl-6">
                   <Clock size={12} className="shrink-0" />
@@ -185,11 +191,11 @@ export default function Footer() {
             <div className="flex items-center gap-2.5 text-white">
               <Mail className="w-6 h-6 stroke-[1.5]" />
               <span className="text-[17px] sm:text-[18px] font-bold tracking-tight">
-                Join our newsletter for $10 offs
+                Join our newsletter for corporate offers
               </span>
             </div>
             <span className="text-[13px] text-[#a0a4a8]">
-              Register now to get latest updates on promotions &amp; coupons.
+              Register now to get latest procurement updates on bulk supplies &amp; rates.
             </span>
           </div>
 
@@ -217,11 +223,26 @@ export default function Footer() {
       {/* 3. Bottom Centered Section */}
       <div className="w-full bg-[#fafafa] py-8 px-4 sm:px-6 lg:px-8 border-t border-[#ebebeb]">
         <div className="max-w-[1490px] mx-auto flex flex-col items-center justify-center text-center space-y-4">
-          {/* Social Icons */}
+          {/* Social Icons matching industrialedge.pk */}
           <div className="flex items-center justify-center gap-2.5">
+            {/* LinkedIn */}
+            <a
+              href="https://www.linkedin.com/company/industrial-edge1/"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="LinkedIn"
+              className="w-9 h-9 rounded-full bg-white border border-[#e5e5e5] flex items-center justify-center text-[#73787d] hover:text-[#0ea57a] hover:border-[#0ea57a] transition-all shadow-sm"
+            >
+              <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24">
+                <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z" />
+                <rect x="2" y="9" width="4" height="12" />
+                <circle cx="4" cy="4" r="2" />
+              </svg>
+            </a>
+
             {/* Facebook */}
             <a
-              href="https://facebook.com/industrialedge.pk"
+              href="https://www.facebook.com/people/Industrial-Edge/61575052006846/"
               target="_blank"
               rel="noopener noreferrer"
               aria-label="Facebook"
@@ -234,7 +255,7 @@ export default function Footer() {
 
             {/* Instagram */}
             <a
-              href="https://instagram.com/industrialedge.pk"
+              href="https://www.instagram.com/industrial_edge.pk/"
               target="_blank"
               rel="noopener noreferrer"
               aria-label="Instagram"
@@ -244,21 +265,6 @@ export default function Footer() {
                 <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
                 <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
                 <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" />
-              </svg>
-            </a>
-
-            {/* LinkedIn */}
-            <a
-              href="https://linkedin.com/company/industrial-edge-pk"
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="LinkedIn"
-              className="w-9 h-9 rounded-full bg-white border border-[#e5e5e5] flex items-center justify-center text-[#73787d] hover:text-[#0ea57a] hover:border-[#0ea57a] transition-all shadow-sm"
-            >
-              <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24">
-                <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z" />
-                <rect x="2" y="9" width="4" height="12" />
-                <circle cx="4" cy="4" r="2" />
               </svg>
             </a>
 

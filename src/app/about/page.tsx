@@ -8,97 +8,105 @@ import {
   Headphones,
   Award,
   CheckCircle2,
-  Users,
-  Cpu,
   ArrowRight,
-  Star,
   Sparkles,
   Zap,
   Globe2,
+  Building2,
+  Clock,
+  Layers,
+  Phone,
+  Mail,
+  MapPin,
+  TrendingUp,
 } from "lucide-react";
 
 const STATS = [
-  { value: "150K+", label: "Active Customers", description: "Trusted worldwide across 45+ countries" },
-  { value: "12,000+", label: "Curated Products", description: "Top-tier industrial & consumer tech" },
-  { value: "99.8%", label: "On-Time Delivery", description: "Express global fulfillment logistics" },
-  { value: "24/7", label: "Expert Support", description: "Dedicated certified technical team" },
+  { value: "14+", label: "Years of Experience", description: "Trusted procurement partner across Pakistan since 2011" },
+  { value: "10", label: "Core Supply Domains", description: "Office essentials to heavy industrial tools" },
+  { value: "100%", label: "Nationwide Delivery", description: "Comprehensive logistics network reaching all regions" },
+  { value: "10,000+", label: "Supplies & SKUs", description: "One-stop sourcing under one roof" },
 ];
 
-const CORE_VALUES = [
+const HOW_WE_WORK_PILLARS = [
   {
-    icon: ShieldCheck,
-    title: "100% Genuine & Certified",
+    step: "01",
+    title: "Understanding Your Needs",
     description:
-      "Every product in our catalog is sourced directly from certified manufacturers with official warranty and authenticated specifications.",
-  },
-  {
-    icon: Truck,
-    title: "Fast & Tracked Shipping",
-    description:
-      "Same-day dispatch for eligible orders, real-time dispatch tracking, and free shipping on qualifying orders over $100.",
-  },
-  {
+      "We start by understanding your specific business requirements, operational objectives, and procurement challenges.",
     icon: Headphones,
-    title: "Dedicated Technical Support",
-    description:
-      "Our team of knowledgeable hardware specialists is ready 24/7 to help you choose the exact hardware for your workflow.",
   },
   {
+    step: "02",
+    title: "Customized Solutions",
+    description:
+      "Based on your needs, we develop tailored procurement strategies and supply chain setups to ensure efficiency and cost savings.",
+    icon: Layers,
+  },
+  {
+    step: "03",
+    title: "Supply Chain Resilience",
+    description:
+      "Our agile procurement process adapts to market fluctuations, minimizing disruption and keeping your operations running smoothly.",
+    icon: TrendingUp,
+  },
+  {
+    step: "04",
+    title: "Quality Assurance",
+    description:
+      "We partner strictly with suppliers who meet rigorous quality standards, maintaining excellence in everything we deliver.",
+    icon: ShieldCheck,
+  },
+  {
+    step: "05",
+    title: "Continuous Improvement",
+    description:
+      "We continuously monitor the supply process, collect feedback, and optimize to ensure your requirements are consistently exceeded.",
+    icon: Clock,
+  },
+  {
+    step: "06",
+    title: "Ethical Practices",
+    description:
+      "Integrity is at the heart of our operations. We ensure ethical sourcing and responsible business practices across our entire supply chain.",
     icon: Award,
-    title: "Satisfaction Guaranteed",
-    description:
-      "Experience hassle-free 30-day returns, secure encrypted checkout, and transparent customer-first policies.",
   },
 ];
 
-const MILESTONES = [
+const VALUE_PROPOSITIONS = [
   {
-    year: "2018",
-    title: "Inception & Launch",
-    description: "Started with a vision to make industrial computing and pro audio equipment accessible worldwide.",
+    title: "One-stop Solution",
+    description: "Complete solution for all procurement needs, providing everything your business requires under one roof.",
+    icon: Building2,
   },
   {
-    year: "2020",
-    title: "Catalog Expansion",
-    description: "Partnered directly with premier tech brands including Apple, Bose, Acer, and Lenovo.",
+    title: "Nationwide Delivery",
+    description: "Comprehensive logistics network covering Karachi, Lahore, Islamabad, Peshawar, Quetta, and all regions across Pakistan.",
+    icon: Truck,
   },
   {
-    year: "2023",
-    title: "Global Warehousing",
-    description: "Opened automated fulfillment centers across North America, Europe, and Asia for faster shipping.",
+    title: "Ease of Ordering",
+    description: "Streamlined corporate ordering process with transparent quotations, dedicated account reps, and centralized invoicing.",
+    icon: CheckCircle2,
   },
   {
-    year: "2026",
-    title: "IndustrialEdge Next",
-    description: "Serving over 150,000 tech enthusiasts and commercial enterprises with cutting-edge electronics.",
+    title: "Competitive Pricing",
+    description: "Direct vendor relations and wholesale volume sourcing ensure maximum cost efficiency for your procurement budget.",
+    icon: Zap,
   },
 ];
 
-const TESTIMONIALS = [
-  {
-    name: "Alex Thompson",
-    role: "Senior Systems Engineer",
-    company: "Apex Tech Labs",
-    quote:
-      "IndustrialEdge has been our go-to supplier for pro-grade laptops and workstation components. Fast delivery and genuine products every single time.",
-    rating: 5,
-  },
-  {
-    name: "Elena Rostova",
-    role: "Studio Audio Producer",
-    company: "SoundWave Media",
-    quote:
-      "Ordered the Bose Smart Speaker and high-end headphones. The checkout was seamless, and the sound quality blew our studio team away.",
-    rating: 5,
-  },
-  {
-    name: "David Chen",
-    role: "IT Procurement Director",
-    company: "Nexus Enterprises",
-    quote:
-      "Exceptional customer support when configuring bulk hardware. The team provided transparent specs and delivered ahead of schedule.",
-    rating: 5,
-  },
+const CORE_DOMAINS = [
+  "Electronic Appliances",
+  "Hardware and Tools",
+  "Office Supplies & Stationery",
+  "IT Accessories & Gadgets",
+  "Mobile Phones & Laptops",
+  "Office & Industrial Uniforms",
+  "Beverages & Grocery",
+  "Hygiene & Cleaning Products",
+  "Souvenirs & Corporate Gifting",
+  "ID Cards & Lamination Products",
 ];
 
 const PARTNER_LOGOS = [
@@ -115,7 +123,7 @@ const PARTNER_LOGOS = [
 export default function AboutPage() {
   return (
     <div className="min-h-screen bg-white text-[#212529]">
-      <div className="max-w-[1440px] mx-auto px-6 lg:px-12 py-5 sm:py-7">
+      <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-12 py-5 sm:py-7">
         {/* ========================================================= */}
         {/* 1. BREADCRUMBS                                            */}
         {/* ========================================================= */}
@@ -132,29 +140,37 @@ export default function AboutPage() {
         {/* ========================================================= */}
         <section className="py-6 sm:py-10">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-center">
-            {/* Left Column: Heading, Description, Bullets */}
+            {/* Left Column: Heading, Vision & Experience */}
             <div className="lg:col-span-7">
               <div className="inline-flex items-center gap-2 px-3 py-1 bg-[#ecfdf5] text-[#0ea57a] border border-[#a7f3d0] rounded-full text-xs font-semibold uppercase tracking-wider mb-4">
                 <Sparkles size={14} />
-                <span>About IndustrialEdge</span>
+                <span>About Industrial Edge</span>
               </div>
 
-              <h1 className="text-[32px] sm:text-[42px] font-bold text-[#18181b] tracking-tight leading-[1.2] mb-5">
-                Empowering Innovation in Industrial Electronics &amp; Consumer Tech.
+              <h1 className="text-[30px] sm:text-[40px] lg:text-[44px] font-bold text-[#171145] tracking-tight leading-[1.2] mb-5">
+                Streamline Your Business Procurement Across Pakistan.
               </h1>
 
-              <p className="text-[15px] sm:text-[16px] text-[#52525b] leading-relaxed mb-6">
-                Founded with a mission to bridge the gap between industrial-grade reliability and consumer sleekness,
-                <strong> IndustrialEdge.pk</strong> curates state-of-the-art computers, pro audio, gaming gear,
-                and smart digital hardware for professionals, creators, and enthusiasts worldwide.
+              <p className="text-[15px] sm:text-[16px] text-[#52525b] leading-relaxed mb-6 font-medium">
+                From office essentials to industrial supplies, <strong>Industrial Edge</strong> is your trusted procurement partner with <strong>14 years of expertise</strong>. We provide tailored, one-stop solutions designed to support your operational efficiency.
               </p>
+
+              {/* Vision Box */}
+              <div className="p-5 sm:p-6 bg-[#f8fafc] border-l-4 border-[#0ea57a] rounded-r-[10px] mb-8 shadow-xs">
+                <h2 className="text-xs font-bold uppercase tracking-wider text-[#0ea57a] mb-2">
+                  Our Corporate Vision
+                </h2>
+                <p className="text-[14px] sm:text-[14.5px] text-[#334155] italic leading-relaxed">
+                  &ldquo;At Industrial Edge, our vision is to reshape the procurement landscape by providing forward-thinking solutions that drive value, sustainability, and growth. We aim to deliver not just products and services, but strategic advantages that enhance our clients’ supply chains and contribute to their long-term success. Through innovative solutions, exceptional service, and a commitment to sustainability, we aim to support your operations with seamless procurement experiences every time.&rdquo;
+                </p>
+              </div>
 
               <div className="space-y-3 mb-8">
                 {[
-                  "Direct partnerships with premier global hardware manufacturers",
-                  "Every unit inspected, verified, and backed by manufacturer warranty",
-                  "Automated global fulfillment with real-time tracking",
-                  "Dedicated 24/7 human technical assistance and order consultation",
+                  "14+ years of established B2B supply experience across Pakistan",
+                  "Comprehensive portfolio covering 10 core commercial & industrial domains",
+                  "Nationwide logistics network ensuring prompt, secure delivery",
+                  "Verified supplier partnerships meeting stringent quality standards",
                 ].map((item) => (
                   <div key={item} className="flex items-start gap-3">
                     <CheckCircle2 size={18} className="text-[#0ea57a] shrink-0 mt-0.5" />
@@ -168,25 +184,25 @@ export default function AboutPage() {
                   href="/shop"
                   className="px-7 py-3.5 bg-[#0ea57a] hover:bg-[#0b8462] text-white font-bold text-[14px] rounded-[6px] transition-colors shadow-xs active:scale-[0.99] inline-flex items-center gap-2"
                 >
-                  <span>Explore Catalog</span>
+                  <span>Explore Product Catalog</span>
                   <ArrowRight size={16} />
                 </Link>
                 <Link
-                  href="/contact"
-                  className="px-7 py-3.5 bg-[#333e48] hover:bg-[#222a32] text-white font-bold text-[14px] rounded-[6px] transition-colors shadow-xs active:scale-[0.99] inline-flex items-center gap-2"
+                  href="/what-we-do"
+                  className="px-7 py-3.5 bg-[#171145] hover:bg-[#201859] text-white font-bold text-[14px] rounded-[6px] transition-colors shadow-xs active:scale-[0.99] inline-flex items-center gap-2"
                 >
-                  <span>Contact Team</span>
+                  <span>What We Do</span>
                 </Link>
               </div>
             </div>
 
-            {/* Right Column: Hero Visual with Badges */}
+            {/* Right Column: Visual Showcase */}
             <div className="lg:col-span-5 relative">
               <div className="relative rounded-[16px] overflow-hidden border border-[#e5e7eb] bg-[#fbfcfd] p-6 shadow-xl">
                 <div className="relative aspect-4/3 w-full rounded-[10px] overflow-hidden bg-white">
                   <Image
                     src="/images/apple-imac.jpg"
-                    alt="IndustrialEdge Hardware Showcase"
+                    alt="Industrial Edge Corporate Supplies & Tech"
                     fill
                     sizes="(max-width: 768px) 100vw, 500px"
                     className="object-contain p-4"
@@ -199,15 +215,15 @@ export default function AboutPage() {
                     <Zap size={20} />
                   </div>
                   <div>
-                    <div className="text-[16px] sm:text-[18px] font-bold text-[#18181b]">8+ Years</div>
-                    <div className="text-[11px] sm:text-[12px] text-[#71717a]">Of Tech Excellence</div>
+                    <div className="text-[16px] sm:text-[18px] font-bold text-[#171145]">14+ Years</div>
+                    <div className="text-[11px] sm:text-[12px] text-[#71717a]">Proven Procurement Expertise</div>
                   </div>
                 </div>
 
-                {/* Floating Global Reach Badge */}
+                {/* Floating Reach Badge */}
                 <div className="absolute -top-2 right-2 sm:-right-3 sm:-top-3 bg-white border border-[#e5e7eb] rounded-[10px] py-1.5 px-3 sm:py-2 sm:px-3.5 shadow-lg flex items-center gap-2">
                   <Globe2 size={15} className="text-[#0ea57a]" />
-                  <span className="text-[11px] sm:text-xs font-semibold text-[#18181b]">45+ Countries Served</span>
+                  <span className="text-[11px] sm:text-xs font-semibold text-[#171145]">Nationwide Delivery Pakistan</span>
                 </div>
               </div>
             </div>
@@ -224,7 +240,7 @@ export default function AboutPage() {
                 <div className="text-[32px] sm:text-[40px] font-bold text-[#0ea57a] tracking-tight">
                   {stat.value}
                 </div>
-                <div className="text-[15px] font-bold text-[#18181b] mt-1">
+                <div className="text-[15px] font-bold text-[#171145] mt-1">
                   {stat.label}
                 </div>
                 <div className="text-[12.5px] text-[#71717a] mt-0.5">
@@ -236,34 +252,42 @@ export default function AboutPage() {
         </section>
 
         {/* ========================================================= */}
-        {/* 4. CORE VALUES / WHY CHOOSE US                             */}
+        {/* 4. HOW WE WORK (THE 6 PILLARS)                            */}
         {/* ========================================================= */}
         <section className="py-12">
-          <div className="text-center max-w-[650px] mx-auto mb-12">
-            <h2 className="text-[28px] sm:text-[34px] font-bold text-[#18181b] tracking-tight mb-3">
-              Why Choose IndustrialEdge
+          <div className="text-center max-w-[700px] mx-auto mb-12">
+            <span className="text-xs font-bold uppercase tracking-wider text-[#0ea57a] mb-2 block">
+              Tailored Methodology
+            </span>
+            <h2 className="text-[28px] sm:text-[34px] font-bold text-[#171145] tracking-tight mb-3">
+              How We Work
             </h2>
             <p className="text-[14.5px] text-[#71717a] leading-relaxed">
-              We stand apart through our uncompromising dedication to product authenticity, rapid global logistics, and lifetime customer satisfaction.
+              At Industrial Edge, we combine deep industry expertise with a customer-first approach. We don’t believe in a one-size-fits-all approach. Instead, we craft procurement strategies specifically tailored to your business, ensuring that every step of the process supports your organization’s unique objectives.
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {CORE_VALUES.map((val) => {
-              const IconComp = val.icon;
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {HOW_WE_WORK_PILLARS.map((pillar) => {
+              const IconComp = pillar.icon;
               return (
                 <div
-                  key={val.title}
-                  className="bg-white border border-[#e5e7eb] hover:border-[#0ea57a] rounded-[10px] p-6 transition-all duration-200 hover:shadow-md group"
+                  key={pillar.title}
+                  className="bg-white border border-[#e5e7eb] hover:border-[#0ea57a] rounded-[10px] p-6 transition-all duration-200 hover:shadow-md group relative"
                 >
-                  <div className="w-12 h-12 rounded-[8px] bg-[#ecfdf5] group-hover:bg-[#0ea57a] text-[#0ea57a] group-hover:text-white flex items-center justify-center transition-colors mb-4">
-                    <IconComp size={22} strokeWidth={2} />
+                  <div className="flex items-center justify-between mb-4">
+                    <div className="w-12 h-12 rounded-[8px] bg-[#ecfdf5] group-hover:bg-[#0ea57a] text-[#0ea57a] group-hover:text-white flex items-center justify-center transition-colors">
+                      <IconComp size={22} strokeWidth={2} />
+                    </div>
+                    <span className="text-[12px] font-extrabold text-[#94a3b8] group-hover:text-[#0ea57a] transition-colors">
+                      {pillar.step}
+                    </span>
                   </div>
-                  <h3 className="text-[16px] font-bold text-[#18181b] mb-2">
-                    {val.title}
+                  <h3 className="text-[16.5px] font-bold text-[#171145] mb-2">
+                    {pillar.title}
                   </h3>
                   <p className="text-[13.5px] text-[#52525b] leading-relaxed">
-                    {val.description}
+                    {pillar.description}
                   </p>
                 </div>
               );
@@ -272,11 +296,90 @@ export default function AboutPage() {
         </section>
 
         {/* ========================================================= */}
-        {/* 5. BRAND PARTNERS LOGO CAROUSEL / ROW                     */}
+        {/* 5. 10 CORE SUPPLY DOMAINS PREVIEW                         */}
+        {/* ========================================================= */}
+        <section className="my-14 py-12 px-6 sm:px-10 bg-[#fafafa] border border-[#f0f0f0] rounded-[14px]">
+          <div className="text-center max-w-[650px] mx-auto mb-10">
+            <span className="text-xs font-bold uppercase tracking-wider text-[#0ea57a] mb-2 block">
+              Comprehensive Portfolio
+            </span>
+            <h2 className="text-[28px] sm:text-[34px] font-bold text-[#171145] tracking-tight mb-3">
+              10 Core Supply Domains
+            </h2>
+            <p className="text-[14.5px] text-[#71717a] leading-relaxed">
+              Serving corporate offices, commercial facilities, and manufacturing industries across Pakistan with high-quality general order supplies.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
+            {CORE_DOMAINS.map((domain, index) => (
+              <div
+                key={domain}
+                className="bg-white border border-[#e5e7eb] rounded-[8px] p-4 text-center hover:border-[#0ea57a] hover:shadow-xs transition-all flex flex-col justify-center items-center gap-2 group"
+              >
+                <div className="w-7 h-7 rounded-full bg-[#ecfdf5] text-[#0ea57a] flex items-center justify-center font-bold text-xs group-hover:bg-[#0ea57a] group-hover:text-white transition-colors">
+                  {index + 1}
+                </div>
+                <span className="text-[13px] font-bold text-[#171145] group-hover:text-[#0ea57a] transition-colors">
+                  {domain}
+                </span>
+              </div>
+            ))}
+          </div>
+
+          <div className="text-center mt-8">
+            <Link
+              href="/what-we-do"
+              className="inline-flex items-center gap-2 text-[14px] font-bold text-[#0ea57a] hover:underline"
+            >
+              <span>Explore all domain details &amp; procurement services</span>
+              <ArrowRight size={16} />
+            </Link>
+          </div>
+        </section>
+
+        {/* ========================================================= */}
+        {/* 6. VALUE PROPOSITION: SIMPLIFYING PROCUREMENT             */}
+        {/* ========================================================= */}
+        <section className="py-12">
+          <div className="text-center max-w-[650px] mx-auto mb-12">
+            <h2 className="text-[28px] sm:text-[34px] font-bold text-[#171145] tracking-tight mb-3">
+              Simplifying Business Procurement
+            </h2>
+            <p className="text-[14.5px] text-[#71717a] leading-relaxed">
+              We streamline the complexities of corporate purchasing so your organization can focus on core business growth.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            {VALUE_PROPOSITIONS.map((prop) => {
+              const IconComp = prop.icon;
+              return (
+                <div
+                  key={prop.title}
+                  className="bg-white border border-[#e5e7eb] rounded-[10px] p-6 shadow-2xs hover:border-[#0ea57a] transition-colors"
+                >
+                  <div className="w-12 h-12 rounded-[8px] bg-[#ecfdf5] text-[#0ea57a] flex items-center justify-center mb-4">
+                    <IconComp size={22} strokeWidth={2} />
+                  </div>
+                  <h3 className="text-[16px] font-bold text-[#171145] mb-2">
+                    {prop.title}
+                  </h3>
+                  <p className="text-[13px] text-[#52525b] leading-relaxed">
+                    {prop.description}
+                  </p>
+                </div>
+              );
+            })}
+          </div>
+        </section>
+
+        {/* ========================================================= */}
+        {/* 7. BRAND PARTNERS LOGO CAROUSEL / ROW                     */}
         {/* ========================================================= */}
         <section className="py-12 border-t border-b border-[#f0f0f0] my-8">
           <p className="text-center text-xs font-bold uppercase tracking-wider text-[#a1a1aa] mb-8">
-            Trusted Partners &amp; Premier Manufacturers
+            Trusted Partners &amp; Tier-1 Quality Manufacturers
           </p>
           <div className="flex flex-wrap items-center justify-center gap-8 sm:gap-14 opacity-75 hover:opacity-100 transition-opacity">
             {PARTNER_LOGOS.map((logo, idx) => (
@@ -294,105 +397,29 @@ export default function AboutPage() {
         </section>
 
         {/* ========================================================= */}
-        {/* 6. OUR JOURNEY & MILESTONES                               */}
-        {/* ========================================================= */}
-        <section className="py-12">
-          <div className="text-center max-w-[650px] mx-auto mb-12">
-            <h2 className="text-[28px] sm:text-[34px] font-bold text-[#18181b] tracking-tight mb-3">
-              Our Journey So Far
-            </h2>
-            <p className="text-[14.5px] text-[#71717a] leading-relaxed">
-              From our humble beginnings to a globally recognized electronics brand.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {MILESTONES.map((m) => (
-              <div
-                key={m.year}
-                className="p-6 bg-[#fafafa] border border-[#e5e7eb] rounded-[10px] relative overflow-hidden"
-              >
-                <div className="text-[28px] font-extrabold text-[#0ea57a] mb-1">
-                  {m.year}
-                </div>
-                <h3 className="text-[16px] font-bold text-[#18181b] mb-2">
-                  {m.title}
-                </h3>
-                <p className="text-[13px] text-[#52525b] leading-relaxed">
-                  {m.description}
-                </p>
-              </div>
-            ))}
-          </div>
-        </section>
-
-        {/* ========================================================= */}
-        {/* 7. VERIFIED CUSTOMER TESTIMONIALS                         */}
-        {/* ========================================================= */}
-        <section className="py-12 mb-10">
-          <div className="text-center max-w-[650px] mx-auto mb-12">
-            <h2 className="text-[28px] sm:text-[34px] font-bold text-[#18181b] tracking-tight mb-3">
-              What Our Customers Say
-            </h2>
-            <p className="text-[14.5px] text-[#71717a] leading-relaxed">
-              Read authentic feedback from hardware engineers, IT leaders, and creative professionals.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {TESTIMONIALS.map((t) => (
-              <div
-                key={t.name}
-                className="bg-white border border-[#e5e7eb] rounded-[10px] p-6 shadow-2xs flex flex-col justify-between"
-              >
-                <div>
-                  {/* 5-star rating */}
-                  <div className="flex items-center gap-1 text-[#f59e0b] mb-4">
-                    {Array.from({ length: t.rating }).map((_, idx) => (
-                      <Star key={idx} size={15} fill="currentColor" />
-                    ))}
-                  </div>
-                  <p className="text-[14px] text-[#3f3f46] italic leading-relaxed mb-6">
-                    &ldquo;{t.quote}&rdquo;
-                  </p>
-                </div>
-
-                <div className="border-t border-[#f4f4f5] pt-4">
-                  <div className="font-bold text-[14.5px] text-[#18181b]">{t.name}</div>
-                  <div className="text-xs text-[#71717a]">
-                    {t.role} &bull; <span className="text-[#0ea57a]">{t.company}</span>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </section>
-
-        {/* ========================================================= */}
         {/* 8. CALL TO ACTION BANNER                                  */}
         {/* ========================================================= */}
-        <section className="mb-16 bg-[#18181b] rounded-[14px] p-8 sm:p-12 text-white relative overflow-hidden shadow-xl">
+        <section className="mb-16 bg-[#171145] rounded-[14px] p-8 sm:p-12 text-white relative overflow-hidden shadow-xl">
           <div className="relative z-10 max-w-[700px]">
             <h2 className="text-[28px] sm:text-[36px] font-bold tracking-tight mb-3 text-white">
-              Ready to Upgrade Your Tech Setup?
+              Your Trusted Partner for Corporate Procurement &amp; Gifting
             </h2>
-            <p className="text-[15px] text-[#a1a1aa] leading-relaxed mb-8">
-              Explore our wide range of pro laptops, audio hardware, and gaming peripherals.
-              Enjoy certified warranty and express delivery worldwide.
+            <p className="text-[15px] text-[#cbd5e1] leading-relaxed mb-8">
+              Let Industrial Edge manage your business supplies, office equipment, and enterprise orders with guaranteed authenticity and nationwide logistics.
             </p>
             <div className="flex flex-wrap items-center gap-4">
               <Link
-                href="/shop"
+                href="/contact"
                 className="px-8 py-3.5 bg-[#0ea57a] hover:bg-[#0b8462] text-white font-bold text-[14px] rounded-[6px] transition-colors shadow-xs active:scale-[0.99] inline-flex items-center gap-2"
               >
-                <span>Browse All Products</span>
+                <span>Request Procurement Quotation</span>
                 <ArrowRight size={16} />
               </Link>
               <Link
-                href="/contact"
+                href="/shop"
                 className="px-8 py-3.5 bg-white/10 hover:bg-white/20 text-white font-semibold text-[14px] rounded-[6px] transition-colors backdrop-blur-xs"
               >
-                Contact Sales &amp; Support
+                Browse Shop
               </Link>
             </div>
           </div>
