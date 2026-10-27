@@ -3,7 +3,7 @@
 import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 import { useStore } from "@/lib/store";
 import {
   ChevronDown,
@@ -136,6 +136,7 @@ const LANGUAGES = [
 
 export default function Header() {
   const router = useRouter();
+  const pathname = usePathname();
   const { cart, openCartDrawer, openAuthModal } = useStore();
 
   // Search & Categories Modal State (Image 2)
@@ -154,11 +155,6 @@ export default function Header() {
   const [languageOpen, setLanguageOpen] = useState(false);
   const [selectedLanguage, setSelectedLanguage] = useState("English");
   const languageRef = useRef<HTMLDivElement>(null);
-
-  // Nav Dropdowns
-  const [blogDropdownOpen, setBlogDropdownOpen] = useState(false);
-  const [shopDropdownOpen, setShopDropdownOpen] = useState(false);
-  const [pageDropdownOpen, setPageDropdownOpen] = useState(false);
 
   // Mobile Drawer & Canvas Tabs
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -210,9 +206,6 @@ export default function Header() {
         setAllCategoriesOpen(false);
         setActiveSubMenu(null);
         setLanguageOpen(false);
-        setBlogDropdownOpen(false);
-        setShopDropdownOpen(false);
-        setPageDropdownOpen(false);
         setStickyMenuOpen(false);
       }
     };
@@ -602,117 +595,79 @@ export default function Header() {
             {/* Vertical Separator Line | */}
             <div className="h-5 w-[1px] bg-[#e2e8f0] mx-5" />
 
-            {/* Navigation Links: Home, Blog +, Shop +, Pages + */}
-            <div className="flex items-center gap-7 h-full">
+            {/* Navigation Links: Home, Shop, Blogs, About Us, What we do, Our partners */}
+            <div className="flex items-center gap-5 lg:gap-7 h-full">
               {/* Home */}
               <Link
                 href="/"
-                className="flex items-center text-[14px] font-medium text-[#ff3d3d] hover:text-[#ff3d3d] transition-colors py-3"
+                className={`flex items-center text-[14px] py-3 transition-colors ${
+                  pathname === "/"
+                    ? "text-[#ff3d3d] font-semibold"
+                    : "text-[#333e48] hover:text-[#ff3d3d] font-medium"
+                }`}
               >
                 <span>Home</span>
               </Link>
 
-              {/* Blog + */}
-              <div
-                className="relative h-full flex items-center"
-                onMouseEnter={() => setBlogDropdownOpen(true)}
-                onMouseLeave={() => setBlogDropdownOpen(false)}
+              {/* Shop */}
+              <Link
+                href="/shop"
+                className={`flex items-center text-[14px] py-3 transition-colors ${
+                  pathname.startsWith("/shop")
+                    ? "text-[#ff3d3d] font-semibold"
+                    : "text-[#333e48] hover:text-[#ff3d3d] font-medium"
+                }`}
               >
-                <Link
-                  href="/blog"
-                  className="flex items-center gap-1 text-[14px] font-medium text-[#333e48] hover:text-[#ff3d3d] transition-colors py-3"
-                >
-                  <span>Blog</span>
-                  <span className="text-[13px] font-normal leading-none">+</span>
-                </Link>
+                <span>Shop</span>
+              </Link>
 
-                {blogDropdownOpen && (
-                  <div className="absolute left-0 top-full w-[170px] bg-white border border-[#e5e5e5] shadow-[0_10px_25px_rgba(0,0,0,0.1)] rounded-md py-2 z-50 animate-in fade-in slide-in-from-top-1 duration-150">
-                    {[
-                      { label: "Blog Hub", href: "/blog" },
-                      { label: "Blog Archive", href: "/blog/archive" },
-                      { label: "Blog Single", href: "/blog/the-future-of-foldable-smartphones-in-2026" },
-                    ].map((item) => (
-                      <Link
-                        key={item.label}
-                        href={item.href}
-                        className="block px-4 py-2 text-[13px] text-[#333e48] hover:text-[#ff3d3d] hover:bg-[#f8f9fa] transition-colors"
-                      >
-                        {item.label}
-                      </Link>
-                    ))}
-                  </div>
-                )}
-              </div>
-
-              {/* Shop + */}
-              <div
-                className="relative h-full flex items-center"
-                onMouseEnter={() => setShopDropdownOpen(true)}
-                onMouseLeave={() => setShopDropdownOpen(false)}
+              {/* Blogs */}
+              <Link
+                href="/blog"
+                className={`flex items-center text-[14px] py-3 transition-colors ${
+                  pathname.startsWith("/blog")
+                    ? "text-[#ff3d3d] font-semibold"
+                    : "text-[#333e48] hover:text-[#ff3d3d] font-medium"
+                }`}
               >
-                <Link
-                  href="/shop"
-                  className="flex items-center gap-1 text-[14px] font-medium text-[#333e48] hover:text-[#ff3d3d] transition-colors py-3"
-                >
-                  <span>Shop</span>
-                  <span className="text-[13px] font-normal leading-none">+</span>
-                </Link>
+                <span>Blogs</span>
+              </Link>
 
-                {shopDropdownOpen && (
-                  <div className="absolute left-0 top-full w-[170px] bg-white border border-[#e5e5e5] shadow-[0_10px_25px_rgba(0,0,0,0.1)] rounded-md py-2 z-50 animate-in fade-in slide-in-from-top-1 duration-150">
-                    {[
-                      { label: "All Products", href: "/shop" },
-                      { label: "Shopping Cart", href: "/cart" },
-                      { label: "Wishlist", href: "/wishlist" },
-                      { label: "Checkout", href: "/checkout" },
-                    ].map((item) => (
-                      <Link
-                        key={item.label}
-                        href={item.href}
-                        className="block px-4 py-2 text-[13px] text-[#333e48] hover:text-[#ff3d3d] hover:bg-[#f8f9fa] transition-colors"
-                      >
-                        {item.label}
-                      </Link>
-                    ))}
-                  </div>
-                )}
-              </div>
-
-              {/* Pages + */}
-              <div
-                className="relative h-full flex items-center"
-                onMouseEnter={() => setPageDropdownOpen(true)}
-                onMouseLeave={() => setPageDropdownOpen(false)}
+              {/* About Us */}
+              <Link
+                href="/about"
+                className={`flex items-center text-[14px] py-3 transition-colors ${
+                  pathname.startsWith("/about")
+                    ? "text-[#ff3d3d] font-semibold"
+                    : "text-[#333e48] hover:text-[#ff3d3d] font-medium"
+                }`}
               >
-                <button
-                  type="button"
-                  className="flex items-center gap-1 text-[14px] font-medium text-[#333e48] hover:text-[#ff3d3d] transition-colors py-3 cursor-pointer"
-                >
-                  <span>Pages</span>
-                  <span className="text-[13px] font-normal leading-none">+</span>
-                </button>
+                <span>About Us</span>
+              </Link>
 
-                {pageDropdownOpen && (
-                  <div className="absolute left-0 top-full w-[170px] bg-white border border-[#e5e5e5] shadow-[0_10px_25px_rgba(0,0,0,0.1)] rounded-md py-2 z-50 animate-in fade-in slide-in-from-top-1 duration-150">
-                    {[
-                      { label: "About Us", href: "/about" },
-                      { label: "What We Do", href: "/what-we-do" },
-                      { label: "Official Partners", href: "/partners" },
-                      { label: "My Account", href: "/my-account" },
-                      { label: "Contact Us", href: "/contact" },
-                    ].map((item) => (
-                      <Link
-                        key={item.label}
-                        href={item.href}
-                        className="block px-4 py-2 text-[13px] text-[#333e48] hover:text-[#ff3d3d] hover:bg-[#f8f9fa] transition-colors"
-                      >
-                        {item.label}
-                      </Link>
-                    ))}
-                  </div>
-                )}
-              </div>
+              {/* What we do */}
+              <Link
+                href="/what-we-do"
+                className={`flex items-center text-[14px] py-3 transition-colors ${
+                  pathname.startsWith("/what-we-do")
+                    ? "text-[#ff3d3d] font-semibold"
+                    : "text-[#333e48] hover:text-[#ff3d3d] font-medium"
+                }`}
+              >
+                <span>What we do</span>
+              </Link>
+
+              {/* Our partners */}
+              <Link
+                href="/partners"
+                className={`flex items-center text-[14px] py-3 transition-colors ${
+                  pathname.startsWith("/partners")
+                    ? "text-[#ff3d3d] font-semibold"
+                    : "text-[#333e48] hover:text-[#ff3d3d] font-medium"
+                }`}
+              >
+                <span>Our partners</span>
+              </Link>
             </div>
           </div>
 
@@ -838,156 +793,89 @@ export default function Header() {
                     <Link
                       href="/"
                       onClick={() => setMobileMenuOpen(false)}
-                      className="text-[14px] font-medium text-[#ff3d3d] hover:text-[#ff3d3d] transition-colors block"
+                      className={`text-[14px] transition-colors block ${
+                        pathname === "/"
+                          ? "text-[#ff3d3d] font-semibold"
+                          : "text-[#222222] hover:text-[#ff3d3d] font-medium"
+                      }`}
                     >
                       Home
                     </Link>
                   </div>
 
-                  {/* Blog Accordion */}
-                  <div>
-                    <div className="flex items-center justify-between py-2.5 px-2 hover:bg-[#f8f9fa] rounded">
-                      <Link
-                        href="/blog"
-                        onClick={() => setMobileMenuOpen(false)}
-                        className="text-[14px] font-medium text-[#222222] hover:text-[#ff3d3d] transition-colors"
-                      >
-                        Blog
-                      </Link>
-                      <button
-                        type="button"
-                        onClick={() =>
-                          setExpandedCanvasMenu(
-                            expandedCanvasMenu === "blog" ? null : "blog"
-                          )
-                        }
-                        className="p-1 text-[#888] hover:text-[#ff3d3d]"
-                      >
-                        <ChevronDown
-                          size={15}
-                          className={`transition-transform duration-200 ${
-                            expandedCanvasMenu === "blog"
-                              ? "rotate-180 text-[#ff3d3d]"
-                              : ""
-                          }`}
-                        />
-                      </button>
-                    </div>
-                    {expandedCanvasMenu === "blog" && (
-                      <div className="pl-4 pb-2 space-y-1 bg-[#fafafa] rounded-b">
-                        {[
-                          { label: "Blog Hub", href: "/blog" },
-                          { label: "Blog Archive", href: "/blog/archive" },
-                          { label: "Blog Single", href: "/blog/the-future-of-foldable-smartphones-in-2026" },
-                        ].map((b) => (
-                          <Link
-                            key={b.label}
-                            href={b.href}
-                            onClick={() => setMobileMenuOpen(false)}
-                            className="block py-1.5 text-[13px] text-[#555555] hover:text-[#ff3d3d]"
-                          >
-                            {b.label}
-                          </Link>
-                        ))}
-                      </div>
-                    )}
+                  {/* Shop */}
+                  <div className="py-2.5 px-2 hover:bg-[#f8f9fa] rounded">
+                    <Link
+                      href="/shop"
+                      onClick={() => setMobileMenuOpen(false)}
+                      className={`text-[14px] transition-colors block ${
+                        pathname.startsWith("/shop")
+                          ? "text-[#ff3d3d] font-semibold"
+                          : "text-[#222222] hover:text-[#ff3d3d] font-medium"
+                      }`}
+                    >
+                      Shop
+                    </Link>
                   </div>
 
-                  {/* Shop Accordion */}
-                  <div>
-                    <div className="flex items-center justify-between py-2.5 px-2 hover:bg-[#f8f9fa] rounded">
-                      <Link
-                        href="/shop"
-                        onClick={() => setMobileMenuOpen(false)}
-                        className="text-[14px] font-medium text-[#222222] hover:text-[#ff3d3d] transition-colors"
-                      >
-                        Shop
-                      </Link>
-                      <button
-                        type="button"
-                        onClick={() =>
-                          setExpandedCanvasMenu(
-                            expandedCanvasMenu === "shop" ? null : "shop"
-                          )
-                        }
-                        className="p-1 text-[#888] hover:text-[#ff3d3d]"
-                      >
-                        <ChevronDown
-                          size={15}
-                          className={`transition-transform duration-200 ${
-                            expandedCanvasMenu === "shop"
-                              ? "rotate-180 text-[#ff3d3d]"
-                              : ""
-                          }`}
-                        />
-                      </button>
-                    </div>
-                    {expandedCanvasMenu === "shop" && (
-                      <div className="pl-4 pb-2 space-y-1 bg-[#fafafa] rounded-b">
-                        {[
-                          { label: "All Products", href: "/shop" },
-                          { label: "Shopping Cart", href: "/cart" },
-                          { label: "Wishlist", href: "/wishlist" },
-                          { label: "Checkout", href: "/checkout" },
-                        ].map((s) => (
-                          <Link
-                            key={s.label}
-                            href={s.href}
-                            onClick={() => setMobileMenuOpen(false)}
-                            className="block py-1.5 text-[13px] text-[#555555] hover:text-[#ff3d3d]"
-                          >
-                            {s.label}
-                          </Link>
-                        ))}
-                      </div>
-                    )}
+                  {/* Blogs */}
+                  <div className="py-2.5 px-2 hover:bg-[#f8f9fa] rounded">
+                    <Link
+                      href="/blog"
+                      onClick={() => setMobileMenuOpen(false)}
+                      className={`text-[14px] transition-colors block ${
+                        pathname.startsWith("/blog")
+                          ? "text-[#ff3d3d] font-semibold"
+                          : "text-[#222222] hover:text-[#ff3d3d] font-medium"
+                      }`}
+                    >
+                      Blogs
+                    </Link>
                   </div>
 
-                  {/* Pages Accordion */}
-                  <div>
-                    <div className="flex items-center justify-between py-2.5 px-2 hover:bg-[#f8f9fa] rounded">
-                      <span className="text-[14px] font-medium text-[#222222]">
-                        Pages
-                      </span>
-                      <button
-                        type="button"
-                        onClick={() =>
-                          setExpandedCanvasMenu(
-                            expandedCanvasMenu === "pages" ? null : "pages"
-                          )
-                        }
-                        className="p-1 text-[#888] hover:text-[#ff3d3d]"
-                      >
-                        <ChevronDown
-                          size={15}
-                          className={`transition-transform duration-200 ${
-                            expandedCanvasMenu === "pages"
-                              ? "rotate-180 text-[#ff3d3d]"
-                              : ""
-                          }`}
-                        />
-                      </button>
-                    </div>
-                    {expandedCanvasMenu === "pages" && (
-                      <div className="pl-4 pb-2 space-y-1 bg-[#fafafa] rounded-b">
-                        {[
-                          { label: "About Us", href: "/about" },
-                          { label: "What We Do", href: "/what-we-do" },
-                          { label: "Official Partners", href: "/partners" },
-                          { label: "My Account", href: "/my-account" },
-                          { label: "Contact Us", href: "/contact" },
-                        ].map((p) => (
-                          <Link
-                            key={p.label}
-                            href={p.href}
-                            onClick={() => setMobileMenuOpen(false)}
-                            className="block py-1.5 text-[13px] text-[#555555] hover:text-[#ff3d3d]"
-                          >
-                            {p.label}
-                          </Link>
-                        ))}
-                      </div>
-                    )}
+                  {/* About Us */}
+                  <div className="py-2.5 px-2 hover:bg-[#f8f9fa] rounded">
+                    <Link
+                      href="/about"
+                      onClick={() => setMobileMenuOpen(false)}
+                      className={`text-[14px] transition-colors block ${
+                        pathname.startsWith("/about")
+                          ? "text-[#ff3d3d] font-semibold"
+                          : "text-[#222222] hover:text-[#ff3d3d] font-medium"
+                      }`}
+                    >
+                      About Us
+                    </Link>
+                  </div>
+
+                  {/* What we do */}
+                  <div className="py-2.5 px-2 hover:bg-[#f8f9fa] rounded">
+                    <Link
+                      href="/what-we-do"
+                      onClick={() => setMobileMenuOpen(false)}
+                      className={`text-[14px] transition-colors block ${
+                        pathname.startsWith("/what-we-do")
+                          ? "text-[#ff3d3d] font-semibold"
+                          : "text-[#222222] hover:text-[#ff3d3d] font-medium"
+                      }`}
+                    >
+                      What we do
+                    </Link>
+                  </div>
+
+                  {/* Our partners */}
+                  <div className="py-2.5 px-2 hover:bg-[#f8f9fa] rounded">
+                    <Link
+                      href="/partners"
+                      onClick={() => setMobileMenuOpen(false)}
+                      className={`text-[14px] transition-colors block ${
+                        pathname.startsWith("/partners")
+                          ? "text-[#ff3d3d] font-semibold"
+                          : "text-[#222222] hover:text-[#ff3d3d] font-medium"
+                      }`}
+                    >
+                      Our partners
+                    </Link>
                   </div>
 
                   {/* Contact Us */}
@@ -995,7 +883,11 @@ export default function Header() {
                     <Link
                       href="/contact"
                       onClick={() => setMobileMenuOpen(false)}
-                      className="text-[14px] font-medium text-[#222222] hover:text-[#ff3d3d] transition-colors block"
+                      className={`text-[14px] transition-colors block ${
+                        pathname.startsWith("/contact")
+                          ? "text-[#ff3d3d] font-semibold"
+                          : "text-[#222222] hover:text-[#ff3d3d] font-medium"
+                      }`}
                     >
                       Contact Us
                     </Link>
