@@ -24,6 +24,14 @@ const nunitoSans = Nunito_Sans({
 export const metadata: Metadata = {
   title: "IndustrialEdge.pk — Industrial Electronics & Tech Store",
   description: "Your trusted destination for cutting-edge electronics, industrial hardware, smart devices, and premium gadgets in Pakistan.",
+  icons: {
+    icon: [
+      { url: "/images/logo.png", type: "image/png" },
+      { url: "/favicon.ico", sizes: "any" },
+    ],
+    shortcut: "/images/logo.png",
+    apple: "/images/logo.png",
+  },
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
