@@ -52,7 +52,7 @@ export default function Footer() {
                 alt="IndustrialEdge.pk"
                 width={36}
                 height={36}
-                className="h-[34px] w-auto object-contain transition-transform group-hover:scale-105"
+                className="w-[34px] h-[34px] object-contain transition-transform group-hover:scale-105"
                 priority
               />
               <span className="text-[20px] font-black tracking-tight text-[#15233e] flex items-center">

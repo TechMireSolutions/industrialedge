@@ -268,7 +268,7 @@ export default function Header() {
               width={38}
               height={38}
               priority
-              className="h-[32px] md:h-[38px] w-auto object-contain transition-transform group-hover:scale-105"
+              className="w-[32px] h-[32px] md:w-[38px] md:h-[38px] object-contain transition-transform group-hover:scale-105"
             />
             <span className="text-[19px] md:text-[22px] font-black tracking-tight text-[#15233e] flex items-center leading-none">
               Industrial<span className="text-[#0ea57a]">Edge</span>
@@ -740,7 +740,7 @@ export default function Header() {
                   alt="IndustrialEdge.pk"
                   width={32}
                   height={32}
-                  className="h-[28px] w-auto object-contain transition-transform group-hover:scale-105"
+                  className="w-[28px] h-[28px] object-contain transition-transform group-hover:scale-105"
                 />
                 <span className="text-[18px] font-black tracking-tight text-[#15233e] flex items-center">
                   Industrial<span className="text-[#0ea57a]">Edge</span>
