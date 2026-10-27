@@ -55,6 +55,19 @@ function initMemory() {
   initialized = true;
 }
 
+export function _resetStoreForTesting() {
+  memoryWishlist = [];
+  memoryCart = [];
+  initialized = true;
+  if (typeof localStorage !== "undefined") {
+    try {
+      localStorage.removeItem(WISHLIST_KEY);
+      localStorage.removeItem(CART_KEY);
+    } catch {}
+  }
+  notify();
+}
+
 function subscribe(listener: () => void) {
   listeners.add(listener);
   const handleStorage = () => {

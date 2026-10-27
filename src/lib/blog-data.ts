@@ -678,6 +678,44 @@ export function getArchiveTimeline(): {
   }));
 }
 
+export function getAllBlogCategories(): string[] {
+  return getCategoriesWithCounts().map((c) => c.name);
+}
+
+export function getAllBlogTags(): string[] {
+  return getAllTagsWithCounts().map((t) => t.tag);
+}
+
+export function searchPosts(query = "", category = ""): BlogPost[] {
+  return BLOG_POSTS.filter((post) => {
+    const matchesCategory = category
+      ? post.category.toLowerCase() === category.toLowerCase()
+      : true;
+    const q = query.trim().toLowerCase();
+    const matchesQuery = q
+      ? post.title.toLowerCase().includes(q) ||
+        post.excerpt.toLowerCase().includes(q) ||
+        post.tags.some((t) => t.toLowerCase().includes(q))
+      : true;
+    return matchesCategory && matchesQuery;
+  });
+}
+
+export function getPaginatedPosts(
+  page = 1,
+  limit = 6,
+  category = "",
+  search = ""
+) {
+  const filtered = searchPosts(search, category);
+  const totalPosts = filtered.length;
+  const totalPages = Math.max(1, Math.ceil(totalPosts / limit));
+  const currentPage = Math.max(1, Math.min(page, totalPages));
+  const offset = (currentPage - 1) * limit;
+  const posts = filtered.slice(offset, offset + limit);
+  return { posts, totalPosts, totalPages, currentPage };
+}
+
 export function getArchiveStats() {
   const totalArticles = BLOG_POSTS.length;
   const categories = getCategoriesWithCounts().length;
