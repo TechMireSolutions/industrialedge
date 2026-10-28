@@ -1,0 +1,125 @@
+[
+  {
+    "id": "ORD-9481",
+    "customer": {
+      "name": "Tariq Mahmood",
+      "email": "tariq.mahmood@example.com",
+      "phone": "+92 321 9876543",
+      "address": "House 45, Street 12, F-8/2, Islamabad, Pakistan",
+      "city": "Islamabad"
+    },
+    "items": [
+      {
+        "id": "hero-dell-g5",
+        "name": "Dell G5 15 Gaming Laptop",
+        "price": 450,
+        "qty": 1,
+        "image": "/images/dell-g5-hero.png"
+      },
+      {
+        "id": "bs-2",
+        "name": "AirPods (2nd generation)",
+        "price": 129,
+        "qty": 1,
+        "image": "/images/o_2003-540x540.webp"
+      }
+    ],
+    "subtotal": 579,
+    "shipping": 0,
+    "discount": 0,
+    "total": 579,
+    "paymentMethod": "Cash on Delivery",
+    "paymentStatus": "Pending",
+    "status": "processing",
+    "notes": "Please call before delivery.",
+    "trackingNumber": "TCS-9021882",
+    "createdAt": "2026-10-27T14:32:00.000Z"
+  },
+  {
+    "id": "ORD-9480",
+    "customer": {
+      "name": "Ayesha Khan",
+      "email": "ayesha.khan@techcorp.pk",
+      "phone": "+92 333 4567890",
+      "address": "Plot 88-C, Commercial Lane 4, DHA Phase 6, Karachi",
+      "city": "Karachi"
+    },
+    "items": [
+      {
+        "id": "tr-7",
+        "name": "Canon Mirrorless Camera [EOS M6 Mark II]",
+        "price": 898,
+        "qty": 1,
+        "image": "/images/o_3801-540x540.webp"
+      }
+    ],
+    "subtotal": 898,
+    "shipping": 0,
+    "discount": 50,
+    "total": 848,
+    "paymentMethod": "Bank Transfer (BACS)",
+    "paymentStatus": "Paid",
+    "status": "shipped",
+    "notes": "Leave with security reception if unavailable.",
+    "trackingNumber": "LEO-449102",
+    "createdAt": "2026-10-26T09:15:00.000Z"
+  },
+  {
+    "id": "ORD-9479",
+    "customer": {
+      "name": "Zubair Ahmed",
+      "email": "zubair.ahmed@gmail.com",
+      "phone": "+92 300 8112233",
+      "address": "Apartment 402, Gulberg Heights, Lahore, Pakistan",
+      "city": "Lahore"
+    },
+    "items": [
+      {
+        "id": "tr-1",
+        "name": "Apple iPhone 11 Pro Max, US Version, 64GB",
+        "price": 475,
+        "qty": 1,
+        "image": "/images/o_4901-540x540.webp"
+      }
+    ],
+    "subtotal": 475,
+    "shipping": 10,
+    "discount": 0,
+    "total": 485,
+    "paymentMethod": "Cash on Delivery",
+    "paymentStatus": "Completed",
+    "status": "delivered",
+    "notes": "",
+    "trackingNumber": "TCS-8199201",
+    "createdAt": "2026-10-24T18:40:00.000Z"
+  },
+  {
+    "id": "ORD-9478",
+    "customer": {
+      "name": "Hamza Farooq",
+      "email": "hamza.farooq@outlook.com",
+      "phone": "+92 312 3344556",
+      "address": "Street 7, Sector G-11/3, Islamabad",
+      "city": "Islamabad"
+    },
+    "items": [
+      {
+        "id": "bs-4",
+        "name": "Amazfit GTS 2 Smart Watch",
+        "price": 134.99,
+        "qty": 2,
+        "image": "/images/o_0601-540x540.webp"
+      }
+    ],
+    "subtotal": 269.98,
+    "shipping": 0,
+    "discount": 20,
+    "total": 249.98,
+    "paymentMethod": "Direct Bank Transfer",
+    "paymentStatus": "Pending",
+    "status": "pending",
+    "notes": "Urgent shipment requested.",
+    "trackingNumber": "",
+    "createdAt": "2026-10-28T08:20:00.000Z"
+  }
+]

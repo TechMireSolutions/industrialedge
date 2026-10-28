@@ -1,0 +1,35 @@
+[
+  {
+    "id": "cp-1",
+    "code": "EDGE20",
+    "discountType": "percentage",
+    "value": 20,
+    "minSpend": 100,
+    "active": true,
+    "usageCount": 45,
+    "maxUses": 200,
+    "expiresAt": "2027-12-31"
+  },
+  {
+    "id": "cp-2",
+    "code": "WELCOME10",
+    "discountType": "percentage",
+    "value": 10,
+    "minSpend": 50,
+    "active": true,
+    "usageCount": 112,
+    "maxUses": 500,
+    "expiresAt": "2027-12-31"
+  },
+  {
+    "id": "cp-3",
+    "code": "FREESHIP",
+    "discountType": "fixed",
+    "value": 15,
+    "minSpend": 80,
+    "active": true,
+    "usageCount": 68,
+    "maxUses": 1000,
+    "expiresAt": "2027-12-31"
+  }
+]

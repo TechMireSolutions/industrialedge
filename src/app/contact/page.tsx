@@ -14,6 +14,7 @@ import {
   Building2,
   Sparkles,
 } from "lucide-react";
+import { api } from "@/lib/api";
 
 export default function ContactPage() {
   const [submitted, setSubmitted] = useState(false);
@@ -25,8 +26,13 @@ export default function ContactPage() {
     message: "",
   });
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    try {
+      await api.submitInquiry(formData);
+    } catch (err) {
+      console.error("Inquiry error:", err);
+    }
     setSubmitted(true);
   };
 

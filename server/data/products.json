@@ -1,0 +1,324 @@
+[
+  {
+    "id": "tr-1",
+    "name": "Apple iPhone 11 Pro Max, US Version, 64GB, Gold (Copy)",
+    "slug": "apple-iphone-11-pro-max-64gb-gold",
+    "category": "Apple products",
+    "price": 475,
+    "originalPrice": 599,
+    "status": "discount",
+    "stock": 25,
+    "rating": 4.8,
+    "ratingCount": 38,
+    "image": "/images/o_4901-540x540.webp",
+    "images": [
+      "/images/o_4901-540x540.webp"
+    ],
+    "description": "Fully unlocked and compatible with any carrier of choice. Stunning 6.5-inch Super Retina XDR OLED display with A13 Bionic chip.",
+    "specs": {
+      "Screen": "6.5-inch Super Retina XDR",
+      "Storage": "64GB",
+      "Color": "Gold",
+      "Battery": "3969 mAh"
+    },
+    "isTrending": true,
+    "isBestSeller": false,
+    "isFeaturedTab": true,
+    "createdAt": "2026-10-01T10:00:00.000Z"
+  },
+  {
+    "id": "tr-7",
+    "name": "Canon Mirrorless Camera [EOS M6 Mark II] for Vlogging + EF-M 15-45mm",
+    "slug": "canon-eos-m6-mark-ii",
+    "category": "Camera & Video",
+    "price": 898,
+    "originalPrice": 1598,
+    "status": "discount",
+    "stock": 12,
+    "rating": 4.9,
+    "ratingCount": 52,
+    "image": "/images/o_3801-540x540.webp",
+    "images": [
+      "/images/o_3801-540x540.webp"
+    ],
+    "description": "High image quality with 32.5 Megapixel CMOS (APS-C) sensor, high-speed continuous shooting up to 14 fps with Dual Pixel CMOS AF.",
+    "specs": {
+      "Sensor": "32.5 MP APS-C",
+      "Video": "4K UHD 30p",
+      "Connectivity": "Wi-Fi & Bluetooth",
+      "Mount": "EF-M"
+    },
+    "isTrending": true,
+    "isBestSeller": true,
+    "isFeaturedTab": true,
+    "createdAt": "2026-10-02T11:00:00.000Z"
+  },
+  {
+    "id": "tr-2",
+    "name": "Apple iPhone 11 Pro Max, US Version, 64GB, Space Gray",
+    "slug": "apple-iphone-11-pro-max-space-gray",
+    "category": "Apple products",
+    "price": 475,
+    "originalPrice": 620,
+    "status": "none",
+    "stock": 18,
+    "rating": 4.7,
+    "ratingCount": 29,
+    "image": "/images/o_4901-540x540.webp",
+    "images": [
+      "/images/o_4901-540x540.webp"
+    ],
+    "description": "Triple-camera system with 12MP Ultra Wide, Wide, and Telephoto cameras; Night mode and 4K video up to 60fps.",
+    "specs": {
+      "Screen": "6.5-inch OLED",
+      "Storage": "64GB",
+      "Color": "Space Gray",
+      "Processor": "A13 Bionic"
+    },
+    "isTrending": true,
+    "isBestSeller": false,
+    "isFeaturedTab": false,
+    "createdAt": "2026-10-03T09:30:00.000Z"
+  },
+  {
+    "id": "tr-8",
+    "name": "Canon EOS M50 Mark II Mirrorless Camera with 15-45mm Lens",
+    "slug": "canon-eos-m50-mark-ii",
+    "category": "Camera & Video",
+    "price": 519,
+    "originalPrice": 699,
+    "status": "discount",
+    "stock": 8,
+    "rating": 4.8,
+    "ratingCount": 44,
+    "image": "/images/o_3801-540x540.webp",
+    "images": [
+      "/images/o_3801-540x540.webp"
+    ],
+    "description": "24.1 Megapixel CMOS sensor with DIGIC 8 Image Processor, improved Dual Pixel CMOS AF and Eye Detection AF.",
+    "specs": {
+      "Sensor": "24.1 MP",
+      "Screen": "Vari-angle Touchscreen LCD",
+      "Video": "4K 24p",
+      "Weight": "387g"
+    },
+    "isTrending": true,
+    "isBestSeller": true,
+    "isFeaturedTab": true,
+    "createdAt": "2026-10-04T14:20:00.000Z"
+  },
+  {
+    "id": "bs-1",
+    "name": "Acer Aspire 5 A515-56-347N Slim Laptop – 15.6\" Full HD IPS Display",
+    "slug": "acer-aspire-5-slim-laptop",
+    "category": "Laptop & Tablet",
+    "price": 529.75,
+    "originalPrice": 650,
+    "status": "new",
+    "stock": 15,
+    "rating": 4.6,
+    "ratingCount": 31,
+    "image": "/images/o_3603-540x540.webp",
+    "images": [
+      "/images/o_3603-540x540.webp"
+    ],
+    "description": "Powerful 11th Gen Intel Core i3 processor, 15.6-inch Full HD IPS display with narrow bezels, ergonomic hinge, and all-day battery life.",
+    "specs": {
+      "Processor": "Intel Core i3-1115G4",
+      "RAM": "8GB DDR4",
+      "Storage": "256GB NVMe SSD",
+      "Display": "15.6\" FHD IPS"
+    },
+    "isTrending": false,
+    "isBestSeller": true,
+    "isFeaturedTab": true,
+    "createdAt": "2026-10-05T08:00:00.000Z"
+  },
+  {
+    "id": "bs-2",
+    "name": "AirPods (2nd generation) with Wired Charging Case",
+    "slug": "airpods-2nd-generation",
+    "category": "Headphone",
+    "price": 129,
+    "originalPrice": 159,
+    "status": "discount",
+    "stock": 40,
+    "rating": 4.9,
+    "ratingCount": 110,
+    "image": "/images/o_2003-540x540.webp",
+    "images": [
+      "/images/o_2003-540x540.webp"
+    ],
+    "description": "Effortless setup, high-quality audio, hands-free Siri access, and over 24 hours of listening time with the charging case.",
+    "specs": {
+      "Chip": "Apple H1",
+      "Battery": "Up to 5 hours listening",
+      "Connectivity": "Bluetooth 5.0",
+      "Sensors": "Dual beamforming mics"
+    },
+    "isTrending": true,
+    "isBestSeller": true,
+    "isFeaturedTab": true,
+    "createdAt": "2026-10-06T12:00:00.000Z"
+  },
+  {
+    "id": "bs-3",
+    "name": "AirPods (3rd generation) with Lightning Charging Case",
+    "slug": "airpods-3rd-generation",
+    "category": "Headphone",
+    "price": 169,
+    "originalPrice": 199,
+    "status": "new",
+    "stock": 22,
+    "rating": 4.8,
+    "ratingCount": 65,
+    "image": "/images/o_2101-540x540.webp",
+    "images": [
+      "/images/o_2101-540x540.webp"
+    ],
+    "description": "Personalized Spatial Audio with dynamic head tracking, sweat and water resistance, and contoured design with force sensor control.",
+    "specs": {
+      "Audio": "Spatial Audio with head tracking",
+      "WaterResistance": "IPX4",
+      "Battery": "Up to 6 hours",
+      "Case": "Lightning Case"
+    },
+    "isTrending": true,
+    "isBestSeller": true,
+    "isFeaturedTab": true,
+    "createdAt": "2026-10-07T15:00:00.000Z"
+  },
+  {
+    "id": "bs-4",
+    "name": "Amazfit GTS 2 Smart Watch for Men Android iPhone, Bluetooth Calls",
+    "slug": "amazfit-gts-2-smart-watch",
+    "category": "Smartwatch",
+    "price": 134.99,
+    "originalPrice": 179.99,
+    "status": "discount",
+    "stock": 19,
+    "rating": 4.7,
+    "ratingCount": 42,
+    "image": "/images/o_0601-540x540.webp",
+    "images": [
+      "/images/o_0601-540x540.webp"
+    ],
+    "description": "Curved 3D bezel-less design, all-round health tracking, 90 built-in sports modes, and Bluetooth phone call support.",
+    "specs": {
+      "Display": "1.65\" AMOLED",
+      "BatteryLife": "Up to 7 days",
+      "WaterProof": "5 ATM",
+      "HealthSensors": "BioTracker 2 PPG"
+    },
+    "isTrending": false,
+    "isBestSeller": true,
+    "isFeaturedTab": false,
+    "createdAt": "2026-10-08T16:00:00.000Z"
+  },
+  {
+    "id": "bs-5",
+    "name": "Amazon Fire HD 8 tablet, 2 GB RAM, 32 GB, Black",
+    "slug": "amazon-fire-hd-8-tablet",
+    "category": "Laptop & Tablet",
+    "price": 99.99,
+    "originalPrice": 119.99,
+    "status": "discount",
+    "stock": 30,
+    "rating": 4.5,
+    "ratingCount": 88,
+    "image": "/images/o_1101-540x540.webp",
+    "images": [
+      "/images/o_1101-540x540.webp"
+    ],
+    "description": "8-inch vibrant HD display, 30% faster quad-core processor, all-day battery life up to 12 hours, and enhanced USB-C charging.",
+    "specs": {
+      "Screen": "8\" HD (1280 x 800)",
+      "RAM": "2GB",
+      "Storage": "32GB (expandable up to 1TB)",
+      "Battery": "12 Hours"
+    },
+    "isTrending": false,
+    "isBestSeller": true,
+    "isFeaturedTab": true,
+    "createdAt": "2026-10-09T18:00:00.000Z"
+  },
+  {
+    "id": "hero-dell-g5",
+    "name": "Dell G5 15 Gaming Laptop – Intel Core i7, 16GB RAM, RTX 3060",
+    "slug": "dell-g5-gaming-laptop",
+    "category": "Laptop & Tablet",
+    "price": 450,
+    "originalPrice": 799,
+    "status": "discount",
+    "stock": 14,
+    "rating": 4.9,
+    "ratingCount": 140,
+    "image": "/images/dell-g5-hero.png",
+    "images": [
+      "/images/dell-g5-hero.png"
+    ],
+    "description": "Engineered with 10th Gen Intel Core processors and powerful NVIDIA GeForce graphics for unstoppable gaming performance.",
+    "specs": {
+      "CPU": "Intel Core i7-10750H",
+      "GPU": "NVIDIA GeForce RTX 3060 6GB",
+      "RAM": "16GB DDR4",
+      "Storage": "512GB PCIe M.2 SSD"
+    },
+    "isTrending": true,
+    "isBestSeller": true,
+    "isFeaturedTab": true,
+    "createdAt": "2026-10-10T10:00:00.000Z"
+  },
+  {
+    "id": "prd-beats-headphone",
+    "name": "Beats Studio Pro Wireless Over-Ear Headphones – Deep Black",
+    "slug": "beats-studio-pro-wireless",
+    "category": "Headphone",
+    "price": 249.99,
+    "originalPrice": 349.99,
+    "status": "discount",
+    "stock": 20,
+    "rating": 4.7,
+    "ratingCount": 57,
+    "image": "/images/beats-headphones.png",
+    "images": [
+      "/images/beats-headphones.png"
+    ],
+    "description": "Custom acoustic platform delivers rich, immersive sound. Personalized Spatial Audio with dynamic head tracking.",
+    "specs": {
+      "Battery": "Up to 40 hours",
+      "Connectivity": "Lossless Audio via USB-C + Bluetooth",
+      "ANC": "Active Noise Cancelling"
+    },
+    "isTrending": true,
+    "isBestSeller": true,
+    "isFeaturedTab": true,
+    "createdAt": "2026-10-11T11:00:00.000Z"
+  },
+  {
+    "id": "prd-bose-speaker",
+    "name": "Bose SoundLink Revolve+ II Bluetooth Speaker – 360 Sound",
+    "slug": "bose-soundlink-revolve-ii",
+    "category": "Audio Equipments",
+    "price": 199,
+    "originalPrice": 249,
+    "status": "none",
+    "stock": 16,
+    "rating": 4.8,
+    "ratingCount": 62,
+    "image": "/images/bose-speaker.png",
+    "images": [
+      "/images/bose-speaker.png"
+    ],
+    "description": "Astonishingly loud. Surprisingly small. Delivers true 360-degree sound for consistent, uniform coverage.",
+    "specs": {
+      "Battery": "Up to 17 hours",
+      "WaterResistance": "IP55 dust and water resistant",
+      "Mic": "Built-in microphone for speakerphone"
+    },
+    "isTrending": true,
+    "isBestSeller": false,
+    "isFeaturedTab": true,
+    "createdAt": "2026-10-12T13:00:00.000Z"
+  }
+]

@@ -1,0 +1,82 @@
+[
+  {
+    "id": "cat-apple",
+    "name": "Apple products",
+    "slug": "apple-products",
+    "image": "/images/cat-imac.jpg",
+    "icon": "Smartphone",
+    "count": 18
+  },
+  {
+    "id": "cat-audio",
+    "name": "Audio Equipments",
+    "slug": "audio-equipments",
+    "image": "/images/cat-speakers.jpg",
+    "icon": "Speaker",
+    "count": 12
+  },
+  {
+    "id": "cat-camera",
+    "name": "Camera & Video",
+    "slug": "camera-video",
+    "image": "/images/cat-camera.jpg",
+    "icon": "Camera",
+    "count": 9
+  },
+  {
+    "id": "cat-computers",
+    "name": "Computers & Accessories",
+    "slug": "computers-accessories",
+    "image": "/images/cat-pc-tower.jpg",
+    "icon": "Cpu",
+    "count": 24
+  },
+  {
+    "id": "cat-furniture",
+    "name": "Game & Room Furniture",
+    "slug": "game-room-furniture",
+    "image": "/images/cat-gaming-chair.jpg",
+    "icon": "Armchair",
+    "count": 7
+  },
+  {
+    "id": "cat-gaming",
+    "name": "Gaming Accessories",
+    "slug": "gaming-accessories",
+    "image": "/images/cat-gamepad.jpg",
+    "icon": "Gamepad2",
+    "count": 16
+  },
+  {
+    "id": "cat-headphone",
+    "name": "Headphone",
+    "slug": "headphone",
+    "image": "/images/cat-headphones.jpg",
+    "icon": "Headphones",
+    "count": 14
+  },
+  {
+    "id": "cat-laptop",
+    "name": "Laptop & Tablet",
+    "slug": "laptop-tablet",
+    "image": "/images/cat-laptop.jpg",
+    "icon": "Laptop",
+    "count": 20
+  },
+  {
+    "id": "cat-smartwatch",
+    "name": "Smartwatch",
+    "slug": "smartwatch",
+    "image": "/images/cat-imac.jpg",
+    "icon": "Watch",
+    "count": 11
+  },
+  {
+    "id": "cat-tv",
+    "name": "TV & Computer Screen",
+    "slug": "tv-computer-screen",
+    "image": "/images/img-prd8.webp",
+    "icon": "Tv",
+    "count": 15
+  }
+]

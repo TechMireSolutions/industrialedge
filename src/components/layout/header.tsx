@@ -402,6 +402,21 @@ export default function Header() {
               </span>
             </Link>
 
+            {/* 2.5 Admin Control Panel */}
+            <Link
+              href="/admin"
+              className="group hidden sm:flex flex-col items-center justify-center cursor-pointer text-[#333e48] hover:text-[#f97316] transition-colors"
+              aria-label="Admin Control Panel"
+              title="Open Full Customs Admin Panel"
+            >
+              <div className="w-[22px] h-[22px] rounded bg-[#0f172a] text-white flex items-center justify-center text-[10px] font-bold group-hover:bg-[#f97316] transition-colors shadow-xs">
+                IE
+              </div>
+              <span className="text-[12px] text-[#333e48] group-hover:text-[#f97316] font-semibold leading-tight mt-1 transition-colors">
+                Admin
+              </span>
+            </Link>
+
             {/* 3. Your cart: (Clicking opens cart drawer from right) */}
             <button
               type="button"

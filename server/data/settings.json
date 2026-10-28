@@ -1,0 +1,28 @@
+{
+  "storeName": "Industrial Edge",
+  "storeTagline": "Premium Technology & Industrial Computing",
+  "logo": "/logo.png",
+  "supportPhone": "+92 300 1234567",
+  "supportEmail": "support@industrialedge.pk",
+  "address": "Industrial Area, Phase 2, Karachi, Pakistan",
+  "workingHours": "Mon - Sat: 9:00 AM - 8:00 PM",
+  "currency": "$",
+  "currencyCode": "USD",
+  "freeShippingThreshold": 150,
+  "taxRate": 5,
+  "announcementBar": {
+    "enabled": true,
+    "text": "⚡ Flash Sale: Get up to 50% OFF on Selected Industrial & Gaming Gear! Free shipping on orders over $150",
+    "linkText": "Shop Now",
+    "linkUrl": "/shop"
+  },
+  "socialLinks": {
+    "facebook": "https://facebook.com",
+    "twitter": "https://twitter.com",
+    "instagram": "https://instagram.com",
+    "linkedin": "https://linkedin.com",
+    "youtube": "https://youtube.com"
+  },
+  "copyrightText": "© 2026 IndustrialEdge.pk. All rights reserved.",
+  "aboutText": "Industrial Edge is Pakistan's leading technology provider for high-performance enterprise systems, gaming rigs, industrial IoT hardware, and premium consumer electronics."
+}

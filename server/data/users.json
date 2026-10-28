@@ -1,0 +1,11 @@
+[
+  {
+    "id": "user-admin",
+    "name": "Super Admin",
+    "email": "admin@industrialedge.pk",
+    "passwordHash": "admin123",
+    "role": "admin",
+    "avatar": "/images/apple-imac.jpg",
+    "createdAt": "2026-01-01T00:00:00.000Z"
+  }
+]

@@ -1,10 +1,11 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { Eye, Heart, ArrowLeftRight, ShoppingCart, X, Check } from "lucide-react";
 import { useStore, type Product } from "@/lib/store";
+import { api, type BannerSettings } from "@/lib/api";
 
 interface HeroProduct {
   id: string;
@@ -43,6 +44,29 @@ export default function Hero() {
   const { isWishlisted, toggleWishlist, addToCart } = useStore();
   const [quickViewProduct, setQuickViewProduct] = useState<HeroProduct | null>(null);
   const [toastMessage, setToastMessage] = useState<string | null>(null);
+  const [heroData, setHeroData] = useState({
+    price: 450,
+    subtitle: "Let power flow through you",
+    titleLine1: "DELL G5",
+    titleLine2: "GAMING LAPTOP",
+    image: "/images/dell-g5-hero.png",
+    backgroundImage: "/images/hero-bg-exact.webp",
+  });
+
+  useEffect(() => {
+    api.getBanners().then((data) => {
+      if (data?.hero) {
+        setHeroData({
+          price: data.hero.price || 450,
+          subtitle: data.hero.subtitle || "Let power flow through you",
+          titleLine1: data.hero.titleLine1 || "DELL G5",
+          titleLine2: data.hero.titleLine2 || "GAMING LAPTOP",
+          image: data.hero.image || "/images/dell-g5-hero.png",
+          backgroundImage: data.hero.backgroundImage || "/images/hero-bg-exact.webp",
+        });
+      }
+    }).catch(() => {});
+  }, []);
 
   const showToast = (msg: string) => {
     setToastMessage(msg);
@@ -101,7 +125,7 @@ export default function Hero() {
           <div className="md:col-span-5 lg:col-span-5 flex justify-center md:justify-start items-center">
             <div className="relative group w-full max-w-[420px] lg:max-w-[500px] xl:max-w-[540px] transition-transform duration-500 hover:scale-[1.02]">
               <Image
-                src="/images/dell-g5-hero.png"
+                src={heroData.image || "/images/dell-g5-hero.png"}
                 alt="Dell G5 Gaming Laptop"
                 width={540}
                 height={387}
@@ -118,17 +142,17 @@ export default function Hero() {
             </span>
 
             <div className="text-[52px] sm:text-[62px] lg:text-[72px] font-bold text-[#0ea57a] tracking-tight leading-none mb-3">
-              $450
+              ${heroData.price}
             </div>
 
             <p className="text-[15px] sm:text-[17px] lg:text-[19px] text-[#333e48] font-light leading-snug mb-4 sm:mb-5">
-              Let power flow through you
+              {heroData.subtitle}
             </p>
 
             <h1 className="text-[26px] sm:text-[30px] lg:text-[36px] font-bold text-[#171145] tracking-normal uppercase leading-[1.18]">
-              DELL G5
+              {heroData.titleLine1}
               <br />
-              GAMING LAPTOP
+              {heroData.titleLine2}
             </h1>
           </div>
 

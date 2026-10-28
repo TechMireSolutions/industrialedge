@@ -1,0 +1,53 @@
+{
+  "hero": {
+    "brandTag": "Price",
+    "price": 450,
+    "subtitle": "Let power flow through you",
+    "titleLine1": "DELL G5",
+    "titleLine2": "GAMING LAPTOP",
+    "image": "/images/dell-g5-hero.png",
+    "backgroundImage": "/images/hero-bg-exact.webp",
+    "ctaLink": "/shop?cat=Laptop+%26+Tablet",
+    "badge": "BEST DEAL"
+  },
+  "heroSideProducts": [
+    {
+      "id": "hero-airpods-max",
+      "name": "Apple AirPods Max Wireless Over-Ear Headphones – Green",
+      "category": "AirPods",
+      "categoryLink": "/shop?cat=Headphone",
+      "price": 549,
+      "image": "/images/product-airpods-max.webp",
+      "description": "Apple-designed dynamic driver provides high-fidelity audio. Active Noise Cancellation blocks outside noise."
+    },
+    {
+      "id": "hero-fire-tv",
+      "name": "Amazon Fire TV 50\" 4-Series 4K UHD smart TV",
+      "category": "Apple products",
+      "categoryLink": "/shop?cat=TV+%26+Computer+Screen",
+      "price": 299.99,
+      "image": "/images/product-fire-tv.webp",
+      "description": "Brilliant 4K entertainment - Bring movies and shows to life with support for vivid 4K Ultra HD and HDR 10."
+    }
+  ],
+  "gameConsoleBanner": {
+    "title": "GameConsole Destiny Special Edition",
+    "originalPrice": "$99.000",
+    "currentPrice": "$80.000",
+    "saleBadge": "SALE 70%",
+    "image": "/images/img-prd8.webp",
+    "backgroundImage": "/images/bg2-home01.webp",
+    "ctaText": "Shop Now",
+    "ctaLink": "/shop?cat=TV+%26+Computer+Screen"
+  },
+  "dualPromoBanner": {
+    "badgeText": "SAVE $80.00",
+    "title": "Shop and SAVE BIG",
+    "titleHighlight": "SAVE BIG",
+    "subtitle": "on the hottest professional 4K camera gear",
+    "ctaText": "Shop Now",
+    "ctaLink": "/shop?cat=Camera+%26+Video",
+    "image1": "/images/img-prd16.webp",
+    "image2": "/images/img-prd15.webp"
+  }
+}

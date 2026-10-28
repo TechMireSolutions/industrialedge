@@ -1,0 +1,22 @@
+[
+  {
+    "id": "inq-1",
+    "name": "Bilal Raza",
+    "email": "bilal.raza@automation.pk",
+    "phone": "+92 301 5566778",
+    "subject": "Bulk inquiry for 10x Dell G5 Laptops",
+    "message": "Hi Industrial Edge team, we are setting up a machine vision engineering lab and need 10 units of the Dell G5 laptop. Do you offer corporate GST invoices and quantity discounts?",
+    "status": "unread",
+    "createdAt": "2026-10-28T09:10:00.000Z"
+  },
+  {
+    "id": "inq-2",
+    "name": "Sana Mir",
+    "email": "sana.mir@creativestudio.com",
+    "phone": "+92 345 1122334",
+    "subject": "Warranty and return policy question for Canon EOS",
+    "message": "Is the Canon EOS M6 Mark II covered by official manufacturer warranty in Pakistan, and what is your return policy?",
+    "status": "read",
+    "createdAt": "2026-10-27T16:45:00.000Z"
+  }
+]
