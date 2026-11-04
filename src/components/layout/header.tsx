@@ -238,6 +238,11 @@ export default function Header() {
 
   const cartCount = cart.reduce((sum, item) => sum + item.qty, 0);
 
+  // Do not render storefront header on admin routes
+  if (pathname?.startsWith("/admin")) {
+    return null;
+  }
+
   return (
     <header className="w-full bg-white select-none">
       {/* Spacer when sticky to prevent layout jump */}

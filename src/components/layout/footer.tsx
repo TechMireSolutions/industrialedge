@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import Image from "next/image";
+import { usePathname } from "next/navigation";
 import { Mail, MapPin, Phone, Clock } from "lucide-react";
 
 const COMPANY_LINKS = [
@@ -37,7 +38,13 @@ const BOTTOM_LINKS = [
 ];
 
 export default function Footer() {
+  const pathname = usePathname();
   const year = 2026;
+
+  // Do not render storefront footer on admin routes
+  if (pathname?.startsWith("/admin")) {
+    return null;
+  }
 
   return (
     <footer className="w-full bg-[#fafafa] border-t border-[#ebebeb] text-[#73787d]">
