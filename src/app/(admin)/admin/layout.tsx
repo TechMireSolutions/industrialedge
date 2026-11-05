@@ -42,35 +42,103 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   // Skip admin layout chrome on /admin/login
   const isLoginPage = pathname === "/admin/login";
 
-  useEffect(() => {
-    if (isLoginPage) return;
+  const [authorized, setAuthorized] = useState<boolean | null>(() => {
+    if (typeof window === "undefined") return null;
+    const token = localStorage.getItem("industrialedge_admin_token");
+    if (isLoginPage) return !token;
+    return Boolean(token);
+  });
+  const [adminUser, setAdminUser] = useState<{ name: string; email: string } | null>(() => {
+    return api.getStoredAdminUser();
+  });
 
-    // Check server health and stats
+  // 1. Strict Authentication Guard & Redirect
+  useEffect(() => {
+    const token = typeof window !== "undefined" ? localStorage.getItem("industrialedge_admin_token") : null;
+    const user = api.getStoredAdminUser();
+
+    if (isLoginPage) {
+      if (token) {
+        // If already authenticated and visiting /admin/login, redirect to /admin
+        setAuthorized(false);
+        router.replace("/admin");
+      } else {
+        setAuthorized(true);
+      }
+      return;
+    }
+
+    // Protected admin routes (/admin, /admin/products, etc.):
+    if (!token) {
+      setAuthorized(false);
+      router.replace("/admin/login");
+      return;
+    }
+
+    setAuthorized(true);
+    if (user) {
+      setAdminUser(user);
+    }
+  }, [pathname, isLoginPage]);
+
+  // 2. Check server health & badge counters (Only runs when authenticated)
+  useEffect(() => {
+    if (isLoginPage || authorized !== true) return;
+
+    let isMounted = true;
     const checkStatus = async () => {
       try {
         const stats = await api.getStats();
+        if (!isMounted) return;
         setServerOnline(true);
         if (stats?.metrics) {
           setPendingOrders(stats.metrics.pendingOrders || 0);
           setUnreadMessages(stats.metrics.unreadInquiries || 0);
         }
-      } catch {
+      } catch (err: unknown) {
+        if (!isMounted) return;
+        const msg = err instanceof Error ? err.message : "";
+        if (msg.includes("401") || msg.includes("Unauthorized") || msg.includes("token")) {
+          api.adminLogout();
+          router.replace("/admin/login");
+          return;
+        }
         setServerOnline(false);
       }
     };
 
     checkStatus();
-    const interval = setInterval(checkStatus, 15000);
-    return () => clearInterval(interval);
-  }, [isLoginPage]);
+    let interval: NodeJS.Timeout | null = null;
+    if (process.env.NODE_ENV !== "test") {
+      interval = setInterval(checkStatus, 15000);
+    }
+    return () => {
+      isMounted = false;
+      if (interval) clearInterval(interval);
+    };
+  }, [isLoginPage, authorized]);
 
   const handleLogout = () => {
     api.adminLogout();
-    router.push("/admin/login");
+    setAuthorized(false);
+    router.replace("/admin/login");
   };
 
+  // If on login page, render login page chrome directly
   if (isLoginPage) {
     return <div className="min-h-screen bg-[#0f172a] text-slate-100">{children}</div>;
+  }
+
+  // If verifying token or redirecting to /admin/login, show clean loader to avoid flash
+  if (authorized !== true) {
+    return (
+      <div className="min-h-screen bg-[#0f172a] flex flex-col items-center justify-center p-4">
+        <div className="w-10 h-10 border-4 border-orange-500 border-t-transparent rounded-full animate-spin mb-4" />
+        <p className="text-slate-400 text-xs font-medium tracking-wide">
+          Verifying IndustrialEdge Admin Session...
+        </p>
+      </div>
+    );
   }
 
   return (
@@ -141,11 +209,15 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2.5">
               <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-[#f97316] to-[#ea580c] text-white flex items-center justify-center font-bold text-xs shadow-xs">
-                A
+                {(adminUser?.name || "A").charAt(0).toUpperCase()}
               </div>
               <div className="text-left">
-                <div className="text-xs font-semibold text-slate-200 leading-tight">Administrator</div>
-                <div className="text-[10px] text-slate-400">admin@industrialedge.pk</div>
+                <div className="text-xs font-semibold text-slate-200 leading-tight">
+                  {adminUser?.name || "Administrator"}
+                </div>
+                <div className="text-[10px] text-slate-400">
+                  {adminUser?.email || "admin@industrialedge.pk"}
+                </div>
               </div>
             </div>
             <button

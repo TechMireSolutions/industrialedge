@@ -1,16 +1,23 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { usePathname } from "next/navigation";
 import { X, Check } from "lucide-react";
 import { useStore } from "@/lib/store";
 
 export default function AuthModal() {
+  const pathname = usePathname();
   const {
     isAuthModalOpen,
     closeAuthModal,
     authModalTab,
     setAuthModalTab,
   } = useStore();
+
+  // Never render on admin routes
+  if (pathname?.startsWith("/admin")) {
+    return null;
+  }
 
   // Login form state
   const [loginUsername, setLoginUsername] = useState("");

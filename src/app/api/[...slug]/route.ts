@@ -83,6 +83,20 @@ async function forwardOrFallback(req: NextRequest, { params }: { params: Promise
         return NextResponse.json({ status: "ok", service: "Next.js Embedded API", time: new Date().toISOString() });
       }
 
+      if (collectionName === "auth" && itemId === "me") {
+        const users = readJsonFile("users") || [];
+        const admin = users.find((u: { role: string }) => u.role === "admin") || users[0];
+        return NextResponse.json({
+          success: true,
+          user: admin || {
+            id: "user-admin",
+            name: "Super Admin",
+            email: "admin@industrialedge.pk",
+            role: "admin",
+          },
+        });
+      }
+
       if (collectionName === "stats") {
         const orders = readJsonFile("orders") || [];
         const products = readJsonFile("products") || [];
@@ -136,6 +150,34 @@ async function forwardOrFallback(req: NextRequest, { params }: { params: Promise
 
     if (method === "POST") {
       const parsedBody = body ? JSON.parse(body) : {};
+
+      if (collectionName === "auth" && itemId === "login") {
+        const users = readJsonFile("users") || [];
+        const { email, password } = parsedBody;
+        const user = users.find(
+          (u: { email: string; passwordHash: string }) =>
+            (u.email || "").toLowerCase() === (email || "").toLowerCase()
+        );
+        if (!user || user.passwordHash !== password) {
+          return NextResponse.json(
+            { success: false, message: "Invalid email or password" },
+            { status: 401 }
+          );
+        }
+        const token = `tok_${Math.random().toString(36).slice(2)}${Date.now().toString(36)}`;
+        return NextResponse.json({
+          success: true,
+          token,
+          user: {
+            id: user.id,
+            name: user.name,
+            email: user.email,
+            role: user.role,
+            avatar: user.avatar,
+          },
+          message: "Login successful",
+        });
+      }
       if (collectionName === "orders") {
         const orders = readJsonFile("orders") || [];
         const orderId = `ORD-${Math.floor(1000 + Math.random() * 9000)}`;

@@ -3,12 +3,14 @@
 import { useEffect, useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { X, Truck, Trash2, Plus, Minus, ShoppingBag } from "lucide-react";
 import { useStore } from "@/lib/store";
 
 const FREE_SHIPPING_THRESHOLD = 100;
 
 export default function CartDrawer() {
+  const pathname = usePathname();
   const {
     cart,
     cartTotal,
@@ -19,6 +21,11 @@ export default function CartDrawer() {
   } = useStore();
 
   const drawerRef = useRef<HTMLDivElement>(null);
+
+  // Never render on admin routes
+  if (pathname?.startsWith("/admin")) {
+    return null;
+  }
 
   // Close on Escape key press
   useEffect(() => {

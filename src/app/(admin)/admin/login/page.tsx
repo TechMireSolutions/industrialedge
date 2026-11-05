@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { Lock, Mail, ArrowRight, ShieldCheck, AlertCircle, Sparkles } from "lucide-react";
@@ -13,6 +13,13 @@ export default function AdminLoginPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
+  useEffect(() => {
+    const token = typeof window !== "undefined" ? localStorage.getItem("industrialedge_admin_token") : null;
+    if (token) {
+      router.replace("/admin");
+    }
+  }, [router]);
+
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
@@ -20,7 +27,7 @@ export default function AdminLoginPage() {
 
     try {
       await api.adminLogin(email, password);
-      router.push("/admin");
+      router.replace("/admin");
     } catch (err: unknown) {
       const msg = err instanceof Error ? err.message : "Invalid email or password";
       setError(msg);

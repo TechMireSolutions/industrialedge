@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import {
   DollarSign,
   ShoppingCart,
@@ -22,6 +23,7 @@ import {
 import { api, type DashboardStats, type OrderItem } from "@/lib/api";
 
 export default function AdminDashboardPage() {
+  const router = useRouter();
   const [stats, setStats] = useState<DashboardStats | null>(null);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
@@ -32,7 +34,13 @@ export default function AdminDashboardPage() {
       setRefreshing(true);
       const data = await api.getStats();
       setStats(data);
-    } catch (err) {
+    } catch (err: unknown) {
+      const msg = err instanceof Error ? err.message : "";
+      if (msg.includes("401") || msg.includes("Unauthorized") || msg.includes("token")) {
+        api.adminLogout();
+        router.replace("/admin/login");
+        return;
+      }
       console.error("Failed to load dashboard stats:", err);
     } finally {
       setLoading(false);
@@ -41,8 +49,13 @@ export default function AdminDashboardPage() {
   };
 
   useEffect(() => {
+    const token = typeof window !== "undefined" ? localStorage.getItem("industrialedge_admin_token") : null;
+    if (!token) {
+      router.replace("/admin/login");
+      return;
+    }
     loadData();
-  }, []);
+  }, [router]);
 
   const handleQuickStatusChange = async (orderId: string, newStatus: OrderItem["status"]) => {
     try {

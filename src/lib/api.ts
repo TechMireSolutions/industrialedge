@@ -177,17 +177,40 @@ export interface DashboardStats {
 async function fetchApi<T>(endpoint: string, options: RequestInit = {}): Promise<T> {
   const url = endpoint.startsWith("http") ? endpoint : `/api${endpoint.startsWith("/") ? endpoint : `/${endpoint}`}`;
 
+  const headers: Record<string, string> = {
+    "Content-Type": "application/json",
+    ...((options.headers as Record<string, string>) || {}),
+  };
+
+  // Automatically attach Bearer token if present in browser storage
+  if (typeof window !== "undefined") {
+    const token = localStorage.getItem("industrialedge_admin_token");
+    if (token && !headers["Authorization"] && !headers["authorization"]) {
+      headers["Authorization"] = `Bearer ${token}`;
+    }
+  }
+
   const res = await fetch(url, {
     ...options,
-    headers: {
-      "Content-Type": "application/json",
-      ...(options.headers || {}),
-    },
+    headers,
     cache: "no-store",
   });
 
-  const json = await res.json();
+  const json = await res.json().catch(() => ({}));
+
   if (!res.ok) {
+    if (res.status === 401 && typeof window !== "undefined") {
+      // Clear expired / invalid admin credentials if not on login page
+      const path = window.location.pathname;
+      if (path.startsWith("/admin") && path !== "/admin/login") {
+        localStorage.removeItem("industrialedge_admin_token");
+        localStorage.removeItem("industrialedge_admin_user");
+        try {
+          document.cookie = "industrialedge_admin_token=; path=/; max-age=0; SameSite=Lax";
+        } catch {}
+        window.location.replace("/admin/login");
+      }
+    }
     throw new Error(json.message || `API Error: ${res.statusText}`);
   }
   return json.data !== undefined ? json.data : json;
@@ -402,8 +425,22 @@ export const api = {
     if (typeof window !== "undefined") {
       localStorage.setItem("industrialedge_admin_token", json.token);
       localStorage.setItem("industrialedge_admin_user", JSON.stringify(json.user));
+      try {
+        document.cookie = `industrialedge_admin_token=${json.token}; path=/; max-age=86400; SameSite=Lax`;
+      } catch {}
     }
     return json;
+  },
+
+  getAdminToken(): string | null {
+    if (typeof window === "undefined") return null;
+    return localStorage.getItem("industrialedge_admin_token");
+  },
+
+  isAdminAuthenticated(): boolean {
+    if (typeof window === "undefined") return false;
+    const token = localStorage.getItem("industrialedge_admin_token");
+    return Boolean(token && token.trim().length > 0);
   },
 
   getStoredAdminUser() {
@@ -416,6 +453,9 @@ export const api = {
     if (typeof window !== "undefined") {
       localStorage.removeItem("industrialedge_admin_token");
       localStorage.removeItem("industrialedge_admin_user");
+      try {
+        document.cookie = "industrialedge_admin_token=; path=/; max-age=0; SameSite=Lax";
+      } catch {}
     }
   },
 };
