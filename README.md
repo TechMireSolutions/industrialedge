@@ -4,28 +4,103 @@ A high-performance Next.js 16 + Node.js Express full-stack e-commerce platform f
 
 ---
 
+## 📁 Clean Architecture & Structure
+
+The codebase is split into two cleanly separated folders:
+
+```
+industrialedge-main/
+├── backend/                  # Dedicated Node.js Express REST API backend
+│   ├── data/                 # JSON file-based database collections
+│   ├── routes/               # API route controllers
+│   ├── tests/                # Backend unit tests
+│   ├── uploads/              # Static file uploads storage
+│   ├── db.js                 # Database manager & seed loader
+│   ├── server.js             # Express server entry point
+│   ├── package.json          # Backend dependencies
+│   ├── .env                  # Backend environment variables
+│   └── .env.example          # Backend environment template
+│
+├── frontend/                 # Dedicated Next.js 16 storefront & Admin panel
+│   ├── public/               # Public assets & static images
+│   ├── src/                  # Next.js App Router, components, and client libraries
+│   │   ├── app/              # Storefront pages & Custom Admin panel
+│   │   ├── components/       # Reusable UI components
+│   │   └── lib/              # Client API helpers & store state
+│   ├── tests/                # Frontend component & state tests
+│   ├── next.config.ts        # Next.js configuration
+│   ├── tsconfig.json         # TypeScript configuration
+│   ├── package.json          # Frontend dependencies
+│   ├── .env                  # Frontend environment variables
+│   └── .env.example          # Frontend environment template
+│
+├── .env                      # Root environment configuration
+├── .env.example              # Root environment template
+└── package.json              # Monorepo workspaces & concurrent runner scripts
+```
+
+---
+
 ## ⚡ Quick Start
 
 ### 1. Run Everything Concurrently (Backend + Frontend)
 ```bash
 npm run dev:all
+# or
+npm run dev
 ```
 - **Node.js Express Backend API:** `http://localhost:5000`
 - **Next.js Storefront:** `http://localhost:3000`
 - **Full Customs Admin Panel:** `http://localhost:3000/admin`
 
 ### 2. Run Individually
-- **Node.js Backend Server:**
+
+- **Backend only:**
   ```bash
-  npm run server
+  # From root:
+  npm run dev:backend
+  # Or from backend folder:
+  cd backend && npm run dev
   ```
   *(Runs on port 5000 with CORS, JSON database, REST API, and uploads)*
 
-- **Next.js Frontend:**
+- **Frontend only:**
   ```bash
-  npm run dev
+  # From root:
+  npm run dev:frontend
+  # Or from frontend folder:
+  cd frontend && npm run dev
   ```
-  *(Runs on port 3000, proxies to backend or falls back seamlessly to embedded API)*
+  *(Runs on port 3000, communicates with backend at `http://localhost:5000`)*
+
+---
+
+## ⚙️ Environment Variables (.env)
+
+Each folder has its dedicated `.env` and `.env.example`:
+
+### Root `.env`
+```env
+PORT=5000
+FRONTEND_PORT=3000
+BACKEND_URL=http://localhost:5000
+NEXT_PUBLIC_API_URL=http://localhost:5000/api
+NODE_ENV=development
+```
+
+### Backend `.env` (`backend/.env`)
+```env
+PORT=5000
+NODE_ENV=development
+FRONTEND_URL=http://localhost:3000
+```
+
+### Frontend `.env` (`frontend/.env`)
+```env
+PORT=3000
+NEXT_PUBLIC_API_URL=http://localhost:5000/api
+BACKEND_URL=http://localhost:5000
+```
 
 ---
 
@@ -124,8 +199,17 @@ The backend operates on `http://localhost:5000/api`:
 
 ## 🧪 Testing
 
-Run the Vitest test suite:
+Run all unit tests:
 ```bash
 npm test
+```
+
+Or run tests individually:
+```bash
+# Frontend tests only (71 tests):
+npm run test:frontend
+
+# Backend tests only (5 tests):
+npm run test:backend
 ```
 All unit tests for frontend logic and backend API pass cleanly.

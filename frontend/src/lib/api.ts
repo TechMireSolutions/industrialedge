@@ -173,9 +173,17 @@ export interface DashboardStats {
   recentOrders: OrderItem[];
 }
 
-// Request helper with intelligent URL handling (relative /api for seamless proxying)
+// Helper to resolve API URLs based on NEXT_PUBLIC_API_URL
+export function getApiUrl(endpoint: string): string {
+  if (endpoint.startsWith("http")) return endpoint;
+  const base = process.env.NEXT_PUBLIC_API_URL || "/api";
+  const cleanEndpoint = endpoint.startsWith("/") ? endpoint : `/${endpoint}`;
+  return `${base.replace(/\/+$/, "")}${cleanEndpoint}`;
+}
+
+// Request helper with intelligent URL handling (relative /api for seamless proxying or direct backend)
 async function fetchApi<T>(endpoint: string, options: RequestInit = {}): Promise<T> {
-  const url = endpoint.startsWith("http") ? endpoint : `/api${endpoint.startsWith("/") ? endpoint : `/${endpoint}`}`;
+  const url = getApiUrl(endpoint);
 
   const headers: Record<string, string> = {
     "Content-Type": "application/json",
@@ -399,7 +407,7 @@ export const api = {
     const formData = new FormData();
     formData.append("image", file);
 
-    const res = await fetch("/api/upload", {
+    const res = await fetch(getApiUrl("/upload"), {
       method: "POST",
       body: formData,
     });
@@ -413,7 +421,7 @@ export const api = {
 
   // Admin Auth
   async adminLogin(email: string, password: string): Promise<{ token: string; user: { name: string; email: string; role: string } }> {
-    const res = await fetch("/api/auth/login", {
+    const res = await fetch(getApiUrl("/auth/login"), {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ email, password }),

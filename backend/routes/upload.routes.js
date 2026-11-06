@@ -4,9 +4,16 @@ const multer = require("multer");
 const path = require("path");
 const fs = require("fs");
 
-const UPLOAD_DIR = path.resolve(__dirname, "../../public/uploads");
+const UPLOAD_DIR = path.resolve(__dirname, "../uploads");
 if (!fs.existsSync(UPLOAD_DIR)) {
   fs.mkdirSync(UPLOAD_DIR, { recursive: true });
+}
+
+const FRONTEND_UPLOAD_DIR = path.resolve(__dirname, "../../frontend/public/uploads");
+if (!fs.existsSync(FRONTEND_UPLOAD_DIR)) {
+  try {
+    fs.mkdirSync(FRONTEND_UPLOAD_DIR, { recursive: true });
+  } catch {}
 }
 
 // Storage configuration
@@ -44,6 +51,16 @@ const upload = multer({
 router.post("/", upload.single("image"), (req, res) => {
   if (!req.file) {
     return res.status(400).json({ success: false, message: "No image file provided" });
+  }
+
+  // Mirror upload to frontend/public/uploads if available
+  try {
+    if (fs.existsSync(FRONTEND_UPLOAD_DIR)) {
+      const destFile = path.join(FRONTEND_UPLOAD_DIR, req.file.filename);
+      fs.copyFileSync(req.file.path, destFile);
+    }
+  } catch (copyErr) {
+    console.warn("Could not mirror file to frontend/public/uploads:", copyErr.message);
   }
 
   const fileUrl = `/uploads/${req.file.filename}`;

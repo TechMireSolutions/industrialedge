@@ -11,7 +11,7 @@
     "moduleResolution": "bundler",
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "jsx": "react-jsx",
+    "jsx": "preserve",
     "incremental": true,
     "plugins": [
       {
@@ -19,16 +19,21 @@
       }
     ],
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": ["./frontend/src/*"]
     }
   },
   "include": [
-    "next-env.d.ts",
-    "**/*.ts",
-    "**/*.tsx",
-    ".next/types/**/*.ts",
-    ".next/dev/types/**/*.ts",
-    "**/*.mts"
+    "frontend/src/**/*.ts",
+    "frontend/src/**/*.tsx",
+    "frontend/tests/**/*.ts",
+    "frontend/tests/**/*.tsx",
+    "backend/tests/**/*.ts",
+    "vitest.config.mts"
   ],
-  "exclude": ["node_modules"]
+  "exclude": [
+    "node_modules",
+    "frontend/.next",
+    "backend/node_modules",
+    "frontend/node_modules"
+  ]
 }

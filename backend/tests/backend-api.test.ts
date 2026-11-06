@@ -1,10 +1,8 @@
-import { describe, it, expect, beforeEach } from "vitest";
-import path from "path";
-import fs from "fs";
+import { describe, it, expect } from "vitest";
 
-// Load db directly
+// Load db directly from backend root
 // eslint-disable-next-line @typescript-eslint/no-require-imports
-const { readCollection, writeCollection } = require("../../server/db.js");
+const { readCollection, writeCollection } = require("../db.js");
 
 describe("Node.js Backend & Persistent DB Layer", () => {
   it("should initialize and read all standard collections", () => {

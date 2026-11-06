@@ -2,8 +2,14 @@ import { NextRequest, NextResponse } from "next/server";
 import path from "path";
 import fs from "fs";
 
-const BACKEND_URL = "http://localhost:5000";
-const DATA_DIR = path.resolve(process.cwd(), "server/data");
+const BACKEND_URL = process.env.BACKEND_URL || "http://localhost:5000";
+const DATA_DIR = process.env.DATA_DIR
+  ? path.resolve(process.env.DATA_DIR)
+  : fs.existsSync(path.resolve(process.cwd(), "../backend/data"))
+    ? path.resolve(process.cwd(), "../backend/data")
+    : fs.existsSync(path.resolve(process.cwd(), "server/data"))
+      ? path.resolve(process.cwd(), "server/data")
+      : path.resolve(process.cwd(), "data");
 
 function readJsonFile(collection: string) {
   try {
