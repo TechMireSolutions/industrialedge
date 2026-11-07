@@ -1,153 +1,168 @@
 @import "tailwindcss";
 
-@theme {
-  --font-rubik: var(--font-rubik), "Rubik", sans-serif;
-  --font-nunito-sans: var(--font-nunito-sans), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+:root {
+  --background: #f8fafc;
+  --foreground: #0f172a;
 
-  /* UI/UX Pro Max Design Tokens - Aligned to Logo Palette */
-  --color-primary: #171145;
-  --color-secondary: #64748b;
-  --color-cta: #0ea57a;
-  --color-cta-hover: #0b8462;
-  --color-emerald: #0ea57a;
-  --color-background: #ffffff;
-  --color-bg-subtle: #f8fafc;
-  --color-border: #e2e8f0;
-  --color-border-light: #f1f5f9;
-
-  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
-  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
-  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
-  --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
-}
-
-html {
-  scroll-behavior: smooth;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  overflow-x: hidden;
-  max-width: 100vw;
+  /* Brand Colors Extracted Directly From Logo */
+  --brand-navy: #151838;
+  --brand-navy-light: #1e224d;
+  --brand-teal: #059669;
+  --brand-emerald: #10b981;
+  --brand-cyan: #06b6d4;
+  --brand-blue: #1e428a;
+  --brand-accent: #0ea5e9;
 }
 
 body {
-  background: #ffffff;
-  color: #334155;
-  font-family: var(--font-nunito-sans), var(--font-rubik), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-inter), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
   overflow-x: hidden;
-  max-width: 100vw;
+  -webkit-font-smoothing: antialiased;
 }
 
-/* Headings font styling */
-h1, h2, h3, h4, h5, h6 {
-  font-family: var(--font-rubik), sans-serif;
+.font-logo {
+  font-family: var(--font-montserrat), sans-serif;
 }
 
-/* Reset focus outlines on inputs, selects, textareas to prevent rectangular outline boxes */
-input,
-textarea,
-select {
-  outline: none;
-}
-
-input:focus,
-input:focus-visible,
-textarea:focus,
-textarea:focus-visible,
-select:focus,
-select:focus-visible {
-  outline: none !important;
-  outline-offset: 0 !important;
-}
-
-/* Selection highlight */
-::selection {
-  background-color: #d1fae5;
-  color: #065f46;
-}
-
-/* Cursor pointer on all interactive triggers */
-button,
-[role="button"],
-input[type="submit"],
-input[type="button"],
-select {
-  cursor: pointer;
-}
-
-.container {
-  max-width: 1440px;
-  margin: 0 auto;
-  padding: 0 1rem;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  *,
-  ::before,
-  ::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-    scroll-behavior: auto !important;
+/* Infinite Marquee Animation for Partners Carousel */
+@keyframes marquee {
+  0% {
+    transform: translateX(0%);
+  }
+  100% {
+    transform: translateX(-50%);
   }
 }
 
-/* Custom scrollbar for nicer dropdowns */
-::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
-}
-::-webkit-scrollbar-track {
-  background: #f1f1f1;
-}
-::-webkit-scrollbar-thumb {
-  background: #c1c1c1;
-  border-radius: 4px;
-}
-::-webkit-scrollbar-thumb:hover {
-  background: #a8a8a8;
+.animate-marquee {
+  display: flex;
+  width: max-content;
+  animation: marquee 60s linear infinite;
 }
 
-/* Product Card Interactive Keyframes */
-@keyframes heartBurst {
-  0% { transform: scale(1); }
-  35% { transform: scale(1.38); }
-  65% { transform: scale(0.92); }
-  100% { transform: scale(1); }
+.animate-marquee:hover {
+  animation-play-state: paused;
 }
 
-@keyframes floatUpBadge {
-  0% { transform: translate(-50%, 0) scale(0.8); opacity: 0; }
-  25% { transform: translate(-50%, -8px) scale(1.08); opacity: 1; }
-  80% { transform: translate(-50%, -22px) scale(1); opacity: 0.9; }
-  100% { transform: translate(-50%, -30px) scale(0.95); opacity: 0; }
+/* ========================================================
+   Interactive Cart Button Hover Slide Animation (Uiverse.io inspired)
+   ======================================================== */
+.cart-animated-btn {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
 }
 
-@keyframes slideInRightBounce {
-  0% { transform: translateX(14px); opacity: 0; }
-  70% { transform: translateX(-2px); opacity: 1; }
-  100% { transform: translateX(0); opacity: 1; }
+.cart-animated-btn .btn-text-track,
+.cart-animated-btn .btn-icon-track {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-@keyframes cardHoverReveal {
-  0% { opacity: 0; transform: translateY(6px); }
-  100% { opacity: 1; transform: translateY(0); }
+.cart-animated-btn .btn-text-track {
+  transform: translateY(0%);
 }
 
-.animate-heart-burst {
-  animation: heartBurst 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+.cart-animated-btn .btn-icon-track {
+  transform: translateY(100%);
 }
 
-.animate-float-up {
-  animation: floatUpBadge 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+.cart-animated-btn:hover .btn-text-track {
+  transform: translateY(-100%);
 }
 
-.animate-slide-in-right {
-  animation: slideInRightBounce 0.32s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+.cart-animated-btn:hover .btn-icon-track {
+  transform: translateY(0%);
 }
 
-.animate-hover-reveal {
-  animation: cardHoverReveal 0.28s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+/* ========================================================
+   Categories Arrow Slide Button Animation (Uiverse.io)
+   ======================================================== */
+.category-arrow-btn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  background: linear-gradient(135deg, #151838 0%, #1e428a 100%);
+  color: #ffffff;
+  font-size: 0.875rem;
+  font-weight: 600;
+  padding: 0.625rem 1.5rem;
+  border-radius: 0.5rem;
+  box-shadow: 0 4px 12px rgba(21, 24, 56, 0.25);
+  transition: all 0.4s ease;
+  overflow: hidden;
 }
 
+.category-arrow-btn:hover {
+  background: linear-gradient(135deg, #1e224d 0%, #059669 100%);
+  box-shadow: 0 6px 18px rgba(5, 150, 105, 0.35);
+  transform: translateY(-1px);
+}
 
+.category-arrow-btn .btn-arrow-icon {
+  display: inline-flex;
+  align-items: center;
+  margin-left: 0.5rem;
+  transition: transform 0.4s ease;
+}
+
+.category-arrow-btn:hover .btn-arrow-icon {
+  transform: translateX(6px);
+}
+
+/* ========================================================
+   Animated Hamburger to Cross Morph (Uiverse.io inspired)
+   ======================================================== */
+.animated-hamburger {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 26px;
+  height: 19px;
+  cursor: pointer;
+  padding: 0;
+  background: transparent;
+  border: none;
+  position: relative;
+}
+
+.animated-hamburger .bar {
+  width: 100%;
+  height: 3px;
+  background-color: #151838;
+  border-radius: 9999px;
+  transition: transform 0.3s ease, opacity 0.3s ease, background-color 0.3s ease;
+  position: relative;
+  transform-origin: center;
+}
+
+/* Top bar morph */
+.animated-hamburger.is-open .bar:nth-child(1) {
+  transform: translateY(8px) rotate(-45deg);
+  background-color: #059669;
+  transition-delay: 0.1s;
+}
+
+/* Middle bar fade out */
+.animated-hamburger.is-open .bar:nth-child(2) {
+  opacity: 0;
+  transform: translateX(8px);
+  transition-duration: 0.2s;
+}
+
+/* Bottom bar morph */
+.animated-hamburger.is-open .bar:nth-child(3) {
+  transform: translateY(-8px) rotate(45deg);
+  background-color: #059669;
+  transition-delay: 0.1s;
+}

@@ -1,59 +1,46 @@
 import type { Metadata } from "next";
-import { Rubik, Nunito_Sans } from "next/font/google";
-import StoreProvider from "@/components/providers/store-provider";
-import Header from "@/components/layout/header";
-import Footer from "@/components/layout/footer";
-import CartDrawer from "@/components/cart/cart-drawer";
-import AuthModal from "@/components/auth/auth-modal";
+import { Montserrat, Inter } from "next/font/google";
+import StoreProvider from "@/components/providers/StoreProvider";
 import "./globals.css";
 
-const rubik = Rubik({
+const inter = Inter({
   subsets: ["latin"],
-  weight: ["300", "400", "500", "700"],
-  display: "swap",
-  variable: "--font-rubik",
+  variable: "--font-inter",
 });
 
-const nunitoSans = Nunito_Sans({
+const montserrat = Montserrat({
   subsets: ["latin"],
-  weight: ["300", "400", "500", "600", "700"],
-  display: "swap",
-  variable: "--font-nunito-sans",
+  weight: ["600", "700", "800", "900"],
+  variable: "--font-montserrat",
 });
 
 export const metadata: Metadata = {
-  title: "IndustrialEdge.pk — Industrial Electronics & Tech Store",
-  description: "Your trusted destination for cutting-edge electronics, industrial hardware, smart devices, and premium gadgets in Pakistan.",
+  title: "Industrial Edge - Online B2B Industrial & Corporate Store Pakistan",
+  description: "Browse and order certified industrial tools, electronics, PPE safety equipment, cables, chemicals, and office supplies online across Pakistan.",
   icons: {
     icon: [
-      { url: "/images/logo.png", type: "image/png" },
-      { url: "/favicon.ico", sizes: "any" },
+      { url: "/logo-icon.webp", type: "image/webp" },
     ],
-    shortcut: "/images/logo.png",
-    apple: "/images/logo.png",
+    shortcut: "/logo-icon.webp",
+    apple: "/logo-icon.webp",
   },
 };
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default function RootLayout({
+  children,
+}: Readonly<{
+  children: React.ReactNode;
+}>) {
   return (
-    <html
-      lang="en"
-      className={`h-full antialiased ${rubik.variable} ${nunitoSans.variable}`}
-      suppressHydrationWarning
-    >
-      <body
-        className={`min-h-full flex flex-col bg-[#ffffff] text-[#212529] ${nunitoSans.className}`}
+    <html lang="en" className={`${inter.variable} ${montserrat.variable}`} suppressHydrationWarning>
+      <body 
+        className="flex flex-col min-h-screen antialiased bg-slate-50 text-slate-800 selection:bg-blue-600 selection:text-white"
         suppressHydrationWarning
       >
         <StoreProvider>
-          <Header />
-          <main className="flex-1">{children}</main>
-          <Footer />
-          <CartDrawer />
-          <AuthModal />
+          {children}
         </StoreProvider>
       </body>
     </html>
   );
 }
-
