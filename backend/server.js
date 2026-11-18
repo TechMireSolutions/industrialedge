@@ -27,9 +27,19 @@ const FRONTEND_URL = process.env.FRONTEND_URL || "http://localhost:3000";
 initDatabase().catch((err) => console.error("DB init error:", err.message));
 
 // Enable CORS for frontend
+const allowedOrigins = [
+  FRONTEND_URL,
+  "http://localhost:3000",
+  "http://localhost:3005",
+  "http://127.0.0.1:3000",
+  "http://127.0.0.1:3005",
+  "https://industrialedgev2.techmiresolutions.com",
+  "http://industrialedgev2.techmiresolutions.com",
+].filter(Boolean);
+
 app.use(
   cors({
-    origin: FRONTEND_URL === "*" ? "*" : [FRONTEND_URL, "http://localhost:3000"],
+    origin: FRONTEND_URL === "*" ? "*" : allowedOrigins,
     methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization"],
     credentials: true,

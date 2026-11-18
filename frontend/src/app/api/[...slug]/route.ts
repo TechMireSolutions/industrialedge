@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import path from "path";
 import fs from "fs";
 
-const BACKEND_URL = process.env.BACKEND_URL || "http://localhost:5000";
+const BACKEND_URL = process.env.BACKEND_URL || (process.env.NODE_ENV === "production" ? "http://127.0.0.1:5007" : "http://localhost:5000");
 const DATA_DIR = process.env.DATA_DIR
   ? path.resolve(process.env.DATA_DIR)
   : fs.existsSync(path.resolve(process.cwd(), "../backend/data"))

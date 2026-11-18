@@ -52,6 +52,6 @@ jobs:
             NEXT_TELEMETRY_DISABLED=1 npm run build
 
             # 7. PM2 backend aur frontend processes restart ya start karein
-            pm2 restart industrialv2-backend || pm2 start backend/server.js --name industrialv2-backend
-            pm2 restart industrialv2-frontend || pm2 start "npm run start --prefix frontend" --name industrialv2-frontend
+            pm2 restart industrialv2-backend || PORT=5007 pm2 start backend/server.js --name industrialv2-backend
+            pm2 restart industrialv2-frontend || PORT=3005 pm2 start "npm run start --prefix frontend -- -p 3005" --name industrialv2-frontend
             pm2 save
