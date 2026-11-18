@@ -55,6 +55,7 @@ router.post("/", async (req, res) => {
       shipping = 0,
       discount = 0,
       couponCode = "",
+      currency = "PKR",
       paymentMethod = "Cash on Delivery",
       notes = "",
     } = req.body;
@@ -99,6 +100,7 @@ router.post("/", async (req, res) => {
       discount: Math.round(Number(discount)),
       couponCode: couponCode || undefined,
       total: Math.round(total),
+      currency: currency || "PKR",
       paymentMethod,
       paymentStatus: paymentMethod.toLowerCase().includes("cash on delivery") ? "Pending" : "Awaiting Verification",
       status: "pending",

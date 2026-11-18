@@ -194,12 +194,26 @@ describe("Product Catalog Filtering & Sorting Logic", () => {
       expect(tax).toBeCloseTo(30.3995, 2);
     });
 
-    it("should calculate total with free shipping threshold over $100", () => {
-      const subtotal = 607.99;
-      const shipping = subtotal > 100 ? 0 : 15;
+    it("should calculate total with free shipping threshold over Rs. 25,000", () => {
+      const subtotal = 126000;
+      const shipping = subtotal >= 25000 ? 0 : 500;
       expect(shipping).toBe(0);
       const total = subtotal + shipping;
-      expect(total).toBeCloseTo(607.99, 2);
+      expect(total).toBe(126000);
+    });
+  });
+
+  describe("PKR Currency Formatting Utility", () => {
+    it("should format PKR prices with Rs. symbol and en-PK separators", async () => {
+      const { formatPrice, formatCurrency, CURRENCY_CODE, CURRENCY_SYMBOL } = await import(
+        "@/lib/currency"
+      );
+      expect(CURRENCY_CODE).toBe("PKR");
+      expect(CURRENCY_SYMBOL).toBe("Rs.");
+      expect(formatPrice(1500)).toBe("Rs. 1,500");
+      expect(formatPrice(126000)).toBe("Rs. 126,000");
+      expect(formatCurrency(1500)).toBe("Rs. 1,500");
+      expect(formatCurrency(1500.5, { decimals: 2 })).toBe("Rs. 1,500.50");
     });
   });
 });

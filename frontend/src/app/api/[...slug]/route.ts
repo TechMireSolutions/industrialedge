@@ -506,6 +506,7 @@ async function forwardOrFallback(req: NextRequest, { params }: { params: Promise
           shipping: Math.round(shipping),
           discount: Math.round(discount),
           total: Math.round(total),
+          currency: parsedBody.currency || "PKR",
           paymentMethod,
           paymentStatus: paymentMethod.toLowerCase().includes("cash on delivery") ? "Pending" : "Awaiting Verification",
           status: "pending",

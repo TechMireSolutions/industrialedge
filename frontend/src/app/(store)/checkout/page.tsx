@@ -229,6 +229,7 @@ function CheckoutContent() {
         discount: discountAmount,
         couponCode: appliedCoupon?.code,
         total: Math.round(finalTotal),
+        currency: storeSettings?.currencyCode || "PKR",
         paymentMethod: paymentLabel,
         notes: formData.orderNotes,
       };

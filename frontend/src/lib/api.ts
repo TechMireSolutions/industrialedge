@@ -64,6 +64,7 @@ export interface OrderItem {
   discount: number;
   couponCode?: string;
   total: number;
+  currency?: string;
   paymentMethod: string;
   paymentStatus: string;
   status: "pending" | "processing" | "shipped" | "delivered" | "cancelled";
