@@ -15,6 +15,8 @@ import {
   Globe,
   User,
   ShoppingCart,
+  Heart,
+  Zap,
   Check,
   Speaker,
   Laptop,
@@ -137,7 +139,7 @@ const LANGUAGES = [
 export default function Header() {
   const router = useRouter();
   const pathname = usePathname();
-  const { cart, openCartDrawer, openAuthModal } = useStore();
+  const { cart, wishlistCount, openCartDrawer, openAuthModal, customerUser, storeSettings } = useStore();
 
   // Search & Categories Modal State (Image 2)
   const [searchTerm, setSearchTerm] = useState("");
@@ -245,6 +247,26 @@ export default function Header() {
 
   return (
     <header className="w-full bg-white select-none">
+      {/* Live Top Announcement Bar (Controlled from Admin Settings) */}
+      {storeSettings?.announcementBar?.enabled && storeSettings.announcementBar.text && !isSticky && (
+        <div className="w-full bg-[#171145] text-white text-[12px] sm:text-[12.5px] py-2 px-4">
+          <div className="max-w-[1440px] mx-auto flex items-center justify-center gap-2.5 text-center flex-wrap">
+            <Zap size={14} className="text-[#0ea57a] shrink-0" />
+            <span className="font-medium text-slate-100">
+              {storeSettings.announcementBar.text.replace(/^⚡\s*/, "")}
+            </span>
+            {storeSettings.announcementBar.linkText && (
+              <Link
+                href={storeSettings.announcementBar.linkUrl || "/shop"}
+                className="font-bold text-[#0ea57a] hover:text-emerald-300 underline underline-offset-2 transition-colors"
+              >
+                {storeSettings.announcementBar.linkText}
+              </Link>
+            )}
+          </div>
+        </div>
+      )}
+
       {/* Spacer when sticky to prevent layout jump */}
       {isSticky && <div className="h-[58px] md:h-[134px] w-full" />}
 
@@ -380,20 +402,54 @@ export default function Header() {
             )}
           </div>
 
-          {/* Right: Sign In, Support, Your cart: (Matching Image 1 Reference) */}
-          <div className="flex items-center gap-5 sm:gap-7 shrink-0">
-            {/* 1. Sign In (Opens Login / Register Modal) */}
-            <button
-              type="button"
-              onClick={() => openAuthModal("login")}
-              className="group flex flex-col items-center justify-center cursor-pointer text-[#333e48] hover:text-[#0ea57a] transition-colors focus:outline-none"
-              aria-label="Sign In"
+          {/* Right: Account / Sign In, Wishlist, Support, Admin, Your cart */}
+          <div className="flex items-center gap-4 sm:gap-6 shrink-0">
+            {/* 1. Sign In or My Account */}
+            {customerUser ? (
+              <Link
+                href="/my-account"
+                className="group flex flex-col items-center justify-center cursor-pointer text-[#333e48] hover:text-[#0ea57a] transition-colors"
+                aria-label="My Account"
+              >
+                <div className="w-[22px] h-[22px] rounded-full bg-[#ecfdf5] border border-[#0ea57a] text-[#0ea57a] flex items-center justify-center text-[11px] font-bold">
+                  {customerUser.name.charAt(0).toUpperCase()}
+                </div>
+                <span className="text-[12px] text-[#333e48] group-hover:text-[#0ea57a] font-medium leading-tight mt-1 transition-colors max-w-[74px] truncate">
+                  {customerUser.name.split(" ")[0]}
+                </span>
+              </Link>
+            ) : (
+              <button
+                type="button"
+                onClick={() => openAuthModal("login")}
+                className="group flex flex-col items-center justify-center cursor-pointer text-[#333e48] hover:text-[#0ea57a] transition-colors"
+                aria-label="Sign In"
+              >
+                <User size={22} strokeWidth={1.5} className="group-hover:text-[#0ea57a] transition-colors" />
+                <span className="text-[12px] text-[#333e48] group-hover:text-[#0ea57a] font-normal leading-tight mt-1 transition-colors">
+                  Sign In
+                </span>
+              </button>
+            )}
+
+            {/* 1.5 Wishlist */}
+            <Link
+              href="/wishlist"
+              className="group hidden sm:flex flex-col items-center justify-center cursor-pointer text-[#333e48] hover:text-[#0ea57a] transition-colors"
+              aria-label={`Wishlist: ${wishlistCount} items`}
             >
-              <User size={22} strokeWidth={1.5} className="group-hover:text-[#0ea57a] transition-colors" />
+              <div className="relative flex items-center justify-center">
+                <Heart size={22} strokeWidth={1.5} className="group-hover:text-[#0ea57a] transition-colors" />
+                {wishlistCount > 0 && (
+                  <span className="absolute -top-1.5 -right-2.5 min-w-[17px] h-[17px] px-1 bg-[#171145] text-white rounded-full text-[10px] font-bold flex items-center justify-center leading-none shadow-sm">
+                    {wishlistCount}
+                  </span>
+                )}
+              </div>
               <span className="text-[12px] text-[#333e48] group-hover:text-[#0ea57a] font-normal leading-tight mt-1 transition-colors">
-                Sign In
+                Wishlist
               </span>
-            </button>
+            </Link>
 
             {/* 2. Support */}
             <Link
@@ -965,7 +1021,7 @@ export default function Header() {
                             {dept.subItems?.map((sub) => (
                               <Link
                                 key={sub}
-                                href={`/shop?cat=${encodeURIComponent(sub)}`}
+                                href={`/shop?cat=${encodeURIComponent(dept.name)}&sub=${encodeURIComponent(sub)}`}
                                 onClick={() => setMobileMenuOpen(false)}
                                 className="block py-1 text-[13px] text-[#666666] hover:text-[#0ea57a]"
                               >
@@ -980,19 +1036,38 @@ export default function Header() {
                 </div>
               )}
 
-              {/* User Account & Cart Quick Actions */}
+              {/* User Account, Wishlist & Cart Quick Actions */}
               <div className="pt-4 pb-2 space-y-3">
-                <button
-                  type="button"
-                  onClick={() => {
-                    setMobileMenuOpen(false);
-                    openAuthModal("login");
-                  }}
+                {customerUser ? (
+                  <Link
+                    href="/my-account"
+                    onClick={() => setMobileMenuOpen(false)}
+                    className="flex items-center gap-2.5 text-[14px] text-[#333e48] hover:text-[#0ea57a] transition-colors cursor-pointer w-full text-left"
+                  >
+                    <User size={18} strokeWidth={1.6} />
+                    <span>My Account ({customerUser.name})</span>
+                  </Link>
+                ) : (
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setMobileMenuOpen(false);
+                      openAuthModal("login");
+                    }}
+                    className="flex items-center gap-2.5 text-[14px] text-[#333e48] hover:text-[#0ea57a] transition-colors cursor-pointer w-full text-left"
+                  >
+                    <User size={18} strokeWidth={1.6} />
+                    <span>My Account / Sign In</span>
+                  </button>
+                )}
+                <Link
+                  href="/wishlist"
+                  onClick={() => setMobileMenuOpen(false)}
                   className="flex items-center gap-2.5 text-[14px] text-[#333e48] hover:text-[#0ea57a] transition-colors cursor-pointer w-full text-left"
                 >
-                  <User size={18} strokeWidth={1.6} />
-                  <span>My Account / Sign In</span>
-                </button>
+                  <Heart size={18} strokeWidth={1.6} />
+                  <span>Wishlist ({wishlistCount})</span>
+                </Link>
                 <button
                   type="button"
                   onClick={() => {

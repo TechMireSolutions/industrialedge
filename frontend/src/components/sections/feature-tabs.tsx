@@ -1,10 +1,12 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useMemo } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { Eye, Heart, ArrowLeftRight, X, Check } from "lucide-react";
 import { useStore, type Product } from "@/lib/store";
+import { api, type ProductItem } from "@/lib/api";
+import { formatPrice } from "@/lib/currency";
 
 interface FeatureProduct {
   id: string;
@@ -13,166 +15,53 @@ interface FeatureProduct {
   price: number;
   originalPrice?: number;
   image: string;
+  rating?: number;
+  status?: string;
+  isFeaturedTab?: boolean;
   description?: string;
 }
 
-const FEATURE_PRODUCTS: FeatureProduct[] = [
-  {
-    id: "ft-1",
-    name: "Apple iPhone 11 Pro Max, US Version, 64GB, Gold (Copy)",
-    category: "Apple products",
-    price: 475.0,
-    image: "/images/o_4901-540x540.webp",
-    description: "Fully unlocked and compatible with any carrier of choice. Stunning 6.5-inch Super Retina XDR OLED display.",
-  },
-  {
-    id: "ft-2",
-    name: "Apple iPhone 11 Pro Max, US Version, 64GB, Gold",
-    category: "Apple products",
-    price: 475.0,
-    image: "/images/o_4901-540x540.webp",
-    description: "Triple-camera system with 12MP Ultra Wide, Wide, and Telephoto cameras; Night mode and 4K video.",
-  },
-  {
-    id: "ft-3",
-    name: "Lenovo Tab M10 Plus (3rd Gen) – 2022 – Long Battery Life – 10\" FH...",
-    category: "Apple products",
-    price: 193.13,
-    image: "/images/o_5001-540x540.webp",
-    description: "Sleek, contemporary design with 10.61-inch 2K IPS display, dual speakers, and all-day battery life.",
-  },
-  {
-    id: "ft-4",
-    name: "SAMSUNG 34-Inch Odyssey G5 Ultra-Wide Gaming Monitor with...",
-    category: "Apple products",
-    price: 99.91,
-    originalPrice: 449.99,
-    image: "/images/o_4701-540x540.webp",
-    description: "Ultra-WQHD curved gaming monitor with 1000R curvature, 165Hz refresh rate, and 1ms response time.",
-  },
-  {
-    id: "ft-5",
-    name: "SAMSUNG SM-R830NZSAXAR Galaxy Watch Active2 40mm...",
-    category: "Apple products",
-    price: 78.5,
-    image: "/images/o_4801-540x540.webp",
-    description: "Track your fitness, heart rate, and sleep with precision. Sleek lightweight aluminum design.",
-  },
-];
-
-const TOPRATE_PRODUCTS: FeatureProduct[] = [
-  {
-    id: "tr-7",
-    name: "Canon Mirrorless Camera [EOS M6 Mark II] for Vlogging + EF...",
-    category: "Apple products",
-    price: 898.0,
-    originalPrice: 1598.0,
-    image: "/images/o_3801-540x540.webp",
-    description: "High image quality with 32.5 Megapixel CMOS (APS-C) sensor, high-speed continuous shooting up to 14 fps.",
-  },
-  {
-    id: "tr-8",
-    name: "Canon EOS M50 Mark II Mirrorless Camera with 15-...",
-    category: "Apple products",
-    price: 519.0,
-    originalPrice: 839.95,
-    image: "/images/o_3901-540x540.webp",
-    description: "Crisp 24.1 Megapixel APS-C CMOS sensor with eye-detection AF and vertical 4K video capability.",
-  },
-  {
-    id: "tr-9",
-    name: "ASUS ZenBook Flip 13 Ultra Slim Convertible Laptop, 13.3...",
-    category: "Apple products",
-    price: 1082.72,
-    image: "/images/o_4001-540x540.webp",
-    description: "13.3-inch OLED FHD Touch Display with 360 ErgoLift hinge, Intel Core i5 processor, and 512GB SSD.",
-  },
-  {
-    id: "tr-11",
-    name: "PlayStation 5 DualSense Wireless Controller – Black",
-    category: "Apple products",
-    price: 30.0,
-    originalPrice: 69.99,
-    image: "/images/o_3201-540x540.webp",
-    description: "Haptic feedback, dynamic adaptive triggers, and built-in microphone integrated into an iconic design.",
-  },
-  {
-    id: "tr-12",
-    name: "SKG Smart Watch Make/Answer Call for Men...",
-    category: "Apple products",
-    price: 29.19,
-    originalPrice: 99.91,
-    image: "/images/o_2901-540x540.webp",
-    description: "Bluetooth calling smartwatch with fitness tracker, heart rate monitor, sleep tracking, and IP68 waterproof.",
-  },
-];
-
-const ONSALE_PRODUCTS: FeatureProduct[] = [
-  {
-    id: "os-1",
-    name: "SAMSUNG 34-Inch Odyssey G5 Ultra-Wide Gaming Monitor with...",
-    category: "Apple products",
-    price: 99.91,
-    originalPrice: 449.99,
-    image: "/images/o_4701-540x540.webp",
-    description: "Ultra-WQHD curved gaming monitor with 1000R curvature, 165Hz refresh rate, and 1ms response time.",
-  },
-  {
-    id: "os-2",
-    name: "Canon Mirrorless Camera [EOS M6 Mark II] for Vlogging + EF...",
-    category: "Apple products",
-    price: 898.0,
-    originalPrice: 1598.0,
-    image: "/images/o_3801-540x540.webp",
-    description: "High image quality with 32.5 Megapixel CMOS (APS-C) sensor, high-speed continuous shooting up to 14 fps.",
-  },
-  {
-    id: "os-3",
-    name: "Canon EOS M50 Mark II Mirrorless Camera with 15-...",
-    category: "Apple products",
-    price: 519.0,
-    originalPrice: 839.95,
-    image: "/images/o_3901-540x540.webp",
-    description: "Crisp 24.1 Megapixel APS-C CMOS sensor with eye-detection AF and vertical 4K video capability.",
-  },
-  {
-    id: "os-4",
-    name: "Echo Dot (3rd Gen, 2018 release) – Smart speaker with Alexa",
-    category: "Apple products",
-    price: 24.99,
-    originalPrice: 49.99,
-    image: "/images/o_4501-540x540.webp",
-    description: "Voice control your music and smart home devices. Rich, clear sound with compact design.",
-  },
-  {
-    id: "os-5",
-    name: "PlayStation 5 DualSense Wireless Controller – Black",
-    category: "Apple products",
-    price: 30.0,
-    originalPrice: 69.99,
-    image: "/images/o_3201-540x540.webp",
-    description: "Haptic feedback, dynamic adaptive triggers, and built-in microphone integrated into an iconic design.",
-  },
+const FALLBACK_CATALOG: FeatureProduct[] = [
+  { id: "tr-1", name: "Apple iPhone 11 Pro Max, US Version, 64GB, Gold", category: "Apple products", price: 133000, originalPrice: 167700, image: "/images/o_4901-540x540.webp", rating: 4.8, status: "discount", isFeaturedTab: true, description: "6.5-inch Super Retina XDR OLED display with A13 Bionic chip." },
+  { id: "tr-7", name: "Canon Mirrorless Camera [EOS M6 Mark II] + EF-M 15-45mm", category: "Camera & Video", price: 251400, originalPrice: 447400, image: "/images/o_3801-540x540.webp", rating: 4.9, status: "discount", isFeaturedTab: true, description: "32.5MP APS-C sensor with Dual Pixel CMOS AF." },
+  { id: "prd-lenovo-tab-m10", name: "Lenovo Tab M10 Plus (3rd Gen) – 10.6\" 2K FHD Tablet", category: "Laptop & Tablet", price: 54100, originalPrice: 64100, image: "/images/o_5001-540x540.webp", rating: 4.7, status: "discount", isFeaturedTab: true, description: "10.61-inch 2K IPS display with Dolby Atmos quad speakers." },
+  { id: "prd-samsung-odyssey-g5", name: "Samsung 34-Inch Odyssey G5 Ultra-Wide Gaming Monitor", category: "TV & Computer Screen", price: 98000, originalPrice: 126000, image: "/images/o_4701-540x540.webp", rating: 4.8, status: "discount", isFeaturedTab: true, description: "Ultra-WQHD 1000R curved gaming monitor with 165Hz refresh rate." },
+  { id: "bs-2", name: "AirPods (2nd generation) with Wired Charging Case", category: "Headphone", price: 36100, originalPrice: 44500, image: "/images/o_2003-540x540.webp", rating: 4.9, status: "discount", isFeaturedTab: true, description: "Apple H1 chip, effortless setup, over 24 hours battery." },
 ];
 
 type TabType = "feature" | "toprate" | "onsale";
 
 export default function FeatureTabs() {
-  const { isWishlisted, toggleWishlist, addToCart } = useStore();
+  const { isWishlisted, toggleWishlist, addToCart, addToCompare } = useStore();
+  const [catalog, setCatalog] = useState<FeatureProduct[]>(FALLBACK_CATALOG);
   const [activeTab, setActiveTab] = useState<TabType>("feature");
   const [quickViewProduct, setQuickViewProduct] = useState<FeatureProduct | null>(null);
   const [toastMessage, setToastMessage] = useState<string | null>(null);
 
-  const getProducts = () => {
-    switch (activeTab) {
-      case "toprate":
-        return TOPRATE_PRODUCTS;
-      case "onsale":
-        return ONSALE_PRODUCTS;
-      default:
-        return FEATURE_PRODUCTS;
+  useEffect(() => {
+    api
+      .getProducts()
+      .then((prods: ProductItem[]) => {
+        if (Array.isArray(prods) && prods.length > 0) {
+          setCatalog(prods);
+        }
+      })
+      .catch(() => {});
+  }, []);
+
+  const displayedProducts = useMemo(() => {
+    if (activeTab === "toprate") {
+      return [...catalog].sort((a, b) => (b.rating || 0) - (a.rating || 0)).slice(0, 5);
     }
-  };
+    if (activeTab === "onsale") {
+      const onSale = catalog.filter(
+        (p) => p.status === "discount" || p.status === "sale" || (p.originalPrice && p.originalPrice > p.price)
+      );
+      return (onSale.length > 0 ? onSale : catalog).slice(0, 5);
+    }
+    const featured = catalog.filter((p) => p.isFeaturedTab);
+    return (featured.length > 0 ? featured : catalog).slice(0, 5);
+  }, [catalog, activeTab]);
 
   const showToast = (msg: string) => {
     setToastMessage(msg);
@@ -181,36 +70,39 @@ export default function FeatureTabs() {
     }, 2200);
   };
 
+  const toStoreProduct = (product: FeatureProduct): Product => ({
+    id: product.id,
+    name: product.name,
+    price: product.price,
+    originalPrice: product.originalPrice,
+    status: "none",
+    image: product.image,
+    category: product.category,
+    description: product.description,
+  });
+
   const handleAddToCart = (product: FeatureProduct, e?: React.MouseEvent) => {
     if (e) {
       e.preventDefault();
       e.stopPropagation();
     }
-    const storeProduct: Product = {
-      id: product.id,
-      name: product.name,
-      price: product.price,
-      status: "none",
-      image: product.image,
-      category: product.category,
-      description: product.description,
-    };
-    addToCart(storeProduct, 1);
-    showToast(`Added to cart!`);
+    addToCart(toStoreProduct(product), 1);
+    showToast("Added to cart!");
   };
 
   const handleToggleWishlist = (product: FeatureProduct, e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
+    const wasLiked = isWishlisted(product.id);
     toggleWishlist(product.id);
-    const liked = isWishlisted(product.id);
-    showToast(liked ? "Removed from wishlist" : "Added to wishlist!");
+    showToast(wasLiked ? "Removed from wishlist" : "Added to wishlist!");
   };
 
   const handleCompare = (product: FeatureProduct, e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
-    showToast(`Added to compare list!`);
+    addToCompare(toStoreProduct(product));
+    showToast("Added to compare!");
   };
 
   const renderProductCard = (product: FeatureProduct) => {
@@ -221,20 +113,18 @@ export default function FeatureTabs() {
         key={product.id}
         className="group relative flex flex-col justify-between bg-white h-full transition-all duration-200 select-none"
       >
-        {/* 1. Image Stage with Hover Overlay: Top-Right Icons + Bottom Red Button */}
         <div className="relative w-full h-[180px] sm:h-[190px] flex items-center justify-center p-2 mb-3 bg-white overflow-hidden">
-          {/* Product Image */}
-          <Image
-            src={product.image}
-            alt={product.name}
-            width={180}
-            height={180}
-            className="max-h-[165px] w-auto object-contain transition-transform duration-300 group-hover:scale-105"
-          />
+          <Link href={`/product/${product.id}`} className="flex items-center justify-center w-full h-full">
+            <Image
+              src={product.image}
+              alt={product.name}
+              width={180}
+              height={180}
+              className="max-h-[165px] w-auto object-contain transition-transform duration-300 group-hover:scale-105"
+            />
+          </Link>
 
-          {/* Top-Right Vertical Stack of 3 Round Action Buttons on Hover */}
           <div className="absolute top-2 right-2 flex flex-col gap-1.5 opacity-0 translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-200 z-20">
-            {/* Quick View Button */}
             <button
               type="button"
               onClick={(e) => {
@@ -249,23 +139,18 @@ export default function FeatureTabs() {
               <Eye className="w-3.5 h-3.5 stroke-[1.8]" />
             </button>
 
-            {/* Wishlist Button */}
             <button
               type="button"
               onClick={(e) => handleToggleWishlist(product, e)}
               className={`w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-white shadow-md border border-gray-100 flex items-center justify-center transition-colors cursor-pointer ${
-                liked ? "text-red-500" : "text-gray-700 hover:text-[#0ea57a]"
+                liked ? "text-rose-500" : "text-gray-700 hover:text-[#0ea57a]"
               }`}
               title="Wishlist"
               aria-label="Wishlist"
             >
-              <Heart
-                className="w-3.5 h-3.5 stroke-[1.8]"
-                fill={liked ? "currentColor" : "none"}
-              />
+              <Heart className="w-3.5 h-3.5 stroke-[1.8]" fill={liked ? "currentColor" : "none"} />
             </button>
 
-            {/* Compare Button */}
             <button
               type="button"
               onClick={(e) => handleCompare(product, e)}
@@ -277,7 +162,6 @@ export default function FeatureTabs() {
             </button>
           </div>
 
-          {/* Bottom Full-Width Red "Add to cart" Button on Hover */}
           <div className="absolute bottom-1 inset-x-2 opacity-0 translate-y-2 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-200 z-20">
             <button
               type="button"
@@ -289,32 +173,28 @@ export default function FeatureTabs() {
           </div>
         </div>
 
-        {/* 2. Text Details: Category, Title, Price */}
         <div className="flex flex-col flex-1 justify-between">
           <div>
-            {/* Category */}
-            <span className="text-[11px] text-[#73787d] font-normal leading-tight mb-1 block truncate">
+            <span className="text-[11px] text-[#64748b] font-normal leading-tight mb-1 block truncate">
               {product.category}
             </span>
 
-            {/* Product Title */}
             <Link
               href={`/product/${product.id}`}
-              className="text-[12px] sm:text-[13px] font-medium text-[#0ea57a] leading-[1.3] line-clamp-2 hover:underline mb-1.5 transition-colors block"
+              className="text-[12px] sm:text-[13px] font-medium text-[#171145] hover:text-[#0ea57a] leading-[1.3] line-clamp-2 hover:underline mb-1.5 transition-colors block"
               title={product.name}
             >
               {product.name}
             </Link>
           </div>
 
-          {/* Price Row: Current Price + Strikethrough Old Price */}
-          <div className="flex items-baseline gap-1.5 mt-1">
-            <span className="text-[14px] sm:text-[15px] font-bold text-[#22262a]">
-              ${product.price.toFixed(2)}
+          <div className="flex items-baseline gap-1.5 mt-1 flex-wrap">
+            <span className="text-[14px] sm:text-[15px] font-bold text-[#0ea57a]">
+              {formatPrice(product.price)}
             </span>
-            {product.originalPrice && (
+            {product.originalPrice && product.originalPrice > product.price && (
               <span className="text-[11px] sm:text-[12px] text-[#888888] line-through font-normal">
-                ${product.originalPrice.toFixed(2)}
+                {formatPrice(product.originalPrice)}
               </span>
             )}
           </div>
@@ -331,16 +211,14 @@ export default function FeatureTabs() {
 
   return (
     <section className="w-full bg-white py-10 sm:py-12 select-none overflow-hidden">
-      {/* Toast Notification */}
       {toastMessage && (
-        <div className="fixed bottom-6 right-6 z-50 bg-[#171145] text-white px-4 py-2 rounded-lg shadow-xl text-xs sm:text-sm flex items-center gap-2 animate-bounce">
+        <div className="fixed bottom-6 right-6 z-50 bg-[#171145] text-white px-4 py-2.5 rounded-lg shadow-xl text-xs sm:text-sm flex items-center gap-2">
           <Check className="w-4 h-4 text-emerald-400" />
           <span>{toastMessage}</span>
         </div>
       )}
 
       <div className="max-w-[1440px] mx-auto px-6 lg:px-12">
-        {/* Tab Headers: Feature, Toprate, On sale + Divider Line */}
         <div className="flex items-center gap-6 sm:gap-8 border-b border-gray-200/80 pb-3 mb-8">
           {tabs.map((tab) => {
             const isActive = activeTab === tab.id;
@@ -351,8 +229,8 @@ export default function FeatureTabs() {
                 onClick={() => setActiveTab(tab.id)}
                 className={`text-[20px] sm:text-[22px] transition-colors cursor-pointer select-none ${
                   isActive
-                    ? "font-bold text-[#171145]"
-                    : "font-normal text-[#73787d] hover:text-[#171145]"
+                    ? "font-bold text-[#171145] border-b-2 border-[#0ea57a] pb-3 -mb-[13px]"
+                    : "font-normal text-[#64748b] hover:text-[#171145]"
                 }`}
               >
                 {tab.label}
@@ -361,9 +239,8 @@ export default function FeatureTabs() {
           })}
         </div>
 
-        {/* 5-Column Product Grid */}
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-x-5 lg:gap-x-6 gap-y-8">
-          {getProducts().map((product) => renderProductCard(product))}
+          {displayedProducts.map((product) => renderProductCard(product))}
         </div>
       </div>
 
@@ -374,10 +251,9 @@ export default function FeatureTabs() {
           onClick={() => setQuickViewProduct(null)}
         >
           <div
-            className="relative w-full max-w-2xl bg-white rounded-xl shadow-2xl p-6 sm:p-8 overflow-hidden animate-in fade-in zoom-in-95 duration-200"
+            className="relative w-full max-w-2xl bg-white rounded-xl shadow-2xl p-6 sm:p-8 overflow-hidden"
             onClick={(e) => e.stopPropagation()}
           >
-            {/* Close Button */}
             <button
               type="button"
               onClick={() => setQuickViewProduct(null)}
@@ -388,7 +264,6 @@ export default function FeatureTabs() {
             </button>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 sm:gap-8 items-center">
-              {/* Product Image Stage */}
               <div className="w-full h-[240px] sm:h-[280px] bg-[#f8f9fa] rounded-lg p-4 flex items-center justify-center">
                 <Image
                   src={quickViewProduct.image}
@@ -399,7 +274,6 @@ export default function FeatureTabs() {
                 />
               </div>
 
-              {/* Product Info */}
               <div className="flex flex-col justify-between">
                 <div>
                   <span className="text-xs text-[#0ea57a] font-semibold uppercase tracking-wider block mb-1">
@@ -409,12 +283,12 @@ export default function FeatureTabs() {
                     {quickViewProduct.name}
                   </h3>
                   <div className="flex items-baseline gap-2 mb-4">
-                    <span className="text-2xl font-bold text-[#22262a]">
-                      ${quickViewProduct.price.toFixed(2)}
+                    <span className="text-2xl font-bold text-[#0ea57a]">
+                      {formatPrice(quickViewProduct.price)}
                     </span>
-                    {quickViewProduct.originalPrice && (
+                    {quickViewProduct.originalPrice && quickViewProduct.originalPrice > quickViewProduct.price && (
                       <span className="text-sm text-gray-400 line-through">
-                        ${quickViewProduct.originalPrice.toFixed(2)}
+                        {formatPrice(quickViewProduct.originalPrice)}
                       </span>
                     )}
                   </div>
@@ -439,7 +313,7 @@ export default function FeatureTabs() {
                   <button
                     type="button"
                     onClick={(e) => handleToggleWishlist(quickViewProduct, e)}
-                    className="p-2.5 rounded-[4px] border border-gray-200 hover:border-red-400 text-gray-600 hover:text-red-500 transition-colors cursor-pointer"
+                    className="p-2.5 rounded-[4px] border border-gray-200 hover:border-rose-400 text-gray-600 hover:text-rose-500 transition-colors cursor-pointer"
                     title="Wishlist"
                   >
                     <Heart

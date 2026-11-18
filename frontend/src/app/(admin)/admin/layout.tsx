@@ -88,9 +88,13 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     let isMounted = true;
     const checkStatus = async () => {
       try {
-        const stats = await api.getStats();
+        const [stats, health] = await Promise.all([
+          api.getStats(),
+          api.getHealth().catch(() => null),
+        ]);
         if (!isMounted) return;
-        setServerOnline(true);
+        const isStandalone = Boolean(health?.service && health.service.includes("Node.js"));
+        setServerOnline(isStandalone);
         if (stats?.metrics) {
           setPendingOrders(stats.metrics.pendingOrders || 0);
           setUnreadMessages(stats.metrics.unreadInquiries || 0);

@@ -1,12 +1,14 @@
 "use client";
 
+import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
-import { Mail, MapPin, Phone, Clock } from "lucide-react";
+import { Mail, MapPin, Phone, Clock, Check } from "lucide-react";
+import { api } from "@/lib/api";
 
 const COMPANY_LINKS = [
-    { label: "Blogs", href: "/blog" },
+  { label: "Blogs", href: "/blog" },
   { label: "About Us", href: "/about" },
   { label: "What We Do", href: "/what-we-do" },
   { label: "Official Partners", href: "/partners" },
@@ -14,13 +16,13 @@ const COMPANY_LINKS = [
 ];
 
 const POPULAR_CATEGORIES = [
-  { label: "Smartwatch", href: "/shop" },
-  { label: "Smart Phones", href: "/shop" },
-  { label: "Laptop & Tablet", href: "/shop" },
-  { label: "Cameras & Video", href: "/shop" },
-  { label: "Computer Screen", href: "/shop" },
-  { label: "Audio Equipments", href: "/shop" },
-  { label: "Gaming Accessories", href: "/shop" },
+  { label: "Smartwatch", href: "/shop?cat=Smartwatch" },
+  { label: "Apple Products", href: "/shop?cat=Apple+products" },
+  { label: "Laptop & Tablet", href: "/shop?cat=Laptop+%26+Tablet" },
+  { label: "Camera & Video", href: "/shop?cat=Camera+%26+Video" },
+  { label: "TV & Computer Screen", href: "/shop?cat=TV+%26+Computer+Screen" },
+  { label: "Audio Equipments", href: "/shop?cat=Audio+Equipments" },
+  { label: "Gaming Accessories", href: "/shop?cat=Gaming+Accessories" },
 ];
 
 const CUSTOMER_CARE = [
@@ -39,12 +41,33 @@ const BOTTOM_LINKS = [
 
 export default function Footer() {
   const pathname = usePathname();
-  const year = 2026;
+  const [newsletterEmail, setNewsletterEmail] = useState("");
+  const [newsletterStatus, setNewsletterStatus] = useState<"idle" | "submitting" | "success" | "error">("idle");
 
   // Do not render storefront footer on admin routes
   if (pathname?.startsWith("/admin")) {
     return null;
   }
+
+  const handleNewsletterSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!newsletterEmail.trim()) return;
+    setNewsletterStatus("submitting");
+    try {
+      await api.submitInquiry({
+        name: "Newsletter Subscriber",
+        email: newsletterEmail.trim(),
+        subject: "Corporate Newsletter Subscription",
+        message: `Subscribed to corporate procurement updates: ${newsletterEmail.trim()}`,
+      });
+      setNewsletterStatus("success");
+      setNewsletterEmail("");
+      setTimeout(() => setNewsletterStatus("idle"), 4500);
+    } catch {
+      setNewsletterStatus("error");
+      setTimeout(() => setNewsletterStatus("idle"), 4000);
+    }
+  };
 
   return (
     <footer className="w-full bg-[#fafafa] border-t border-[#ebebeb] text-[#73787d]">
@@ -207,23 +230,39 @@ export default function Footer() {
           </div>
 
           {/* Right: Newsletter Input Form */}
-          <form
-            onSubmit={(e) => e.preventDefault()}
-            className="flex items-center w-full lg:w-auto"
-          >
-            <input
-              type="email"
-              placeholder="Enter your email address"
-              required
-              className="w-full sm:w-[280px] lg:w-[320px] h-[44px] px-4 bg-white text-[#333e48] text-sm rounded-l focus:outline-none placeholder:text-[#999]"
-            />
-            <button
-              type="submit"
-              className="h-[44px] px-6 sm:px-8 bg-[#0ea57a] hover:bg-black text-white text-sm font-semibold rounded-r transition-colors whitespace-nowrap"
+          <div className="w-full lg:w-auto">
+            <form
+              onSubmit={handleNewsletterSubmit}
+              className="flex items-center w-full lg:w-auto"
             >
-              Subscribe
-            </button>
-          </form>
+              <input
+                type="email"
+                value={newsletterEmail}
+                onChange={(e) => setNewsletterEmail(e.target.value)}
+                placeholder="Enter your email address"
+                required
+                aria-label="Newsletter email address"
+                className="w-full sm:w-[280px] lg:w-[320px] h-[44px] px-4 bg-white text-[#333e48] text-sm rounded-l placeholder:text-[#999]"
+              />
+              <button
+                type="submit"
+                disabled={newsletterStatus === "submitting"}
+                className="h-[44px] px-6 sm:px-8 bg-[#0ea57a] hover:bg-[#0b8462] disabled:opacity-60 text-white text-sm font-semibold rounded-r transition-colors whitespace-nowrap cursor-pointer"
+              >
+                {newsletterStatus === "submitting" ? "Joining..." : "Subscribe"}
+              </button>
+            </form>
+            {newsletterStatus === "success" && (
+              <p className="mt-1.5 text-xs text-emerald-300 flex items-center gap-1 font-medium">
+                <Check size={13} /> Thank you! You&apos;re subscribed to corporate updates.
+              </p>
+            )}
+            {newsletterStatus === "error" && (
+              <p className="mt-1.5 text-xs text-rose-300 font-medium">
+                Could not subscribe right now. Please try again.
+              </p>
+            )}
+          </div>
         </div>
       </div>
 

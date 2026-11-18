@@ -3,15 +3,14 @@
 import { useState, useEffect } from "react";
 import Image from "next/image";
 import {
-  Settings,
   Save,
   CheckCircle2,
   Store,
   Phone,
-  DollarSign,
-  Share2,
+  Banknote,
   Bell,
-  RefreshCw,
+  Upload,
+  Loader2,
 } from "lucide-react";
 import { api, type StoreSettings } from "@/lib/api";
 
@@ -19,6 +18,7 @@ export default function AdminSettingsPage() {
   const [settings, setSettings] = useState<StoreSettings | null>(null);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
+  const [uploadingLogo, setUploadingLogo] = useState(false);
   const [toast, setToast] = useState<string | null>(null);
 
   const showToast = (msg: string) => {
@@ -42,6 +42,23 @@ export default function AdminSettingsPage() {
   useEffect(() => {
     loadSettings();
   }, []);
+
+  const handleLogoUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file || !settings) return;
+    try {
+      setUploadingLogo(true);
+      const url = await api.uploadImage(file);
+      setSettings({ ...settings, logo: url });
+      showToast("Logo uploaded! Click Save Settings to publish.");
+    } catch (err) {
+      console.error(err);
+      showToast("Logo upload failed");
+    } finally {
+      setUploadingLogo(false);
+      e.target.value = "";
+    }
+  };
 
   const handleSave = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -72,7 +89,10 @@ export default function AdminSettingsPage() {
     <form onSubmit={handleSave} className="space-y-6">
       {/* Toast */}
       {toast && (
-        <div className="fixed top-20 right-6 z-50 bg-[#0f172a] text-white px-4 py-2.5 rounded-lg shadow-xl text-sm flex items-center gap-2 border border-slate-700 animate-bounce">
+        <div
+          role="status"
+          className="fixed top-20 right-6 z-50 bg-[#0f172a] text-white px-4 py-2.5 rounded-lg shadow-xl text-sm flex items-center gap-2 border border-slate-700 transition-all duration-200"
+        >
           <CheckCircle2 className="w-4 h-4 text-emerald-400" />
           <span>{toast}</span>
         </div>
@@ -81,16 +101,16 @@ export default function AdminSettingsPage() {
       {/* Header Bar */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-white p-6 rounded-2xl border border-slate-200/80 shadow-xs">
         <div>
-          <h1 className="text-2xl font-bold text-slate-900 tracking-tight">Store & Site Settings</h1>
+          <h1 className="text-2xl font-bold text-slate-900 tracking-tight">Store &amp; Site Settings</h1>
           <p className="text-xs sm:text-sm text-slate-500 mt-1">
-            Global store identity, phone numbers, addresses, currency symbols, and footer details.
+            Global store identity, support contacts, PKR currency &amp; shipping logistics, and top announcement bar.
           </p>
         </div>
 
         <button
           type="submit"
           disabled={saving}
-          className="inline-flex items-center gap-1.5 px-5 py-2 text-xs font-semibold text-white bg-[#f97316] hover:bg-[#ea580c] rounded-lg shadow-sm shadow-orange-500/20 transition-all hover:translate-y-[-1px] self-start sm:self-auto"
+          className="inline-flex items-center gap-1.5 px-5 py-2 text-xs font-semibold text-white bg-[#f97316] hover:bg-[#ea580c] disabled:opacity-60 rounded-lg shadow-sm shadow-orange-500/20 transition-colors self-start sm:self-auto cursor-pointer"
         >
           <Save className="w-3.5 h-3.5" />
           <span>{saving ? "Saving Changes..." : "Save Settings"}</span>
@@ -102,7 +122,7 @@ export default function AdminSettingsPage() {
         <div className="bg-white p-6 rounded-2xl border border-slate-200/80 shadow-xs space-y-4">
           <h2 className="text-sm font-bold text-slate-900 flex items-center gap-2 border-b border-slate-100 pb-3">
             <Store className="w-4 h-4 text-orange-500" />
-            <span>Store Brand & Identity</span>
+            <span>Store Brand &amp; Identity</span>
           </h2>
 
           <div>
@@ -126,7 +146,7 @@ export default function AdminSettingsPage() {
           </div>
 
           <div>
-            <label className="block text-xs font-semibold text-slate-700 mb-1">Logo URL or Path</label>
+            <label className="block text-xs font-semibold text-slate-700 mb-1">Logo URL or Upload</label>
             <div className="flex gap-2 items-center">
               <input
                 type="text"
@@ -134,8 +154,23 @@ export default function AdminSettingsPage() {
                 onChange={(e) => setSettings({ ...settings, logo: e.target.value })}
                 className="flex-1 px-3 py-2 text-xs border border-slate-200 rounded-lg focus:outline-none focus:border-orange-500"
               />
+              <label className="inline-flex items-center gap-1 px-3 py-2 text-xs font-semibold text-slate-700 bg-slate-100 hover:bg-slate-200 rounded-lg transition-colors cursor-pointer shrink-0">
+                {uploadingLogo ? (
+                  <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                ) : (
+                  <Upload className="w-3.5 h-3.5" />
+                )}
+                <span>Upload</span>
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={handleLogoUpload}
+                  disabled={uploadingLogo}
+                  className="hidden"
+                />
+              </label>
               {settings.logo && (
-                <div className="w-10 h-10 rounded-md bg-slate-100 p-1 flex items-center justify-center border border-slate-200">
+                <div className="w-10 h-10 rounded-md bg-slate-100 p-1 flex items-center justify-center border border-slate-200 shrink-0">
                   <Image
                     src={settings.logo}
                     alt="Logo preview"
@@ -153,7 +188,7 @@ export default function AdminSettingsPage() {
         <div className="bg-white p-6 rounded-2xl border border-slate-200/80 shadow-xs space-y-4">
           <h2 className="text-sm font-bold text-slate-900 flex items-center gap-2 border-b border-slate-100 pb-3">
             <Phone className="w-4 h-4 text-blue-500" />
-            <span>Support & Physical Contacts</span>
+            <span>Support &amp; Physical Contacts</span>
           </h2>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -205,17 +240,17 @@ export default function AdminSettingsPage() {
           </div>
         </div>
 
-        {/* 3. Financial & Shipping */}
+        {/* 3. Financial & Shipping (PKR) */}
         <div className="bg-white p-6 rounded-2xl border border-slate-200/80 shadow-xs space-y-4">
           <h2 className="text-sm font-bold text-slate-900 flex items-center gap-2 border-b border-slate-100 pb-3">
-            <DollarSign className="w-4 h-4 text-emerald-500" />
-            <span>Currency & Shipping Logistics</span>
+            <Banknote className="w-4 h-4 text-emerald-500" />
+            <span>Currency &amp; Shipping Logistics (PKR)</span>
           </h2>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
               <label className="block text-xs font-semibold text-slate-700 mb-1">
-                Currency Symbol ($ or Rs. or PKR)
+                Currency Symbol (Rs. or PKR)
               </label>
               <input
                 type="text"
@@ -236,13 +271,14 @@ export default function AdminSettingsPage() {
             </div>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             <div>
               <label className="block text-xs font-semibold text-slate-700 mb-1">
-                Free Shipping Threshold ($)
+                Free Shipping Threshold (Rs.)
               </label>
               <input
                 type="number"
+                min="0"
                 value={settings.freeShippingThreshold}
                 onChange={(e) =>
                   setSettings({
@@ -255,9 +291,28 @@ export default function AdminSettingsPage() {
             </div>
 
             <div>
+              <label className="block text-xs font-semibold text-slate-700 mb-1">
+                Flat Shipping Rate (Rs.)
+              </label>
+              <input
+                type="number"
+                min="0"
+                value={settings.flatShippingRate ?? 500}
+                onChange={(e) =>
+                  setSettings({
+                    ...settings,
+                    flatShippingRate: parseFloat(e.target.value) || 0,
+                  })
+                }
+                className="w-full px-3 py-2 text-xs border border-slate-200 rounded-lg focus:outline-none focus:border-orange-500"
+              />
+            </div>
+
+            <div>
               <label className="block text-xs font-semibold text-slate-700 mb-1">Sales Tax Rate (%)</label>
               <input
                 type="number"
+                min="0"
                 value={settings.taxRate}
                 onChange={(e) =>
                   setSettings({ ...settings, taxRate: parseFloat(e.target.value) || 0 })
@@ -279,7 +334,7 @@ export default function AdminSettingsPage() {
             <label className="flex items-center gap-2 text-xs font-semibold text-slate-700 cursor-pointer">
               <input
                 type="checkbox"
-                checked={settings.announcementBar?.enabled}
+                checked={Boolean(settings.announcementBar?.enabled)}
                 onChange={(e) =>
                   setSettings({
                     ...settings,

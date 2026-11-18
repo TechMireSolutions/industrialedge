@@ -9,9 +9,9 @@ import { api } from "@/lib/api";
 export default function GameConsoleBanner() {
   const [data, setData] = useState({
     title: "GameConsole Destiny Special Edition",
-    originalPrice: "$99.000",
-    currentPrice: "$80.000",
-    saleBadge: "SALE 70%",
+    originalPrice: "Rs. 99,000",
+    currentPrice: "Rs. 79,900",
+    saleBadge: "SALE 20%",
     image: "/images/img-prd8.webp",
     backgroundImage: "/images/bg2-home01.webp",
     ctaText: "Shop Now",

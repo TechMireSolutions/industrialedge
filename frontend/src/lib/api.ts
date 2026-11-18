@@ -5,6 +5,7 @@ export interface ProductItem {
   name: string;
   slug?: string;
   category: string;
+  brand?: string;
   price: number;
   originalPrice?: number;
   status: "none" | "discount" | "new" | "hot" | "sale";
@@ -39,6 +40,15 @@ export interface OrderItem {
     phone: string;
     address: string;
     city: string;
+    state?: string;
+    zip?: string;
+    country?: string;
+  };
+  shippingAddress?: {
+    name?: string;
+    address?: string;
+    city?: string;
+    state?: string;
     zip?: string;
     country?: string;
   };
@@ -52,6 +62,7 @@ export interface OrderItem {
   subtotal: number;
   shipping: number;
   discount: number;
+  couponCode?: string;
   total: number;
   paymentMethod: string;
   paymentStatus: string;
@@ -115,6 +126,7 @@ export interface StoreSettings {
   currency: string;
   currencyCode: string;
   freeShippingThreshold: number;
+  flatShippingRate?: number;
   taxRate: number;
   announcementBar: {
     enabled: boolean;
@@ -173,6 +185,14 @@ export interface DashboardStats {
   recentOrders: OrderItem[];
 }
 
+export interface AuthUser {
+  id: string;
+  name: string;
+  email: string;
+  role: string;
+  avatar?: string;
+}
+
 // Helper to resolve API URLs based on NEXT_PUBLIC_API_URL
 export function getApiUrl(endpoint: string): string {
   if (endpoint.startsWith("http")) return endpoint;
@@ -181,24 +201,45 @@ export function getApiUrl(endpoint: string): string {
   return `${base.replace(/\/+$/, "")}${cleanEndpoint}`;
 }
 
-// Request helper with intelligent URL handling (relative /api for seamless proxying or direct backend)
-async function fetchApi<T>(endpoint: string, options: RequestInit = {}): Promise<T> {
-  const url = getApiUrl(endpoint);
+function getFallbackRelativeUrl(endpoint: string): string {
+  const cleanEndpoint = endpoint.startsWith("/") ? endpoint : `/${endpoint}`;
+  return `/api${cleanEndpoint}`;
+}
 
+// Resilient fetch: tries primary API URL and falls back to Next.js embedded /api route on network error
+async function resilientFetch(endpoint: string, init: RequestInit): Promise<Response> {
+  const primaryUrl = getApiUrl(endpoint);
+  try {
+    return await fetch(primaryUrl, init);
+  } catch (err) {
+    // If primary URL is an external host (e.g. http://localhost:5000/api) that is offline,
+    // seamlessly fall back to the Next.js embedded /api route in browser contexts.
+    if (typeof window !== "undefined" && primaryUrl.startsWith("http")) {
+      return await fetch(getFallbackRelativeUrl(endpoint), init);
+    }
+    throw err;
+  }
+}
+
+async function fetchApi<T>(endpoint: string, options: RequestInit = {}): Promise<T> {
   const headers: Record<string, string> = {
     "Content-Type": "application/json",
     ...((options.headers as Record<string, string>) || {}),
   };
 
   // Automatically attach Bearer token if present in browser storage
-  if (typeof window !== "undefined") {
-    const token = localStorage.getItem("industrialedge_admin_token");
-    if (token && !headers["Authorization"] && !headers["authorization"]) {
+  if (typeof window !== "undefined" && !headers["Authorization"] && !headers["authorization"]) {
+    const isAdminPath = window.location.pathname.startsWith("/admin");
+    const token = isAdminPath
+      ? localStorage.getItem("industrialedge_admin_token")
+      : localStorage.getItem("industrialedge_customer_token") ||
+        localStorage.getItem("industrialedge_admin_token");
+    if (token) {
       headers["Authorization"] = `Bearer ${token}`;
     }
   }
 
-  const res = await fetch(url, {
+  const res = await resilientFetch(endpoint, {
     ...options,
     headers,
     cache: "no-store",
@@ -208,7 +249,6 @@ async function fetchApi<T>(endpoint: string, options: RequestInit = {}): Promise
 
   if (!res.ok) {
     if (res.status === 401 && typeof window !== "undefined") {
-      // Clear expired / invalid admin credentials if not on login page
       const path = window.location.pathname;
       if (path.startsWith("/admin") && path !== "/admin/login") {
         localStorage.removeItem("industrialedge_admin_token");
@@ -225,10 +265,24 @@ async function fetchApi<T>(endpoint: string, options: RequestInit = {}): Promise
 }
 
 export const api = {
+  // Health Check
+  async getHealth(): Promise<{ status: string; service: string; database?: string; time: string }> {
+    const res = await resilientFetch("/health", { cache: "no-store" });
+    return res.json();
+  },
+
   // Products
-  async getProducts(params?: { category?: string; search?: string; status?: string; featured?: string; limit?: number }): Promise<ProductItem[]> {
+  async getProducts(params?: {
+    category?: string;
+    brand?: string;
+    search?: string;
+    status?: string;
+    featured?: string;
+    limit?: number;
+  }): Promise<ProductItem[]> {
     const query = new URLSearchParams();
     if (params?.category) query.set("category", params.category);
+    if (params?.brand) query.set("brand", params.brand);
     if (params?.search) query.set("search", params.search);
     if (params?.status) query.set("status", params.status);
     if (params?.featured) query.set("featured", params.featured);
@@ -238,7 +292,7 @@ export const api = {
   },
 
   async getProduct(id: string): Promise<ProductItem> {
-    return fetchApi<ProductItem>(`/products/${id}`);
+    return fetchApi<ProductItem>(`/products/${encodeURIComponent(id)}`);
   },
 
   async createProduct(product: Partial<ProductItem>): Promise<ProductItem> {
@@ -290,10 +344,11 @@ export const api = {
   },
 
   // Orders
-  async getOrders(status?: string, search?: string): Promise<OrderItem[]> {
+  async getOrders(status?: string, search?: string, email?: string): Promise<OrderItem[]> {
     const q = new URLSearchParams();
     if (status && status !== "all") q.set("status", status);
     if (search) q.set("search", search);
+    if (email) q.set("email", email);
     const qStr = q.toString() ? `?${q.toString()}` : "";
     return fetchApi<OrderItem[]>(`/orders${qStr}`);
   },
@@ -367,11 +422,17 @@ export const api = {
     return fetchApi<void>(`/coupons/${id}`, { method: "DELETE" });
   },
 
-  async verifyCoupon(code: string, cartTotal: number): Promise<{ code: string; discountAmount: number }> {
-    return fetchApi<{ code: string; discountAmount: number }>("/coupons/verify", {
-      method: "POST",
-      body: JSON.stringify({ code, cartTotal }),
-    });
+  async verifyCoupon(
+    code: string,
+    cartTotal: number
+  ): Promise<{ code: string; discountType: "percentage" | "fixed"; value: number; discountAmount: number }> {
+    return fetchApi<{ code: string; discountType: "percentage" | "fixed"; value: number; discountAmount: number }>(
+      "/coupons/verify",
+      {
+        method: "POST",
+        body: JSON.stringify({ code, cartTotal }),
+      }
+    );
   },
 
   // Inquiries / Messages
@@ -379,7 +440,13 @@ export const api = {
     return fetchApi<InquiryItem[]>("/inquiries");
   },
 
-  async submitInquiry(inquiry: { name: string; email: string; phone?: string; subject: string; message: string }): Promise<InquiryItem> {
+  async submitInquiry(inquiry: {
+    name: string;
+    email: string;
+    phone?: string;
+    subject: string;
+    message: string;
+  }): Promise<InquiryItem> {
     return fetchApi<InquiryItem>("/inquiries", {
       method: "POST",
       body: JSON.stringify(inquiry),
@@ -402,31 +469,80 @@ export const api = {
     return fetchApi<DashboardStats>("/stats");
   },
 
-  // File Upload (Direct multipart/form-data to /api/upload)
+  // File Upload (Direct multipart/form-data to /api/upload with fallback)
   async uploadImage(file: File): Promise<string> {
     const formData = new FormData();
     formData.append("image", file);
 
-    const res = await fetch(getApiUrl("/upload"), {
+    const res = await resilientFetch("/upload", {
       method: "POST",
       body: formData,
     });
 
-    const json = await res.json();
+    const json = await res.json().catch(() => ({}));
     if (!res.ok || !json.url) {
       throw new Error(json.message || "Upload failed");
     }
     return json.url;
   },
 
+  // Customer Auth
+  async customerLogin(identifier: string, password: string): Promise<{ token: string; user: AuthUser }> {
+    const res = await resilientFetch("/auth/login", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email: identifier, username: identifier, password }),
+    });
+    const json = await res.json().catch(() => ({}));
+    if (!res.ok) {
+      throw new Error(json.message || "Invalid credentials");
+    }
+    if (typeof window !== "undefined") {
+      localStorage.setItem("industrialedge_customer_token", json.token);
+      localStorage.setItem("industrialedge_customer_user", JSON.stringify(json.user));
+    }
+    return json;
+  },
+
+  async customerRegister(data: { name: string; email: string; password: string }): Promise<{ token: string; user: AuthUser }> {
+    const res = await resilientFetch("/auth/register", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data),
+    });
+    const json = await res.json().catch(() => ({}));
+    if (!res.ok) {
+      throw new Error(json.message || "Registration failed");
+    }
+    if (typeof window !== "undefined") {
+      localStorage.setItem("industrialedge_customer_token", json.token);
+      localStorage.setItem("industrialedge_customer_user", JSON.stringify(json.user));
+    }
+    return json;
+  },
+
+  async forgotPassword(email: string): Promise<{ message: string }> {
+    return fetchApi<{ message: string }>("/auth/forgot-password", {
+      method: "POST",
+      body: JSON.stringify({ email }),
+    });
+  },
+
+  async changePassword(payload: { email?: string; oldPassword: string; newPassword: string }): Promise<{ message: string }> {
+    return fetchApi<{ message: string }>("/auth/change-password", {
+      method: "POST",
+      body: JSON.stringify(payload),
+    });
+  },
+
   // Admin Auth
-  async adminLogin(email: string, password: string): Promise<{ token: string; user: { name: string; email: string; role: string } }> {
-    const res = await fetch(getApiUrl("/auth/login"), {
+  async adminLogin(email: string, password: string): Promise<{ token: string; user: AuthUser }> {
+    const res = await resilientFetch("/auth/login", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ email, password }),
     });
-    const json = await res.json();
+    const json = await res.json().catch(() => ({}));
     if (!res.ok) {
       throw new Error(json.message || "Login failed");
     }
@@ -451,10 +567,14 @@ export const api = {
     return Boolean(token && token.trim().length > 0);
   },
 
-  getStoredAdminUser() {
+  getStoredAdminUser(): AuthUser | null {
     if (typeof window === "undefined") return null;
-    const raw = localStorage.getItem("industrialedge_admin_user");
-    return raw ? JSON.parse(raw) : null;
+    try {
+      const raw = localStorage.getItem("industrialedge_admin_user");
+      return raw ? JSON.parse(raw) : null;
+    } catch {
+      return null;
+    }
   },
 
   adminLogout() {

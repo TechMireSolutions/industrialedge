@@ -18,6 +18,8 @@ import { api } from "@/lib/api";
 
 export default function ContactPage() {
   const [submitted, setSubmitted] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -28,12 +30,24 @@ export default function ContactPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setSubmitError(null);
+    setSubmitting(true);
     try {
-      await api.submitInquiry(formData);
+      await api.submitInquiry({
+        ...formData,
+        subject: formData.subject.trim() || "General Procurement Inquiry",
+      });
+      setSubmitted(true);
     } catch (err) {
       console.error("Inquiry error:", err);
+      setSubmitError(
+        err instanceof Error
+          ? err.message
+          : "Could not send your inquiry right now. Please try again or reach us via WhatsApp."
+      );
+    } finally {
+      setSubmitting(false);
     }
-    setSubmitted(true);
   };
 
   return (
@@ -171,12 +185,22 @@ export default function ContactPage() {
                     />
                   </div>
 
+                  {submitError && (
+                    <div
+                      role="alert"
+                      className="bg-rose-50 border border-rose-200 text-rose-700 text-xs rounded-lg px-4 py-3 font-medium"
+                    >
+                      {submitError}
+                    </div>
+                  )}
+
                   <button
                     type="submit"
-                    className="w-full h-[48px] bg-[#0ea57a] hover:bg-[#0b8462] text-white text-sm font-bold rounded-lg transition-colors cursor-pointer flex items-center justify-center gap-2 shadow-sm"
+                    disabled={submitting}
+                    className="w-full h-[48px] bg-[#0ea57a] hover:bg-[#0b8462] disabled:opacity-60 text-white text-sm font-bold rounded-lg transition-colors cursor-pointer flex items-center justify-center gap-2 shadow-sm"
                   >
                     <Send size={16} strokeWidth={2.2} />
-                    <span>Send Requisition</span>
+                    <span>{submitting ? "Sending Requisition..." : "Send Requisition"}</span>
                   </button>
                 </form>
               )}

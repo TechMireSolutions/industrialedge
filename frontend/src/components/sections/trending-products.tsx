@@ -1,10 +1,12 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { Eye, Heart, ArrowLeftRight, ShoppingCart, ChevronLeft, ChevronRight, X, Check } from "lucide-react";
 import { useStore, type Product } from "@/lib/store";
+import { api } from "@/lib/api";
+import { formatPrice } from "@/lib/currency";
 
 interface TrendingItem {
   id: string;
@@ -16,204 +18,59 @@ interface TrendingItem {
   description?: string;
 }
 
-interface ColumnPair {
-  top: TrendingItem;
-  bottom: TrendingItem;
-}
-
-const TRENDING_COLUMNS: ColumnPair[] = [
-  // Column 1
-  {
-    top: {
-      id: "tr-1",
-      name: "Apple iPhone 11 Pro Max, US Version, 64GB, Gold (Copy)",
-      category: "Apple products",
-      price: 475.0,
-      image: "/images/o_4901-540x540.webp",
-      description: "Fully unlocked and compatible with any carrier of choice. Stunning 6.5-inch Super Retina XDR OLED display.",
-    },
-    bottom: {
-      id: "tr-7",
-      name: "Canon Mirrorless Camera [EOS M6 Mark II] for Vlogging + EF...",
-      category: "Apple products",
-      price: 898.0,
-      originalPrice: 1598.0,
-      image: "/images/o_3801-540x540.webp",
-      description: "High image quality with 32.5 Megapixel CMOS (APS-C) sensor, high-speed continuous shooting up to 14 fps.",
-    },
-  },
-
-  // Column 2
-  {
-    top: {
-      id: "tr-2",
-      name: "Apple iPhone 11 Pro Max, US Version, 64GB, Gold",
-      category: "Apple products",
-      price: 475.0,
-      image: "/images/o_4901-540x540.webp",
-      description: "Triple-camera system with 12MP Ultra Wide, Wide, and Telephoto cameras; Night mode and 4K video.",
-    },
-    bottom: {
-      id: "tr-8",
-      name: "Canon EOS M50 Mark II Mirrorless Camera with 15-...",
-      category: "Apple products",
-      price: 519.0,
-      originalPrice: 839.95,
-      image: "/images/o_3901-540x540.webp",
-      description: "Crisp 24.1 Megapixel APS-C CMOS sensor with eye-detection AF and vertical 4K video capability.",
-    },
-  },
-
-  // Column 3
-  {
-    top: {
-      id: "tr-3",
-      name: "Lenovo Tab M10 Plus (3rd Gen) – 2022 – Long Battery Life – 1...",
-      category: "Apple products",
-      price: 193.13,
-      image: "/images/o_5001-540x540.webp",
-      description: "Sleek, contemporary design with 10.61-inch 2K IPS display, dual speakers, and all-day battery life.",
-    },
-    bottom: {
-      id: "tr-9",
-      name: "ASUS ZenBook Flip 13 Ultra Slim Convertible Laptop, 13.3...",
-      category: "Apple products",
-      price: 1082.72,
-      image: "/images/o_4001-540x540.webp",
-      description: "13.3-inch OLED FHD Touch Display with 360 ErgoLift hinge, Intel Core i5 processor, and 512GB SSD.",
-    },
-  },
-
-  // Column 4
-  {
-    top: {
-      id: "tr-4",
-      name: "SAMSUNG 34-Inch Odyssey G5 Ultra-Wide Gaming Monitor...",
-      category: "Apple products",
-      price: 99.91,
-      originalPrice: 449.99,
-      image: "/images/o_4701-540x540.webp",
-      description: "Ultra-WQHD curved gaming monitor with 1000R curvature, 165Hz refresh rate, and 1ms response time.",
-    },
-    bottom: {
-      id: "tr-10",
-      name: 'Acer Aspire 5 A515-56-347N Slim Laptop – 15.6" Full HD IP...',
-      category: "Acer",
-      price: 529.75,
-      image: "/images/o_3603-540x540.webp",
-      description: "Powerful 11th Gen Intel Core processor, 15.6-inch Full HD IPS display with narrow bezels.",
-    },
-  },
-
-  // Column 5
-  {
-    top: {
-      id: "tr-5",
-      name: "SAMSUNG SM-R830NZSAXAR Galaxy Watch Active2 40mm...",
-      category: "Apple products",
-      price: 78.5,
-      image: "/images/o_4801-540x540.webp",
-      description: "Track your fitness, heart rate, and sleep with precision. Sleek lightweight aluminum design.",
-    },
-    bottom: {
-      id: "tr-11",
-      name: "PlayStation 5 DualSense Wireless Controller – Black",
-      category: "Apple products",
-      price: 30.0,
-      originalPrice: 69.99,
-      image: "/images/o_3201-540x540.webp",
-      description: "Haptic feedback, dynamic adaptive triggers, and built-in microphone integrated into an iconic design.",
-    },
-  },
-
-  // Column 6
-  {
-    top: {
-      id: "tr-6",
-      name: 'Samsung Galaxy Tab S4 (10.5") Wi-Fi Model SM-T830...',
-      category: "Apple products",
-      price: 74.91,
-      originalPrice: 844.53,
-      image: "/images/o_4601-540x540.webp",
-      description: "Transform your tablet into a PC with Samsung DeX and included S Pen for maximum productivity.",
-    },
-    bottom: {
-      id: "tr-12",
-      name: "SKG Smart Watch Make/Answer Call for Men...",
-      category: "Apple products",
-      price: 29.19,
-      originalPrice: 99.91,
-      image: "/images/o_2901-540x540.webp",
-      description: "Bluetooth calling smartwatch with fitness tracker, heart rate monitor, sleep tracking, and IP68 waterproof.",
-    },
-  },
-
-  // Column 7
-  {
-    top: {
-      id: "tr-13",
-      name: "Echo Dot (3rd Gen, 2018 release) – Smart speaker with Alexa",
-      category: "Apple products",
-      price: 24.99,
-      originalPrice: 49.99,
-      image: "/images/o_4501-540x540.webp",
-      description: "Voice control your music and smart home devices. Rich, clear sound with compact design.",
-    },
-    bottom: {
-      id: "tr-15",
-      name: "Jonsbo TR03-G BLACK computer case Cube Hardware/Electronic",
-      category: "Apple products",
-      price: 199.99,
-      image: "/images/o_4102-540x540.webp",
-      description: "Premium triangular tempered glass PC chassis with advanced thermal layout.",
-    },
-  },
-
-  // Column 8
-  {
-    top: {
-      id: "tr-14",
-      name: 'VIZIO 55-Inch V-Series 4K UHD LED HDR Smart TV Apple AirPlay',
-      category: "Apple products",
-      price: 348.0,
-      originalPrice: 428.0,
-      image: "/images/o_4301-540x540.webp",
-      description: "Epic 4K picture quality, Dolby Vision HDR, and built-in streaming apps.",
-    },
-    bottom: {
-      id: "tr-16",
-      name: "SkyTech Shadow 3.0 Gaming Computer PC Desktop – Ryzen 5",
-      category: "Apple products",
-      price: 799.0,
-      originalPrice: 949.0,
-      image: "/images/o_3701-540x540.webp",
-      description: "AMD Ryzen 5 3600 6-Core, GTX 1660 Super 6G, 1TB SSD, 16GB DDR4 RAM gaming beast.",
-    },
-  },
+const FALLBACK_TRENDING: TrendingItem[] = [
+  { id: "tr-1", name: "Apple iPhone 11 Pro Max, US Version, 64GB, Gold", category: "Apple products", price: 133000, originalPrice: 167700, image: "/images/o_4901-540x540.webp", description: "Fully unlocked 6.5-inch Super Retina XDR OLED display with A13 Bionic chip." },
+  { id: "tr-7", name: "Canon Mirrorless Camera [EOS M6 Mark II] + EF-M 15-45mm", category: "Camera & Video", price: 251400, originalPrice: 447400, image: "/images/o_3801-540x540.webp", description: "32.5 Megapixel CMOS (APS-C) sensor with Dual Pixel CMOS AF." },
+  { id: "tr-2", name: "Apple iPhone 11 Pro Max, US Version, 64GB, Space Gray", category: "Apple products", price: 133000, originalPrice: 173600, image: "/images/o_4901-540x540.webp", description: "Triple-camera system with Night mode and 4K video." },
+  { id: "tr-8", name: "Canon EOS M50 Mark II Mirrorless Camera with 15-45mm Lens", category: "Camera & Video", price: 145300, originalPrice: 195700, image: "/images/o_3801-540x540.webp", description: "24.1 Megapixel APS-C CMOS sensor with Eye Detection AF." },
+  { id: "prd-lenovo-tab-m10", name: "Lenovo Tab M10 Plus (3rd Gen) – 10.6\" 2K FHD Tablet", category: "Laptop & Tablet", price: 54100, originalPrice: 64100, image: "/images/o_5001-540x540.webp", description: "10.61-inch 2K IPS display with quad Dolby Atmos speakers." },
+  { id: "prd-asus-zenbook-13", name: "ASUS ZenBook Flip 13 Ultra Slim Convertible Laptop, 13.3\" OLED", category: "Laptop & Tablet", price: 294800, originalPrice: 335000, image: "/images/o_4001-540x540.webp", description: "13.3-inch OLED FHD Touch Display with Intel Core i5 and 512GB SSD." },
+  { id: "prd-samsung-odyssey-g5", name: "Samsung 34-Inch Odyssey G5 Ultra-Wide Gaming Monitor", category: "TV & Computer Screen", price: 98000, originalPrice: 126000, image: "/images/o_4701-540x540.webp", description: "Ultra-WQHD 1000R curved gaming monitor with 165Hz refresh rate." },
+  { id: "bs-1", name: 'Acer Aspire 5 A515-56-347N Slim Laptop – 15.6" Full HD IPS', category: "Laptop & Tablet", price: 148300, originalPrice: 182000, image: "/images/o_3603-540x540.webp", description: "11th Gen Intel Core i3 with 8GB RAM and 256GB NVMe SSD." },
+  { id: "bs-2", name: "AirPods (2nd generation) with Wired Charging Case", category: "Headphone", price: 36100, originalPrice: 44500, image: "/images/o_2003-540x540.webp", description: "Effortless setup, Apple H1 chip, over 24 hours listening time." },
+  { id: "prd-ps5-dualsense", name: "PlayStation 5 DualSense Wireless Controller – Midnight Black", category: "Gaming Accessories", price: 19600, originalPrice: 24500, image: "/images/o_3201-540x540.webp", description: "Haptic feedback and dynamic adaptive triggers." },
+  { id: "prd-beats-headphone", name: "Beats Studio Pro Wireless Over-Ear Headphones – Deep Black", category: "Headphone", price: 70000, originalPrice: 98000, image: "/images/beats-headphones.png", description: "Active Noise Cancelling and up to 40 hours battery life." },
+  { id: "prd-bose-speaker", name: "Bose SoundLink Revolve+ II Bluetooth Speaker – 360 Sound", category: "Audio Equipments", price: 55700, originalPrice: 69700, image: "/images/bose-speaker.png", description: "True 360-degree sound with IP55 water resistance." },
 ];
 
 export default function TrendingProducts() {
-  const { isWishlisted, toggleWishlist, addToCart } = useStore();
+  const { isWishlisted, toggleWishlist, addToCart, addToCompare } = useStore();
+  const [products, setProducts] = useState<TrendingItem[]>(FALLBACK_TRENDING);
   const [quickViewProduct, setQuickViewProduct] = useState<TrendingItem | null>(null);
   const [toastMessage, setToastMessage] = useState<string | null>(null);
 
-  // Slider state
   const [currentIndex, setCurrentIndex] = useState(0);
   const [visibleColumns, setVisibleColumns] = useState(6);
   const [touchStartX, setTouchStartX] = useState<number | null>(null);
 
   useEffect(() => {
+    api
+      .getProducts()
+      .then((all) => {
+        if (Array.isArray(all) && all.length > 0) {
+          const trending = all.filter((p) => p.isTrending);
+          const list = trending.length >= 6 ? trending : all;
+          setProducts(list);
+        }
+      })
+      .catch(() => {});
+  }, []);
+
+  const columns = useMemo(() => {
+    const pairs: Array<{ top: TrendingItem; bottom?: TrendingItem }> = [];
+    for (let i = 0; i < products.length; i += 2) {
+      pairs.push({ top: products[i], bottom: products[i + 1] });
+    }
+    return pairs;
+  }, [products]);
+
+  useEffect(() => {
     const handleResize = () => {
       const width = window.innerWidth;
-      if (width < 640) {
-        setVisibleColumns(2);
-      } else if (width < 768) {
-        setVisibleColumns(3);
-      } else if (width < 1024) {
-        setVisibleColumns(4);
-      } else {
-        setVisibleColumns(6);
-      }
+      if (width < 640) setVisibleColumns(2);
+      else if (width < 768) setVisibleColumns(3);
+      else if (width < 1024) setVisibleColumns(4);
+      else setVisibleColumns(6);
     };
 
     handleResize();
@@ -221,32 +78,22 @@ export default function TrendingProducts() {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  const maxIndex = Math.max(0, TRENDING_COLUMNS.length - visibleColumns);
+  const effectiveVisible = Math.min(visibleColumns, Math.max(1, columns.length));
+  const maxIndex = Math.max(0, columns.length - effectiveVisible);
 
   useEffect(() => {
     setCurrentIndex((prev) => Math.min(prev, maxIndex));
   }, [maxIndex]);
 
-  const handlePrev = () => {
-    setCurrentIndex((prev) => (prev > 0 ? prev - 1 : maxIndex));
-  };
+  const handlePrev = () => setCurrentIndex((prev) => (prev > 0 ? prev - 1 : maxIndex));
+  const handleNext = () => setCurrentIndex((prev) => (prev < maxIndex ? prev + 1 : 0));
 
-  const handleNext = () => {
-    setCurrentIndex((prev) => (prev < maxIndex ? prev + 1 : 0));
-  };
-
-  const handleTouchStart = (e: React.TouchEvent) => {
-    setTouchStartX(e.touches[0].clientX);
-  };
-
+  const handleTouchStart = (e: React.TouchEvent) => setTouchStartX(e.touches[0].clientX);
   const handleTouchEnd = (e: React.TouchEvent) => {
     if (touchStartX === null) return;
     const diff = e.changedTouches[0].clientX - touchStartX;
-    if (diff > 50) {
-      handlePrev();
-    } else if (diff < -50) {
-      handleNext();
-    }
+    if (diff > 50) handlePrev();
+    else if (diff < -50) handleNext();
     setTouchStartX(null);
   };
 
@@ -257,39 +104,41 @@ export default function TrendingProducts() {
     }, 2200);
   };
 
+  const toStoreProduct = (product: TrendingItem): Product => ({
+    id: product.id,
+    name: product.name,
+    price: product.price,
+    originalPrice: product.originalPrice,
+    status: "none",
+    image: product.image,
+    category: product.category,
+    description: product.description,
+  });
+
   const handleAddToCart = (product: TrendingItem, e?: React.MouseEvent) => {
     if (e) {
       e.preventDefault();
       e.stopPropagation();
     }
-    const storeProduct: Product = {
-      id: product.id,
-      name: product.name,
-      price: product.price,
-      status: "none",
-      image: product.image,
-      category: product.category,
-      description: product.description,
-    };
-    addToCart(storeProduct, 1);
-    showToast(`Added to cart!`);
+    addToCart(toStoreProduct(product), 1);
+    showToast("Added to cart!");
   };
 
   const handleToggleWishlist = (product: TrendingItem, e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
+    const wasLiked = isWishlisted(product.id);
     toggleWishlist(product.id);
-    const liked = isWishlisted(product.id);
-    showToast(liked ? "Removed from wishlist" : "Added to wishlist!");
+    showToast(wasLiked ? "Removed from wishlist" : "Added to wishlist!");
   };
 
   const handleCompare = (product: TrendingItem, e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
-    showToast(`Added to compare list!`);
+    addToCompare(toStoreProduct(product));
+    showToast("Added to compare!");
   };
 
-  // Helper to render an individual product card
   const renderProductCard = (product: TrendingItem) => {
     const liked = isWishlisted(product.id);
 
@@ -298,20 +147,18 @@ export default function TrendingProducts() {
         key={product.id}
         className="group relative flex flex-col justify-between bg-white transition-all duration-200 select-none"
       >
-        {/* 1. Image Stage with Hover Overlay: Top-Right Icons + Bottom Red Button */}
         <div className="relative w-full h-[175px] sm:h-[185px] flex items-center justify-center p-2 mb-2 bg-white overflow-hidden">
-          {/* Product Image */}
-          <Image
-            src={product.image}
-            alt={product.name}
-            width={175}
-            height={175}
-            className="max-h-[160px] w-auto object-contain transition-transform duration-300 group-hover:scale-105"
-          />
+          <Link href={`/product/${product.id}`} className="flex items-center justify-center w-full h-full">
+            <Image
+              src={product.image}
+              alt={product.name}
+              width={175}
+              height={175}
+              className="max-h-[160px] w-auto object-contain transition-transform duration-300 group-hover:scale-105"
+            />
+          </Link>
 
-          {/* Top-Right Vertical Stack of 3 Round Action Buttons on Hover */}
           <div className="absolute top-2 right-2 flex flex-col gap-1.5 opacity-0 translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-200 z-20">
-            {/* Quick View Button */}
             <button
               type="button"
               onClick={(e) => {
@@ -326,23 +173,18 @@ export default function TrendingProducts() {
               <Eye className="w-3.5 h-3.5 stroke-[1.8]" />
             </button>
 
-            {/* Wishlist Button */}
             <button
               type="button"
               onClick={(e) => handleToggleWishlist(product, e)}
               className={`w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-white shadow-md border border-gray-100 flex items-center justify-center transition-colors cursor-pointer ${
-                liked ? "text-red-500" : "text-gray-700 hover:text-[#0ea57a]"
+                liked ? "text-rose-500" : "text-gray-700 hover:text-[#0ea57a]"
               }`}
               title="Wishlist"
               aria-label="Wishlist"
             >
-              <Heart
-                className="w-3.5 h-3.5 stroke-[1.8]"
-                fill={liked ? "currentColor" : "none"}
-              />
+              <Heart className="w-3.5 h-3.5 stroke-[1.8]" fill={liked ? "currentColor" : "none"} />
             </button>
 
-            {/* Compare Button */}
             <button
               type="button"
               onClick={(e) => handleCompare(product, e)}
@@ -354,7 +196,6 @@ export default function TrendingProducts() {
             </button>
           </div>
 
-          {/* Bottom Full-Width Red "Add to cart" Button on Hover */}
           <div className="absolute bottom-1 inset-x-2 opacity-0 translate-y-3 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-200 z-20">
             <button
               type="button"
@@ -366,32 +207,28 @@ export default function TrendingProducts() {
           </div>
         </div>
 
-        {/* 2. Text Details: Category, Title, Price */}
         <div className="flex flex-col flex-1 justify-between">
           <div>
-            {/* Category */}
-            <span className="text-[11px] text-[#73787d] font-normal leading-tight mb-1 block truncate">
+            <span className="text-[11px] text-[#64748b] font-normal leading-tight mb-1 block truncate">
               {product.category}
             </span>
 
-            {/* Product Title */}
             <Link
               href={`/product/${product.id}`}
-              className="text-[12px] sm:text-[13px] font-medium text-[#0ea57a] leading-[1.3] line-clamp-2 hover:underline mb-1.5 transition-colors block"
+              className="text-[12px] sm:text-[13px] font-medium text-[#171145] hover:text-[#0ea57a] leading-[1.3] line-clamp-2 hover:underline mb-1.5 transition-colors block"
               title={product.name}
             >
               {product.name}
             </Link>
           </div>
 
-          {/* Price Row: Current Price + Strikethrough Old Price */}
-          <div className="flex items-baseline gap-1.5 mt-1">
-            <span className="text-[14px] sm:text-[15px] font-bold text-[#22262a]">
-              ${product.price.toFixed(2)}
+          <div className="flex items-baseline gap-1.5 mt-1 flex-wrap">
+            <span className="text-[14px] sm:text-[15px] font-bold text-[#0ea57a]">
+              {formatPrice(product.price)}
             </span>
-            {product.originalPrice && (
+            {product.originalPrice && product.originalPrice > product.price && (
               <span className="text-[11px] sm:text-[12px] text-[#888888] line-through font-normal">
-                ${product.originalPrice.toFixed(2)}
+                {formatPrice(product.originalPrice)}
               </span>
             )}
           </div>
@@ -402,27 +239,24 @@ export default function TrendingProducts() {
 
   return (
     <section className="w-full bg-white py-10 sm:py-12 lg:py-14 select-none overflow-hidden">
-      {/* Toast Notification */}
       {toastMessage && (
-        <div className="fixed bottom-6 right-6 z-50 bg-[#171145] text-white px-4 py-2 rounded-lg shadow-xl text-xs sm:text-sm flex items-center gap-2 animate-bounce">
+        <div className="fixed bottom-6 right-6 z-50 bg-[#171145] text-white px-4 py-2.5 rounded-lg shadow-xl text-xs sm:text-sm flex items-center gap-2">
           <Check className="w-4 h-4 text-emerald-400" />
           <span>{toastMessage}</span>
         </div>
       )}
 
       <div className="max-w-[1440px] mx-auto px-6 lg:px-12">
-        {/* Section Header: Title on left, Carousel controls on right */}
         <div className="flex items-center justify-between pb-3 mb-6">
           <h2 className="text-xl sm:text-2xl font-bold text-[#171145] tracking-tight">
             Trending Products
           </h2>
 
-          {/* Interactive Slider Navigation Arrows */}
           <div className="flex items-center gap-2">
             <button
               type="button"
               onClick={handlePrev}
-              className="p-1.5 text-gray-400 hover:text-[#171145] transition-colors cursor-pointer select-none active:scale-90"
+              className="p-1.5 text-gray-500 hover:text-[#171145] transition-colors cursor-pointer select-none"
               aria-label="Previous Products"
             >
               <ChevronLeft className="w-4 h-4 stroke-[2]" />
@@ -430,7 +264,7 @@ export default function TrendingProducts() {
             <button
               type="button"
               onClick={handleNext}
-              className="p-1.5 text-gray-400 hover:text-[#171145] transition-colors cursor-pointer select-none active:scale-90"
+              className="p-1.5 text-gray-500 hover:text-[#171145] transition-colors cursor-pointer select-none"
               aria-label="Next Products"
             >
               <ChevronRight className="w-4 h-4 stroke-[2]" />
@@ -438,7 +272,6 @@ export default function TrendingProducts() {
           </div>
         </div>
 
-        {/* Carousel Slider Viewport & Sliding Track */}
         <div
           className="relative w-full overflow-hidden"
           onTouchStart={handleTouchStart}
@@ -447,23 +280,18 @@ export default function TrendingProducts() {
           <div
             className="flex transition-transform duration-500 ease-in-out"
             style={{
-              width: `${(TRENDING_COLUMNS.length / visibleColumns) * 100}%`,
-              transform: `translateX(-${currentIndex * (100 / TRENDING_COLUMNS.length)}%)`,
+              width: `${(columns.length / effectiveVisible) * 100}%`,
+              transform: `translateX(-${currentIndex * (100 / Math.max(1, columns.length))}%)`,
             }}
           >
-            {TRENDING_COLUMNS.map((column, colIdx) => (
+            {columns.map((column, colIdx) => (
               <div
                 key={colIdx}
                 className="shrink-0 px-2.5 sm:px-3 flex flex-col gap-9"
-                style={{
-                  width: `${100 / TRENDING_COLUMNS.length}%`,
-                }}
+                style={{ width: `${100 / Math.max(1, columns.length)}%` }}
               >
-                {/* Top Row Product */}
                 {renderProductCard(column.top)}
-
-                {/* Bottom Row Product */}
-                {renderProductCard(column.bottom)}
+                {column.bottom && renderProductCard(column.bottom)}
               </div>
             ))}
           </div>
@@ -473,17 +301,17 @@ export default function TrendingProducts() {
       {/* Quick View Modal */}
       {quickViewProduct && (
         <div
-          className="fixed inset-0 z-50 bg-black/60 flex items-center justify-center p-4 backdrop-blur-xs animate-in fade-in duration-200"
+          className="fixed inset-0 z-50 bg-black/60 flex items-center justify-center p-4 backdrop-blur-xs"
           onClick={() => setQuickViewProduct(null)}
         >
           <div
-            className="bg-white rounded-xl max-w-lg w-full p-6 relative shadow-2xl animate-in zoom-in-95 duration-200"
+            className="bg-white rounded-xl max-w-lg w-full p-6 relative shadow-2xl"
             onClick={(e) => e.stopPropagation()}
           >
             <button
               type="button"
               onClick={() => setQuickViewProduct(null)}
-              className="absolute top-4 right-4 p-1 rounded-full text-gray-400 hover:text-gray-700 hover:bg-gray-100 transition-colors"
+              className="absolute top-4 right-4 p-1.5 rounded-full text-gray-500 hover:text-gray-800 hover:bg-gray-100 transition-colors cursor-pointer"
               aria-label="Close modal"
             >
               <X className="w-5 h-5" />
@@ -501,22 +329,22 @@ export default function TrendingProducts() {
               </div>
 
               <div className="flex-1">
-                <span className="text-xs uppercase tracking-wider text-[#73787d] font-semibold">
+                <span className="text-xs uppercase tracking-wider text-[#64748b] font-semibold">
                   {quickViewProduct.category}
                 </span>
                 <h3 className="text-base font-bold text-[#171145] mt-1 leading-snug">
                   {quickViewProduct.name}
                 </h3>
-                <p className="text-xs text-gray-500 mt-2 line-clamp-3">
+                <p className="text-xs text-slate-600 mt-2 line-clamp-3">
                   {quickViewProduct.description}
                 </p>
                 <div className="flex items-baseline gap-2 mt-3">
                   <span className="text-xl font-bold text-[#0ea57a]">
-                    ${quickViewProduct.price.toFixed(2)}
+                    {formatPrice(quickViewProduct.price)}
                   </span>
-                  {quickViewProduct.originalPrice && (
+                  {quickViewProduct.originalPrice && quickViewProduct.originalPrice > quickViewProduct.price && (
                     <span className="text-xs text-gray-400 line-through">
-                      ${quickViewProduct.originalPrice.toFixed(2)}
+                      {formatPrice(quickViewProduct.originalPrice)}
                     </span>
                   )}
                 </div>
@@ -536,12 +364,12 @@ export default function TrendingProducts() {
                   <button
                     type="button"
                     onClick={(e) => handleToggleWishlist(quickViewProduct, e)}
-                    className="p-2 border border-gray-200 rounded-md text-gray-700 hover:text-red-500 hover:border-red-400 transition-colors cursor-pointer"
+                    className="p-2 border border-gray-200 rounded-md text-gray-700 hover:text-rose-500 hover:border-rose-400 transition-colors cursor-pointer"
                     aria-label="Wishlist"
                   >
                     <Heart
                       className="w-4 h-4"
-                      fill={isWishlisted(quickViewProduct.id) ? "red" : "none"}
+                      fill={isWishlisted(quickViewProduct.id) ? "currentColor" : "none"}
                     />
                   </button>
                 </div>

@@ -5,6 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { Eye, Heart, ArrowLeftRight, Truck, Check } from "lucide-react";
 import { useStore } from "@/lib/store";
+import { formatPrice } from "@/lib/currency";
 
 export interface ProductSpec {
   label: string;
@@ -43,7 +44,7 @@ export default function ShopProductCard({
   onCompare,
   forceHover,
 }: ShopProductCardProps) {
-  const { isWishlisted, toggleWishlist, addToCart } = useStore();
+  const { isWishlisted, toggleWishlist, addToCart, addToCompare } = useStore();
   const [isHovered, setIsHovered] = useState(false);
   const [selectedImage, setSelectedImage] = useState(product.mainImage);
   const [activeThumbIndex, setActiveThumbIndex] = useState(0);
@@ -257,6 +258,17 @@ export default function ShopProductCard({
                   onClick={(e) => {
                     e.preventDefault();
                     e.stopPropagation();
+                    addToCompare({
+                      id: product.id,
+                      name: product.name,
+                      price: product.price,
+                      originalPrice: product.originalPrice,
+                      image: selectedImage || product.mainImage,
+                      category: product.categories?.[0] || "Electronics",
+                      status: "none",
+                      description: product.description,
+                      specs: Object.fromEntries(product.specs.map((s) => [s.label, s.value])),
+                    });
                     if (onCompare) onCompare(product);
                   }}
                   onMouseEnter={() => setActiveTooltip("compare")}
@@ -387,12 +399,16 @@ export default function ShopProductCard({
           </Link>
         </h3>
 
-        {/* Price (Bold, Dark Charcoal / Navy, matching screenshot) */}
-        <div className="text-[22px] font-bold text-[#171145] tracking-tight leading-none mt-1">
-          ${product.price.toLocaleString("en-US", {
-            minimumFractionDigits: 2,
-            maximumFractionDigits: 2,
-          })}
+        {/* Price (Bold, Dark Charcoal / Navy in PKR) */}
+        <div className="flex items-baseline gap-2 mt-1">
+          <span className="text-[20px] font-bold text-[#171145] tracking-tight leading-none">
+            {formatPrice(product.price)}
+          </span>
+          {product.originalPrice && product.originalPrice > product.price && (
+            <span className="text-[13px] text-slate-400 line-through">
+              {formatPrice(product.originalPrice)}
+            </span>
+          )}
         </div>
       </div>
     </article>

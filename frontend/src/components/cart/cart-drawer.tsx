@@ -4,10 +4,9 @@ import { useEffect, useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { X, Truck, Trash2, Plus, Minus, ShoppingBag } from "lucide-react";
+import { X, Truck, Plus, Minus, ShoppingBag } from "lucide-react";
 import { useStore } from "@/lib/store";
-
-const FREE_SHIPPING_THRESHOLD = 100;
+import { formatPrice, DEFAULT_FREE_SHIPPING_THRESHOLD } from "@/lib/currency";
 
 export default function CartDrawer() {
   const pathname = usePathname();
@@ -18,17 +17,15 @@ export default function CartDrawer() {
     updateCartQty,
     isCartDrawerOpen,
     closeCartDrawer,
+    storeSettings,
   } = useStore();
 
   const drawerRef = useRef<HTMLDivElement>(null);
+  const isAdminRoute = Boolean(pathname?.startsWith("/admin"));
 
-  // Never render on admin routes
-  if (pathname?.startsWith("/admin")) {
-    return null;
-  }
-
-  // Close on Escape key press
+  // Close on Escape key press (hooks must ALWAYS execute before any early return)
   useEffect(() => {
+    if (isAdminRoute) return;
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Escape" && isCartDrawerOpen) {
         closeCartDrawer();
@@ -36,10 +33,11 @@ export default function CartDrawer() {
     };
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [isCartDrawerOpen, closeCartDrawer]);
+  }, [isAdminRoute, isCartDrawerOpen, closeCartDrawer]);
 
   // Lock body scroll when drawer is open
   useEffect(() => {
+    if (isAdminRoute) return;
     if (isCartDrawerOpen) {
       document.body.style.overflow = "hidden";
     } else {
@@ -48,12 +46,19 @@ export default function CartDrawer() {
     return () => {
       document.body.style.overflow = "";
     };
-  }, [isCartDrawerOpen]);
+  }, [isAdminRoute, isCartDrawerOpen]);
 
-  const qualifiesForFreeShipping = cartTotal >= FREE_SHIPPING_THRESHOLD;
+  // Never render on admin routes
+  if (isAdminRoute) {
+    return null;
+  }
+
+  const freeShippingThreshold =
+    storeSettings?.freeShippingThreshold || DEFAULT_FREE_SHIPPING_THRESHOLD;
+  const qualifiesForFreeShipping = cartTotal >= freeShippingThreshold;
   const shippingProgress = Math.min(
     100,
-    Math.round((cartTotal / FREE_SHIPPING_THRESHOLD) * 100)
+    Math.round((cartTotal / Math.max(1, freeShippingThreshold)) * 100)
   );
 
   return (
@@ -79,9 +84,7 @@ export default function CartDrawer() {
           isCartDrawerOpen ? "translate-x-0" : "translate-x-full"
         }`}
       >
-        {/* ======================================================== */}
-        {/* 1. DRAWER HEADER                                         */}
-        {/* ======================================================== */}
+        {/* 1. DRAWER HEADER */}
         <div className="flex items-center justify-between px-6 py-4 border-b border-[#f0f0f0] bg-white shrink-0">
           <h2 className="text-[19px] font-bold text-[#1f2937] tracking-tight">
             Your cart
@@ -96,9 +99,7 @@ export default function CartDrawer() {
           </button>
         </div>
 
-        {/* ======================================================== */}
-        {/* 2. CART ITEMS LIST (SCROLLABLE)                          */}
-        {/* ======================================================== */}
+        {/* 2. CART ITEMS LIST (SCROLLABLE) */}
         <div className="flex-1 overflow-y-auto px-6 py-3 divide-y divide-[#f1f3f5]">
           {cart.length === 0 ? (
             <div className="h-full flex flex-col items-center justify-center text-center py-16 px-4">
@@ -138,19 +139,17 @@ export default function CartDrawer() {
 
                 {/* Info Column */}
                 <div className="flex-1 min-w-0 pr-1">
-                  {/* Title */}
                   <Link
                     href={`/product/${item.id}`}
                     onClick={closeCartDrawer}
-                    className="text-[13.5px] font-medium text-[#1e5bc6] hover:text-[#004085] hover:underline line-clamp-2 leading-[1.35] transition-colors"
+                    className="text-[13.5px] font-medium text-[#171145] hover:text-[#0ea57a] hover:underline line-clamp-2 leading-[1.35] transition-colors"
                     title={item.name}
                   >
                     {item.name}
                   </Link>
 
-                  {/* Price */}
-                  <div className="text-[15px] font-bold text-[#1e293b] mt-1 leading-none">
-                    ${item.price.toFixed(2)}
+                  <div className="text-[15px] font-bold text-[#0ea57a] mt-1 leading-none">
+                    {formatPrice(item.price)}
                   </div>
 
                   {/* Quantity display and stepper controls */}
@@ -162,19 +161,19 @@ export default function CartDrawer() {
                       <button
                         type="button"
                         onClick={() => updateCartQty(item.id, item.qty - 1)}
-                        className="w-5 h-5 flex items-center justify-center text-[#64748b] hover:text-[#0ea57a] hover:bg-white transition-colors cursor-pointer"
+                        className="w-6 h-6 flex items-center justify-center text-[#64748b] hover:text-[#0ea57a] hover:bg-white transition-colors cursor-pointer"
                         title="Decrease quantity"
                         aria-label="Decrease quantity"
                       >
                         <Minus size={11} strokeWidth={2.5} />
                       </button>
-                      <span className="w-5 text-center font-medium text-[#1e293b] select-none text-[11px]">
+                      <span className="w-6 text-center font-medium text-[#1e293b] select-none text-[11px]">
                         {item.qty}
                       </span>
                       <button
                         type="button"
                         onClick={() => updateCartQty(item.id, item.qty + 1)}
-                        className="w-5 h-5 flex items-center justify-center text-[#64748b] hover:text-[#0ea57a] hover:bg-white transition-colors cursor-pointer"
+                        className="w-6 h-6 flex items-center justify-center text-[#64748b] hover:text-[#0ea57a] hover:bg-white transition-colors cursor-pointer"
                         title="Increase quantity"
                         aria-label="Increase quantity"
                       >
@@ -184,11 +183,11 @@ export default function CartDrawer() {
                   </div>
                 </div>
 
-                {/* Remove 'X' button (Matching user screenshot) */}
+                {/* Remove button */}
                 <button
                   type="button"
                   onClick={() => removeFromCart(item.id)}
-                  className="text-[#9ca3af] hover:text-[#0ea57a] p-1 transition-colors cursor-pointer shrink-0 mt-0.5 rounded"
+                  className="text-[#9ca3af] hover:text-rose-600 p-1 transition-colors cursor-pointer shrink-0 mt-0.5 rounded"
                   title="Remove product"
                   aria-label={`Remove ${item.name}`}
                 >
@@ -199,54 +198,49 @@ export default function CartDrawer() {
           )}
         </div>
 
-        {/* ======================================================== */}
-        {/* 3. DRAWER FOOTER (SUBTOTAL, BUTTONS, SHIPPING)           */}
-        {/* ======================================================== */}
+        {/* 3. DRAWER FOOTER */}
         {cart.length > 0 && (
           <div className="px-6 py-5 border-t border-[#f0f0f0] bg-white shrink-0">
-            {/* Subtotal Row */}
             <div className="flex items-center justify-between mb-4">
               <span className="text-[15px] font-semibold text-[#1e293b]">
                 Subtotal:
               </span>
               <span className="text-[18px] font-bold text-[#0ea57a]">
-                ${cartTotal.toFixed(2)}
+                {formatPrice(cartTotal)}
               </span>
             </div>
 
-            {/* Action Buttons: View cart (Dark) & Checkout (Red) */}
             <div className="grid grid-cols-2 gap-3 mb-4">
               <Link
                 href="/cart"
                 onClick={closeCartDrawer}
-                className="h-[44px] bg-[#333e48] hover:bg-[#222a32] text-white font-semibold text-[14px] rounded-[6px] flex items-center justify-center transition-colors shadow-xs active:scale-[0.99]"
+                className="h-[44px] bg-[#171145] hover:bg-[#0f172a] text-white font-semibold text-[14px] rounded-[6px] flex items-center justify-center transition-colors shadow-xs"
               >
                 View cart
               </Link>
               <Link
                 href="/checkout"
                 onClick={closeCartDrawer}
-                className="h-[44px] bg-[#0ea57a] hover:bg-[#0b8462] text-white font-semibold text-[14px] rounded-[6px] flex items-center justify-center transition-colors shadow-xs active:scale-[0.99]"
+                className="h-[44px] bg-[#0ea57a] hover:bg-[#0b8462] text-white font-semibold text-[14px] rounded-[6px] flex items-center justify-center transition-colors shadow-xs"
               >
                 Checkout
               </Link>
             </div>
 
             {/* Free Shipping Progress Bar */}
-            <div className="w-full h-[3px] bg-[#d1fae5] rounded-full overflow-hidden mb-3">
+            <div className="w-full h-[4px] bg-[#d1fae5] rounded-full overflow-hidden mb-3">
               <div
                 className="h-full bg-[#0ea57a] rounded-full transition-all duration-300"
                 style={{ width: `${shippingProgress}%` }}
               />
             </div>
 
-            {/* Free Shipping Qualified Message */}
             <div className="flex items-center gap-2 text-[13px] text-[#4b5563]">
-              <Truck size={17} strokeWidth={1.6} className="text-[#4b5563] shrink-0" />
+              <Truck size={17} strokeWidth={1.6} className="text-[#0ea57a] shrink-0" />
               <span>
                 {qualifiesForFreeShipping
-                  ? "Your order qualifies for free shipping!"
-                  : `Add $${(FREE_SHIPPING_THRESHOLD - cartTotal).toFixed(2)} more for free shipping!`}
+                  ? "Your order qualifies for free nationwide shipping!"
+                  : `Add ${formatPrice(freeShippingThreshold - cartTotal)} more for free shipping!`}
               </span>
             </div>
           </div>

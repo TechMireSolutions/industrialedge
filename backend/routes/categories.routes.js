@@ -17,8 +17,8 @@ router.get("/", async (req, res) => {
     const cats = categories || [];
     const prods = products || [];
     const categoriesWithCounts = cats.map((cat) => {
-      const count = prods.filter((p) => p.category.toLowerCase() === cat.name.toLowerCase()).length;
-      return { ...cat, count: count > 0 ? count : (cat.count || 0) };
+      const count = prods.filter((p) => (p.category || "").toLowerCase() === (cat.name || "").toLowerCase()).length;
+      return { ...cat, count };
     });
     res.json({ success: true, data: categoriesWithCounts });
   } catch (err) {

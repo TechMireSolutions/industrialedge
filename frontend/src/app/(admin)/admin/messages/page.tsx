@@ -7,11 +7,10 @@ import {
   Trash2,
   Eye,
   Phone,
-  Calendar,
   X,
   RefreshCw,
-  Clock,
   Check,
+  AlertCircle,
 } from "lucide-react";
 import { api, type InquiryItem } from "@/lib/api";
 
@@ -20,6 +19,7 @@ export default function AdminMessagesPage() {
   const [loading, setLoading] = useState(true);
   const [toast, setToast] = useState<string | null>(null);
   const [selectedMessage, setSelectedMessage] = useState<InquiryItem | null>(null);
+  const [deleteConfirmId, setDeleteConfirmId] = useState<string | null>(null);
 
   const showToast = (msg: string) => {
     setToast(msg);
@@ -58,10 +58,10 @@ export default function AdminMessagesPage() {
   };
 
   const handleDelete = async (id: string) => {
-    if (!confirm("Are you sure you want to delete this message?")) return;
     try {
       await api.deleteInquiry(id);
       showToast("Inquiry deleted successfully");
+      setDeleteConfirmId(null);
       if (selectedMessage && selectedMessage.id === id) {
         setSelectedMessage(null);
       }
@@ -76,7 +76,10 @@ export default function AdminMessagesPage() {
     <div className="space-y-6">
       {/* Toast Alert */}
       {toast && (
-        <div className="fixed top-20 right-6 z-50 bg-[#0f172a] text-white px-4 py-2.5 rounded-lg shadow-xl text-sm flex items-center gap-2 border border-slate-700 animate-bounce">
+        <div
+          role="status"
+          className="fixed top-20 right-6 z-50 bg-[#0f172a] text-white px-4 py-2.5 rounded-lg shadow-xl text-sm flex items-center gap-2 border border-slate-700 transition-all duration-200"
+        >
           <CheckCircle2 className="w-4 h-4 text-emerald-400" />
           <span>{toast}</span>
         </div>
@@ -85,15 +88,15 @@ export default function AdminMessagesPage() {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-white p-6 rounded-2xl border border-slate-200/80 shadow-xs">
         <div>
-          <h1 className="text-2xl font-bold text-slate-900 tracking-tight">Customer Messages & Leads</h1>
+          <h1 className="text-2xl font-bold text-slate-900 tracking-tight">Customer Messages &amp; Leads</h1>
           <p className="text-xs sm:text-sm text-slate-500 mt-1">
-            Inquiries and bulk quote requests submitted through the store's Contact page.
+            Inquiries, newsletter signups, and bulk quote requests submitted through the storefront.
           </p>
         </div>
 
         <button
           onClick={loadInquiries}
-          className="inline-flex items-center gap-1.5 px-3 py-2 text-xs font-semibold text-slate-700 bg-slate-100 hover:bg-slate-200 rounded-lg transition-colors self-start sm:self-auto"
+          className="inline-flex items-center gap-1.5 px-3 py-2 text-xs font-semibold text-slate-700 bg-slate-100 hover:bg-slate-200 rounded-lg transition-colors self-start sm:self-auto cursor-pointer"
         >
           <RefreshCw className="w-3.5 h-3.5" />
           <span>Refresh</span>
@@ -161,14 +164,14 @@ export default function AdminMessagesPage() {
                                 handleStatusChange(inq.id, "read");
                               }
                             }}
-                            className="p-1.5 text-slate-600 hover:text-orange-600 hover:bg-orange-50 rounded-md transition-colors"
+                            className="p-1.5 text-slate-600 hover:text-orange-600 hover:bg-orange-50 rounded-md transition-colors cursor-pointer"
                             title="Read Message"
                           >
                             <Eye className="w-4 h-4" />
                           </button>
                           <button
-                            onClick={() => handleDelete(inq.id)}
-                            className="p-1.5 text-slate-400 hover:text-rose-600 hover:bg-rose-50 rounded-md transition-colors"
+                            onClick={() => setDeleteConfirmId(inq.id)}
+                            className="p-1.5 text-slate-400 hover:text-rose-600 hover:bg-rose-50 rounded-md transition-colors cursor-pointer"
                             title="Delete"
                           >
                             <Trash2 className="w-4 h-4" />
@@ -184,6 +187,35 @@ export default function AdminMessagesPage() {
         )}
       </div>
 
+      {/* Delete Confirmation Modal */}
+      {deleteConfirmId && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-xs p-4">
+          <div className="bg-white rounded-2xl max-w-sm w-full p-6 space-y-4 shadow-xl border border-slate-200">
+            <div className="flex items-center gap-3 text-rose-600">
+              <AlertCircle className="w-6 h-6" />
+              <h3 className="font-bold text-base text-slate-900">Delete Message</h3>
+            </div>
+            <p className="text-xs text-slate-600 leading-relaxed">
+              Are you sure you want to permanently delete this customer message?
+            </p>
+            <div className="flex items-center justify-end gap-2 pt-2">
+              <button
+                onClick={() => setDeleteConfirmId(null)}
+                className="px-4 py-2 text-xs font-semibold text-slate-600 hover:bg-slate-100 rounded-lg transition-colors cursor-pointer"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={() => handleDelete(deleteConfirmId)}
+                className="px-4 py-2 text-xs font-semibold text-white bg-rose-600 hover:bg-rose-700 rounded-lg transition-colors cursor-pointer"
+              >
+                Yes, Delete
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Message Inspection Modal */}
       {selectedMessage && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-xs p-4">
@@ -197,7 +229,8 @@ export default function AdminMessagesPage() {
               </div>
               <button
                 onClick={() => setSelectedMessage(null)}
-                className="text-slate-400 hover:text-slate-600 p-1 rounded-md"
+                className="text-slate-400 hover:text-slate-600 p-1 rounded-md cursor-pointer"
+                aria-label="Close modal"
               >
                 <X className="w-5 h-5" />
               </button>
@@ -214,11 +247,11 @@ export default function AdminMessagesPage() {
               {selectedMessage.message}
             </div>
 
-            <div className="flex items-center justify-between pt-3 border-t border-slate-100 text-xs">
+            <div className="flex flex-wrap items-center justify-between gap-2 pt-3 border-t border-slate-100 text-xs">
               <div className="flex items-center gap-2">
                 <button
                   onClick={() => handleStatusChange(selectedMessage.id, "replied")}
-                  className="px-3 py-1.5 rounded-lg bg-emerald-50 text-emerald-700 hover:bg-emerald-100 font-semibold border border-emerald-200 flex items-center gap-1"
+                  className="px-3 py-1.5 rounded-lg bg-emerald-50 text-emerald-700 hover:bg-emerald-100 font-semibold border border-emerald-200 flex items-center gap-1 cursor-pointer"
                 >
                   <Check className="w-3.5 h-3.5" />
                   <span>Mark Replied</span>
@@ -236,7 +269,7 @@ export default function AdminMessagesPage() {
 
               <button
                 onClick={() => setSelectedMessage(null)}
-                className="px-4 py-1.5 font-semibold text-slate-600 hover:bg-slate-100 rounded-lg"
+                className="px-4 py-1.5 font-semibold text-slate-600 hover:bg-slate-100 rounded-lg cursor-pointer"
               >
                 Close
               </button>

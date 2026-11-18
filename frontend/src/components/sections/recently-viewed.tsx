@@ -1,10 +1,12 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useMemo } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { Eye, Heart, ArrowLeftRight, X, Check, ShoppingCart } from "lucide-react";
 import { useStore, type Product } from "@/lib/store";
+import { api } from "@/lib/api";
+import { formatPrice } from "@/lib/currency";
 
 interface RecentProduct {
   id: string;
@@ -16,66 +18,44 @@ interface RecentProduct {
   description?: string;
 }
 
-const RECENTLY_VIEWED_ITEMS: RecentProduct[] = [
-  {
-    id: "rv-1",
-    name: "SKG Smart Watch Make/Answer Call for Men...",
-    category: "Apple products",
-    price: 29.19,
-    originalPrice: 99.91,
-    image: "/images/o_2901-540x540.webp",
-    description: "Built-in Alexa, Bluetooth call support, all-day health monitoring, and IP68 waterproof design.",
-  },
-  {
-    id: "rv-2",
-    name: "Xbox Wireless Core Controller – White",
-    category: "Apple products",
-    price: 51.84,
-    image: "/images/xbox-controller.png",
-    description: "Experience the modernized design of the Xbox Wireless Controller, featuring sculpted surfaces and refined geometry.",
-  },
-  {
-    id: "rv-3",
-    name: "Bose Portable Smart Speaker — Wireless Bluetooth Speaker ...",
-    category: "Apple products",
-    price: 129.0,
-    originalPrice: 399.0,
-    image: "/images/bose-speaker.png",
-    description: "All-in-one wireless home speaker, portable Bluetooth speaker, and voice-controlled speaker in one.",
-  },
-  {
-    id: "rv-4",
-    name: "SkyTech Shadow 3.0 Gaming Computer PC Desktop – Ryze...",
-    category: "Apple products",
-    price: 682.9,
-    originalPrice: 944.53,
-    image: "/images/o_4102-540x540.webp",
-    description: "AMD Ryzen processor, NVIDIA GeForce graphics, high-speed NVMe SSD, and vivid RGB liquid cooling.",
-  },
-  {
-    id: "rv-5",
-    name: "AutoFull C3 Gaming Chair Office Chair Ergonomic...",
-    category: "Game & Room Furniture",
-    price: 600.0,
-    originalPrice: 628.79,
-    image: "/images/o_3101-600x600.webp",
-    description: "Ergonomic gaming chair with high-density sponge, 2D armrests, headrest and lumbar support pillows.",
-  },
-  {
-    id: "rv-6",
-    name: "Beats Solo3 Wireless On-Ear Headphones, Apple W1...",
-    category: "Apple products",
-    price: 133.49,
-    image: "/images/beats-headphones.png",
-    description: "High-performance wireless Bluetooth headphones with Apple W1 chip and up to 40 hours of battery life.",
-  },
+const FALLBACK_RECENT: RecentProduct[] = [
+  { id: "bs-4", name: "Amazfit GTS 2 Smart Watch for Men Android iPhone", category: "Smartwatch", price: 37800, originalPrice: 50400, image: "/images/o_0601-540x540.webp", description: "AMOLED display, Bluetooth calling, 90 sports modes." },
+  { id: "prd-ps5-dualsense", name: "PlayStation 5 DualSense Wireless Controller – Black", category: "Gaming Accessories", price: 19600, originalPrice: 24500, image: "/images/o_3201-540x540.webp", description: "Haptic feedback and adaptive triggers." },
+  { id: "prd-bose-speaker", name: "Bose SoundLink Revolve+ II Bluetooth Speaker", category: "Audio Equipments", price: 55700, originalPrice: 69700, image: "/images/bose-speaker.png", description: "True 360-degree wireless sound." },
+  { id: "prd-skytech-pc", name: "SkyTech Shadow 3.0 Gaming & Workstation PC – Ryzen 5", category: "Computers & Accessories", price: 223700, originalPrice: 265700, image: "/images/o_3701-540x540.webp", description: "AMD Ryzen 5, GTX 1660 Super, 1TB NVMe SSD, 16GB RAM." },
+  { id: "prd-autofull-chair", name: "AutoFull C3 Ergonomic Gaming & Office Chair", category: "Game & Room Furniture", price: 68500, originalPrice: 84000, image: "/images/o_3101-600x600.webp", description: "High-density molded foam with lumbar & headrest support." },
+  { id: "prd-beats-headphone", name: "Beats Studio Pro Wireless Over-Ear Headphones", category: "Headphone", price: 70000, originalPrice: 98000, image: "/images/beats-headphones.png", description: "Active Noise Cancelling with up to 40 hours battery." },
 ];
 
 export default function RecentlyViewed() {
+  const [catalog, setCatalog] = useState<RecentProduct[]>(FALLBACK_RECENT);
   const [quickViewProduct, setQuickViewProduct] = useState<RecentProduct | null>(null);
   const [toastMessage, setToastMessage] = useState<string | null>(null);
 
-  const { isWishlisted, toggleWishlist, addToCart } = useStore();
+  const { isWishlisted, toggleWishlist, addToCart, addToCompare, recentlyViewedIds } = useStore();
+
+  useEffect(() => {
+    api
+      .getProducts()
+      .then((all) => {
+        if (Array.isArray(all) && all.length > 0) {
+          setCatalog(all);
+        }
+      })
+      .catch(() => {});
+  }, []);
+
+  const displayedItems = useMemo(() => {
+    if (recentlyViewedIds.length > 0) {
+      const matched = recentlyViewedIds
+        .map((id) => catalog.find((p) => p.id === id))
+        .filter((p): p is RecentProduct => Boolean(p));
+      if (matched.length >= 6) return matched.slice(0, 6);
+      const rest = catalog.filter((p) => !matched.some((m) => m.id === p.id));
+      return [...matched, ...rest].slice(0, 6);
+    }
+    return catalog.slice(-6).reverse();
+  }, [catalog, recentlyViewedIds]);
 
   const showToast = (msg: string) => {
     setToastMessage(msg);
@@ -84,36 +64,39 @@ export default function RecentlyViewed() {
     }, 2000);
   };
 
+  const toStoreProduct = (product: RecentProduct): Product => ({
+    id: product.id,
+    name: product.name,
+    price: product.price,
+    originalPrice: product.originalPrice,
+    status: "none",
+    image: product.image,
+    category: product.category,
+    description: product.description,
+  });
+
   const handleAddToCart = (product: RecentProduct, e?: React.MouseEvent) => {
     if (e) {
       e.preventDefault();
       e.stopPropagation();
     }
-    const storeProduct: Product = {
-      id: product.id,
-      name: product.name,
-      price: product.price,
-      status: "none",
-      image: product.image,
-      category: product.category,
-      description: product.description,
-    };
-    addToCart(storeProduct, 1);
-    showToast(`Added to cart!`);
+    addToCart(toStoreProduct(product), 1);
+    showToast("Added to cart!");
   };
 
   const handleToggleWishlist = (product: RecentProduct, e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
+    const wasLiked = isWishlisted(product.id);
     toggleWishlist(product.id);
-    const liked = isWishlisted(product.id);
-    showToast(liked ? "Removed from wishlist" : "Added to wishlist!");
+    showToast(wasLiked ? "Removed from wishlist" : "Added to wishlist!");
   };
 
   const handleCompare = (product: RecentProduct, e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
-    showToast(`Added to compare list!`);
+    addToCompare(toStoreProduct(product));
+    showToast("Added to compare!");
   };
 
   const handleQuickView = (product: RecentProduct, e: React.MouseEvent) => {
@@ -124,9 +107,8 @@ export default function RecentlyViewed() {
 
   return (
     <section className="w-full bg-white pt-10 pb-8 sm:pt-12 sm:pb-10 select-none">
-      {/* Toast Notification */}
       {toastMessage && (
-        <div className="fixed bottom-6 right-6 z-50 bg-[#171145] text-white px-4 py-2 rounded-lg shadow-xl text-xs sm:text-sm flex items-center gap-2 animate-bounce">
+        <div className="fixed bottom-6 right-6 z-50 bg-[#171145] text-white px-4 py-2.5 rounded-lg shadow-xl text-xs sm:text-sm flex items-center gap-2">
           <Check className="w-4 h-4 text-emerald-400" />
           <span>{toastMessage}</span>
         </div>
@@ -135,16 +117,17 @@ export default function RecentlyViewed() {
       {/* Quick View Modal */}
       {quickViewProduct && (
         <div
-          className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 animate-in fade-in duration-200"
+          className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4"
           onClick={() => setQuickViewProduct(null)}
         >
           <div
-            className="bg-white rounded-xl max-w-2xl w-full p-6 sm:p-8 relative shadow-2xl flex flex-col md:flex-row gap-6 animate-in zoom-in-95 duration-200"
+            className="bg-white rounded-xl max-w-2xl w-full p-6 sm:p-8 relative shadow-2xl flex flex-col md:flex-row gap-6"
             onClick={(e) => e.stopPropagation()}
           >
             <button
+              type="button"
               onClick={() => setQuickViewProduct(null)}
-              className="absolute top-4 right-4 p-1.5 text-gray-400 hover:text-gray-700 rounded-full hover:bg-gray-100 transition-colors"
+              className="absolute top-4 right-4 p-1.5 text-gray-500 hover:text-gray-800 rounded-full hover:bg-gray-100 transition-colors cursor-pointer"
               aria-label="Close"
             >
               <X className="w-5 h-5" />
@@ -162,23 +145,23 @@ export default function RecentlyViewed() {
 
             <div className="w-full md:w-1/2 flex flex-col justify-between">
               <div>
-                <span className="text-xs text-gray-500 uppercase tracking-wider block mb-1">
+                <span className="text-xs text-slate-500 uppercase tracking-wider block mb-1">
                   {quickViewProduct.category}
                 </span>
-                <h3 className="text-lg font-bold text-gray-900 leading-snug mb-3">
+                <h3 className="text-lg font-bold text-[#171145] leading-snug mb-3">
                   {quickViewProduct.name}
                 </h3>
                 <div className="flex items-baseline gap-2 mb-4">
-                  <span className="text-2xl font-bold text-[#22262a]">
-                    ${quickViewProduct.price.toFixed(2)}
+                  <span className="text-2xl font-bold text-[#0ea57a]">
+                    {formatPrice(quickViewProduct.price)}
                   </span>
-                  {quickViewProduct.originalPrice && (
+                  {quickViewProduct.originalPrice && quickViewProduct.originalPrice > quickViewProduct.price && (
                     <span className="text-sm text-gray-400 line-through">
-                      ${quickViewProduct.originalPrice.toFixed(2)}
+                      {formatPrice(quickViewProduct.originalPrice)}
                     </span>
                   )}
                 </div>
-                <p className="text-xs text-gray-600 leading-relaxed mb-6">
+                <p className="text-xs text-slate-600 leading-relaxed mb-6">
                   {quickViewProduct.description ||
                     "Premium electronic device with high reliability, responsive design, and official manufacturer warranty included."}
                 </p>
@@ -201,8 +184,8 @@ export default function RecentlyViewed() {
                   onClick={(e) => handleToggleWishlist(quickViewProduct, e)}
                   className={`p-2.5 rounded border transition-colors cursor-pointer ${
                     isWishlisted(quickViewProduct.id)
-                      ? "border-red-500 text-red-500 bg-red-50"
-                      : "border-gray-200 text-gray-700 hover:text-red-500 hover:border-red-300"
+                      ? "border-rose-500 text-rose-500 bg-rose-50"
+                      : "border-gray-200 text-gray-700 hover:text-rose-500 hover:border-rose-300"
                   }`}
                   title="Wishlist"
                 >
@@ -218,19 +201,16 @@ export default function RecentlyViewed() {
       )}
 
       <div className="max-w-[1440px] mx-auto px-6 lg:px-12">
-        {/* Section Header */}
         <div className="pb-2">
           <h2 className="text-xl sm:text-2xl font-bold text-[#171145] tracking-tight">
             Recently Viewed
           </h2>
         </div>
 
-        {/* Thin Divider Line */}
         <div className="w-full border-b border-gray-200 mt-1 mb-8" />
 
-        {/* 6-Column Grid */}
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4 sm:gap-5 lg:gap-6">
-          {RECENTLY_VIEWED_ITEMS.map((product) => {
+          {displayedItems.map((product) => {
             const liked = isWishlisted(product.id);
 
             return (
@@ -238,19 +218,18 @@ export default function RecentlyViewed() {
                 key={product.id}
                 className="group relative flex flex-col justify-between select-none"
               >
-                {/* Product Image Square Container with Hover State Elements */}
                 <div className="relative w-full aspect-square bg-white border border-gray-200/90 rounded-[4px] p-3 sm:p-4 flex items-center justify-center overflow-hidden mb-3">
-                  <Image
-                    src={product.image}
-                    alt={product.name}
-                    width={180}
-                    height={180}
-                    className="max-h-full max-w-full object-contain transition-transform duration-300 group-hover:scale-105"
-                  />
+                  <Link href={`/product/${product.id}`} className="flex items-center justify-center w-full h-full">
+                    <Image
+                      src={product.image}
+                      alt={product.name}
+                      width={180}
+                      height={180}
+                      className="max-h-full max-w-full object-contain transition-transform duration-300 group-hover:scale-105"
+                    />
+                  </Link>
 
-                  {/* Top-Right 3 Floating Circular Action Buttons (Quick View, Wishlist, Compare) */}
                   <div className="absolute top-2 right-2 flex flex-col gap-1.5 opacity-0 group-hover:opacity-100 translate-x-2 group-hover:translate-x-0 transition-all duration-200 z-20">
-                    {/* Quick View */}
                     <button
                       type="button"
                       onClick={(e) => handleQuickView(product, e)}
@@ -261,23 +240,18 @@ export default function RecentlyViewed() {
                       <Eye className="w-3.5 h-3.5 stroke-[1.8]" />
                     </button>
 
-                    {/* Wishlist */}
                     <button
                       type="button"
                       onClick={(e) => handleToggleWishlist(product, e)}
                       className={`w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-white shadow-md border border-gray-100 flex items-center justify-center transition-colors cursor-pointer ${
-                        liked ? "text-red-500" : "text-gray-700 hover:text-[#0ea57a]"
+                        liked ? "text-rose-500" : "text-gray-700 hover:text-[#0ea57a]"
                       }`}
                       title="Wishlist"
                       aria-label="Wishlist"
                     >
-                      <Heart
-                        className="w-3.5 h-3.5 stroke-[1.8]"
-                        fill={liked ? "currentColor" : "none"}
-                      />
+                      <Heart className="w-3.5 h-3.5 stroke-[1.8]" fill={liked ? "currentColor" : "none"} />
                     </button>
 
-                    {/* Compare */}
                     <button
                       type="button"
                       onClick={(e) => handleCompare(product, e)}
@@ -289,7 +263,6 @@ export default function RecentlyViewed() {
                     </button>
                   </div>
 
-                  {/* Bottom Full-Width Red "Add to cart" Button on Hover */}
                   <div className="absolute bottom-2 inset-x-2 opacity-0 group-hover:opacity-100 translate-y-2 group-hover:translate-y-0 transition-all duration-200 z-20">
                     <button
                       type="button"
@@ -301,32 +274,28 @@ export default function RecentlyViewed() {
                   </div>
                 </div>
 
-                {/* Details: Category, Title (turns Red on hover), Price */}
                 <div className="flex-1 flex flex-col justify-between">
                   <div>
-                    {/* Category */}
-                    <span className="text-[11px] sm:text-[12px] text-[#73787d] font-normal leading-tight mb-1 block truncate">
+                    <span className="text-[11px] sm:text-[12px] text-[#64748b] font-normal leading-tight mb-1 block truncate">
                       {product.category}
                     </span>
 
-                    {/* Title: turns red on hover */}
                     <Link
                       href={`/product/${product.id}`}
-                      className="text-[13px] font-medium text-[#0ea57a] group-hover:text-[#0ea57a] leading-[1.3] line-clamp-2 mb-1.5 transition-colors duration-150 block"
+                      className="text-[13px] font-medium text-[#171145] hover:text-[#0ea57a] leading-[1.3] line-clamp-2 mb-1.5 transition-colors duration-150 block"
                       title={product.name}
                     >
                       {product.name}
                     </Link>
                   </div>
 
-                  {/* Price Row */}
-                  <div className="flex items-baseline gap-1.5 mt-0.5">
-                    <span className="text-[14px] sm:text-[15px] font-bold text-[#22262a]">
-                      ${product.price.toFixed(2)}
+                  <div className="flex items-baseline gap-1.5 mt-0.5 flex-wrap">
+                    <span className="text-[14px] sm:text-[15px] font-bold text-[#0ea57a]">
+                      {formatPrice(product.price)}
                     </span>
-                    {product.originalPrice && (
+                    {product.originalPrice && product.originalPrice > product.price && (
                       <span className="text-[11px] sm:text-[12px] text-gray-400 line-through">
-                        ${product.originalPrice.toFixed(2)}
+                        {formatPrice(product.originalPrice)}
                       </span>
                     )}
                   </div>

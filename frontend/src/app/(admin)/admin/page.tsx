@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import {
-  DollarSign,
+  Banknote,
   ShoppingCart,
   Package,
   Mail,
@@ -15,12 +15,10 @@ import {
   SlidersHorizontal,
   Settings,
   RefreshCw,
-  Eye,
   CheckCircle,
-  Clock,
-  Truck,
 } from "lucide-react";
 import { api, type DashboardStats, type OrderItem } from "@/lib/api";
+import { formatPrice, formatCompactPrice } from "@/lib/currency";
 
 export default function AdminDashboardPage() {
   const router = useRouter();
@@ -92,7 +90,7 @@ export default function AdminDashboardPage() {
     <div className="space-y-6">
       {/* Toast Alert */}
       {actionMessage && (
-        <div className="fixed top-20 right-6 z-50 bg-[#0f172a] text-white px-4 py-2.5 rounded-lg shadow-xl text-sm flex items-center gap-2 border border-slate-700 animate-bounce">
+        <div className="fixed top-20 right-6 z-50 bg-[#0f172a] text-white px-4 py-2.5 rounded-lg shadow-xl text-sm flex items-center gap-2 border border-slate-700">
           <CheckCircle className="w-4 h-4 text-emerald-400" />
           <span>{actionMessage}</span>
         </div>
@@ -132,13 +130,13 @@ export default function AdminDashboardPage() {
         {/* Total Revenue */}
         <div className="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-xs flex flex-col justify-between">
           <div className="flex items-center justify-between mb-3">
-            <span className="text-xs font-bold text-slate-500 uppercase tracking-wider">Total Revenue</span>
+            <span className="text-xs font-bold text-slate-500 uppercase tracking-wider">Total Revenue (PKR)</span>
             <div className="w-9 h-9 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center">
-              <DollarSign className="w-5 h-5" />
+              <Banknote className="w-5 h-5" />
             </div>
           </div>
           <div className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
-            ${metrics.totalSales.toLocaleString("en-US", { minimumFractionDigits: 2 })}
+            {formatPrice(metrics.totalSales)}
           </div>
           <div className="mt-2 flex items-center gap-1 text-[11px] text-emerald-700 font-semibold">
             <TrendingUp className="w-3.5 h-3.5" />
@@ -273,8 +271,8 @@ export default function AdminDashboardPage() {
         <div className="lg:col-span-8 bg-white p-6 rounded-2xl border border-slate-200/80 shadow-xs">
           <div className="flex items-center justify-between mb-6">
             <div>
-              <h2 className="text-base font-bold text-slate-900">Revenue & Sales Trajectory</h2>
-              <p className="text-xs text-slate-500">Monthly revenue volume in USD ($)</p>
+              <h2 className="text-base font-bold text-slate-900">Revenue &amp; Sales Trajectory</h2>
+              <p className="text-xs text-slate-500">Monthly revenue volume in PKR (Rs.)</p>
             </div>
             <span className="px-2.5 py-1 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200">
               Live Data
@@ -283,23 +281,26 @@ export default function AdminDashboardPage() {
 
           {/* Bar Chart Representation */}
           <div className="h-56 flex items-end justify-between gap-2 sm:gap-6 pt-6 px-2 border-b border-slate-100">
-            {stats?.salesTrend.map((item) => {
-              const maxRev = 14000;
-              const heightPct = Math.min(100, Math.round((item.revenue / maxRev) * 100));
+            {(() => {
+              const trend = stats?.salesTrend || [];
+              const maxRev = Math.max(...trend.map((t) => t.revenue), 100000);
+              return trend.map((item) => {
+                const heightPct = Math.max(8, Math.min(100, Math.round((item.revenue / maxRev) * 100)));
 
-              return (
-                <div key={item.month} className="flex-1 flex flex-col items-center gap-2 group h-full justify-end">
-                  <div className="opacity-0 group-hover:opacity-100 transition-opacity text-[11px] font-bold text-slate-700 bg-slate-100 px-1.5 py-0.5 rounded shadow-xs mb-1">
-                    ${item.revenue}
+                return (
+                  <div key={item.month} className="flex-1 flex flex-col items-center gap-2 group h-full justify-end">
+                    <div className="opacity-0 group-hover:opacity-100 transition-opacity text-[11px] font-bold text-slate-700 bg-slate-100 px-2 py-0.5 rounded shadow-xs mb-1 whitespace-nowrap">
+                      {formatCompactPrice(item.revenue)}
+                    </div>
+                    <div
+                      style={{ height: `${heightPct}%` }}
+                      className="w-full max-w-[48px] bg-gradient-to-t from-slate-800 to-[#f97316] rounded-t-lg group-hover:brightness-110 transition-all cursor-pointer"
+                    />
+                    <span className="text-xs font-semibold text-slate-500 mt-2">{item.month}</span>
                   </div>
-                  <div
-                    style={{ height: `${heightPct}%` }}
-                    className="w-full max-w-[48px] bg-gradient-to-t from-slate-800 to-[#f97316] rounded-t-lg group-hover:brightness-110 transition-all cursor-pointer"
-                  />
-                  <span className="text-xs font-semibold text-slate-500 mt-2">{item.month}</span>
-                </div>
-              );
-            })}
+                );
+              });
+            })()}
           </div>
         </div>
 
@@ -384,7 +385,7 @@ export default function AdminDashboardPage() {
                   <td className="py-3.5 px-5 text-slate-600">
                     {order.items?.length || 0} item{(order.items?.length || 0) > 1 ? "s" : ""}
                   </td>
-                  <td className="py-3.5 px-5 font-bold text-slate-900">${order.total?.toFixed(2)}</td>
+                  <td className="py-3.5 px-5 font-bold text-slate-900 whitespace-nowrap">{formatPrice(order.total)}</td>
                   <td className="py-3.5 px-5">
                     <span className="text-slate-600 text-[11px]">{order.paymentMethod}</span>
                   </td>

@@ -2,8 +2,9 @@
 
 import { useState, useEffect } from "react";
 import { usePathname } from "next/navigation";
-import { X, Check } from "lucide-react";
+import { X, Check, AlertCircle } from "lucide-react";
 import { useStore } from "@/lib/store";
+import { api } from "@/lib/api";
 
 export default function AuthModal() {
   const pathname = usePathname();
@@ -12,12 +13,10 @@ export default function AuthModal() {
     closeAuthModal,
     authModalTab,
     setAuthModalTab,
+    setCustomerUser,
   } = useStore();
 
-  // Never render on admin routes
-  if (pathname?.startsWith("/admin")) {
-    return null;
-  }
+  const isAdminRoute = Boolean(pathname?.startsWith("/admin"));
 
   // Login form state
   const [loginUsername, setLoginUsername] = useState("");
@@ -34,11 +33,14 @@ export default function AuthModal() {
   const [forgotEmail, setForgotEmail] = useState("");
   const [forgotSuccess, setForgotSuccess] = useState(false);
 
-  // Success / feedback state
+  // Feedback / loading state
+  const [submitting, setSubmitting] = useState(false);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [feedbackMessage, setFeedbackMessage] = useState<string | null>(null);
 
-  // Close on Escape key press
+  // Close on Escape key press (hooks always run before conditional return)
   useEffect(() => {
+    if (isAdminRoute) return;
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Escape" && isAuthModalOpen) {
         closeAuthModal();
@@ -46,10 +48,11 @@ export default function AuthModal() {
     };
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [isAuthModalOpen, closeAuthModal]);
+  }, [isAdminRoute, isAuthModalOpen, closeAuthModal]);
 
   // Lock body scroll when modal is open
   useEffect(() => {
+    if (isAdminRoute) return;
     if (isAuthModalOpen) {
       document.body.style.overflow = "hidden";
     } else {
@@ -58,42 +61,88 @@ export default function AuthModal() {
     return () => {
       document.body.style.overflow = "";
     };
-  }, [isAuthModalOpen]);
+  }, [isAdminRoute, isAuthModalOpen]);
 
-  if (!isAuthModalOpen) return null;
+  if (isAdminRoute || !isAuthModalOpen) {
+    return null;
+  }
 
-  const handleLoginSubmit = (e: React.FormEvent) => {
+  const handleLoginSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (loginUsername.trim() && loginPassword.trim()) {
-      setFeedbackMessage(`Welcome back, ${loginUsername}!`);
+    setErrorMessage(null);
+    if (!loginUsername.trim() || !loginPassword.trim()) {
+      setErrorMessage("Please enter your email/username and password.");
+      return;
+    }
+
+    setSubmitting(true);
+    try {
+      const res = await api.customerLogin(loginUsername.trim(), loginPassword);
+      setCustomerUser(res.user);
+      setFeedbackMessage(`Welcome back, ${res.user.name}!`);
+      setLoginPassword("");
       setTimeout(() => {
         setFeedbackMessage(null);
         closeAuthModal();
-      }, 1500);
+      }, 1200);
+    } catch (err) {
+      setErrorMessage(err instanceof Error ? err.message : "Invalid email or password");
+    } finally {
+      setSubmitting(false);
     }
   };
 
-  const handleRegisterSubmit = (e: React.FormEvent) => {
+  const handleRegisterSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (registerPassword !== registerConfirmPassword) {
-      alert("Passwords do not match!");
+    setErrorMessage(null);
+    if (registerPassword.length < 6) {
+      setErrorMessage("Password must be at least 6 characters long.");
       return;
     }
-    setFeedbackMessage("Account created successfully!");
-    setTimeout(() => {
-      setFeedbackMessage(null);
-      closeAuthModal();
-    }, 1500);
+    if (registerPassword !== registerConfirmPassword) {
+      setErrorMessage("Passwords do not match. Please check and try again.");
+      return;
+    }
+
+    setSubmitting(true);
+    try {
+      const res = await api.customerRegister({
+        name: registerUsername.trim(),
+        email: registerEmail.trim(),
+        password: registerPassword,
+      });
+      setCustomerUser(res.user);
+      setFeedbackMessage("Account created successfully! Welcome to IndustrialEdge.pk.");
+      setRegisterPassword("");
+      setRegisterConfirmPassword("");
+      setTimeout(() => {
+        setFeedbackMessage(null);
+        closeAuthModal();
+      }, 1200);
+    } catch (err) {
+      setErrorMessage(err instanceof Error ? err.message : "Unable to create account");
+    } finally {
+      setSubmitting(false);
+    }
   };
 
-  const handleForgotSubmit = (e: React.FormEvent) => {
+  const handleForgotSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setForgotSuccess(true);
-    setTimeout(() => {
-      setForgotSuccess(false);
-      setShowForgotPassword(false);
-      setForgotEmail("");
-    }, 2500);
+    setErrorMessage(null);
+    setSubmitting(true);
+    try {
+      await api.forgotPassword(forgotEmail.trim());
+      setForgotSuccess(true);
+      setTimeout(() => {
+        setForgotSuccess(false);
+        setShowForgotPassword(false);
+        setForgotEmail("");
+      }, 2200);
+    } catch (err) {
+      setErrorMessage(err instanceof Error ? err.message : "Failed to send reset link");
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   return (
@@ -102,18 +151,16 @@ export default function AuthModal() {
       <div
         onClick={closeAuthModal}
         aria-hidden="true"
-        className="fixed inset-0 bg-black/55 backdrop-blur-[2px] transition-opacity animate-in fade-in duration-200"
+        className="fixed inset-0 bg-black/55 backdrop-blur-[2px] transition-opacity"
       />
 
       {/* Modal Dialog Card */}
       <div
         role="dialog"
         aria-modal="true"
-        className="relative w-full max-w-[430px] sm:max-w-[450px] bg-white rounded-[10px] p-7 sm:p-9 shadow-2xl z-10 animate-in zoom-in-95 duration-200 border border-[#f0f0f0]"
+        className="relative w-full max-w-[430px] sm:max-w-[450px] bg-white rounded-[10px] p-7 sm:p-9 shadow-2xl z-10 border border-[#f0f0f0]"
       >
-        {/* ======================================================== */}
-        {/* 1. MODAL HEADER (TITLE & CLOSE BUTTON)                   */}
-        {/* ======================================================== */}
+        {/* 1. MODAL HEADER */}
         <div className="flex items-center justify-between mb-6">
           <h2 className="text-[20px] font-bold text-[#18181b] tracking-tight">
             {showForgotPassword
@@ -132,7 +179,7 @@ export default function AuthModal() {
           </button>
         </div>
 
-        {/* Feedback Message */}
+        {/* Success Feedback */}
         {feedbackMessage && (
           <div className="mb-5 p-3.5 bg-[#ecfdf5] border border-[#a7f3d0] text-[#065f46] text-[13px] rounded-[6px] flex items-center gap-2">
             <Check size={16} className="text-[#059669] shrink-0" />
@@ -140,9 +187,15 @@ export default function AuthModal() {
           </div>
         )}
 
-        {/* ======================================================== */}
-        {/* 2. FORGOT PASSWORD VIEW                                  */}
-        {/* ======================================================== */}
+        {/* Error Feedback */}
+        {errorMessage && (
+          <div className="mb-5 p-3.5 bg-rose-50 border border-rose-200 text-rose-700 text-[13px] rounded-[6px] flex items-center gap-2">
+            <AlertCircle size={16} className="text-rose-600 shrink-0" />
+            <span>{errorMessage}</span>
+          </div>
+        )}
+
+        {/* 2. FORGOT PASSWORD VIEW */}
         {showForgotPassword ? (
           <form onSubmit={handleForgotSubmit} className="space-y-4">
             <div>
@@ -155,7 +208,7 @@ export default function AuthModal() {
                 value={forgotEmail}
                 onChange={(e) => setForgotEmail(e.target.value)}
                 placeholder="Enter your registered email"
-                className="w-full h-[44px] px-3.5 border border-[#e4e4e7] rounded-[5px] text-[13.5px] text-[#18181b] placeholder:text-[#a1a1aa] focus:outline-none focus:border-[#18181b] transition-colors"
+                className="w-full h-[44px] px-3.5 border border-[#e4e4e7] rounded-[5px] text-[13.5px] text-[#18181b] placeholder:text-[#a1a1aa] focus:border-[#0ea57a] transition-colors"
               />
             </div>
 
@@ -167,27 +220,28 @@ export default function AuthModal() {
 
             <button
               type="submit"
-              className="w-full h-[46px] bg-[#0ea57a] hover:bg-[#0b8462] text-white font-bold text-[14px] rounded-[6px] transition-colors shadow-xs cursor-pointer active:scale-[0.99] mt-3"
+              disabled={submitting}
+              className="w-full h-[46px] bg-[#0ea57a] hover:bg-[#0b8462] disabled:opacity-60 text-white font-bold text-[14px] rounded-[6px] transition-colors shadow-xs cursor-pointer mt-3"
             >
-              Reset Password
+              {submitting ? "Sending..." : "Reset Password"}
             </button>
 
             <div className="text-center pt-2">
               <button
                 type="button"
-                onClick={() => setShowForgotPassword(false)}
-                className="text-[13px] text-[#71717a] hover:text-[#0ea57a] hover:underline cursor-pointer transition-colors"
+                onClick={() => {
+                  setErrorMessage(null);
+                  setShowForgotPassword(false);
+                }}
+                className="text-[13px] text-[#475569] hover:text-[#0ea57a] hover:underline cursor-pointer transition-colors"
               >
                 Back to Login
               </button>
             </div>
           </form>
         ) : authModalTab === "login" ? (
-          /* ======================================================== */
-          /* 3. LOGIN VIEW (IMAGE 2 EXACT MATCH)                      */
-          /* ======================================================== */
+          /* 3. LOGIN VIEW */
           <form onSubmit={handleLoginSubmit} className="space-y-4">
-            {/* User Name Field */}
             <div>
               <label className="block text-[13.5px] font-semibold text-[#18181b] mb-1.5">
                 User Name:
@@ -198,11 +252,10 @@ export default function AuthModal() {
                 value={loginUsername}
                 onChange={(e) => setLoginUsername(e.target.value)}
                 placeholder="Email or user name"
-                className="w-full h-[44px] px-3.5 border border-[#e4e4e7] rounded-[5px] text-[13.5px] text-[#18181b] placeholder:text-[#a1a1aa] focus:outline-none focus:border-[#18181b] transition-colors"
+                className="w-full h-[44px] px-3.5 border border-[#e4e4e7] rounded-[5px] text-[13.5px] text-[#18181b] placeholder:text-[#a1a1aa] focus:border-[#0ea57a] transition-colors"
               />
             </div>
 
-            {/* Password Field */}
             <div>
               <label className="block text-[13.5px] font-semibold text-[#18181b] mb-1.5">
                 Password:
@@ -213,35 +266,37 @@ export default function AuthModal() {
                 value={loginPassword}
                 onChange={(e) => setLoginPassword(e.target.value)}
                 placeholder="Your password"
-                className="w-full h-[44px] px-3.5 border border-[#e4e4e7] rounded-[5px] text-[13.5px] text-[#18181b] placeholder:text-[#a1a1aa] focus:outline-none focus:border-[#18181b] transition-colors"
+                className="w-full h-[44px] px-3.5 border border-[#e4e4e7] rounded-[5px] text-[13.5px] text-[#18181b] placeholder:text-[#a1a1aa] focus:border-[#0ea57a] transition-colors"
               />
             </div>
 
-            {/* Forgot password link */}
             <div className="text-right pt-0.5">
               <button
                 type="button"
-                onClick={() => setShowForgotPassword(true)}
-                className="text-[12.5px] text-[#71717a] hover:text-[#0ea57a] hover:underline cursor-pointer transition-colors"
+                onClick={() => {
+                  setErrorMessage(null);
+                  setShowForgotPassword(true);
+                }}
+                className="text-[12.5px] text-[#475569] hover:text-[#0ea57a] hover:underline cursor-pointer transition-colors"
               >
                 Forgot password?
               </button>
             </div>
 
-            {/* Red Login Button */}
             <button
               type="submit"
-              className="w-full h-[46px] bg-[#0ea57a] hover:bg-[#0b8462] text-white font-bold text-[14px] rounded-[6px] transition-colors shadow-xs cursor-pointer active:scale-[0.99] mt-3"
+              disabled={submitting}
+              className="w-full h-[46px] bg-[#0ea57a] hover:bg-[#0b8462] disabled:opacity-60 text-white font-bold text-[14px] rounded-[6px] transition-colors shadow-xs cursor-pointer mt-3"
             >
-              Login
+              {submitting ? "Signing in..." : "Login"}
             </button>
 
-            {/* Register Footer Switch */}
             <div className="text-center text-[13px] text-[#4b5563] pt-3">
               Don&apos;t you have an account?{" "}
               <button
                 type="button"
                 onClick={() => {
+                  setErrorMessage(null);
                   setShowForgotPassword(false);
                   setAuthModalTab("register");
                 }}
@@ -252,11 +307,8 @@ export default function AuthModal() {
             </div>
           </form>
         ) : (
-          /* ======================================================== */
-          /* 4. REGISTER VIEW (IMAGE 3 EXACT MATCH)                   */
-          /* ======================================================== */
+          /* 4. REGISTER VIEW */
           <form onSubmit={handleRegisterSubmit} className="space-y-3.5">
-            {/* User Name Field */}
             <div>
               <label className="block text-[13.5px] font-semibold text-[#18181b] mb-1.5">
                 User Name:
@@ -267,11 +319,10 @@ export default function AuthModal() {
                 value={registerUsername}
                 onChange={(e) => setRegisterUsername(e.target.value)}
                 placeholder="User name"
-                className="w-full h-[44px] px-3.5 border border-[#e4e4e7] rounded-[5px] text-[13.5px] text-[#18181b] placeholder:text-[#a1a1aa] focus:outline-none focus:border-[#18181b] transition-colors"
+                className="w-full h-[44px] px-3.5 border border-[#e4e4e7] rounded-[5px] text-[13.5px] text-[#18181b] placeholder:text-[#a1a1aa] focus:border-[#0ea57a] transition-colors"
               />
             </div>
 
-            {/* Email Field */}
             <div>
               <label className="block text-[13.5px] font-semibold text-[#18181b] mb-1.5">
                 Email:
@@ -282,11 +333,10 @@ export default function AuthModal() {
                 value={registerEmail}
                 onChange={(e) => setRegisterEmail(e.target.value)}
                 placeholder="Email"
-                className="w-full h-[44px] px-3.5 border border-[#e4e4e7] rounded-[5px] text-[13.5px] text-[#18181b] placeholder:text-[#a1a1aa] focus:outline-none focus:border-[#18181b] transition-colors"
+                className="w-full h-[44px] px-3.5 border border-[#e4e4e7] rounded-[5px] text-[13.5px] text-[#18181b] placeholder:text-[#a1a1aa] focus:border-[#0ea57a] transition-colors"
               />
             </div>
 
-            {/* Password Field */}
             <div>
               <label className="block text-[13.5px] font-semibold text-[#18181b] mb-1.5">
                 Password:
@@ -294,14 +344,14 @@ export default function AuthModal() {
               <input
                 type="password"
                 required
+                minLength={6}
                 value={registerPassword}
                 onChange={(e) => setRegisterPassword(e.target.value)}
-                placeholder="Your passsword"
-                className="w-full h-[44px] px-3.5 border border-[#e4e4e7] rounded-[5px] text-[13.5px] text-[#18181b] placeholder:text-[#a1a1aa] focus:outline-none focus:border-[#18181b] transition-colors"
+                placeholder="Your password (min 6 chars)"
+                className="w-full h-[44px] px-3.5 border border-[#e4e4e7] rounded-[5px] text-[13.5px] text-[#18181b] placeholder:text-[#a1a1aa] focus:border-[#0ea57a] transition-colors"
               />
             </div>
 
-            {/* Confirm Password Field */}
             <div>
               <label className="block text-[13.5px] font-semibold text-[#18181b] mb-1.5">
                 Confirm Password:
@@ -309,27 +359,28 @@ export default function AuthModal() {
               <input
                 type="password"
                 required
+                minLength={6}
                 value={registerConfirmPassword}
                 onChange={(e) => setRegisterConfirmPassword(e.target.value)}
                 placeholder="Confirm password"
-                className="w-full h-[44px] px-3.5 border border-[#e4e4e7] rounded-[5px] text-[13.5px] text-[#18181b] placeholder:text-[#a1a1aa] focus:outline-none focus:border-[#18181b] transition-colors"
+                className="w-full h-[44px] px-3.5 border border-[#e4e4e7] rounded-[5px] text-[13.5px] text-[#18181b] placeholder:text-[#a1a1aa] focus:border-[#0ea57a] transition-colors"
               />
             </div>
 
-            {/* Red Sign Up Button */}
             <button
               type="submit"
-              className="w-full h-[46px] bg-[#0ea57a] hover:bg-[#0b8462] text-white font-bold text-[14px] rounded-[6px] transition-colors shadow-xs cursor-pointer active:scale-[0.99] mt-4"
+              disabled={submitting}
+              className="w-full h-[46px] bg-[#0ea57a] hover:bg-[#0b8462] disabled:opacity-60 text-white font-bold text-[14px] rounded-[6px] transition-colors shadow-xs cursor-pointer mt-4"
             >
-              Sign Up
+              {submitting ? "Creating Account..." : "Sign Up"}
             </button>
 
-            {/* Sign In Footer Switch */}
             <div className="text-center text-[13px] text-[#4b5563] pt-3">
               Already have an account?{" "}
               <button
                 type="button"
                 onClick={() => {
+                  setErrorMessage(null);
                   setShowForgotPassword(false);
                   setAuthModalTab("login");
                 }}

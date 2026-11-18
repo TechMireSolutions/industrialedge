@@ -6,28 +6,29 @@
       "email": "tariq.mahmood@example.com",
       "phone": "+92 321 9876543",
       "address": "House 45, Street 12, F-8/2, Islamabad, Pakistan",
-      "city": "Islamabad"
+      "city": "Islamabad",
+      "country": "Pakistan"
     },
     "items": [
       {
         "id": "hero-dell-g5",
-        "name": "Dell G5 15 Gaming Laptop",
-        "price": 450,
+        "name": "Dell G5 15 Gaming Laptop – Intel Core i7, 16GB RAM, RTX 3060",
+        "price": 126000,
         "qty": 1,
         "image": "/images/dell-g5-hero.png"
       },
       {
         "id": "bs-2",
-        "name": "AirPods (2nd generation)",
-        "price": 129,
+        "name": "AirPods (2nd generation) with Wired Charging Case",
+        "price": 36100,
         "qty": 1,
         "image": "/images/o_2003-540x540.webp"
       }
     ],
-    "subtotal": 579,
+    "subtotal": 162100,
     "shipping": 0,
     "discount": 0,
-    "total": 579,
+    "total": 162100,
     "paymentMethod": "Cash on Delivery",
     "paymentStatus": "Pending",
     "status": "processing",
@@ -42,22 +43,23 @@
       "email": "ayesha.khan@techcorp.pk",
       "phone": "+92 333 4567890",
       "address": "Plot 88-C, Commercial Lane 4, DHA Phase 6, Karachi",
-      "city": "Karachi"
+      "city": "Karachi",
+      "country": "Pakistan"
     },
     "items": [
       {
         "id": "tr-7",
-        "name": "Canon Mirrorless Camera [EOS M6 Mark II]",
-        "price": 898,
+        "name": "Canon Mirrorless Camera [EOS M6 Mark II] for Vlogging + EF-M 15-45mm",
+        "price": 251400,
         "qty": 1,
         "image": "/images/o_3801-540x540.webp"
       }
     ],
-    "subtotal": 898,
+    "subtotal": 251400,
     "shipping": 0,
-    "discount": 50,
-    "total": 848,
-    "paymentMethod": "Bank Transfer (BACS)",
+    "discount": 14000,
+    "total": 237400,
+    "paymentMethod": "Direct Bank Transfer (BACS)",
     "paymentStatus": "Paid",
     "status": "shipped",
     "notes": "Leave with security reception if unavailable.",
@@ -71,21 +73,22 @@
       "email": "zubair.ahmed@gmail.com",
       "phone": "+92 300 8112233",
       "address": "Apartment 402, Gulberg Heights, Lahore, Pakistan",
-      "city": "Lahore"
+      "city": "Lahore",
+      "country": "Pakistan"
     },
     "items": [
       {
         "id": "tr-1",
-        "name": "Apple iPhone 11 Pro Max, US Version, 64GB",
-        "price": 475,
+        "name": "Apple iPhone 11 Pro Max, US Version, 64GB, Gold",
+        "price": 133000,
         "qty": 1,
         "image": "/images/o_4901-540x540.webp"
       }
     ],
-    "subtotal": 475,
-    "shipping": 10,
+    "subtotal": 133000,
+    "shipping": 500,
     "discount": 0,
-    "total": 485,
+    "total": 133500,
     "paymentMethod": "Cash on Delivery",
     "paymentStatus": "Completed",
     "status": "delivered",
@@ -100,22 +103,23 @@
       "email": "hamza.farooq@outlook.com",
       "phone": "+92 312 3344556",
       "address": "Street 7, Sector G-11/3, Islamabad",
-      "city": "Islamabad"
+      "city": "Islamabad",
+      "country": "Pakistan"
     },
     "items": [
       {
         "id": "bs-4",
-        "name": "Amazfit GTS 2 Smart Watch",
-        "price": 134.99,
+        "name": "Amazfit GTS 2 Smart Watch for Men Android iPhone, Bluetooth Calls",
+        "price": 37800,
         "qty": 2,
         "image": "/images/o_0601-540x540.webp"
       }
     ],
-    "subtotal": 269.98,
+    "subtotal": 75600,
     "shipping": 0,
-    "discount": 20,
-    "total": 249.98,
-    "paymentMethod": "Direct Bank Transfer",
+    "discount": 5600,
+    "total": 70000,
+    "paymentMethod": "Direct Bank Transfer (BACS)",
     "paymentStatus": "Pending",
     "status": "pending",
     "notes": "Urgent shipment requested.",

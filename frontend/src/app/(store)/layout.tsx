@@ -2,6 +2,7 @@ import Header from "@/components/layout/header";
 import Footer from "@/components/layout/footer";
 import CartDrawer from "@/components/cart/cart-drawer";
 import AuthModal from "@/components/auth/auth-modal";
+import CompareModal from "@/components/products/compare-modal";
 
 export default function StoreLayout({
   children,
@@ -15,6 +16,7 @@ export default function StoreLayout({
       <Footer />
       <CartDrawer />
       <AuthModal />
+      <CompareModal />
     </>
   );
 }

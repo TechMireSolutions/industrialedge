@@ -43,21 +43,20 @@ h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-rubik), sans-serif;
 }
 
-/* Reset focus outlines on inputs, selects, textareas to prevent rectangular outline boxes */
-input,
-textarea,
-select {
-  outline: none;
+/* Clean focus-visible accessibility ring (UI/UX Pro Max keyboard navigation) */
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible,
+button:focus-visible,
+a:focus-visible {
+  outline: 2px solid #0ea57a;
+  outline-offset: 2px;
 }
 
-input:focus,
-input:focus-visible,
-textarea:focus,
-textarea:focus-visible,
-select:focus,
-select:focus-visible {
-  outline: none !important;
-  outline-offset: 0 !important;
+input:focus:not(:focus-visible),
+textarea:focus:not(:focus-visible),
+select:focus:not(:focus-visible) {
+  outline: none;
 }
 
 /* Selection highlight */

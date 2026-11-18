@@ -5,6 +5,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { Eye, Heart, ArrowLeftRight, ChevronLeft, ChevronRight, X, Check } from "lucide-react";
 import { useStore, type Product } from "@/lib/store";
+import { api } from "@/lib/api";
+import { formatPrice } from "@/lib/currency";
 
 interface BestSellerItem {
   id: string;
@@ -16,62 +18,73 @@ interface BestSellerItem {
   description?: string;
 }
 
-const BEST_SELLER_ITEMS: BestSellerItem[] = [
+const FALLBACK_BEST_SELLERS: BestSellerItem[] = [
   {
     id: "bs-1",
-    name: "Acer Aspire 5 A515-56-347N Slim Laptop – 15.6\" Full HD IPS Display – 11th Gen Intel i3",
-    category: "Acer",
-    price: 529.75,
+    name: 'Acer Aspire 5 A515-56-347N Slim Laptop – 15.6" Full HD IPS Display',
+    category: "Laptop & Tablet",
+    price: 148300,
+    originalPrice: 182000,
     image: "/images/o_3603-540x540.webp",
-    description: "Powerful 11th Gen Intel Core i3 processor, 15.6-inch Full HD IPS display with narrow bezels, ergonomic hinge, and all-day battery life.",
+    description:
+      "Powerful 11th Gen Intel Core i3 processor, 15.6-inch Full HD IPS display with narrow bezels, ergonomic hinge, and all-day battery life.",
   },
   {
     id: "bs-2",
     name: "AirPods (2nd generation) with Wired Charging Case",
-    category: "AirPods",
-    price: 129.0,
+    category: "Headphone",
+    price: 36100,
+    originalPrice: 44500,
     image: "/images/o_2003-540x540.webp",
-    description: "Effortless setup, high-quality audio, hands-free Siri access, and over 24 hours of listening time with the charging case.",
+    description:
+      "Effortless setup, high-quality audio, hands-free Siri access, and over 24 hours of listening time with the charging case.",
   },
   {
     id: "bs-3",
     name: "AirPods (3rd generation) with Lightning Charging Case",
-    category: "AirPods",
-    price: 169.0,
+    category: "Headphone",
+    price: 47300,
+    originalPrice: 55700,
     image: "/images/o_2101-540x540.webp",
-    description: "Personalized Spatial Audio with dynamic head tracking, sweat and water resistance, and contoured design with force sensor control.",
+    description:
+      "Personalized Spatial Audio with dynamic head tracking, sweat and water resistance, and contoured design with force sensor control.",
   },
   {
     id: "bs-4",
-    name: "Amazfit GTS 2 Smart Watch for Men Android iPhone, Bluetooth Phone Call",
-    category: "Apple products",
-    price: 134.99,
-    originalPrice: 179.99,
+    name: "Amazfit GTS 2 Smart Watch for Men Android iPhone, Bluetooth Calls",
+    category: "Smartwatch",
+    price: 37800,
+    originalPrice: 50400,
     image: "/images/o_0601-540x540.webp",
-    description: "Curved 3D bezel-less design, all-round health tracking, 90 built-in sports modes, and Bluetooth phone call support.",
+    description:
+      "Curved 3D bezel-less design, all-round health tracking, 90 built-in sports modes, and Bluetooth phone call support.",
   },
   {
     id: "bs-5",
-    name: "Amazon Fire HD 8 tablet, 2 GB RAM, 32 GB, Black",
-    category: "Amazon",
-    price: 99.99,
-    originalPrice: 119.99,
+    name: "Amazon Fire HD 8 Tablet, 2 GB RAM, 32 GB, Black",
+    category: "Laptop & Tablet",
+    price: 28000,
+    originalPrice: 33600,
     image: "/images/o_1101-540x540.webp",
-    description: "8-inch vibrant HD display, 30% faster quad-core processor, all-day battery life up to 12 hours, and enhanced USB-C charging.",
+    description:
+      "8-inch vibrant HD display, 30% faster quad-core processor, all-day battery life up to 12 hours, and enhanced USB-C charging.",
   },
   {
-    id: "bs-6",
-    name: "Amazon Fire TV 50\" 4-Series 4K UHD smart TV",
-    category: "Apple products",
-    price: 299.99,
-    originalPrice: 449.99,
+    id: "hero-fire-tv",
+    name: 'Amazon Fire TV 50" 4-Series 4K UHD Smart TV',
+    category: "TV & Computer Screen",
+    price: 84000,
+    originalPrice: 126000,
     image: "/images/o_1301-540x540.webp",
-    description: "Stunning 4K Ultra HD, HDR 10, and HLG provide clear picture and vivid colors. Control entertainment hands-free with Alexa Voice Remote.",
+    description:
+      "Stunning 4K Ultra HD, HDR 10, and HLG provide clear picture and vivid colors. Control entertainment hands-free with Alexa Voice Remote.",
   },
 ];
 
 export default function BestSellers() {
-  const { isWishlisted, toggleWishlist, addToCart } = useStore();
+  const { isWishlisted, toggleWishlist, addToCart, addToCompare } = useStore();
+  const [items, setItems] = useState<BestSellerItem[]>(FALLBACK_BEST_SELLERS);
+  const [bannerPrice, setBannerPrice] = useState<number>(126000);
   const [quickViewProduct, setQuickViewProduct] = useState<BestSellerItem | null>(null);
   const [toastMessage, setToastMessage] = useState<string | null>(null);
 
@@ -81,15 +94,29 @@ export default function BestSellers() {
   const [touchStartX, setTouchStartX] = useState<number | null>(null);
 
   useEffect(() => {
+    api
+      .getProducts({ featured: "bestSeller" })
+      .then((prods) => {
+        if (Array.isArray(prods) && prods.length > 0) {
+          setItems(prods);
+        }
+      })
+      .catch(() => {});
+
+    api
+      .getBanners()
+      .then((b) => {
+        if (b?.hero?.price) setBannerPrice(b.hero.price);
+      })
+      .catch(() => {});
+  }, []);
+
+  useEffect(() => {
     const handleResize = () => {
       const width = window.innerWidth;
-      if (width < 640) {
-        setVisibleColumns(1);
-      } else if (width < 1024) {
-        setVisibleColumns(2);
-      } else {
-        setVisibleColumns(3);
-      }
+      if (width < 640) setVisibleColumns(1);
+      else if (width < 1024) setVisibleColumns(2);
+      else setVisibleColumns(3);
     };
 
     handleResize();
@@ -97,32 +124,21 @@ export default function BestSellers() {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  const maxIndex = Math.max(0, BEST_SELLER_ITEMS.length - visibleColumns);
+  const maxIndex = Math.max(0, items.length - visibleColumns);
 
   useEffect(() => {
     setCurrentIndex((prev) => Math.min(prev, maxIndex));
   }, [maxIndex]);
 
-  const handlePrev = () => {
-    setCurrentIndex((prev) => (prev > 0 ? prev - 1 : maxIndex));
-  };
+  const handlePrev = () => setCurrentIndex((prev) => (prev > 0 ? prev - 1 : maxIndex));
+  const handleNext = () => setCurrentIndex((prev) => (prev < maxIndex ? prev + 1 : 0));
 
-  const handleNext = () => {
-    setCurrentIndex((prev) => (prev < maxIndex ? prev + 1 : 0));
-  };
-
-  const handleTouchStart = (e: React.TouchEvent) => {
-    setTouchStartX(e.touches[0].clientX);
-  };
-
+  const handleTouchStart = (e: React.TouchEvent) => setTouchStartX(e.touches[0].clientX);
   const handleTouchEnd = (e: React.TouchEvent) => {
     if (touchStartX === null) return;
     const diff = e.changedTouches[0].clientX - touchStartX;
-    if (diff > 50) {
-      handlePrev();
-    } else if (diff < -50) {
-      handleNext();
-    }
+    if (diff > 50) handlePrev();
+    else if (diff < -50) handleNext();
     setTouchStartX(null);
   };
 
@@ -133,39 +149,41 @@ export default function BestSellers() {
     }, 2200);
   };
 
+  const toStoreProduct = (product: BestSellerItem): Product => ({
+    id: product.id,
+    name: product.name,
+    price: product.price,
+    originalPrice: product.originalPrice,
+    status: "none",
+    image: product.image,
+    category: product.category,
+    description: product.description,
+  });
+
   const handleAddToCart = (product: BestSellerItem, e?: React.MouseEvent) => {
     if (e) {
       e.preventDefault();
       e.stopPropagation();
     }
-    const storeProduct: Product = {
-      id: product.id,
-      name: product.name,
-      price: product.price,
-      status: "none",
-      image: product.image,
-      category: product.category,
-      description: product.description,
-    };
-    addToCart(storeProduct, 1);
-    showToast(`Added to cart!`);
+    addToCart(toStoreProduct(product), 1);
+    showToast("Added to cart!");
   };
 
   const handleToggleWishlist = (product: BestSellerItem, e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
+    const wasLiked = isWishlisted(product.id);
     toggleWishlist(product.id);
-    const liked = isWishlisted(product.id);
-    showToast(liked ? "Removed from wishlist" : "Added to wishlist!");
+    showToast(wasLiked ? "Removed from wishlist" : "Added to wishlist!");
   };
 
   const handleCompare = (product: BestSellerItem, e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
-    showToast(`Added to compare list!`);
+    addToCompare(toStoreProduct(product));
+    showToast("Added to compare!");
   };
 
-  // Helper to render individual product card matching reference screenshot
   const renderProductCard = (product: BestSellerItem) => {
     const liked = isWishlisted(product.id);
 
@@ -174,20 +192,18 @@ export default function BestSellers() {
         key={product.id}
         className="group relative flex flex-col justify-between bg-white h-full transition-all duration-200 select-none"
       >
-        {/* 1. Image Stage with Hover Overlay: Top-Right Icons + Bottom Red Button */}
         <div className="relative w-full h-[180px] sm:h-[190px] flex items-center justify-center p-2 mb-2 bg-white overflow-hidden">
-          {/* Product Image */}
-          <Image
-            src={product.image}
-            alt={product.name}
-            width={180}
-            height={180}
-            className="max-h-[165px] w-auto object-contain transition-transform duration-300 group-hover:scale-105"
-          />
+          <Link href={`/product/${product.id}`} className="flex items-center justify-center w-full h-full">
+            <Image
+              src={product.image}
+              alt={product.name}
+              width={180}
+              height={180}
+              className="max-h-[165px] w-auto object-contain transition-transform duration-300 group-hover:scale-105"
+            />
+          </Link>
 
-          {/* Top-Right Vertical Stack of 3 Round Action Buttons on Hover */}
           <div className="absolute top-2 right-2 flex flex-col gap-1.5 opacity-0 translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-200 z-20">
-            {/* Quick View Button */}
             <button
               type="button"
               onClick={(e) => {
@@ -202,23 +218,18 @@ export default function BestSellers() {
               <Eye className="w-3.5 h-3.5 stroke-[1.8]" />
             </button>
 
-            {/* Wishlist Button */}
             <button
               type="button"
               onClick={(e) => handleToggleWishlist(product, e)}
               className={`w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-white shadow-md border border-gray-100 flex items-center justify-center transition-colors cursor-pointer ${
-                liked ? "text-red-500" : "text-gray-700 hover:text-[#0ea57a]"
+                liked ? "text-rose-500" : "text-gray-700 hover:text-[#0ea57a]"
               }`}
               title="Wishlist"
               aria-label="Wishlist"
             >
-              <Heart
-                className="w-3.5 h-3.5 stroke-[1.8]"
-                fill={liked ? "currentColor" : "none"}
-              />
+              <Heart className="w-3.5 h-3.5 stroke-[1.8]" fill={liked ? "currentColor" : "none"} />
             </button>
 
-            {/* Compare Button */}
             <button
               type="button"
               onClick={(e) => handleCompare(product, e)}
@@ -230,7 +241,6 @@ export default function BestSellers() {
             </button>
           </div>
 
-          {/* Bottom Full-Width Red "Add to cart" Button on Hover */}
           <div className="absolute bottom-1 inset-x-2 opacity-0 translate-y-2 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-200 z-20">
             <button
               type="button"
@@ -242,32 +252,28 @@ export default function BestSellers() {
           </div>
         </div>
 
-        {/* 2. Text Details: Category, Title, Price */}
         <div className="flex flex-col flex-1 justify-between">
           <div>
-            {/* Category */}
-            <span className="text-[11px] text-[#73787d] font-normal leading-tight mb-1 block truncate">
+            <span className="text-[11px] text-[#64748b] font-normal leading-tight mb-1 block truncate">
               {product.category}
             </span>
 
-            {/* Product Title */}
             <Link
               href={`/product/${product.id}`}
-              className="text-[12px] sm:text-[13px] font-medium text-[#0ea57a] leading-[1.3] line-clamp-2 hover:underline mb-1.5 transition-colors block"
+              className="text-[12px] sm:text-[13px] font-medium text-[#171145] hover:text-[#0ea57a] leading-[1.3] line-clamp-2 hover:underline mb-1.5 transition-colors block"
               title={product.name}
             >
               {product.name}
             </Link>
           </div>
 
-          {/* Price Row */}
-          <div className="flex items-baseline gap-1.5 mt-1">
-            <span className="text-[14px] sm:text-[15px] font-bold text-[#22262a]">
-              ${product.price.toFixed(2)}
+          <div className="flex items-baseline gap-1.5 mt-1 flex-wrap">
+            <span className="text-[14px] sm:text-[15px] font-bold text-[#0ea57a]">
+              {formatPrice(product.price)}
             </span>
-            {product.originalPrice && (
+            {product.originalPrice && product.originalPrice > product.price && (
               <span className="text-[11px] sm:text-[12px] text-[#888888] line-through font-normal">
-                ${product.originalPrice.toFixed(2)}
+                {formatPrice(product.originalPrice)}
               </span>
             )}
           </div>
@@ -278,27 +284,24 @@ export default function BestSellers() {
 
   return (
     <section className="w-full bg-white py-8 sm:py-10 select-none overflow-hidden">
-      {/* Toast Notification */}
       {toastMessage && (
-        <div className="fixed bottom-6 right-6 z-50 bg-[#171145] text-white px-4 py-2 rounded-lg shadow-xl text-xs sm:text-sm flex items-center gap-2 animate-bounce">
+        <div className="fixed bottom-6 right-6 z-50 bg-[#171145] text-white px-4 py-2.5 rounded-lg shadow-xl text-xs sm:text-sm flex items-center gap-2">
           <Check className="w-4 h-4 text-emerald-400" />
           <span>{toastMessage}</span>
         </div>
       )}
 
       <div className="max-w-[1440px] mx-auto px-6 lg:px-12">
-        {/* Section Header: Title on left, Carousel controls on right (clean white space underneath matching screenshot) */}
         <div className="flex items-center justify-between pb-1 mb-6">
           <h2 className="text-xl sm:text-2xl font-bold text-[#171145] tracking-tight">
             Best Sellers
           </h2>
 
-          {/* Interactive Slider Navigation Arrows */}
           <div className="flex items-center gap-2">
             <button
               type="button"
               onClick={handlePrev}
-              className="p-1.5 text-gray-400 hover:text-[#171145] transition-colors cursor-pointer select-none active:scale-90"
+              className="p-1.5 text-gray-500 hover:text-[#171145] transition-colors cursor-pointer select-none"
               aria-label="Previous Best Sellers"
             >
               <ChevronLeft className="w-4 h-4 stroke-[2]" />
@@ -306,7 +309,7 @@ export default function BestSellers() {
             <button
               type="button"
               onClick={handleNext}
-              className="p-1.5 text-gray-400 hover:text-[#171145] transition-colors cursor-pointer select-none active:scale-90"
+              className="p-1.5 text-gray-500 hover:text-[#171145] transition-colors cursor-pointer select-none"
               aria-label="Next Best Sellers"
             >
               <ChevronRight className="w-4 h-4 stroke-[2]" />
@@ -314,27 +317,22 @@ export default function BestSellers() {
           </div>
         </div>
 
-        {/* 2-Column Section Layout: Left Dell G5 Banner + Right Product Carousel */}
         <div className="flex flex-col lg:flex-row gap-6 lg:gap-8 items-start">
-          
-          {/* Left: Dell G5 Featured Promo Banner */}
+          {/* Left: Featured Promo Banner */}
           <Link
-            href="/shop?cat=Laptop+%26+Tablet"
+            href="/product/hero-dell-g5"
             className="w-full lg:w-[350px] xl:w-[370px] shrink-0 h-[285px] sm:h-[295px] relative rounded-[6px] border border-gray-200/70 overflow-hidden bg-cover bg-center p-6 sm:p-7 group transition-shadow duration-300 hover:shadow-md cursor-pointer block"
             style={{
               backgroundImage: "url('/images/bg2-home04.webp')",
               backgroundColor: "#f7f8fa",
             }}
           >
-            {/* Banner Typography */}
             <div className="relative z-10">
-              <span className="text-[13px] text-[#73787d] font-normal block mb-1">
-                Price
+              <span className="text-[13px] text-[#64748b] font-normal block mb-1">Price</span>
+              <span className="text-[28px] sm:text-[32px] font-extrabold text-[#0ea57a] leading-none block mb-3.5 tracking-tight">
+                {formatPrice(bannerPrice)}
               </span>
-              <span className="text-[36px] sm:text-[40px] font-bold text-[#0ea57a] leading-none block mb-3.5 tracking-tight">
-                $450
-              </span>
-              <span className="text-[13px] text-[#555a60] font-normal block mb-1">
+              <span className="text-[13px] text-[#475569] font-normal block mb-1">
                 Let power flow through you
               </span>
               <h3 className="text-[20px] sm:text-[22px] font-bold text-[#171145] leading-[1.2] block max-w-[190px]">
@@ -342,7 +340,6 @@ export default function BestSellers() {
               </h3>
             </div>
 
-            {/* Laptop Cutout Image positioned exactly at bottom-right */}
             <div className="absolute right-0 bottom-0 w-[235px] sm:w-[255px] pointer-events-none flex items-end justify-end">
               <Image
                 src="/images/dell-g5-banner-tight.png"
@@ -354,7 +351,7 @@ export default function BestSellers() {
             </div>
           </Link>
 
-          {/* Right: 3-Product Carousel Slider Track */}
+          {/* Right: Carousel Slider Track */}
           <div
             className="flex-1 min-w-0 relative overflow-hidden"
             onTouchStart={handleTouchStart}
@@ -363,24 +360,21 @@ export default function BestSellers() {
             <div
               className="flex transition-transform duration-500 ease-in-out"
               style={{
-                width: `${(BEST_SELLER_ITEMS.length / visibleColumns) * 100}%`,
-                transform: `translateX(-${currentIndex * (100 / BEST_SELLER_ITEMS.length)}%)`,
+                width: `${(items.length / visibleColumns) * 100}%`,
+                transform: `translateX(-${currentIndex * (100 / items.length)}%)`,
               }}
             >
-              {BEST_SELLER_ITEMS.map((product) => (
+              {items.map((product) => (
                 <div
                   key={product.id}
                   className="shrink-0 px-2.5 sm:px-3 flex flex-col justify-between"
-                  style={{
-                    width: `${100 / BEST_SELLER_ITEMS.length}%`,
-                  }}
+                  style={{ width: `${100 / items.length}%` }}
                 >
                   {renderProductCard(product)}
                 </div>
               ))}
             </div>
           </div>
-
         </div>
       </div>
 
@@ -391,10 +385,9 @@ export default function BestSellers() {
           onClick={() => setQuickViewProduct(null)}
         >
           <div
-            className="relative w-full max-w-2xl bg-white rounded-xl shadow-2xl p-6 sm:p-8 overflow-hidden animate-in fade-in zoom-in-95 duration-200"
+            className="relative w-full max-w-2xl bg-white rounded-xl shadow-2xl p-6 sm:p-8 overflow-hidden"
             onClick={(e) => e.stopPropagation()}
           >
-            {/* Close Button */}
             <button
               type="button"
               onClick={() => setQuickViewProduct(null)}
@@ -405,7 +398,6 @@ export default function BestSellers() {
             </button>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 sm:gap-8 items-center">
-              {/* Product Image Stage */}
               <div className="w-full h-[240px] sm:h-[280px] bg-[#f8f9fa] rounded-lg p-4 flex items-center justify-center">
                 <Image
                   src={quickViewProduct.image}
@@ -416,7 +408,6 @@ export default function BestSellers() {
                 />
               </div>
 
-              {/* Product Info */}
               <div className="flex flex-col justify-between">
                 <div>
                   <span className="text-xs text-[#0ea57a] font-semibold uppercase tracking-wider block mb-1">
@@ -426,12 +417,12 @@ export default function BestSellers() {
                     {quickViewProduct.name}
                   </h3>
                   <div className="flex items-baseline gap-2 mb-4">
-                    <span className="text-2xl font-bold text-[#22262a]">
-                      ${quickViewProduct.price.toFixed(2)}
+                    <span className="text-2xl font-bold text-[#0ea57a]">
+                      {formatPrice(quickViewProduct.price)}
                     </span>
-                    {quickViewProduct.originalPrice && (
+                    {quickViewProduct.originalPrice && quickViewProduct.originalPrice > quickViewProduct.price && (
                       <span className="text-sm text-gray-400 line-through">
-                        ${quickViewProduct.originalPrice.toFixed(2)}
+                        {formatPrice(quickViewProduct.originalPrice)}
                       </span>
                     )}
                   </div>
@@ -456,7 +447,7 @@ export default function BestSellers() {
                   <button
                     type="button"
                     onClick={(e) => handleToggleWishlist(quickViewProduct, e)}
-                    className="p-2.5 rounded-[4px] border border-gray-200 hover:border-red-400 text-gray-600 hover:text-red-500 transition-colors cursor-pointer"
+                    className="p-2.5 rounded-[4px] border border-gray-200 hover:border-rose-400 text-gray-600 hover:text-rose-500 transition-colors cursor-pointer"
                     title="Wishlist"
                   >
                     <Heart

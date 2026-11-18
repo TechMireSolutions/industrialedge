@@ -4,25 +4,25 @@ import { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import {
-  SlidersHorizontal,
   Save,
   CheckCircle2,
-  RefreshCw,
   Eye,
-  ExternalLink,
   Laptop,
   Tv,
   Camera,
-  Megaphone,
+  Upload,
+  Loader2,
 } from "lucide-react";
 import { api, type BannerSettings } from "@/lib/api";
+import { formatPrice } from "@/lib/currency";
 
 export default function AdminBannersPage() {
   const [banners, setBanners] = useState<BannerSettings | null>(null);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
+  const [uploadingField, setUploadingField] = useState<string | null>(null);
   const [toast, setToast] = useState<string | null>(null);
-  const [activeTab, setActiveTab] = useState<"hero" | "gameconsole" | "dual" | "announcement">("hero");
+  const [activeTab, setActiveTab] = useState<"hero" | "gameconsole" | "dual">("hero");
 
   const showToast = (msg: string) => {
     setToast(msg);
@@ -62,6 +62,25 @@ export default function AdminBannersPage() {
     }
   };
 
+  const handleBannerImageUpload = async (
+    fieldKey: string,
+    file: File | undefined,
+    onSuccess: (url: string) => void
+  ) => {
+    if (!file) return;
+    try {
+      setUploadingField(fieldKey);
+      const url = await api.uploadImage(file);
+      onSuccess(url);
+      showToast("Banner image uploaded! Click Save All Banners to publish.");
+    } catch (err) {
+      console.error(err);
+      showToast(err instanceof Error ? err.message : "Image upload failed.");
+    } finally {
+      setUploadingField(null);
+    }
+  };
+
   if (loading || !banners) {
     return (
       <div className="flex flex-col items-center justify-center min-h-[400px]">
@@ -75,7 +94,10 @@ export default function AdminBannersPage() {
     <div className="space-y-6">
       {/* Toast Alert */}
       {toast && (
-        <div className="fixed top-20 right-6 z-50 bg-[#0f172a] text-white px-4 py-2.5 rounded-lg shadow-xl text-sm flex items-center gap-2 border border-slate-700 animate-bounce">
+        <div
+          role="status"
+          className="fixed top-20 right-6 z-50 bg-[#0f172a] text-white px-4 py-2.5 rounded-lg shadow-xl text-sm flex items-center gap-2 border border-slate-700 transition-all duration-200"
+        >
           <CheckCircle2 className="w-4 h-4 text-emerald-400" />
           <span>{toast}</span>
         </div>
@@ -88,7 +110,7 @@ export default function AdminBannersPage() {
             Start-to-End Banners Customizer
           </h1>
           <p className="text-xs sm:text-sm text-slate-500 mt-1">
-            Change every visual banner, hero showcase, pricing tag, and headline across the store from start dot to end dot.
+            Change every visual banner, hero showcase, PKR pricing tag, and headline across the store.
           </p>
         </div>
 
@@ -105,7 +127,7 @@ export default function AdminBannersPage() {
           <button
             onClick={() => handleSaveAll()}
             disabled={saving}
-            className="inline-flex items-center gap-1.5 px-5 py-2 text-xs font-semibold text-white bg-[#f97316] hover:bg-[#ea580c] rounded-lg shadow-sm shadow-orange-500/20 transition-all hover:translate-y-[-1px]"
+            className="inline-flex items-center gap-1.5 px-5 py-2 text-xs font-semibold text-white bg-[#f97316] hover:bg-[#ea580c] disabled:opacity-60 rounded-lg shadow-sm shadow-orange-500/20 transition-colors cursor-pointer"
           >
             <Save className="w-3.5 h-3.5" />
             <span>{saving ? "Saving Changes..." : "Save All Banners"}</span>
@@ -117,7 +139,7 @@ export default function AdminBannersPage() {
       <div className="flex flex-wrap gap-2 bg-white p-2 rounded-xl border border-slate-200/80 shadow-xs">
         <button
           onClick={() => setActiveTab("hero")}
-          className={`flex items-center gap-2 px-4 py-2.5 rounded-lg text-xs font-bold transition-all ${
+          className={`flex items-center gap-2 px-4 py-2.5 rounded-lg text-xs font-bold transition-colors cursor-pointer ${
             activeTab === "hero"
               ? "bg-[#0f172a] text-white shadow-xs"
               : "text-slate-600 hover:bg-slate-100"
@@ -129,7 +151,7 @@ export default function AdminBannersPage() {
 
         <button
           onClick={() => setActiveTab("gameconsole")}
-          className={`flex items-center gap-2 px-4 py-2.5 rounded-lg text-xs font-bold transition-all ${
+          className={`flex items-center gap-2 px-4 py-2.5 rounded-lg text-xs font-bold transition-colors cursor-pointer ${
             activeTab === "gameconsole"
               ? "bg-[#0f172a] text-white shadow-xs"
               : "text-slate-600 hover:bg-slate-100"
@@ -141,7 +163,7 @@ export default function AdminBannersPage() {
 
         <button
           onClick={() => setActiveTab("dual")}
-          className={`flex items-center gap-2 px-4 py-2.5 rounded-lg text-xs font-bold transition-all ${
+          className={`flex items-center gap-2 px-4 py-2.5 rounded-lg text-xs font-bold transition-colors cursor-pointer ${
             activeTab === "dual"
               ? "bg-[#0f172a] text-white shadow-xs"
               : "text-slate-600 hover:bg-slate-100"
@@ -216,10 +238,11 @@ export default function AdminBannersPage() {
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
                 <label className="block text-xs font-semibold text-slate-700 mb-1">
-                  Promotional Price ($)
+                  Promotional Price (Rs. PKR)
                 </label>
                 <input
                   type="number"
+                  step="1"
                   value={banners.hero.price}
                   onChange={(e) =>
                     setBanners({
@@ -253,34 +276,82 @@ export default function AdminBannersPage() {
               <label className="block text-xs font-semibold text-slate-700 mb-1">
                 Featured Product Image URL (Transparent PNG)
               </label>
-              <input
-                type="text"
-                value={banners.hero.image}
-                onChange={(e) =>
-                  setBanners({
-                    ...banners,
-                    hero: { ...banners.hero, image: e.target.value },
-                  })
-                }
-                className="w-full px-3 py-2 text-xs border border-slate-200 rounded-lg focus:outline-none focus:border-orange-500"
-              />
+              <div className="flex gap-2">
+                <input
+                  type="text"
+                  value={banners.hero.image}
+                  onChange={(e) =>
+                    setBanners({
+                      ...banners,
+                      hero: { ...banners.hero, image: e.target.value },
+                    })
+                  }
+                  className="flex-1 px-3 py-2 text-xs border border-slate-200 rounded-lg focus:outline-none focus:border-orange-500"
+                />
+                <label className="inline-flex items-center gap-1.5 px-3 py-2 text-xs font-semibold text-slate-700 bg-slate-100 hover:bg-slate-200 rounded-lg transition-colors cursor-pointer shrink-0">
+                  {uploadingField === "hero.image" ? (
+                    <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                  ) : (
+                    <Upload className="w-3.5 h-3.5" />
+                  )}
+                  <span>Upload</span>
+                  <input
+                    type="file"
+                    accept="image/*"
+                    className="hidden"
+                    onChange={(e) => {
+                      const f = e.target.files?.[0];
+                      e.target.value = "";
+                      handleBannerImageUpload("hero.image", f, (url) =>
+                        setBanners((prev) =>
+                          prev ? { ...prev, hero: { ...prev.hero, image: url } } : prev
+                        )
+                      );
+                    }}
+                  />
+                </label>
+              </div>
             </div>
 
             <div>
               <label className="block text-xs font-semibold text-slate-700 mb-1">
                 Background Texture Image URL
               </label>
-              <input
-                type="text"
-                value={banners.hero.backgroundImage}
-                onChange={(e) =>
-                  setBanners({
-                    ...banners,
-                    hero: { ...banners.hero, backgroundImage: e.target.value },
-                  })
-                }
-                className="w-full px-3 py-2 text-xs border border-slate-200 rounded-lg focus:outline-none focus:border-orange-500"
-              />
+              <div className="flex gap-2">
+                <input
+                  type="text"
+                  value={banners.hero.backgroundImage}
+                  onChange={(e) =>
+                    setBanners({
+                      ...banners,
+                      hero: { ...banners.hero, backgroundImage: e.target.value },
+                    })
+                  }
+                  className="flex-1 px-3 py-2 text-xs border border-slate-200 rounded-lg focus:outline-none focus:border-orange-500"
+                />
+                <label className="inline-flex items-center gap-1.5 px-3 py-2 text-xs font-semibold text-slate-700 bg-slate-100 hover:bg-slate-200 rounded-lg transition-colors cursor-pointer shrink-0">
+                  {uploadingField === "hero.bg" ? (
+                    <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                  ) : (
+                    <Upload className="w-3.5 h-3.5" />
+                  )}
+                  <span>Upload</span>
+                  <input
+                    type="file"
+                    accept="image/*"
+                    className="hidden"
+                    onChange={(e) => {
+                      const f = e.target.files?.[0];
+                      e.target.value = "";
+                      handleBannerImageUpload("hero.bg", f, (url) =>
+                        setBanners((prev) =>
+                          prev ? { ...prev, hero: { ...prev.hero, backgroundImage: url } } : prev
+                        )
+                      );
+                    }}
+                  />
+                </label>
+              </div>
             </div>
           </div>
 
@@ -307,8 +378,8 @@ export default function AdminBannersPage() {
                   />
                 </div>
 
-                <div className="text-3xl font-extrabold text-[#0ea57a] mb-1">
-                  ${banners.hero.price}
+                <div className="text-2xl font-extrabold text-[#0ea57a] mb-1">
+                  {formatPrice(banners.hero.price)}
                 </div>
                 <div className="text-xs text-slate-500 mb-2">{banners.hero.subtitle}</div>
                 <div className="text-lg font-bold text-[#171145] uppercase leading-tight">
@@ -318,7 +389,7 @@ export default function AdminBannersPage() {
             </div>
 
             <div className="mt-4 pt-4 border-t border-slate-800 text-xs text-slate-400">
-              When you click <strong className="text-white">Save All Banners</strong>, this exact layout and price updates immediately across all user screens!
+              When you click <strong className="text-white">Save All Banners</strong>, this exact layout and PKR price updates immediately across all user screens.
             </div>
           </div>
         </div>
@@ -354,7 +425,7 @@ export default function AdminBannersPage() {
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
               <div>
                 <label className="block text-xs font-semibold text-slate-700 mb-1">
-                  Strike Old Price
+                  Strike Old Price (e.g. Rs. 99,000)
                 </label>
                 <input
                   type="text"
@@ -374,7 +445,7 @@ export default function AdminBannersPage() {
 
               <div>
                 <label className="block text-xs font-semibold text-slate-700 mb-1">
-                  Yellow Highlight Price
+                  Highlight Price (e.g. Rs. 79,900)
                 </label>
                 <input
                   type="text"
@@ -459,20 +530,46 @@ export default function AdminBannersPage() {
               <label className="block text-xs font-semibold text-slate-700 mb-1">
                 TV Screen Image URL
               </label>
-              <input
-                type="text"
-                value={banners.gameConsoleBanner.image}
-                onChange={(e) =>
-                  setBanners({
-                    ...banners,
-                    gameConsoleBanner: {
-                      ...banners.gameConsoleBanner,
-                      image: e.target.value,
-                    },
-                  })
-                }
-                className="w-full px-3 py-2 text-xs border border-slate-200 rounded-lg focus:outline-none focus:border-orange-500"
-              />
+              <div className="flex gap-2">
+                <input
+                  type="text"
+                  value={banners.gameConsoleBanner.image}
+                  onChange={(e) =>
+                    setBanners({
+                      ...banners,
+                      gameConsoleBanner: {
+                        ...banners.gameConsoleBanner,
+                        image: e.target.value,
+                      },
+                    })
+                  }
+                  className="flex-1 px-3 py-2 text-xs border border-slate-200 rounded-lg focus:outline-none focus:border-orange-500"
+                />
+                <label className="inline-flex items-center gap-1.5 px-3 py-2 text-xs font-semibold text-slate-700 bg-slate-100 hover:bg-slate-200 rounded-lg transition-colors cursor-pointer shrink-0">
+                  {uploadingField === "gc.image" ? (
+                    <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                  ) : (
+                    <Upload className="w-3.5 h-3.5" />
+                  )}
+                  <span>Upload</span>
+                  <input
+                    type="file"
+                    accept="image/*"
+                    className="hidden"
+                    onChange={(e) => {
+                      const f = e.target.files?.[0];
+                      e.target.value = "";
+                      handleBannerImageUpload("gc.image", f, (url) =>
+                        setBanners((prev) =>
+                          prev
+                            ? { ...prev, gameConsoleBanner: { ...prev.gameConsoleBanner, image: url } }
+                            : prev
+                        )
+                      );
+                    }}
+                  />
+                </label>
+              </div>
             </div>
           </div>
 
@@ -509,7 +606,7 @@ export default function AdminBannersPage() {
                   <div className="text-xs text-zinc-400 line-through">
                     {banners.gameConsoleBanner.originalPrice}
                   </div>
-                  <div className="text-2xl font-black text-[#ffdc00]">
+                  <div className="text-xl font-black text-[#ffdc00]">
                     {banners.gameConsoleBanner.currentPrice}
                   </div>
                 </div>
@@ -517,7 +614,7 @@ export default function AdminBannersPage() {
             </div>
 
             <div className="mt-4 pt-4 border-t border-zinc-800 text-xs text-zinc-400">
-              Matches Section 4 on the homepage with high contrast neon framing.
+              Matches Section 4 on the homepage with high contrast framing.
             </div>
           </div>
         </div>
@@ -535,7 +632,7 @@ export default function AdminBannersPage() {
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
                 <label className="block text-xs font-semibold text-slate-700 mb-1">
-                  Badge Text (e.g. SAVE $80.00)
+                  Badge Text (e.g. SAVE Rs. 22,400)
                 </label>
                 <input
                   type="text"
@@ -599,40 +696,90 @@ export default function AdminBannersPage() {
                 <label className="block text-xs font-semibold text-slate-700 mb-1">
                   Camera Body Image URL
                 </label>
-                <input
-                  type="text"
-                  value={banners.dualPromoBanner.image1}
-                  onChange={(e) =>
-                    setBanners({
-                      ...banners,
-                      dualPromoBanner: {
-                        ...banners.dualPromoBanner,
-                        image1: e.target.value,
-                      },
-                    })
-                  }
-                  className="w-full px-3 py-2 text-xs border border-slate-200 rounded-lg focus:outline-none focus:border-orange-500"
-                />
+                <div className="flex gap-1.5">
+                  <input
+                    type="text"
+                    value={banners.dualPromoBanner.image1}
+                    onChange={(e) =>
+                      setBanners({
+                        ...banners,
+                        dualPromoBanner: {
+                          ...banners.dualPromoBanner,
+                          image1: e.target.value,
+                        },
+                      })
+                    }
+                    className="flex-1 min-w-0 px-3 py-2 text-xs border border-slate-200 rounded-lg focus:outline-none focus:border-orange-500"
+                  />
+                  <label className="inline-flex items-center px-2.5 py-2 text-xs font-semibold text-slate-700 bg-slate-100 hover:bg-slate-200 rounded-lg transition-colors cursor-pointer shrink-0">
+                    {uploadingField === "dual.img1" ? (
+                      <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                    ) : (
+                      <Upload className="w-3.5 h-3.5" />
+                    )}
+                    <input
+                      type="file"
+                      accept="image/*"
+                      className="hidden"
+                      onChange={(e) => {
+                        const f = e.target.files?.[0];
+                        e.target.value = "";
+                        handleBannerImageUpload("dual.img1", f, (url) =>
+                          setBanners((prev) =>
+                            prev
+                              ? { ...prev, dualPromoBanner: { ...prev.dualPromoBanner, image1: url } }
+                              : prev
+                          )
+                        );
+                      }}
+                    />
+                  </label>
+                </div>
               </div>
 
               <div>
                 <label className="block text-xs font-semibold text-slate-700 mb-1">
                   Camera Lens Image URL
                 </label>
-                <input
-                  type="text"
-                  value={banners.dualPromoBanner.image2}
-                  onChange={(e) =>
-                    setBanners({
-                      ...banners,
-                      dualPromoBanner: {
-                        ...banners.dualPromoBanner,
-                        image2: e.target.value,
-                      },
-                    })
-                  }
-                  className="w-full px-3 py-2 text-xs border border-slate-200 rounded-lg focus:outline-none focus:border-orange-500"
-                />
+                <div className="flex gap-1.5">
+                  <input
+                    type="text"
+                    value={banners.dualPromoBanner.image2}
+                    onChange={(e) =>
+                      setBanners({
+                        ...banners,
+                        dualPromoBanner: {
+                          ...banners.dualPromoBanner,
+                          image2: e.target.value,
+                        },
+                      })
+                    }
+                    className="flex-1 min-w-0 px-3 py-2 text-xs border border-slate-200 rounded-lg focus:outline-none focus:border-orange-500"
+                  />
+                  <label className="inline-flex items-center px-2.5 py-2 text-xs font-semibold text-slate-700 bg-slate-100 hover:bg-slate-200 rounded-lg transition-colors cursor-pointer shrink-0">
+                    {uploadingField === "dual.img2" ? (
+                      <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                    ) : (
+                      <Upload className="w-3.5 h-3.5" />
+                    )}
+                    <input
+                      type="file"
+                      accept="image/*"
+                      className="hidden"
+                      onChange={(e) => {
+                        const f = e.target.files?.[0];
+                        e.target.value = "";
+                        handleBannerImageUpload("dual.img2", f, (url) =>
+                          setBanners((prev) =>
+                            prev
+                              ? { ...prev, dualPromoBanner: { ...prev.dualPromoBanner, image2: url } }
+                              : prev
+                          )
+                        );
+                      }}
+                    />
+                  </label>
+                </div>
               </div>
             </div>
           </div>
