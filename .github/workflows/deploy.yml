@@ -43,9 +43,9 @@ jobs:
             # 6. Dependencies install aur Next.js production build run karein
             npm install
             chmod -R +x node_modules/.bin frontend/node_modules/.bin backend/node_modules/.bin 2>/dev/null || true
-            CI=true npm run build
+            NEXT_TELEMETRY_DISABLED=1 npm run build
 
-            # 7. PM2 backend aur frontend processes restart karein
-            pm2 restart industrialv2-backend
-            pm2 restart industrialv2-frontend
+            # 7. PM2 backend aur frontend processes restart ya start karein
+            pm2 restart industrialv2-backend || pm2 start backend/server.js --name industrialv2-backend
+            pm2 restart industrialv2-frontend || pm2 start "npm run start --prefix frontend" --name industrialv2-frontend
             pm2 save
