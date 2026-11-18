@@ -102,7 +102,7 @@ function CheckoutContent() {
           setCurrentStep(3);
         }
       })
-      .catch(() => {});
+      .catch(() => { });
   }, [orderParam]);
 
   // Pre-fill billing form from logged-in customer or saved address
@@ -124,7 +124,7 @@ function CheckoutContent() {
         zipCode: prev.zipCode || saved?.zipCode || "",
         country: saved?.country || prev.country,
       }));
-    } catch {}
+    } catch { }
   }, [customerUser]);
 
   const qualifiesForFreeShipping = cartTotal >= freeShippingThreshold;
@@ -191,8 +191,8 @@ function CheckoutContent() {
         paymentMethod === "bacs"
           ? "Direct Bank Transfer (BACS)"
           : paymentMethod === "cheque"
-          ? "Check Payment"
-          : "Cash on Delivery";
+            ? "Check Payment"
+            : "Cash on Delivery";
 
       const orderPayload: Partial<OrderItem> = {
         customer: {
@@ -207,15 +207,15 @@ function CheckoutContent() {
         },
         ...(shipToDifferentAddress
           ? {
-              shippingAddress: {
-                name: `${formData.diffFirstName} ${formData.diffLastName}`.trim(),
-                address: [formData.diffAddress1, formData.diffAddress2].filter(Boolean).join(", "),
-                city: formData.diffCity.trim(),
-                state: formData.diffState,
-                zip: formData.diffZip.trim(),
-                country: formData.diffCountry,
-              },
-            }
+            shippingAddress: {
+              name: `${formData.diffFirstName} ${formData.diffLastName}`.trim(),
+              address: [formData.diffAddress1, formData.diffAddress2].filter(Boolean).join(", "),
+              city: formData.diffCity.trim(),
+              state: formData.diffState,
+              zip: formData.diffZip.trim(),
+              country: formData.diffCountry,
+            },
+          }
           : {}),
         items: cart.map((item) => ({
           id: item.id,
@@ -252,7 +252,7 @@ function CheckoutContent() {
             country: formData.country,
           })
         );
-      } catch {}
+      } catch { }
 
       setCompletedOrder(created);
       clearCart();
@@ -296,17 +296,15 @@ function CheckoutContent() {
             <div className="relative flex-1 flex flex-col items-center z-10">
               <div className="absolute top-4 sm:top-5 left-0 right-1/2 h-[2px] sm:h-[2.5px] bg-[#0ea57a] -z-10" />
               <div
-                className={`absolute top-4 sm:top-5 left-1/2 right-0 h-[2px] sm:h-[2.5px] -z-10 ${
-                  currentStep === 3 ? "bg-[#0ea57a]" : "bg-[#e4e4e7]"
-                }`}
+                className={`absolute top-4 sm:top-5 left-1/2 right-0 h-[2px] sm:h-[2.5px] -z-10 ${currentStep === 3 ? "bg-[#0ea57a]" : "bg-[#e4e4e7]"
+                  }`}
               />
               <div className="w-8 h-8 sm:w-11 sm:h-11 rounded-full bg-[#0ea57a] text-white flex items-center justify-center shadow-sm ring-2 sm:ring-4 ring-white">
                 <Truck className="w-3.5 h-3.5 sm:w-[19px] sm:h-[19px]" strokeWidth={2} />
               </div>
               <span
-                className={`mt-1.5 sm:mt-2.5 text-[11px] sm:text-[14px] text-center ${
-                  currentStep === 2 ? "font-semibold text-[#171145]" : "font-medium text-[#64748b]"
-                }`}
+                className={`mt-1.5 sm:mt-2.5 text-[11px] sm:text-[14px] text-center ${currentStep === 2 ? "font-semibold text-[#171145]" : "font-medium text-[#64748b]"
+                  }`}
               >
                 Shipping &amp; Checkout
               </span>
@@ -314,28 +312,24 @@ function CheckoutContent() {
 
             <div className="relative flex-1 flex flex-col items-center z-10">
               <div
-                className={`absolute top-4 sm:top-5 left-0 right-1/2 h-[2px] sm:h-[2.5px] -z-10 ${
-                  currentStep === 3 ? "bg-[#0ea57a]" : "bg-[#e4e4e7]"
-                }`}
+                className={`absolute top-4 sm:top-5 left-0 right-1/2 h-[2px] sm:h-[2.5px] -z-10 ${currentStep === 3 ? "bg-[#0ea57a]" : "bg-[#e4e4e7]"
+                  }`}
               />
               <div
-                className={`absolute top-4 sm:top-5 left-1/2 right-0 h-[2px] sm:h-[2.5px] -z-10 ${
-                  currentStep === 3 ? "bg-[#0ea57a]" : "bg-[#e4e4e7]"
-                }`}
+                className={`absolute top-4 sm:top-5 left-1/2 right-0 h-[2px] sm:h-[2.5px] -z-10 ${currentStep === 3 ? "bg-[#0ea57a]" : "bg-[#e4e4e7]"
+                  }`}
               />
               <div
-                className={`w-8 h-8 sm:w-11 sm:h-11 rounded-full flex items-center justify-center ring-2 sm:ring-4 ring-white ${
-                  currentStep === 3
+                className={`w-8 h-8 sm:w-11 sm:h-11 rounded-full flex items-center justify-center ring-2 sm:ring-4 ring-white ${currentStep === 3
                     ? "bg-[#0ea57a] text-white shadow-sm"
                     : "bg-[#f4f4f5] text-[#94a3b8] border border-[#e4e4e7]"
-                }`}
+                  }`}
               >
                 <CheckCircle2 className="w-3.5 h-3.5 sm:w-[19px] sm:h-[19px]" strokeWidth={2} />
               </div>
               <span
-                className={`mt-1.5 sm:mt-2.5 text-[11px] sm:text-[14px] text-center ${
-                  currentStep === 3 ? "font-semibold text-[#171145]" : "font-medium text-[#64748b]"
-                }`}
+                className={`mt-1.5 sm:mt-2.5 text-[11px] sm:text-[14px] text-center ${currentStep === 3 ? "font-semibold text-[#171145]" : "font-medium text-[#64748b]"
+                  }`}
               >
                 Confirmation
               </span>
@@ -929,11 +923,10 @@ function CheckoutContent() {
                           />
                         </label>
                         <label
-                          className={`flex items-center justify-end gap-2 text-[13.5px] ${
-                            qualifiesForFreeShipping
+                          className={`flex items-center justify-end gap-2 text-[13.5px] ${qualifiesForFreeShipping
                               ? "text-[#171145] cursor-pointer"
                               : "text-slate-400 cursor-not-allowed"
-                          }`}
+                            }`}
                         >
                           <span>Free shipping</span>
                           <input
