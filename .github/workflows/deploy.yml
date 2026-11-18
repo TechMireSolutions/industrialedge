@@ -21,26 +21,30 @@ jobs:
             cd /www/wwwroot/industrialedgev2.techmiresolutions.com
 
             # 1. Production .env files ka safety backup lein
-            cp .env /tmp/.env.prod.bak
-            cp backend/.env /tmp/backend.env.prod.bak
-            cp frontend/.env /tmp/frontend.env.prod.bak
+            cp .env /tmp/.env.prod.bak 2>/dev/null || true
+            cp backend/.env /tmp/backend.env.prod.bak 2>/dev/null || true
+            cp frontend/.env /tmp/frontend.env.prod.bak 2>/dev/null || true
 
-            # 2. Main branch ka latest code pull karein
+            # 2. Local changes reset karein taake '.env not uptodate' ka error na aye
+            git reset --hard
+            git clean -fd
+
+            # 3. Main branch ka latest code fetch aur checkout karein
             git fetch origin main
-            git checkout -f main
+            git checkout -B main origin/main
             git reset --hard origin/main
 
-            # 3. Production .env files wapas restore karein
-            cp /tmp/.env.prod.bak .env
-            cp /tmp/backend.env.prod.bak backend/.env
-            cp /tmp/frontend.env.prod.bak frontend/.env
+            # 4. Production .env files wapas restore karein
+            [ -f /tmp/.env.prod.bak ] && cp /tmp/.env.prod.bak .env
+            [ -f /tmp/backend.env.prod.bak ] && cp /tmp/backend.env.prod.bak backend/.env
+            [ -f /tmp/frontend.env.prod.bak ] && cp /tmp/frontend.env.prod.bak frontend/.env
 
-            # 4. Dependencies install aur Next.js production build run karein
+            # 5. Dependencies install aur Next.js production build run karein
             npm install
-            chmod -R +x node_modules/.bin frontend/node_modules/.bin backend/node_modules/.bin 2>/dev/null
+            chmod -R +x node_modules/.bin frontend/node_modules/.bin backend/node_modules/.bin 2>/dev/null || true
             CI=true npm run build
 
-            # 5. PM2 backend aur frontend processes restart karein
+            # 6. PM2 backend aur frontend processes restart karein
             pm2 restart industrialv2-backend
             pm2 restart industrialv2-frontend
             pm2 save
