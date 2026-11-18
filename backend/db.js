@@ -384,6 +384,147 @@ async function seedFromJson(collection, initialData) {
   }
 }
 
+// ─── One-Time Idempotent USD → PKR Migration for Existing MySQL Databases ────
+const USD_TO_PKR = 280;
+function convertUsdNumberToPkr(val) {
+  const num = Number(val);
+  if (!Number.isFinite(num) || num <= 0) return num;
+  if (num >= 5000) return Math.round(num); // Already in PKR
+  return Math.round((num * USD_TO_PKR) / 100) * 100;
+}
+
+async function migrateUsdToPkrIfNeeded() {
+  const settings = await mysqlRead("settings");
+  const banners = await mysqlRead("banners");
+  const needsMigration =
+    (settings && (settings.currencyCode !== "PKR" || settings.currency === "$")) ||
+    (banners && banners.hero && Number(banners.hero.price) > 0 && Number(banners.hero.price) < 5000);
+
+  if (!needsMigration) return;
+
+  console.log("💱 Migrating existing MySQL records from USD ($) to PKR (Rs.)...");
+
+  // 1. Settings
+  if (settings) {
+    const nextSettings = {
+      ...settings,
+      currency: "Rs.",
+      currencyCode: "PKR",
+      freeShippingThreshold:
+        !settings.freeShippingThreshold || settings.freeShippingThreshold < 5000
+          ? 25000
+          : settings.freeShippingThreshold,
+      flatShippingRate:
+        !settings.flatShippingRate || settings.flatShippingRate < 100
+          ? 500
+          : settings.flatShippingRate,
+      announcementBar: {
+        ...(settings.announcementBar || INITIAL_SETTINGS.announcementBar),
+        text:
+          !settings.announcementBar?.text || settings.announcementBar.text.includes("$")
+            ? INITIAL_SETTINGS.announcementBar.text
+            : settings.announcementBar.text,
+      },
+    };
+    await mysqlWrite("settings", nextSettings);
+  }
+
+  // 2. Banners
+  if (banners) {
+    const nextBanners = {
+      ...banners,
+      hero: banners.hero
+        ? {
+            ...banners.hero,
+            price: convertUsdNumberToPkr(banners.hero.price),
+          }
+        : INITIAL_BANNERS.hero,
+      heroSideProducts: Array.isArray(banners.heroSideProducts)
+        ? banners.heroSideProducts.map((item) => ({
+            ...item,
+            price: convertUsdNumberToPkr(item.price),
+          }))
+        : INITIAL_BANNERS.heroSideProducts,
+      gameConsoleBanner: banners.gameConsoleBanner
+        ? {
+            ...banners.gameConsoleBanner,
+            originalPrice: String(banners.gameConsoleBanner.originalPrice || "").includes("$")
+              ? INITIAL_BANNERS.gameConsoleBanner.originalPrice
+              : banners.gameConsoleBanner.originalPrice,
+            currentPrice: String(banners.gameConsoleBanner.currentPrice || "").includes("$")
+              ? INITIAL_BANNERS.gameConsoleBanner.currentPrice
+              : banners.gameConsoleBanner.currentPrice,
+            saleBadge: String(banners.gameConsoleBanner.originalPrice || "").includes("$")
+              ? INITIAL_BANNERS.gameConsoleBanner.saleBadge
+              : banners.gameConsoleBanner.saleBadge,
+          }
+        : INITIAL_BANNERS.gameConsoleBanner,
+      dualPromoBanner: banners.dualPromoBanner
+        ? {
+            ...banners.dualPromoBanner,
+            badgeText: String(banners.dualPromoBanner.badgeText || "").includes("$")
+              ? INITIAL_BANNERS.dualPromoBanner.badgeText
+              : banners.dualPromoBanner.badgeText,
+          }
+        : INITIAL_BANNERS.dualPromoBanner,
+    };
+    await mysqlWrite("banners", nextBanners);
+  }
+
+  // 3. Products (convert USD prices + merge any missing storefront-referenced seed products)
+  const existingProducts = (await mysqlRead("products")) || [];
+  const migratedProducts = existingProducts.map((p) => ({
+    ...p,
+    price: convertUsdNumberToPkr(p.price),
+    ...(p.originalPrice ? { originalPrice: convertUsdNumberToPkr(p.originalPrice) } : {}),
+  }));
+  const seedProducts = fileRead("products") || [];
+  const existingIds = new Set(migratedProducts.map((p) => p.id));
+  for (const sp of seedProducts) {
+    if (!existingIds.has(sp.id)) {
+      migratedProducts.push(sp);
+    }
+  }
+  await mysqlWrite("products", migratedProducts);
+
+  // 4. Orders
+  const existingOrders = (await mysqlRead("orders")) || [];
+  const migratedOrders = existingOrders.map((ord) => {
+    if (Number(ord.total) >= 10000) return ord;
+    const items = Array.isArray(ord.items)
+      ? ord.items.map((it) => ({
+          ...it,
+          price: convertUsdNumberToPkr(it.price),
+        }))
+      : ord.items;
+    return {
+      ...ord,
+      items,
+      subtotal: convertUsdNumberToPkr(ord.subtotal),
+      shipping: ord.shipping ? convertUsdNumberToPkr(ord.shipping) : 0,
+      discount: ord.discount ? convertUsdNumberToPkr(ord.discount) : 0,
+      total: convertUsdNumberToPkr(ord.total),
+    };
+  });
+  await mysqlWrite("orders", migratedOrders);
+
+  // 5. Coupons
+  const existingCoupons = (await mysqlRead("coupons")) || [];
+  const migratedCoupons = existingCoupons.map((c) => ({
+    ...c,
+    minSpend: c.minSpend ? convertUsdNumberToPkr(c.minSpend) : 0,
+    value:
+      c.discountType === "fixed" && Number(c.value) > 0 && Number(c.value) < 500
+        ? c.code === "FREESHIP"
+          ? 500
+          : convertUsdNumberToPkr(c.value)
+        : c.value,
+  }));
+  await mysqlWrite("coupons", migratedCoupons);
+
+  console.log("✅ MySQL USD → PKR migration complete.");
+}
+
 // ─── Database Initialization ──────────────────────────────────────────────────
 async function initDatabase() {
   // Always ensure JSON files exist as a baseline
@@ -429,6 +570,9 @@ async function initDatabase() {
       const ordersSeed = fileRead("orders") || [];
       await seedFromJson("products", productsSeed);
       await seedFromJson("orders", ordersSeed);
+
+      // Migrate any legacy USD records in MySQL to PKR
+      await migrateUsdToPkrIfNeeded();
 
       console.log("✅ Database initialization complete.");
     } catch (err) {
