@@ -5,14 +5,14 @@ import { describe, it, expect } from "vitest";
 const { readCollection, writeCollection } = require("../db.js");
 
 describe("Node.js Backend & Persistent DB Layer", () => {
-  it("should initialize and read all standard collections", () => {
-    const products = readCollection("products");
-    const categories = readCollection("categories");
-    const orders = readCollection("orders");
-    const banners = readCollection("banners");
-    const settings = readCollection("settings");
-    const coupons = readCollection("coupons");
-    const inquiries = readCollection("inquiries");
+  it("should initialize and read all standard collections", async () => {
+    const products = await readCollection("products");
+    const categories = await readCollection("categories");
+    const orders = await readCollection("orders");
+    const banners = await readCollection("banners");
+    const settings = await readCollection("settings");
+    const coupons = await readCollection("coupons");
+    const inquiries = await readCollection("inquiries");
 
     expect(Array.isArray(products)).toBe(true);
     expect(products.length).toBeGreaterThan(0);
@@ -26,8 +26,8 @@ describe("Node.js Backend & Persistent DB Layer", () => {
     expect(Array.isArray(inquiries)).toBe(true);
   });
 
-  it("should allow creating, updating, and deleting a product", () => {
-    const products = readCollection("products");
+  it("should allow creating, updating, and deleting a product", async () => {
+    const products = (await readCollection("products")) || [];
     const initialCount = products.length;
 
     const testProduct = {
@@ -44,50 +44,50 @@ describe("Node.js Backend & Persistent DB Layer", () => {
 
     // 1. Add
     products.unshift(testProduct);
-    writeCollection("products", products);
-    const updated1 = readCollection("products");
+    await writeCollection("products", products);
+    const updated1 = (await readCollection("products")) || [];
     expect(updated1.length).toBe(initialCount + 1);
     expect(updated1[0].id).toBe("test-item-999");
 
     // 2. Update
     updated1[0].price = 129.99;
-    writeCollection("products", updated1);
-    const updated2 = readCollection("products");
+    await writeCollection("products", updated1);
+    const updated2 = (await readCollection("products")) || [];
     expect(updated2[0].price).toBe(129.99);
 
     // 3. Delete
     const cleaned = updated2.filter((p: { id: string }) => p.id !== "test-item-999");
-    writeCollection("products", cleaned);
-    const updated3 = readCollection("products");
+    await writeCollection("products", cleaned);
+    const updated3 = (await readCollection("products")) || [];
     expect(updated3.length).toBe(initialCount);
   });
 
-  it("should support 'start dot to end dot' banner customizer updates", () => {
-    const banners = readCollection("banners");
+  it("should support 'start dot to end dot' banner customizer updates", async () => {
+    const banners = await readCollection("banners");
     expect(banners.hero).toBeDefined();
 
     const originalPrice = banners.hero.price;
     banners.hero.price = 499;
-    writeCollection("banners", banners);
+    await writeCollection("banners", banners);
 
-    const reloaded = readCollection("banners");
+    const reloaded = await readCollection("banners");
     expect(reloaded.hero.price).toBe(499);
 
     // Restore
     reloaded.hero.price = originalPrice;
-    writeCollection("banners", reloaded);
+    await writeCollection("banners", reloaded);
   });
 
-  it("should verify discount coupons correctly", () => {
-    const coupons = readCollection("coupons");
+  it("should verify discount coupons correctly", async () => {
+    const coupons = (await readCollection("coupons")) || [];
     const edge20 = coupons.find((c: { code: string }) => c.code === "EDGE20");
     expect(edge20).toBeDefined();
     expect(edge20.discountType).toBe("percentage");
     expect(edge20.value).toBe(20);
   });
 
-  it("should append customer orders with pending status and items", () => {
-    const orders = readCollection("orders");
+  it("should append customer orders with pending status and items", async () => {
+    const orders = (await readCollection("orders")) || [];
     const prevCount = orders.length;
 
     const newOrder = {
@@ -111,14 +111,14 @@ describe("Node.js Backend & Persistent DB Layer", () => {
     };
 
     orders.unshift(newOrder);
-    writeCollection("orders", orders);
+    await writeCollection("orders", orders);
 
-    const reloaded = readCollection("orders");
+    const reloaded = (await readCollection("orders")) || [];
     expect(reloaded.length).toBe(prevCount + 1);
     expect(reloaded[0].id).toBe("ORD-TEST-1234");
 
     // Clean up test order
     const cleaned = reloaded.filter((o: { id: string }) => o.id !== "ORD-TEST-1234");
-    writeCollection("orders", cleaned);
+    await writeCollection("orders", cleaned);
   });
 });
