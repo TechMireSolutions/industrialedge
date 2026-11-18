@@ -40,8 +40,14 @@ jobs:
             [ -f /tmp/backend.env.prod.bak ] && cp /tmp/backend.env.prod.bak backend/.env
             [ -f /tmp/frontend.env.prod.bak ] && cp /tmp/frontend.env.prod.bak frontend/.env
 
-            # 6. Dependencies install aur Next.js production build run karein
-            npm install
+            # 6. Broken architecture symlinks remove karein aur clean install karein
+            rm -rf node_modules/@tailwindcss frontend/node_modules/@tailwindcss
+            npm install --legacy-peer-deps --no-audit --no-fund || {
+              echo "Retrying clean install due to stale node_modules tree..."
+              rm -rf node_modules frontend/node_modules backend/node_modules
+              npm install --legacy-peer-deps --no-audit --no-fund
+            }
+
             chmod -R +x node_modules/.bin frontend/node_modules/.bin backend/node_modules/.bin 2>/dev/null || true
             NEXT_TELEMETRY_DISABLED=1 npm run build
 
