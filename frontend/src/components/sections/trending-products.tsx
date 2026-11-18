@@ -18,24 +18,10 @@ interface TrendingItem {
   description?: string;
 }
 
-const FALLBACK_TRENDING: TrendingItem[] = [
-  { id: "tr-1", name: "Apple iPhone 11 Pro Max, US Version, 64GB, Gold", category: "Apple products", price: 133000, originalPrice: 167700, image: "/images/o_4901-540x540.webp", description: "Fully unlocked 6.5-inch Super Retina XDR OLED display with A13 Bionic chip." },
-  { id: "tr-7", name: "Canon Mirrorless Camera [EOS M6 Mark II] + EF-M 15-45mm", category: "Camera & Video", price: 251400, originalPrice: 447400, image: "/images/o_3801-540x540.webp", description: "32.5 Megapixel CMOS (APS-C) sensor with Dual Pixel CMOS AF." },
-  { id: "tr-2", name: "Apple iPhone 11 Pro Max, US Version, 64GB, Space Gray", category: "Apple products", price: 133000, originalPrice: 173600, image: "/images/o_4901-540x540.webp", description: "Triple-camera system with Night mode and 4K video." },
-  { id: "tr-8", name: "Canon EOS M50 Mark II Mirrorless Camera with 15-45mm Lens", category: "Camera & Video", price: 145300, originalPrice: 195700, image: "/images/o_3801-540x540.webp", description: "24.1 Megapixel APS-C CMOS sensor with Eye Detection AF." },
-  { id: "prd-lenovo-tab-m10", name: "Lenovo Tab M10 Plus (3rd Gen) – 10.6\" 2K FHD Tablet", category: "Laptop & Tablet", price: 54100, originalPrice: 64100, image: "/images/o_5001-540x540.webp", description: "10.61-inch 2K IPS display with quad Dolby Atmos speakers." },
-  { id: "prd-asus-zenbook-13", name: "ASUS ZenBook Flip 13 Ultra Slim Convertible Laptop, 13.3\" OLED", category: "Laptop & Tablet", price: 294800, originalPrice: 335000, image: "/images/o_4001-540x540.webp", description: "13.3-inch OLED FHD Touch Display with Intel Core i5 and 512GB SSD." },
-  { id: "prd-samsung-odyssey-g5", name: "Samsung 34-Inch Odyssey G5 Ultra-Wide Gaming Monitor", category: "TV & Computer Screen", price: 98000, originalPrice: 126000, image: "/images/o_4701-540x540.webp", description: "Ultra-WQHD 1000R curved gaming monitor with 165Hz refresh rate." },
-  { id: "bs-1", name: 'Acer Aspire 5 A515-56-347N Slim Laptop – 15.6" Full HD IPS', category: "Laptop & Tablet", price: 148300, originalPrice: 182000, image: "/images/o_3603-540x540.webp", description: "11th Gen Intel Core i3 with 8GB RAM and 256GB NVMe SSD." },
-  { id: "bs-2", name: "AirPods (2nd generation) with Wired Charging Case", category: "Headphone", price: 36100, originalPrice: 44500, image: "/images/o_2003-540x540.webp", description: "Effortless setup, Apple H1 chip, over 24 hours listening time." },
-  { id: "prd-ps5-dualsense", name: "PlayStation 5 DualSense Wireless Controller – Midnight Black", category: "Gaming Accessories", price: 19600, originalPrice: 24500, image: "/images/o_3201-540x540.webp", description: "Haptic feedback and dynamic adaptive triggers." },
-  { id: "prd-beats-headphone", name: "Beats Studio Pro Wireless Over-Ear Headphones – Deep Black", category: "Headphone", price: 70000, originalPrice: 98000, image: "/images/beats-headphones.png", description: "Active Noise Cancelling and up to 40 hours battery life." },
-  { id: "prd-bose-speaker", name: "Bose SoundLink Revolve+ II Bluetooth Speaker – 360 Sound", category: "Audio Equipments", price: 55700, originalPrice: 69700, image: "/images/bose-speaker.png", description: "True 360-degree sound with IP55 water resistance." },
-];
-
 export default function TrendingProducts() {
   const { isWishlisted, toggleWishlist, addToCart, addToCompare } = useStore();
-  const [products, setProducts] = useState<TrendingItem[]>(FALLBACK_TRENDING);
+  const [products, setProducts] = useState<TrendingItem[]>([]);
+  const [loading, setLoading] = useState(true);
   const [quickViewProduct, setQuickViewProduct] = useState<TrendingItem | null>(null);
   const [toastMessage, setToastMessage] = useState<string | null>(null);
 
@@ -53,7 +39,8 @@ export default function TrendingProducts() {
           setProducts(list);
         }
       })
-      .catch(() => {});
+      .catch(() => {})
+      .finally(() => setLoading(false));
   }, []);
 
   const columns = useMemo(() => {
@@ -277,6 +264,18 @@ export default function TrendingProducts() {
           onTouchStart={handleTouchStart}
           onTouchEnd={handleTouchEnd}
         >
+          {loading ? (
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-5">
+              {Array.from({ length: 6 }).map((_, idx) => (
+                <div key={idx} className="space-y-6">
+                  <div className="h-[230px] rounded-lg bg-slate-100 animate-pulse" />
+                  <div className="h-[230px] rounded-lg bg-slate-100 animate-pulse" />
+                </div>
+              ))}
+            </div>
+          ) : columns.length === 0 ? (
+            <div className="py-10 text-center text-sm text-slate-400">No trending products available yet.</div>
+          ) : (
           <div
             className="flex transition-transform duration-500 ease-in-out"
             style={{
@@ -295,6 +294,7 @@ export default function TrendingProducts() {
               </div>
             ))}
           </div>
+          )}
         </div>
       </div>
 

@@ -201,6 +201,27 @@ async function forwardOrFallback(req: NextRequest, { params }: { params: Promise
           0
         );
         const lowStockItems = products.filter((p: { stock: number }) => (p.stock || 0) <= 5);
+        const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+        const validOrders = orders.filter((o: { status: string }) => o.status !== "cancelled");
+        let anchor = new Date();
+        for (const ord of validOrders) {
+          const d = new Date(ord.createdAt);
+          if (!Number.isNaN(d.getTime()) && d > anchor) anchor = d;
+        }
+        const salesTrend = Array.from({ length: 6 }, (_, idx) => {
+          const dt = new Date(anchor.getFullYear(), anchor.getMonth() - (5 - idx), 1);
+          const matching = validOrders.filter((ord: { createdAt?: string }) => {
+            const d = new Date(ord.createdAt || "");
+            return !Number.isNaN(d.getTime()) && d.getFullYear() === dt.getFullYear() && d.getMonth() === dt.getMonth();
+          });
+          return {
+            month: monthNames[dt.getMonth()],
+            revenue: Math.round(
+              matching.reduce((s: number, ord: { total?: number }) => s + (Number(ord.total) || 0), 0)
+            ),
+            orders: matching.length,
+          };
+        });
         return NextResponse.json({
           success: true,
           data: {
@@ -221,14 +242,7 @@ async function forwardOrFallback(req: NextRequest, { params }: { params: Promise
               { label: "Delivered", count: orders.filter((o: { status: string }) => o.status === "delivered").length, color: "#10B981" },
               { label: "Cancelled", count: orders.filter((o: { status: string }) => o.status === "cancelled").length, color: "#EF4444" },
             ],
-            salesTrend: [
-              { month: "May", revenue: 1180000, orders: 12 },
-              { month: "Jun", revenue: 1620000, orders: 18 },
-              { month: "Jul", revenue: 2070000, orders: 24 },
-              { month: "Aug", revenue: 2550000, orders: 31 },
-              { month: "Sep", revenue: 3220000, orders: 40 },
-              { month: "Oct", revenue: Math.round(totalSales + 2300000), orders: orders.length + 28 },
-            ],
+            salesTrend,
             lowStockItems: lowStockItems.slice(0, 5),
             recentOrders: orders.slice(0, 5),
           },

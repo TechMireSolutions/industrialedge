@@ -21,19 +21,12 @@ interface FeatureProduct {
   description?: string;
 }
 
-const FALLBACK_CATALOG: FeatureProduct[] = [
-  { id: "tr-1", name: "Apple iPhone 11 Pro Max, US Version, 64GB, Gold", category: "Apple products", price: 133000, originalPrice: 167700, image: "/images/o_4901-540x540.webp", rating: 4.8, status: "discount", isFeaturedTab: true, description: "6.5-inch Super Retina XDR OLED display with A13 Bionic chip." },
-  { id: "tr-7", name: "Canon Mirrorless Camera [EOS M6 Mark II] + EF-M 15-45mm", category: "Camera & Video", price: 251400, originalPrice: 447400, image: "/images/o_3801-540x540.webp", rating: 4.9, status: "discount", isFeaturedTab: true, description: "32.5MP APS-C sensor with Dual Pixel CMOS AF." },
-  { id: "prd-lenovo-tab-m10", name: "Lenovo Tab M10 Plus (3rd Gen) – 10.6\" 2K FHD Tablet", category: "Laptop & Tablet", price: 54100, originalPrice: 64100, image: "/images/o_5001-540x540.webp", rating: 4.7, status: "discount", isFeaturedTab: true, description: "10.61-inch 2K IPS display with Dolby Atmos quad speakers." },
-  { id: "prd-samsung-odyssey-g5", name: "Samsung 34-Inch Odyssey G5 Ultra-Wide Gaming Monitor", category: "TV & Computer Screen", price: 98000, originalPrice: 126000, image: "/images/o_4701-540x540.webp", rating: 4.8, status: "discount", isFeaturedTab: true, description: "Ultra-WQHD 1000R curved gaming monitor with 165Hz refresh rate." },
-  { id: "bs-2", name: "AirPods (2nd generation) with Wired Charging Case", category: "Headphone", price: 36100, originalPrice: 44500, image: "/images/o_2003-540x540.webp", rating: 4.9, status: "discount", isFeaturedTab: true, description: "Apple H1 chip, effortless setup, over 24 hours battery." },
-];
-
 type TabType = "feature" | "toprate" | "onsale";
 
 export default function FeatureTabs() {
   const { isWishlisted, toggleWishlist, addToCart, addToCompare } = useStore();
-  const [catalog, setCatalog] = useState<FeatureProduct[]>(FALLBACK_CATALOG);
+  const [catalog, setCatalog] = useState<FeatureProduct[]>([]);
+  const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState<TabType>("feature");
   const [quickViewProduct, setQuickViewProduct] = useState<FeatureProduct | null>(null);
   const [toastMessage, setToastMessage] = useState<string | null>(null);
@@ -46,7 +39,8 @@ export default function FeatureTabs() {
           setCatalog(prods);
         }
       })
-      .catch(() => {});
+      .catch(() => {})
+      .finally(() => setLoading(false));
   }, []);
 
   const displayedProducts = useMemo(() => {
@@ -240,7 +234,11 @@ export default function FeatureTabs() {
         </div>
 
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-x-5 lg:gap-x-6 gap-y-8">
-          {displayedProducts.map((product) => renderProductCard(product))}
+          {loading
+            ? Array.from({ length: 5 }).map((_, idx) => (
+                <div key={idx} className="h-[260px] rounded-xl bg-slate-100 animate-pulse" />
+              ))
+            : displayedProducts.map((product) => renderProductCard(product))}
         </div>
       </div>
 

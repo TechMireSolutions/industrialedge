@@ -18,17 +18,9 @@ interface RecentProduct {
   description?: string;
 }
 
-const FALLBACK_RECENT: RecentProduct[] = [
-  { id: "bs-4", name: "Amazfit GTS 2 Smart Watch for Men Android iPhone", category: "Smartwatch", price: 37800, originalPrice: 50400, image: "/images/o_0601-540x540.webp", description: "AMOLED display, Bluetooth calling, 90 sports modes." },
-  { id: "prd-ps5-dualsense", name: "PlayStation 5 DualSense Wireless Controller – Black", category: "Gaming Accessories", price: 19600, originalPrice: 24500, image: "/images/o_3201-540x540.webp", description: "Haptic feedback and adaptive triggers." },
-  { id: "prd-bose-speaker", name: "Bose SoundLink Revolve+ II Bluetooth Speaker", category: "Audio Equipments", price: 55700, originalPrice: 69700, image: "/images/bose-speaker.png", description: "True 360-degree wireless sound." },
-  { id: "prd-skytech-pc", name: "SkyTech Shadow 3.0 Gaming & Workstation PC – Ryzen 5", category: "Computers & Accessories", price: 223700, originalPrice: 265700, image: "/images/o_3701-540x540.webp", description: "AMD Ryzen 5, GTX 1660 Super, 1TB NVMe SSD, 16GB RAM." },
-  { id: "prd-autofull-chair", name: "AutoFull C3 Ergonomic Gaming & Office Chair", category: "Game & Room Furniture", price: 68500, originalPrice: 84000, image: "/images/o_3101-600x600.webp", description: "High-density molded foam with lumbar & headrest support." },
-  { id: "prd-beats-headphone", name: "Beats Studio Pro Wireless Over-Ear Headphones", category: "Headphone", price: 70000, originalPrice: 98000, image: "/images/beats-headphones.png", description: "Active Noise Cancelling with up to 40 hours battery." },
-];
-
 export default function RecentlyViewed() {
-  const [catalog, setCatalog] = useState<RecentProduct[]>(FALLBACK_RECENT);
+  const [catalog, setCatalog] = useState<RecentProduct[]>([]);
+  const [loading, setLoading] = useState(true);
   const [quickViewProduct, setQuickViewProduct] = useState<RecentProduct | null>(null);
   const [toastMessage, setToastMessage] = useState<string | null>(null);
 
@@ -42,7 +34,8 @@ export default function RecentlyViewed() {
           setCatalog(all);
         }
       })
-      .catch(() => {});
+      .catch(() => {})
+      .finally(() => setLoading(false));
   }, []);
 
   const displayedItems = useMemo(() => {
@@ -210,7 +203,11 @@ export default function RecentlyViewed() {
         <div className="w-full border-b border-gray-200 mt-1 mb-8" />
 
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4 sm:gap-5 lg:gap-6">
-          {displayedItems.map((product) => {
+          {loading
+            ? Array.from({ length: 6 }).map((_, idx) => (
+                <div key={idx} className="h-[240px] rounded-lg bg-slate-100 animate-pulse" />
+              ))
+            : displayedItems.map((product) => {
             const liked = isWishlisted(product.id);
 
             return (

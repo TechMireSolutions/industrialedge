@@ -18,19 +18,9 @@ interface SmartHomeProduct {
   description?: string;
 }
 
-const FALLBACK_SMART_HOME: SmartHomeProduct[] = [
-  { id: "bs-1", name: "Acer Aspire 5 A515-56-347N Slim Laptop – 15.6\" Full HD IPS", category: "Laptop & Tablet", price: 148300, image: "/images/o_3603-540x540.webp", description: "11th Gen Intel Core i3 processor, 15.6-inch Full HD IPS display." },
-  { id: "bs-2", name: "AirPods (2nd generation) with Wired Charging Case", category: "Headphone", price: 36100, image: "/images/o_2003-540x540.webp", description: "Effortless setup, Apple H1 chip, over 24 hours listening time." },
-  { id: "bs-3", name: "AirPods (3rd generation) with Lightning Charging Case", category: "Headphone", price: 47300, image: "/images/o_2101-540x540.webp", description: "Personalized Spatial Audio with dynamic head tracking." },
-  { id: "bs-4", name: "Amazfit GTS 2 Smart Watch, Bluetooth Calls", category: "Smartwatch", price: 37800, image: "/images/o_0601-540x540.webp", description: "Curved 3D bezel-less AMOLED display and 90 sports modes." },
-  { id: "hero-fire-tv", name: 'Amazon Fire TV 50" 4-Series 4K UHD Smart TV', category: "TV & Computer Screen", price: 84000, image: "/images/product-fire-tv.webp", description: "4K Ultra HD, HDR 10, HLG, and Alexa Voice Remote." },
-  { id: "hero-airpods-max", name: "Apple AirPods Max Wireless Over-Ear Headphones – Green", category: "Headphone", price: 153700, image: "/images/product-airpods-max.webp", description: "High-fidelity audio and Active Noise Cancellation." },
-  { id: "prd-bose-speaker", name: "Bose SoundLink Revolve+ II Bluetooth Speaker", category: "Audio Equipments", price: 55700, image: "/images/bose-speaker.png", description: "True 360-degree sound with IP55 water resistance." },
-  { id: "tr-1", name: "Apple iPhone 11 Pro Max, US Version, 64GB, Gold", category: "Apple products", price: 133000, image: "/images/o_4901-540x540.webp", description: "Triple-camera system and 6.5-inch Super Retina XDR OLED display." },
-];
-
 export default function SmartHomeAppliances() {
-  const [products, setProducts] = useState<SmartHomeProduct[]>(FALLBACK_SMART_HOME);
+  const [products, setProducts] = useState<SmartHomeProduct[]>([]);
+  const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(0);
   const [quickViewProduct, setQuickViewProduct] = useState<SmartHomeProduct | null>(null);
   const [toastMessage, setToastMessage] = useState<string | null>(null);
@@ -45,7 +35,8 @@ export default function SmartHomeAppliances() {
           setProducts(all);
         }
       })
-      .catch(() => {});
+      .catch(() => {})
+      .finally(() => setLoading(false));
   }, []);
 
   const pageSize = 8;
@@ -227,7 +218,11 @@ export default function SmartHomeAppliances() {
         <div className="w-full border-b border-gray-200 mt-1 mb-8" />
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-x-6 lg:gap-x-8 gap-y-10">
-          {currentItems.map((product) => {
+          {loading
+            ? Array.from({ length: 8 }).map((_, idx) => (
+                <div key={idx} className="h-[100px] rounded-lg bg-slate-100 animate-pulse" />
+              ))
+            : currentItems.map((product) => {
             const liked = isWishlisted(product.id);
 
             return (

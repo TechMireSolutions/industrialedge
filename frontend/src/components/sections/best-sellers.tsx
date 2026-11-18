@@ -18,73 +18,11 @@ interface BestSellerItem {
   description?: string;
 }
 
-const FALLBACK_BEST_SELLERS: BestSellerItem[] = [
-  {
-    id: "bs-1",
-    name: 'Acer Aspire 5 A515-56-347N Slim Laptop – 15.6" Full HD IPS Display',
-    category: "Laptop & Tablet",
-    price: 148300,
-    originalPrice: 182000,
-    image: "/images/o_3603-540x540.webp",
-    description:
-      "Powerful 11th Gen Intel Core i3 processor, 15.6-inch Full HD IPS display with narrow bezels, ergonomic hinge, and all-day battery life.",
-  },
-  {
-    id: "bs-2",
-    name: "AirPods (2nd generation) with Wired Charging Case",
-    category: "Headphone",
-    price: 36100,
-    originalPrice: 44500,
-    image: "/images/o_2003-540x540.webp",
-    description:
-      "Effortless setup, high-quality audio, hands-free Siri access, and over 24 hours of listening time with the charging case.",
-  },
-  {
-    id: "bs-3",
-    name: "AirPods (3rd generation) with Lightning Charging Case",
-    category: "Headphone",
-    price: 47300,
-    originalPrice: 55700,
-    image: "/images/o_2101-540x540.webp",
-    description:
-      "Personalized Spatial Audio with dynamic head tracking, sweat and water resistance, and contoured design with force sensor control.",
-  },
-  {
-    id: "bs-4",
-    name: "Amazfit GTS 2 Smart Watch for Men Android iPhone, Bluetooth Calls",
-    category: "Smartwatch",
-    price: 37800,
-    originalPrice: 50400,
-    image: "/images/o_0601-540x540.webp",
-    description:
-      "Curved 3D bezel-less design, all-round health tracking, 90 built-in sports modes, and Bluetooth phone call support.",
-  },
-  {
-    id: "bs-5",
-    name: "Amazon Fire HD 8 Tablet, 2 GB RAM, 32 GB, Black",
-    category: "Laptop & Tablet",
-    price: 28000,
-    originalPrice: 33600,
-    image: "/images/o_1101-540x540.webp",
-    description:
-      "8-inch vibrant HD display, 30% faster quad-core processor, all-day battery life up to 12 hours, and enhanced USB-C charging.",
-  },
-  {
-    id: "hero-fire-tv",
-    name: 'Amazon Fire TV 50" 4-Series 4K UHD Smart TV',
-    category: "TV & Computer Screen",
-    price: 84000,
-    originalPrice: 126000,
-    image: "/images/o_1301-540x540.webp",
-    description:
-      "Stunning 4K Ultra HD, HDR 10, and HLG provide clear picture and vivid colors. Control entertainment hands-free with Alexa Voice Remote.",
-  },
-];
-
 export default function BestSellers() {
   const { isWishlisted, toggleWishlist, addToCart, addToCompare } = useStore();
-  const [items, setItems] = useState<BestSellerItem[]>(FALLBACK_BEST_SELLERS);
-  const [bannerPrice, setBannerPrice] = useState<number>(126000);
+  const [items, setItems] = useState<BestSellerItem[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [bannerPrice, setBannerPrice] = useState<number>(0);
   const [quickViewProduct, setQuickViewProduct] = useState<BestSellerItem | null>(null);
   const [toastMessage, setToastMessage] = useState<string | null>(null);
 
@@ -94,21 +32,21 @@ export default function BestSellers() {
   const [touchStartX, setTouchStartX] = useState<number | null>(null);
 
   useEffect(() => {
-    api
-      .getProducts({ featured: "bestSeller" })
-      .then((prods) => {
+    Promise.all([
+      api.getProducts({ featured: "bestSeller" }).catch(() => []),
+      api.getBanners().catch(() => null),
+    ])
+      .then(([prods, b]) => {
         if (Array.isArray(prods) && prods.length > 0) {
           setItems(prods);
+        } else {
+          api.getProducts().then((all) => {
+            if (Array.isArray(all)) setItems(all.slice(0, 6));
+          }).catch(() => {});
         }
+        if (b?.hero?.price) setBannerPrice(Number(b.hero.price));
       })
-      .catch(() => {});
-
-    api
-      .getBanners()
-      .then((b) => {
-        if (b?.hero?.price) setBannerPrice(b.hero.price);
-      })
-      .catch(() => {});
+      .finally(() => setLoading(false));
   }, []);
 
   useEffect(() => {
@@ -330,7 +268,7 @@ export default function BestSellers() {
             <div className="relative z-10">
               <span className="text-[13px] text-[#64748b] font-normal block mb-1">Price</span>
               <span className="text-[28px] sm:text-[32px] font-extrabold text-[#0ea57a] leading-none block mb-3.5 tracking-tight">
-                {formatPrice(bannerPrice)}
+                {bannerPrice > 0 ? formatPrice(bannerPrice) : "—"}
               </span>
               <span className="text-[13px] text-[#475569] font-normal block mb-1">
                 Let power flow through you
@@ -357,23 +295,33 @@ export default function BestSellers() {
             onTouchStart={handleTouchStart}
             onTouchEnd={handleTouchEnd}
           >
+            {loading ? (
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                {Array.from({ length: 3 }).map((_, idx) => (
+                  <div key={idx} className="h-[285px] rounded-lg bg-slate-100 animate-pulse" />
+                ))}
+              </div>
+            ) : items.length === 0 ? (
+              <div className="py-12 text-center text-sm text-slate-400">No best sellers available yet.</div>
+            ) : (
             <div
               className="flex transition-transform duration-500 ease-in-out"
               style={{
                 width: `${(items.length / visibleColumns) * 100}%`,
-                transform: `translateX(-${currentIndex * (100 / items.length)}%)`,
+                transform: `translateX(-${currentIndex * (100 / Math.max(1, items.length))}%)`,
               }}
             >
               {items.map((product) => (
                 <div
                   key={product.id}
                   className="shrink-0 px-2.5 sm:px-3 flex flex-col justify-between"
-                  style={{ width: `${100 / items.length}%` }}
+                  style={{ width: `${100 / Math.max(1, items.length)}%` }}
                 >
                   {renderProductCard(product)}
                 </div>
               ))}
             </div>
+            )}
           </div>
         </div>
       </div>

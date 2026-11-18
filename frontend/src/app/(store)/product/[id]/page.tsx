@@ -31,33 +31,6 @@ interface ProductReview {
   comment: string;
 }
 
-const DEFAULT_REVIEWS: ProductReview[] = [
-  {
-    id: "rev-1",
-    name: "Tariq Mahmood",
-    rating: 5,
-    date: "3 days ago",
-    comment:
-      "Authentic hardware with official warranty card. Dispatched promptly from the Karachi hub and arrived in immaculate packaging.",
-  },
-  {
-    id: "rev-2",
-    name: "Zainab Sheikh",
-    rating: 5,
-    date: "1 week ago",
-    comment:
-      "Outstanding build quality and reliable performance for daily engineering and productivity workflows.",
-  },
-  {
-    id: "rev-3",
-    name: "Usman Raza",
-    rating: 4,
-    date: "2 weeks ago",
-    comment:
-      "Great PKR pricing compared to local retail markets. Customer support responded immediately on WhatsApp.",
-  },
-];
-
 function mapToShopCard(p: ProductItem): ShopProductItem {
   const thumbs =
     Array.isArray(p.images) && p.images.length > 0 ? p.images : [p.image || "/images/cat-laptop.jpg"];
@@ -100,8 +73,8 @@ export default function ProductSinglePage() {
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const [toastMessage, setToastMessage] = useState<string | null>(null);
 
-  // Local customer reviews state
-  const [reviews, setReviews] = useState<ProductReview[]>(DEFAULT_REVIEWS);
+  // Local customer reviews state (persisted per product in localStorage, no fake hardcoded reviews)
+  const [reviews, setReviews] = useState<ProductReview[]>([]);
   const [reviewName, setReviewName] = useState("");
   const [reviewRating, setReviewRating] = useState(5);
   const [reviewComment, setReviewComment] = useState("");

@@ -18,44 +18,24 @@ interface HeroProduct {
   description: string;
 }
 
-const DEFAULT_HERO_SIDE_PRODUCTS: HeroProduct[] = [
-  {
-    id: "hero-airpods-max",
-    name: "Apple AirPods Max Wireless Over-Ear Headphones – Green",
-    category: "Headphone",
-    categoryLink: "/shop?cat=Headphone",
-    price: 153700,
-    image: "/images/product-airpods-max.webp",
-    description:
-      "Apple-designed dynamic driver provides high-fidelity audio. Active Noise Cancellation blocks outside noise, so you can immerse yourself in music.",
-  },
-  {
-    id: "hero-fire-tv",
-    name: 'Amazon Fire TV 50" 4-Series 4K UHD Smart TV',
-    category: "TV & Computer Screen",
-    categoryLink: "/shop?cat=TV+%26+Computer+Screen",
-    price: 84000,
-    image: "/images/product-fire-tv.webp",
-    description:
-      "Brilliant 4K entertainment - Bring movies and shows to life with support for vivid 4K Ultra HD, HDR 10, HLG, and Dolby Digital Plus.",
-  },
-];
-
 export default function Hero() {
-  const { isWishlisted, toggleWishlist, addToCart, addToCompare } = useStore();
+  const { isWishlisted, toggleWishlist, addToCart, addToCompare, storeSettings } = useStore();
   const [quickViewProduct, setQuickViewProduct] = useState<HeroProduct | null>(null);
   const [toastMessage, setToastMessage] = useState<string | null>(null);
-  const [sideProducts, setSideProducts] = useState<HeroProduct[]>(DEFAULT_HERO_SIDE_PRODUCTS);
-  const [heroData, setHeroData] = useState({
-    brandTag: "Price",
-    price: 126000,
-    subtitle: "Let power flow through you",
-    titleLine1: "DELL G5",
-    titleLine2: "GAMING LAPTOP",
-    image: "/images/dell-g5-hero.png",
-    backgroundImage: "/images/hero-bg-exact.webp",
-    ctaLink: "/product/hero-dell-g5",
-  });
+  const [sideProducts, setSideProducts] = useState<HeroProduct[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [heroData, setHeroData] = useState<{
+    brandTag: string;
+    price: number;
+    subtitle: string;
+    titleLine1: string;
+    titleLine2: string;
+    image: string;
+    backgroundImage: string;
+    ctaLink: string;
+  } | null>(null);
+
+  const currencySymbol = storeSettings?.currency || "Rs.";
 
   useEffect(() => {
     api
@@ -64,20 +44,21 @@ export default function Hero() {
         if (data?.hero) {
           setHeroData({
             brandTag: data.hero.brandTag || "Price",
-            price: data.hero.price || 126000,
-            subtitle: data.hero.subtitle || "Let power flow through you",
-            titleLine1: data.hero.titleLine1 || "DELL G5",
-            titleLine2: data.hero.titleLine2 || "GAMING LAPTOP",
+            price: Number(data.hero.price) || 0,
+            subtitle: data.hero.subtitle || "",
+            titleLine1: data.hero.titleLine1 || "",
+            titleLine2: data.hero.titleLine2 || "",
             image: data.hero.image || "/images/dell-g5-hero.png",
             backgroundImage: data.hero.backgroundImage || "/images/hero-bg-exact.webp",
-            ctaLink: data.hero.ctaLink || "/product/hero-dell-g5",
+            ctaLink: data.hero.ctaLink || "/shop",
           });
         }
-        if (Array.isArray(data?.heroSideProducts) && data.heroSideProducts.length > 0) {
+        if (Array.isArray(data?.heroSideProducts)) {
           setSideProducts(data.heroSideProducts);
         }
       })
-      .catch(() => {});
+      .catch(() => {})
+      .finally(() => setLoading(false));
   }, []);
 
   const showToast = (msg: string) => {
@@ -121,6 +102,28 @@ export default function Hero() {
     showToast("Added to compare!");
   };
 
+  if (loading || !heroData) {
+    return (
+      <section className="relative w-full bg-[#f4f6f8] py-10 sm:py-14 lg:py-16 border-b border-gray-200/50">
+        <div className="max-w-[1440px] mx-auto px-6 lg:px-12">
+          <div className="grid grid-cols-1 md:grid-cols-12 gap-8 items-center min-h-[380px] lg:min-h-[440px]">
+            <div className="md:col-span-5 h-[280px] rounded-2xl bg-slate-200/70 animate-pulse" />
+            <div className="md:col-span-3 space-y-3">
+              <div className="h-5 w-20 bg-slate-200/70 rounded animate-pulse" />
+              <div className="h-12 w-48 bg-slate-200/70 rounded animate-pulse" />
+              <div className="h-5 w-44 bg-slate-200/70 rounded animate-pulse" />
+              <div className="h-16 w-52 bg-slate-200/70 rounded animate-pulse" />
+            </div>
+            <div className="md:col-span-4 flex flex-col gap-4">
+              <div className="h-[118px] w-full max-w-[360px] rounded-xl bg-white/80 animate-pulse" />
+              <div className="h-[118px] w-full max-w-[360px] rounded-xl bg-white/80 animate-pulse" />
+            </div>
+          </div>
+        </div>
+      </section>
+    );
+  }
+
   return (
     <section
       className="relative w-full bg-[#f4f6f8] bg-cover bg-center bg-no-repeat py-10 sm:py-14 lg:py-16 border-b border-gray-200/50"
@@ -163,7 +166,7 @@ export default function Hero() {
             </span>
 
             <div className="text-[36px] sm:text-[42px] lg:text-[46px] font-extrabold text-[#0ea57a] tracking-tight leading-none mb-3 whitespace-nowrap">
-              {formatPrice(heroData.price)}
+              {formatPrice(heroData.price, currencySymbol)}
             </div>
 
             <p className="text-[15px] sm:text-[17px] lg:text-[18px] text-[#333e48] font-normal leading-snug mb-4 sm:mb-5">

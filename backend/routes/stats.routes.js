@@ -2,7 +2,45 @@ const express = require("express");
 const router = express.Router();
 const { readCollection } = require("../db");
 
-// GET dashboard statistics (in PKR)
+const MONTH_NAMES = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+
+function computeSalesTrend(orders) {
+  const validOrders = (orders || []).filter((o) => o.status !== "cancelled");
+  // Anchor the 6-month window to the latest order date or current date
+  let anchor = new Date();
+  for (const ord of validOrders) {
+    const d = new Date(ord.createdAt);
+    if (!Number.isNaN(d.getTime()) && d > anchor) {
+      anchor = d;
+    }
+  }
+
+  const buckets = [];
+  for (let offset = 5; offset >= 0; offset--) {
+    const dt = new Date(anchor.getFullYear(), anchor.getMonth() - offset, 1);
+    buckets.push({
+      year: dt.getFullYear(),
+      monthIdx: dt.getMonth(),
+      month: MONTH_NAMES[dt.getMonth()],
+      revenue: 0,
+      orders: 0,
+    });
+  }
+
+  for (const ord of validOrders) {
+    const d = new Date(ord.createdAt);
+    if (Number.isNaN(d.getTime())) continue;
+    const bucket = buckets.find((b) => b.year === d.getFullYear() && b.monthIdx === d.getMonth());
+    if (bucket) {
+      bucket.revenue += Math.round(Number(ord.total) || 0);
+      bucket.orders += 1;
+    }
+  }
+
+  return buckets.map(({ month, revenue, orders: count }) => ({ month, revenue, orders: count }));
+}
+
+// GET dashboard statistics (100% live computed from DB records)
 router.get("/", async (req, res) => {
   try {
     const [orders, products, inquiries, categories] = await Promise.all([
@@ -51,14 +89,7 @@ router.get("/", async (req, res) => {
           { label: "Delivered", count: deliveredOrders, color: "#10B981" },
           { label: "Cancelled", count: cancelledOrders, color: "#EF4444" },
         ],
-        salesTrend: [
-          { month: "May", revenue: 1180000, orders: 12 },
-          { month: "Jun", revenue: 1620000, orders: 18 },
-          { month: "Jul", revenue: 2070000, orders: 24 },
-          { month: "Aug", revenue: 2550000, orders: 31 },
-          { month: "Sep", revenue: 3220000, orders: 40 },
-          { month: "Oct", revenue: Math.round(totalSales + 2300000), orders: totalOrders + 28 },
-        ],
+        salesTrend: computeSalesTrend(o),
         lowStockItems: lowStockProducts.slice(0, 5),
         recentOrders: o.slice(0, 5),
       },

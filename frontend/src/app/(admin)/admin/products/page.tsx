@@ -20,6 +20,8 @@ import { formatPrice } from "@/lib/currency";
 export default function AdminProductsPage() {
   const [products, setProducts] = useState<ProductItem[]>([]);
   const [categories, setCategories] = useState<CategoryItem[]>([]);
+  const [currency, setCurrency] = useState("Rs.");
+  const [currencyCode, setCurrencyCode] = useState("PKR");
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("all");
@@ -33,16 +35,16 @@ export default function AdminProductsPage() {
   const [uploadingImage, setUploadingImage] = useState(false);
   const [saving, setSaving] = useState(false);
 
-  // Form State (PKR)
+  // Form State (Dynamic PKR)
   const [formData, setFormData] = useState<Partial<ProductItem>>({
     name: "",
     brand: "",
-    category: "Laptop & Tablet",
-    price: 25000,
-    originalPrice: 32000,
+    category: "",
+    price: undefined,
+    originalPrice: undefined,
     status: "none",
-    stock: 15,
-    image: "/images/cat-laptop.jpg",
+    stock: 0,
+    image: "",
     description: "",
     isTrending: false,
     isBestSeller: false,
@@ -57,9 +59,15 @@ export default function AdminProductsPage() {
   const loadData = async () => {
     try {
       setLoading(true);
-      const [prods, cats] = await Promise.all([api.getProducts(), api.getCategories()]);
+      const [prods, cats, settings] = await Promise.all([
+        api.getProducts(),
+        api.getCategories(),
+        api.getSettings().catch(() => null),
+      ]);
       setProducts(prods);
       setCategories(cats);
+      if (settings?.currency) setCurrency(settings.currency);
+      if (settings?.currencyCode) setCurrencyCode(settings.currencyCode);
     } catch (err) {
       console.error(err);
       showToast("Error loading catalog data");
@@ -78,12 +86,12 @@ export default function AdminProductsPage() {
     setFormData({
       name: "",
       brand: "",
-      category: categories[0]?.name || "Laptop & Tablet",
-      price: 45000,
-      originalPrice: 55000,
+      category: categories[0]?.name || "",
+      price: undefined,
+      originalPrice: undefined,
       status: "none",
-      stock: 20,
-      image: "/images/cat-laptop.jpg",
+      stock: 10,
+      image: "",
       description: "",
       isTrending: true,
       isBestSeller: false,
@@ -263,7 +271,7 @@ export default function AdminProductsPage() {
                   <th className="py-3.5 px-4 w-14">Image</th>
                   <th className="py-3.5 px-4">Product Details</th>
                   <th className="py-3.5 px-4">Category</th>
-                  <th className="py-3.5 px-4">Price (PKR)</th>
+                  <th className="py-3.5 px-4">Price ({currencyCode})</th>
                   <th className="py-3.5 px-4">Stock</th>
                   <th className="py-3.5 px-4">Showcases</th>
                   <th className="py-3.5 px-4 text-right">Actions</th>
@@ -306,10 +314,10 @@ export default function AdminProductsPage() {
 
                       {/* Pricing (PKR) */}
                       <td className="py-3 px-4">
-                        <div className="font-bold text-slate-900">{formatPrice(p.price)}</div>
+                        <div className="font-bold text-slate-900">{formatPrice(p.price, currency)}</div>
                         {p.originalPrice && p.originalPrice > p.price && (
                           <div className="text-[10px] text-slate-400 line-through">
-                            {formatPrice(p.originalPrice)}
+                            {formatPrice(p.originalPrice, currency)}
                           </div>
                         )}
                       </td>
@@ -505,7 +513,7 @@ export default function AdminProductsPage() {
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                 <div>
                   <label className="block text-xs font-semibold text-slate-700 mb-1">
-                    Selling Price (Rs. PKR) *
+                    Selling Price ({currency} {currencyCode}) *
                   </label>
                   <input
                     type="number"
@@ -513,14 +521,20 @@ export default function AdminProductsPage() {
                     min="0"
                     required
                     value={formData.price ?? ""}
-                    onChange={(e) => setFormData({ ...formData, price: parseFloat(e.target.value) || 0 })}
+                    onChange={(e) =>
+                      setFormData({
+                        ...formData,
+                        price: e.target.value ? parseFloat(e.target.value) : undefined,
+                      })
+                    }
+                    placeholder="e.g. 45000"
                     className="w-full px-3 py-2 text-xs border border-slate-200 rounded-lg focus:outline-none focus:border-orange-500"
                   />
                 </div>
 
                 <div>
                   <label className="block text-xs font-semibold text-slate-700 mb-1">
-                    Original Price (Rs. Strike)
+                    Original Price ({currency} Strike)
                   </label>
                   <input
                     type="number"

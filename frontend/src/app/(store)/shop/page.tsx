@@ -24,19 +24,6 @@ import ShopProductCard, {
   type ProductSpec,
 } from "@/components/products/shop-product-card";
 
-const DEFAULT_TOP_CATEGORIES = [
-  { id: "cat-apple", name: "Apple products", image: "/images/cat-imac.jpg" },
-  { id: "cat-audio", name: "Audio Equipments", image: "/images/cat-speakers.jpg" },
-  { id: "cat-camera", name: "Camera & Video", image: "/images/cat-camera.jpg" },
-  { id: "cat-computers", name: "Computers & Accessories", image: "/images/cat-pc-tower.jpg" },
-  { id: "cat-furniture", name: "Game & Room Furniture", image: "/images/cat-gaming-chair.jpg" },
-  { id: "cat-gaming", name: "Gaming Accessories", image: "/images/cat-gamepad.jpg" },
-  { id: "cat-headphone", name: "Headphone", image: "/images/cat-headphones.jpg" },
-  { id: "cat-laptop", name: "Laptop & Tablet", image: "/images/cat-laptop.jpg" },
-  { id: "cat-smartwatch", name: "Smartwatch", image: "/images/cat-imac.jpg" },
-  { id: "cat-tv", name: "TV & Computer Screen", image: "/images/img-prd8.webp" },
-];
-
 const SUB_CATEGORY_MAP: Record<string, string[]> = {
   "Apple products": ["AirPods", "Apple Watch", "iPhone", "Mac"],
   Headphone: ["Earbuds", "On Ear", "Over Ear"],
@@ -119,9 +106,7 @@ function ShopContent() {
 
   // Live backend catalog & categories
   const [products, setProducts] = useState<ShopProductItem[]>([]);
-  const [categories, setCategories] = useState<Array<{ id: string; name: string; image: string }>>(
-    DEFAULT_TOP_CATEGORIES
-  );
+  const [categories, setCategories] = useState<Array<{ id: string; name: string; image: string }>>([]);
   const [loading, setLoading] = useState(true);
 
   // Filters State
