@@ -16,7 +16,8 @@ router.get("/", async (req, res) => {
 // POST verify coupon for cart
 router.post("/verify", async (req, res) => {
   try {
-    const { code, cartTotal = 0 } = req.body;
+    const code = req.body.code;
+    const cartTotal = Number(req.body.cartTotal ?? req.body.subtotal ?? 0);
     if (!code) return res.status(400).json({ success: false, message: "Coupon code is required" });
     const coupons = (await readCollection("coupons")) || [];
     const coupon = coupons.find((c) => c.code.toUpperCase() === code.trim().toUpperCase() && c.active);
