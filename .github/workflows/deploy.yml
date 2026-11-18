@@ -1,116 +1,45 @@
-name: CI/CD Pipeline & Deploy
+name: Deploy Industrial Edge V2 (Main)
 
 on:
   push:
     branches:
       - main
-  pull_request:
-    branches:
-      - main
-  workflow_dispatch:
-
-concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: true
 
 jobs:
-  test:
-    name: Run Test Suite
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout Code
-        uses: actions/checkout@v4
-
-      - name: Set up Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: 20
-          cache: "npm"
-
-      - name: Install Dependencies
-        run: npm ci
-
-      - name: Run Unit & Integration Tests
-        run: npm test
-
-  build:
-    name: Production Build
-    needs: test
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout Code
-        uses: actions/checkout@v4
-
-      - name: Set up Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: 20
-          cache: "npm"
-
-      - name: Install Dependencies
-        run: npm ci
-
-      - name: Build Frontend Application
-        env:
-          NODE_ENV: production
-          NEXT_PUBLIC_API_URL: ${{ secrets.NEXT_PUBLIC_API_URL || '/api' }}
-        run: npm run build
-
-      - name: Upload Build Artifacts
-        uses: actions/upload-artifact@v4
-        with:
-          name: nextjs-build
-          path: frontend/.next
-          retention-days: 7
-
   deploy:
-    name: Deploy to Production
-    needs: [test, build]
-    if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout Code
-        uses: actions/checkout@v4
-
-      - name: Set up Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: 20
-          cache: "npm"
-
-      - name: Install Dependencies
-        run: npm ci
-
-      # Option A: Deploy to Vercel (activates if VERCEL_TOKEN secret is provided)
-      - name: Deploy to Vercel
-        if: "${{ env.VERCEL_TOKEN != '' }}"
-        env:
-          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
-          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
-          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
-        run: |
-          npx vercel pull --yes --environment=production --token=$VERCEL_TOKEN
-          npx vercel build --prod --token=$VERCEL_TOKEN
-          npx vercel deploy --prebuilt --prod --token=$VERCEL_TOKEN
-
-      # Option B: Deploy to VPS / Dedicated Server via SSH (activates if SSH_HOST secret is provided)
       - name: Deploy to VPS via SSH
-        if: "${{ env.SSH_HOST != '' }}"
-        uses: appleboy/ssh-action@v1.0.3
-        env:
-          SSH_HOST: ${{ secrets.SSH_HOST }}
+        uses: appleboy/ssh-action@v1.2.0
         with:
           host: ${{ secrets.SSH_HOST }}
-          username: ${{ secrets.SSH_USERNAME }}
+          username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
-          port: ${{ secrets.SSH_PORT || 22 }}
           script: |
-            cd ${{ secrets.DEPLOY_PATH || '/var/www/industrialedge' }}
-            git pull origin main
-            npm ci
-            npm run build
-            pm2 restart all || pm2 start backend/server.js --name "industrialedge-api"
+            set -e
+            cd /www/wwwroot/industrialedgev2.techmiresolutions.com
 
-      - name: Deployment Completed
-        run: |
-          echo "Pipeline finished successfully for commit ${{ github.sha }} on ${{ github.ref_name }}."
+            # 1. Production .env files ka safety backup lein
+            cp .env /tmp/.env.prod.bak
+            cp backend/.env /tmp/backend.env.prod.bak
+            cp frontend/.env /tmp/frontend.env.prod.bak
+
+            # 2. Main branch ka latest code pull karein
+            git fetch origin main
+            git checkout -f main
+            git reset --hard origin/main
+
+            # 3. Production .env files wapas restore karein
+            cp /tmp/.env.prod.bak .env
+            cp /tmp/backend.env.prod.bak backend/.env
+            cp /tmp/frontend.env.prod.bak frontend/.env
+
+            # 4. Dependencies install aur Next.js production build run karein
+            npm install
+            chmod -R +x node_modules/.bin frontend/node_modules/.bin backend/node_modules/.bin 2>/dev/null
+            CI=true npm run build
+
+            # 5. PM2 backend aur frontend processes restart karein
+            pm2 restart industrialv2-backend
+            pm2 restart industrialv2-frontend
+            pm2 save
