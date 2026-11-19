@@ -126,4 +126,23 @@ describe("Core UI Components Unit Tests", () => {
       expect(container.firstChild).toBeInTheDocument();
     });
   });
+
+  describe("Footer Links and Copy QA Tests", () => {
+    it("should render standardized contact landline tel:+922134685312 and address", async () => {
+      const Footer = (await import("@/components/layout/footer")).default;
+      const { container } = render(<Footer />);
+
+      const landline = container.querySelector('a[href="tel:+922134685312"]');
+      expect(landline).toBeInTheDocument();
+      expect(landline?.textContent).toContain("021 346 853 12");
+
+      expect(
+        screen.getByText(/Suite M-107, Odeon Center, Regal Chowk, Saddar, Karachi, Pakistan/i)
+      ).toBeInTheDocument();
+
+      expect(
+        screen.getByText(/Register now to get the latest procurement updates on bulk supplies/i)
+      ).toBeInTheDocument();
+    });
+  });
 });

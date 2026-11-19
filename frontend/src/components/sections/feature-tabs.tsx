@@ -7,6 +7,7 @@ import { Eye, Heart, ArrowLeftRight, X, Check } from "lucide-react";
 import { useStore, type Product } from "@/lib/store";
 import { api, type ProductItem } from "@/lib/api";
 import { formatPrice } from "@/lib/currency";
+import { INITIAL_BEST_SELLERS } from "@/lib/catalog-data";
 
 interface FeatureProduct {
   id: string;
@@ -25,8 +26,8 @@ type TabType = "feature" | "toprate" | "onsale";
 
 export default function FeatureTabs() {
   const { isWishlisted, toggleWishlist, addToCart, addToCompare } = useStore();
-  const [catalog, setCatalog] = useState<FeatureProduct[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [catalog, setCatalog] = useState<FeatureProduct[]>(INITIAL_BEST_SELLERS);
+  const [loading, setLoading] = useState(false);
   const [activeTab, setActiveTab] = useState<TabType>("feature");
   const [quickViewProduct, setQuickViewProduct] = useState<FeatureProduct | null>(null);
   const [toastMessage, setToastMessage] = useState<string | null>(null);

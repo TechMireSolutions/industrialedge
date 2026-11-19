@@ -166,6 +166,14 @@ export default function Header() {
   // Sticky Header on Scroll & Hamburger Dropdown
   const [isSticky, setIsSticky] = useState(false);
   const [stickyMenuOpen, setStickyMenuOpen] = useState(false);
+  const [isAdminLoggedIn, setIsAdminLoggedIn] = useState(false);
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const token = localStorage.getItem("industrialedge_admin_token");
+      setIsAdminLoggedIn(Boolean(token));
+    }
+  }, [pathname]);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -463,20 +471,22 @@ export default function Header() {
               </span>
             </Link>
 
-            {/* 2.5 Admin Control Panel */}
-            <Link
-              href="/admin"
-              className="group hidden sm:flex flex-col items-center justify-center cursor-pointer text-[#333e48] hover:text-[#f97316] transition-colors"
-              aria-label="Admin Control Panel"
-              title="Open Full Customs Admin Panel"
-            >
-              <div className="w-[22px] h-[22px] rounded bg-[#0f172a] text-white flex items-center justify-center text-[10px] font-bold group-hover:bg-[#f97316] transition-colors shadow-xs">
-                IE
-              </div>
-              <span className="text-[12px] text-[#333e48] group-hover:text-[#f97316] font-semibold leading-tight mt-1 transition-colors">
-                Admin
-              </span>
-            </Link>
+            {/* 2.5 Admin Control Panel (Only visible to authenticated administrators) */}
+            {isAdminLoggedIn && (
+              <Link
+                href="/admin"
+                className="group hidden sm:flex flex-col items-center justify-center cursor-pointer text-[#333e48] hover:text-[#f97316] transition-colors"
+                aria-label="Admin Control Panel"
+                title="Open Full Custom Admin Panel"
+              >
+                <div className="w-[22px] h-[22px] rounded bg-[#0f172a] text-white flex items-center justify-center text-[10px] font-bold group-hover:bg-[#f97316] transition-colors shadow-xs">
+                  IE
+                </div>
+                <span className="text-[12px] text-[#333e48] group-hover:text-[#f97316] font-semibold leading-tight mt-1 transition-colors">
+                  Admin
+                </span>
+              </Link>
+            )}
 
             {/* 3. Your cart: (Clicking opens cart drawer from right) */}
             <button
@@ -737,7 +747,7 @@ export default function Header() {
                 <span>What we do</span>
               </Link>
 
-              {/* Our partners */}
+              {/* Partners */}
               <Link
                 href="/partners"
                 className={`flex items-center text-[14px] py-3 transition-colors ${
@@ -746,7 +756,7 @@ export default function Header() {
                     : "text-[#333e48] hover:text-[#0ea57a] font-medium"
                 }`}
               >
-                <span>Our partners</span>
+                <span>Partners</span>
               </Link>
             </div>
           </div>
@@ -943,7 +953,7 @@ export default function Header() {
                     </Link>
                   </div>
 
-                  {/* Our partners */}
+                  {/* Partners */}
                   <div className="py-2.5 px-2 hover:bg-[#f8f9fa] rounded">
                     <Link
                       href="/partners"
@@ -954,7 +964,7 @@ export default function Header() {
                           : "text-[#222222] hover:text-[#0ea57a] font-medium"
                       }`}
                     >
-                      Our partners
+                      Partners
                     </Link>
                   </div>
 
@@ -1096,7 +1106,7 @@ export default function Header() {
                   </a>
                   {" / "}
                   <a
-                    href="tel:02134685312"
+                    href="tel:+922134685312"
                     className="font-semibold text-[#171145] hover:text-[#0ea57a]"
                   >
                     021 346 853 12
@@ -1113,7 +1123,7 @@ export default function Header() {
                   </a>
                 </div>
                 <div className="text-[12px] text-[#666] pt-1 leading-snug">
-                  Suite M-107 Odeon Center Regal chowk saddar Karachi, Pakistan
+                  Suite M-107, Odeon Center, Regal Chowk, Saddar, Karachi, Pakistan
                 </div>
               </div>
             </div>

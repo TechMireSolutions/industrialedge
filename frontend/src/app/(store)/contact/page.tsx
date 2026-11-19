@@ -223,7 +223,7 @@ export default function ContactPage() {
                     <div className="flex-1">
                       <h3 className="font-bold text-[#171145] text-sm">Official Address</h3>
                       <p className="text-sm text-[#666666] leading-relaxed mt-1">
-                        Suite M-107 Odeon Center Regal chowk saddar Karachi, Pakistan
+                        Suite M-107, Odeon Center, Regal Chowk, Saddar, Karachi, Pakistan
                       </p>
                       <a
                         href="https://maps.app.goo.gl/52dT7YxfarFZ4nPQ7"
@@ -252,7 +252,7 @@ export default function ContactPage() {
                           +92 332 2316225
                         </a>
                         <a
-                          href="tel:02134685312"
+                          href="tel:+922134685312"
                           className="text-sm font-semibold text-[#171145] hover:text-[#0ea57a] block"
                         >
                           021 346 853 12

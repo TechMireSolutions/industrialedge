@@ -7,7 +7,7 @@ describe("Site Navigation & Route Architecture", () => {
     { label: "Blogs", href: "/blog" },
     { label: "About Us", href: "/about" },
     { label: "What we do", href: "/what-we-do" },
-    { label: "Our partners", href: "/partners" },
+    { label: "Partners", href: "/partners" },
   ];
 
   it("should contain exactly the 6 required primary navigation links", () => {
@@ -18,7 +18,7 @@ describe("Site Navigation & Route Architecture", () => {
       "Blogs",
       "About Us",
       "What we do",
-      "Our partners",
+      "Partners",
     ]);
   });
 

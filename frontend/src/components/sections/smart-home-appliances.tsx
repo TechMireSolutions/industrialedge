@@ -7,6 +7,7 @@ import { Eye, Heart, ArrowLeftRight, ShoppingCart, ChevronLeft, ChevronRight, X,
 import { useStore, type Product } from "@/lib/store";
 import { api } from "@/lib/api";
 import { formatPrice } from "@/lib/currency";
+import { INITIAL_SMART_HOME_PRODUCTS } from "@/lib/catalog-data";
 
 interface SmartHomeProduct {
   id: string;
@@ -19,8 +20,8 @@ interface SmartHomeProduct {
 }
 
 export default function SmartHomeAppliances() {
-  const [products, setProducts] = useState<SmartHomeProduct[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [products, setProducts] = useState<SmartHomeProduct[]>(INITIAL_SMART_HOME_PRODUCTS);
+  const [loading, setLoading] = useState(false);
   const [currentPage, setCurrentPage] = useState(0);
   const [quickViewProduct, setQuickViewProduct] = useState<SmartHomeProduct | null>(null);
   const [toastMessage, setToastMessage] = useState<string | null>(null);

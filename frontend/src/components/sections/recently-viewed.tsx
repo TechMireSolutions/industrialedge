@@ -7,6 +7,7 @@ import { Eye, Heart, ArrowLeftRight, X, Check, ShoppingCart } from "lucide-react
 import { useStore, type Product } from "@/lib/store";
 import { api } from "@/lib/api";
 import { formatPrice } from "@/lib/currency";
+import { INITIAL_BEST_SELLERS } from "@/lib/catalog-data";
 
 interface RecentProduct {
   id: string;
@@ -19,8 +20,8 @@ interface RecentProduct {
 }
 
 export default function RecentlyViewed() {
-  const [catalog, setCatalog] = useState<RecentProduct[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [catalog, setCatalog] = useState<RecentProduct[]>(INITIAL_BEST_SELLERS);
+  const [loading, setLoading] = useState(false);
   const [quickViewProduct, setQuickViewProduct] = useState<RecentProduct | null>(null);
   const [toastMessage, setToastMessage] = useState<string | null>(null);
 

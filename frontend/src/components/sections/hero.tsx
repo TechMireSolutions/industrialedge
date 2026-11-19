@@ -7,6 +7,7 @@ import { Eye, Heart, ArrowLeftRight, ShoppingCart, X, Check } from "lucide-react
 import { useStore, type Product } from "@/lib/store";
 import { api } from "@/lib/api";
 import { formatPrice } from "@/lib/currency";
+import { INITIAL_HERO_BANNER, INITIAL_HERO_SIDE_PRODUCTS } from "@/lib/catalog-data";
 
 interface HeroProduct {
   id: string;
@@ -22,8 +23,8 @@ export default function Hero() {
   const { isWishlisted, toggleWishlist, addToCart, addToCompare, storeSettings } = useStore();
   const [quickViewProduct, setQuickViewProduct] = useState<HeroProduct | null>(null);
   const [toastMessage, setToastMessage] = useState<string | null>(null);
-  const [sideProducts, setSideProducts] = useState<HeroProduct[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [sideProducts, setSideProducts] = useState<HeroProduct[]>(INITIAL_HERO_SIDE_PRODUCTS);
+  const [loading, setLoading] = useState(false);
   const [heroData, setHeroData] = useState<{
     brandTag: string;
     price: number;
@@ -33,7 +34,7 @@ export default function Hero() {
     image: string;
     backgroundImage: string;
     ctaLink: string;
-  } | null>(null);
+  }>(INITIAL_HERO_BANNER);
 
   const currencySymbol = storeSettings?.currency || "Rs.";
 

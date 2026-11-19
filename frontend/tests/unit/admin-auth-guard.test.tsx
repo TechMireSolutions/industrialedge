@@ -154,4 +154,35 @@ describe("Admin Route Protection & Isolation Tests", () => {
     );
     expect(authContainer.firstChild).toBeNull();
   });
+
+  it("Header should NOT render the /admin link for unauthenticated public visitors", async () => {
+    mockPathname = "/";
+    localStorage.clear();
+
+    const Header = (await import("@/components/layout/header")).default;
+    const { container } = render(
+      <StoreProvider>
+        <Header />
+      </StoreProvider>
+    );
+
+    const adminLink = container.querySelector('a[href="/admin"]');
+    expect(adminLink).toBeNull();
+  });
+
+  it("Header should render the /admin link with typo-fixed tooltip when admin is logged in", async () => {
+    mockPathname = "/";
+    localStorage.setItem("industrialedge_admin_token", "valid_token_123");
+
+    const Header = (await import("@/components/layout/header")).default;
+    const { container } = render(
+      <StoreProvider>
+        <Header />
+      </StoreProvider>
+    );
+
+    const adminLink = container.querySelector('a[href="/admin"]');
+    expect(adminLink).toBeInTheDocument();
+    expect(adminLink?.getAttribute("title")).toBe("Open Full Custom Admin Panel");
+  });
 });

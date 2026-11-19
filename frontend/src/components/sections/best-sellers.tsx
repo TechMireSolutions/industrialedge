@@ -7,6 +7,7 @@ import { Eye, Heart, ArrowLeftRight, ChevronLeft, ChevronRight, X, Check } from 
 import { useStore, type Product } from "@/lib/store";
 import { api } from "@/lib/api";
 import { formatPrice } from "@/lib/currency";
+import { INITIAL_BEST_SELLERS } from "@/lib/catalog-data";
 
 interface BestSellerItem {
   id: string;
@@ -20,9 +21,9 @@ interface BestSellerItem {
 
 export default function BestSellers() {
   const { isWishlisted, toggleWishlist, addToCart, addToCompare } = useStore();
-  const [items, setItems] = useState<BestSellerItem[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [bannerPrice, setBannerPrice] = useState<number>(0);
+  const [items, setItems] = useState<BestSellerItem[]>(INITIAL_BEST_SELLERS);
+  const [loading, setLoading] = useState(false);
+  const [bannerPrice, setBannerPrice] = useState<number>(126000);
   const [quickViewProduct, setQuickViewProduct] = useState<BestSellerItem | null>(null);
   const [toastMessage, setToastMessage] = useState<string | null>(null);
 
@@ -268,7 +269,7 @@ export default function BestSellers() {
             <div className="relative z-10">
               <span className="text-[13px] text-[#64748b] font-normal block mb-1">Price</span>
               <span className="text-[28px] sm:text-[32px] font-extrabold text-[#0ea57a] leading-none block mb-3.5 tracking-tight">
-                {bannerPrice > 0 ? formatPrice(bannerPrice) : "—"}
+                {formatPrice(bannerPrice || 126000)}
               </span>
               <span className="text-[13px] text-[#475569] font-normal block mb-1">
                 Let power flow through you

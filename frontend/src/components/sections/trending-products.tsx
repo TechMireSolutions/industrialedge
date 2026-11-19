@@ -7,6 +7,7 @@ import { Eye, Heart, ArrowLeftRight, ShoppingCart, ChevronLeft, ChevronRight, X,
 import { useStore, type Product } from "@/lib/store";
 import { api } from "@/lib/api";
 import { formatPrice } from "@/lib/currency";
+import { INITIAL_TRENDING_PRODUCTS } from "@/lib/catalog-data";
 
 interface TrendingItem {
   id: string;
@@ -20,8 +21,8 @@ interface TrendingItem {
 
 export default function TrendingProducts() {
   const { isWishlisted, toggleWishlist, addToCart, addToCompare } = useStore();
-  const [products, setProducts] = useState<TrendingItem[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [products, setProducts] = useState<TrendingItem[]>(INITIAL_TRENDING_PRODUCTS);
+  const [loading, setLoading] = useState(false);
   const [quickViewProduct, setQuickViewProduct] = useState<TrendingItem | null>(null);
   const [toastMessage, setToastMessage] = useState<string | null>(null);
 

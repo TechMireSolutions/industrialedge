@@ -11,7 +11,7 @@ const COMPANY_LINKS = [
   { label: "Blogs", href: "/blog" },
   { label: "About Us", href: "/about" },
   { label: "What We Do", href: "/what-we-do" },
-  { label: "Official Partners", href: "/partners" },
+  { label: "Partners", href: "/partners" },
   { label: "Contact Us", href: "/contact" },
 ];
 
@@ -175,7 +175,7 @@ export default function Footer() {
                   className="text-[#73787d] hover:text-[#0ea57a] transition-colors leading-[22px] flex items-start gap-2 group"
                 >
                   <MapPin size={16} className="text-[#0ea57a] shrink-0 mt-1" />
-                  <span>Suite M-107 Odeon Center Regal chowk saddar Karachi, Pakistan</span>
+                  <span>Suite M-107, Odeon Center, Regal Chowk, Saddar, Karachi, Pakistan</span>
                 </a>
               </div>
               <div className="pt-0.5 space-y-1">
@@ -189,7 +189,7 @@ export default function Footer() {
                   <span>+92 332 2316225</span>
                 </a>
                 <a
-                  href="tel:02134685312"
+                  href="tel:+922134685312"
                   className="font-semibold text-[#171145] hover:text-[#0ea57a] transition-colors text-[14px] flex items-center gap-2 pl-6"
                 >
                   <span>021 346 853 12</span>
@@ -225,7 +225,7 @@ export default function Footer() {
               </span>
             </div>
             <span className="text-[13px] text-[#a0a4a8]">
-              Register now to get latest procurement updates on bulk supplies &amp; rates.
+              Register now to get the latest procurement updates on bulk supplies &amp; rates.
             </span>
           </div>
 
