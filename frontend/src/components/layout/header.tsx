@@ -412,8 +412,8 @@ export default function Header() {
 
           {/* Right: Account / Sign In, Wishlist, Support, Admin, Your cart */}
           <div className="flex items-center gap-4 sm:gap-6 shrink-0">
-            {/* 1. Sign In or My Account */}
-            {customerUser ? (
+            {/* 1. My Account (Only when logged in) */}
+            {customerUser && (
               <Link
                 href="/my-account"
                 className="group flex flex-col items-center justify-center cursor-pointer text-[#333e48] hover:text-[#0ea57a] transition-colors"
@@ -426,18 +426,6 @@ export default function Header() {
                   {customerUser.name.split(" ")[0]}
                 </span>
               </Link>
-            ) : (
-              <button
-                type="button"
-                onClick={() => openAuthModal("login")}
-                className="group flex flex-col items-center justify-center cursor-pointer text-[#333e48] hover:text-[#0ea57a] transition-colors"
-                aria-label="Sign In"
-              >
-                <User size={22} strokeWidth={1.5} className="group-hover:text-[#0ea57a] transition-colors" />
-                <span className="text-[12px] text-[#333e48] group-hover:text-[#0ea57a] font-normal leading-tight mt-1 transition-colors">
-                  Sign In
-                </span>
-              </button>
             )}
 
             {/* 1.5 Wishlist */}
@@ -1048,7 +1036,7 @@ export default function Header() {
 
               {/* User Account, Wishlist & Cart Quick Actions */}
               <div className="pt-4 pb-2 space-y-3">
-                {customerUser ? (
+                {customerUser && (
                   <Link
                     href="/my-account"
                     onClick={() => setMobileMenuOpen(false)}
@@ -1057,18 +1045,6 @@ export default function Header() {
                     <User size={18} strokeWidth={1.6} />
                     <span>My Account ({customerUser.name})</span>
                   </Link>
-                ) : (
-                  <button
-                    type="button"
-                    onClick={() => {
-                      setMobileMenuOpen(false);
-                      openAuthModal("login");
-                    }}
-                    className="flex items-center gap-2.5 text-[14px] text-[#333e48] hover:text-[#0ea57a] transition-colors cursor-pointer w-full text-left"
-                  >
-                    <User size={18} strokeWidth={1.6} />
-                    <span>My Account / Sign In</span>
-                  </button>
                 )}
                 <Link
                   href="/wishlist"
