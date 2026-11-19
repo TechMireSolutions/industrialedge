@@ -15,8 +15,11 @@ for (let i = 0; i < args.length; i++) {
   }
 }
 
+const frontendDir = path.resolve(__dirname, "..");
 const cwd = process.cwd();
-const isProdVps = process.platform === "linux" && cwd.includes("industrialedgev2");
+const isProdVps =
+  process.platform === "linux" &&
+  (cwd.includes("industrialedgev2") || frontendDir.includes("industrialedgev2"));
 if (!port) {
   port = isProdVps ? "3005" : "3000";
 }
@@ -74,9 +77,9 @@ if (isProdVps) {
 const nextBin = require.resolve("next/dist/bin/next");
 const nextArgs = [nextBin, "start", "-p", String(port)];
 
-console.log(`[start-server] Launching Next.js on port ${port} from ${cwd}...`);
+console.log(`[start-server] Launching Next.js on port ${port} from ${frontendDir}...`);
 const child = spawn(process.execPath, nextArgs, {
-  cwd,
+  cwd: frontendDir,
   stdio: "inherit",
   env: { ...process.env, PORT: String(port) },
 });

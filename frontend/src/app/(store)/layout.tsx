@@ -4,6 +4,9 @@ import CartDrawer from "@/components/cart/cart-drawer";
 import AuthModal from "@/components/auth/auth-modal";
 import CompareModal from "@/components/products/compare-modal";
 
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
+
 export default function StoreLayout({
   children,
 }: {

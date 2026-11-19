@@ -271,3 +271,4 @@ export const INITIAL_SMART_HOME_PRODUCTS: ProductItem[] = [
   ...INITIAL_BEST_SELLERS,
   ...INITIAL_TRENDING_PRODUCTS.slice(0, 2),
 ];
+
