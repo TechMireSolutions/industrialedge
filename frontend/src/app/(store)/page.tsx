@@ -9,6 +9,9 @@ import SmartHomeAppliances from "@/components/sections/smart-home-appliances";
 import RecentlyViewed from "@/components/sections/recently-viewed";
 import TrustBar from "@/components/sections/trust-bar";
 
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
+
 export default function Home() {
   return (
     <div className="flex flex-col flex-1 bg-white">
