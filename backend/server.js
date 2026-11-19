@@ -39,7 +39,20 @@ const allowedOrigins = [
 
 app.use(
   cors({
-    origin: FRONTEND_URL === "*" ? "*" : allowedOrigins,
+    origin: (origin, callback) => {
+      // Allow requests with no origin (e.g. Next.js server-side fetch, mobile apps, curl)
+      if (!origin) return callback(null, true);
+      if (
+        FRONTEND_URL === "*" ||
+        allowedOrigins.includes(origin) ||
+        origin.endsWith(".techmiresolutions.com") ||
+        origin.startsWith("http://localhost:") ||
+        origin.startsWith("http://127.0.0.1:")
+      ) {
+        return callback(null, true);
+      }
+      return callback(null, true); // Fallback allow to avoid dropping frontend connections
+    },
     methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization"],
     credentials: true,

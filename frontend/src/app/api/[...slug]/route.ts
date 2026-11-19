@@ -134,8 +134,9 @@ async function forwardOrFallback(req: NextRequest, { params }: { params: Promise
 
   // 1. Try forwarding to standalone Node.js Express backend
   try {
+    const timeoutDuration = isMultipart ? 30000 : 10000;
     const controller = new AbortController();
-    const timeout = setTimeout(() => controller.abort(), 4000);
+    const timeout = setTimeout(() => controller.abort(), timeoutDuration);
 
     const headers: Record<string, string> = {};
     req.headers.forEach((value, key) => {
@@ -154,11 +155,15 @@ async function forwardOrFallback(req: NextRequest, { params }: { params: Promise
     clearTimeout(timeout);
 
     const data = await res.arrayBuffer();
+    const responseHeaders = new Headers();
+    const contentTypeHeader = res.headers.get("content-type");
+    if (contentTypeHeader) responseHeaders.set("content-type", contentTypeHeader);
+    const setCookie = res.headers.get("set-cookie");
+    if (setCookie) responseHeaders.set("set-cookie", setCookie);
+
     return new NextResponse(data, {
       status: res.status,
-      headers: {
-        "content-type": res.headers.get("content-type") || "application/json",
-      },
+      headers: responseHeaders,
     });
   } catch {
     // 2. Standalone server is offline -> Full embedded API fallback

@@ -36,6 +36,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   const router = useRouter();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [serverOnline, setServerOnline] = useState<boolean | null>(null);
+  const [dbType, setDbType] = useState<string>("mysql");
   const [unreadMessages, setUnreadMessages] = useState(0);
   const [pendingOrders, setPendingOrders] = useState(0);
 
@@ -95,6 +96,9 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         if (!isMounted) return;
         const isStandalone = Boolean(health?.service && health.service.includes("Node.js"));
         setServerOnline(isStandalone);
+        if (health?.database) {
+          setDbType(health.database);
+        }
         if (stats?.metrics) {
           setPendingOrders(stats.metrics.pendingOrders || 0);
           setUnreadMessages(stats.metrics.unreadInquiries || 0);
@@ -246,7 +250,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                   : "bg-amber-950/80 text-amber-300 border border-amber-800/40"
               }`}
             >
-              {serverOnline ? "Online :5000" : "Embedded API"}
+              {serverOnline ? `Live (${dbType === "mysql" ? "MySQL" : "API"})` : "Embedded API"}
             </span>
           </div>
 

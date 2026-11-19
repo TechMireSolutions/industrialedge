@@ -48,7 +48,7 @@ export default function ErrorBoundary({
 
         <p className="text-sm text-slate-600 leading-relaxed mb-6">
           {isNetworkOrConnection
-            ? "The frontend could not connect to the backend server. Make sure the backend service is running on port 5000, or retry the connection."
+            ? "The frontend could not connect to the backend API service. Please verify server connectivity or retry."
             : error.message ||
               "An unexpected error occurred while rendering this page. You can reload or return to the main storefront."}
         </p>
@@ -80,12 +80,12 @@ export default function ErrorBoundary({
         <div className="mt-8 pt-6 border-t border-slate-100 flex items-center justify-center gap-4 text-xs text-slate-500">
           <span className="flex items-center gap-1.5">
             <span className="w-2 h-2 rounded-full bg-emerald-500"></span>
-            Frontend: Port 3000
+            Next.js Frontend
           </span>
           <span className="text-slate-300">•</span>
           <span className="flex items-center gap-1.5">
             <span className="w-2 h-2 rounded-full bg-blue-500"></span>
-            Backend: Port 5000
+            Node.js Backend API
           </span>
         </div>
       </div>

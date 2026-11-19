@@ -194,10 +194,26 @@ export interface AuthUser {
   avatar?: string;
 }
 
-// Helper to resolve API URLs based on NEXT_PUBLIC_API_URL
+// Helper to resolve API URLs based on NEXT_PUBLIC_API_URL and runtime environment
 export function getApiUrl(endpoint: string): string {
   if (endpoint.startsWith("http")) return endpoint;
-  const base = process.env.NEXT_PUBLIC_API_URL || "/api";
+
+  if (typeof window === "undefined") {
+    // Server-side (Node.js runtime in Next.js SSR / Server Components)
+    const backendUrl =
+      process.env.BACKEND_URL ||
+      (process.env.NODE_ENV === "production" ? "http://127.0.0.1:5007" : "http://localhost:5000");
+    const cleanEndpoint = endpoint.startsWith("/") ? endpoint : `/${endpoint}`;
+    return `${backendUrl.replace(/\/+$/, "")}/api${cleanEndpoint}`;
+  }
+
+  // Client-side (Browser runtime):
+  // If not on local machine (e.g. running on production domain), never use localhost:5000 as browsers block it.
+  let base = process.env.NEXT_PUBLIC_API_URL || "/api";
+  const isLocalHost = window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1";
+  if (!isLocalHost && (base.includes("localhost") || base.includes("127.0.0.1"))) {
+    base = "/api";
+  }
   const cleanEndpoint = endpoint.startsWith("/") ? endpoint : `/${endpoint}`;
   return `${base.replace(/\/+$/, "")}${cleanEndpoint}`;
 }
